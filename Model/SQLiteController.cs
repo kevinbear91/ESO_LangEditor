@@ -150,7 +150,8 @@ namespace ESO_Lang_Editor.Model
 
                     foreach (var t in tableName)
                     {
-                        cmd.CommandText = "SELECT * FROM " + t + " WHERE Text_EN LIKE '%" + CsvContent + "%'";
+                        cmd.CommandText = "SELECT * FROM " + t + " WHERE Text_EN LIKE @SEARCH";
+                        cmd.Parameters.AddWithValue("@SEARCH", "%" + CsvContent + "%");
                         sr = cmd.ExecuteReader();
 
                         while (sr.Read())

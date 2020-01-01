@@ -22,25 +22,26 @@ namespace ESO_Lang_Editor.View
     public partial class MainWindow : Window
     {
         private MainWindowOption windowsOptions;
-        
-             
+        List<LangSearchModel> d1;
+
         public MainWindow()
         {
-            //windowsOptions = new MainWindowOption();
-            //DataContext = windowsOptions;
+            windowsOptions = new MainWindowOption();
+            DataContext = windowsOptions;
             InitializeComponent();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            //var DBFile = new SQLiteController();
-            var data1 = new LangSearchModel();
+            if (LangSearch.Items.Count > 1)
+                d1 = null;
+                LangSearch.Items.Clear();
 
-            data1.SearchLang(SearchTextBox.Text);
-            
-            //DBFile.SearchData(SearchTextBox.Text);
-            
-            //SearchLang(SearchTextBox.Text);
+            d1 = windowsOptions.SearchLang(SearchTextBox.Text);
+            foreach (var data in d1)
+            {
+                LangSearch.Items.Add(data);
+            }
         }
     }
 }

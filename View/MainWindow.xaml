@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="ESO文本查询编辑器" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="ESO文本查询编辑器" Height="450" Width="800" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
@@ -23,7 +23,7 @@
             <TextBox x:Name="SearchTextBox"  Height="21" Margin="48,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="413" AllowDrop="True" VerticalContentAlignment="Center" HorizontalScrollBarVisibility="Auto"/>
             <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" RenderTransformOrigin="0.2,0.609" Click="SearchButton_Click"/>
             <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" ItemsSource="{Binding Source={StaticResource searchTextInPositionData}}" SelectedValue="{Binding Path=SearchTextInPosition}">
-                
+
             </ComboBox>
             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90" ItemsSource="{Binding Source={StaticResource searchTypeData}}" SelectedValue="{Binding Path=SearchType}"/>
         </Canvas>
@@ -31,7 +31,7 @@
             <Canvas.Resources>
                 <local:LangSearchModel x:Key="LangShearchData" />
             </Canvas.Resources>
-            <DataGrid x:Name="table" AutoGenerateColumns="False" Canvas.Left="10" Width="770" Height="290" ItemsSource="{Binding LangShearchData}">
+            <DataGrid x:Name="LangSearch" AutoGenerateColumns="False" Canvas.Left="10" Width="770" Height="290" ItemsSource="{Binding LangData}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="100"/>
                     <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="300"/>

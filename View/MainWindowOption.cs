@@ -14,7 +14,7 @@ namespace ESO_Lang_Editor.View
         private string searchTextInPosition = "包含全文";
         private string searchType = "搜英文";
 
-        //private ObservableCollection<LangSearchModel> LangSearch { get; set; }
+        //public ICollectionView LangData { get; private set; }
 
         public string SearchTextInPosition
         {
@@ -38,7 +38,14 @@ namespace ESO_Lang_Editor.View
             }
         }
 
-        
+        public List<LangSearchModel> SearchLang(string SearchBarText)
+        {
+            var DBFile = new SQLiteController();
+
+            var da1 = DBFile.SearchData(SearchBarText);
+
+            return da1;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
