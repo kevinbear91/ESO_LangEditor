@@ -19,9 +19,33 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class TextEditor : Window
     {
-        public TextEditor()
+        private LangSearchModel EditData;
+        public TextEditor(LangSearchModel LangData)
         {
+            
             InitializeComponent();
+            EditData = LangData;
+            textBox_EN.Text = EditData.Text_EN;
+            textBox_ZH.Text = EditData.Text_SC;
+            textblock_information.Text = "当前表：" + EditData.ID_Table 
+                + "，数据库索引：" + EditData.IndexDB 
+                + "，类型：" + EditData.ID_Type 
+                + "，文本索引：" + EditData.ID_Index + "。";
         }
+
+        private void button_cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        /*
+        public TextEditor(LangSearchModel Data) : base()
+        {
+            
+            Data = EditData;
+        }
+        */
+
+
     }
 }

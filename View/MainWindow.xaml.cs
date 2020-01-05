@@ -22,7 +22,7 @@ namespace ESO_Lang_Editor.View
     public partial class MainWindow : Window
     {
         private MainWindowOption windowsOptions;
-        List<LangSearchModel> d1;
+        List<LangSearchModel> SearchData;
 
         public MainWindow()
         {
@@ -34,13 +34,37 @@ namespace ESO_Lang_Editor.View
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             if (LangSearch.Items.Count > 1)
-                d1 = null;
+                SearchData = null;
                 LangSearch.Items.Clear();
 
-            d1 = windowsOptions.SearchLang(SearchTextBox.Text);
-            foreach (var data in d1)
+            SearchData = windowsOptions.SearchLang(SearchTextBox.Text);
+            foreach (var data in SearchData)
             {
                 LangSearch.Items.Add(data);
+            }
+        }
+
+        private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DataGrid datagrid = sender as DataGrid;
+            Point aP = e.GetPosition(datagrid);
+            IInputElement obj = datagrid.InputHitTest(aP);
+            DependencyObject target = obj as DependencyObject;
+
+
+            while (target != null)
+            {
+                if (target is DataGridRow)
+                    if (datagrid.SelectedIndex != -1 )
+                    {
+                        LangSearchModel data = (LangSearchModel)datagrid.SelectedItem;
+                        TextEditor textEditor = new TextEditor(data);
+                        textEditor.Show();
+                        //MessageBox.Show(data.Text_SC);
+
+                    }
+
+                target = VisualTreeHelper.GetParent(target);
             }
         }
     }

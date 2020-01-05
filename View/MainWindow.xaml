@@ -28,13 +28,12 @@
             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90" ItemsSource="{Binding Source={StaticResource searchTypeData}}" SelectedValue="{Binding Path=SearchType}"/>
         </Canvas>
         <Canvas Grid.Row="2">
-            <Canvas.Resources>
-                <local:LangSearchModel x:Key="LangShearchData" />
-            </Canvas.Resources>
-            <DataGrid x:Name="LangSearch" AutoGenerateColumns="False" Canvas.Left="10" Width="770" Height="290" ItemsSource="{Binding LangData}">
+
+            <DataGrid x:Name="LangSearch" AutoGenerateColumns="False" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
+                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="100"/>
-                    <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="300"/>
+                    <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="100" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="300" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="300"/>
                 </DataGrid.Columns>
                 <ListBoxItem/>

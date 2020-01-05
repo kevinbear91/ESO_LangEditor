@@ -137,9 +137,9 @@ namespace ESO_Lang_Editor.Model
                 //string lineContent = "Null";
                 try
                 {
-                    List<string> tableName = new List<string>();
+                    List<string> tableName = new List<string>();   //表名列表
 
-                    cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";
+                    cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";   //获得当前所有表名
                     SQLiteDataReader sr = cmd.ExecuteReader();
                     while (sr.Read())
                     {
@@ -151,18 +151,19 @@ namespace ESO_Lang_Editor.Model
                     foreach (var t in tableName)
                     {
                         cmd.CommandText = "SELECT * FROM " + t + " WHERE Text_EN LIKE @SEARCH";
-                        cmd.Parameters.AddWithValue("@SEARCH", "%" + CsvContent + "%");
+                        cmd.Parameters.AddWithValue("@SEARCH", "%" + CsvContent + "%");     //遍历全库查询要搜索在任意位置的文本
                         sr = cmd.ExecuteReader();
 
                         while (sr.Read())
                         {
                             //Console.WriteLine("查询了{0},{1},{2}", sr.GetInt32(0), sr.GetInt32(2), sr.GetString(5));
-                            _LangViewData.Add(new LangSearchModel { 
-                                //IndexDB = sr.FieldCount,
-                                ID_Type = sr.GetInt32(0).ToString(),
-                                ID_Index = sr.GetInt32(2),
-                                Text_EN = sr.GetString(4),
-                                Text_SC = sr.GetString(5)
+                            _LangViewData.Add(new LangSearchModel {
+                                ID_Table = t.ToString(),                   //数据表名
+                                IndexDB = sr.FieldCount,                   //数据表索引列
+                                ID_Type = sr.GetInt32(0).ToString(),       //游戏内文本ID
+                                ID_Index = sr.GetInt32(2),                 //游戏内文本Index
+                                Text_EN = sr.GetString(4),                 //英语原文
+                                Text_SC = sr.GetString(5)                  //汉化文本
                             });
                         }
                         sr.Close();
