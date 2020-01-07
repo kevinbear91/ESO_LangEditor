@@ -8,7 +8,7 @@
     <ProjectGuid>{04C41B00-A4CF-4FE4-8204-1812ED90A367}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>ESO_Lang_Editor</RootNamespace>
-    <AssemblyName>ESO Lang Editor</AssemblyName>
+    <AssemblyName>ESO_LangEditor</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
