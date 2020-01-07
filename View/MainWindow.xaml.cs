@@ -29,6 +29,7 @@ namespace ESO_Lang_Editor.View
             windowsOptions = new MainWindowOption();
             DataContext = windowsOptions;
             InitializeComponent();
+            textBlock_Info.Text = "";
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -42,6 +43,7 @@ namespace ESO_Lang_Editor.View
             {
                 LangSearch.Items.Add(data);
             }
+            textBlock_Info.Text = "总计搜索到" + (LangSearch.Items.Count+1) + "条结果。";
         }
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)

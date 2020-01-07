@@ -42,7 +42,7 @@
 
         <Canvas Grid.Column="3" Grid.Row="5">
             <StackPanel Grid.Column="1" Grid.Row="5">
-                <Button x:Name="button_save" Content="保存" HorizontalAlignment="Left" Margin="0,1,0,0" VerticalAlignment="Top" Width="75" Height="19"/>
+                <Button x:Name="button_save" Content="保存" HorizontalAlignment="Left" Margin="0,1,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_save_Click"/>
                 <Button x:Name="button_cancel" Content="取消" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_cancel_Click"/>
                 <Button x:Name="button_help" Content="帮助" HorizontalAlignment="Left" Margin="0,67,0,0" VerticalAlignment="Top" Width="75" Height="19"/>
             </StackPanel>

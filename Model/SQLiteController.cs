@@ -159,8 +159,9 @@ namespace ESO_Lang_Editor.Model
                             //Console.WriteLine("查询了{0},{1},{2}", sr.GetInt32(0), sr.GetInt32(2), sr.GetString(5));
                             _LangViewData.Add(new LangSearchModel {
                                 ID_Table = t.ToString(),                   //数据表名
-                                IndexDB = sr.FieldCount,                   //数据表索引列
+                                //IndexDB = sr.FieldCount,                   //数据表索引列
                                 ID_Type = sr.GetInt32(0).ToString(),       //游戏内文本ID
+                                ID_Unknown = sr.GetInt32(1),               //游戏内文本Unknown列
                                 ID_Index = sr.GetInt32(2),                 //游戏内文本Index
                                 Text_EN = sr.GetString(4),                 //英语原文
                                 Text_SC = sr.GetString(5)                  //汉化文本
@@ -210,6 +211,38 @@ namespace ESO_Lang_Editor.Model
                 catch (Exception ex)
                 {
                     throw new Exception("插入数据：" + CsvContent.Count + "失败：" + ex.Message);
+                }
+
+            }
+
+        }
+
+        public string UpdateDataFromEditor(LangSearchModel CsvContent)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+
+                try
+                {
+                    cmd.CommandText = "UPDATE " + CsvContent.ID_Table + " SET Text_SC=@Text_SC" 
+                        + " WHERE (ID_Unknown='" + ToInt32(CsvContent.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
+                        + "'AND ID_Index='" + ToInt32(CsvContent.ID_Index) + "')";
+
+                    cmd.Parameters.Add(new SQLiteParameter("@Text_SC", CsvContent.Text_SC));
+                    cmd.ExecuteNonQuery();
+                    return CsvContent.Text_SC + " 更新成功！";
+
+                        //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
+                        //Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
+
+                }
+                catch (Exception ex)
+                {
+                    return "插入数据：" + CsvContent.Text_SC + " 失败：" + ex.Message;
+                    throw new Exception("插入数据：" + CsvContent.Text_SC + "失败：" + ex.Message);
                 }
 
             }

@@ -13,6 +13,7 @@ namespace ESO_Lang_Editor.View
         private string _ID_Table;
         private int _ID_IndexDB;
         private string _ID_Type;
+        private int _ID_Unknown;
         private int _ID_Index;
         private string _Text_EN;
         private string _Text_SC;
@@ -43,6 +44,16 @@ namespace ESO_Lang_Editor.View
             set
             {
                 _ID_Type = value;
+                NotifyPropertyChanged("ID_Type");
+            }
+        }
+
+        public int ID_Unknown
+        {
+            get { return _ID_Unknown; }
+            set
+            {
+                _ID_Unknown = value;
                 NotifyPropertyChanged("ID_Type");
             }
         }
