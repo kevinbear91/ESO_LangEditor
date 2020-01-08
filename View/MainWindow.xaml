@@ -40,7 +40,7 @@
             <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" ItemsSource="{Binding Source={StaticResource searchTextInPositionData}}" SelectedValue="{Binding Path=SearchTextInPosition}">
 
             </ComboBox>
-            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90" ItemsSource="{Binding Source={StaticResource searchTypeData}}" SelectedValue="{Binding Path=SearchType}"/>
+            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90" ItemsSource="{Binding Source={StaticResource searchTypeData}}" SelectedValue="{Binding Path=SearchType}" IsEnabled="False"/>
         </Canvas>
 
         <Canvas Grid.Row="2">

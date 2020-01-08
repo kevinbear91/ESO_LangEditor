@@ -38,12 +38,13 @@ namespace ESO_Lang_Editor.View
                 SearchData = null;
                 LangSearch.Items.Clear();
 
-            SearchData = windowsOptions.SearchLang(SearchTextBox.Text);
+            SearchData = windowsOptions.SearchLang(SearchCheck());
+
             foreach (var data in SearchData)
             {
                 LangSearch.Items.Add(data);
             }
-            textBlock_Info.Text = "总计搜索到" + (LangSearch.Items.Count+1) + "条结果。";
+            textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
         }
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -68,6 +69,31 @@ namespace ESO_Lang_Editor.View
 
                 target = VisualTreeHelper.GetParent(target);
             }
+        }
+        private string SearchCheck()
+        {
+            //获得已选择的搜索文本所在位置， 默认selectedSearchTextPosition = 0
+            int selectedSearchTextPosition = SearchTextPositionComboBox.SelectedIndex;
+            var selectedSearchType = SearchTypeComboBox.SelectedIndex;
+            string searchText = SearchTextBox.Text;
+            string SearchContent;
+
+            switch (selectedSearchTextPosition)
+            {
+                case 0:
+                    SearchContent = "%" + searchText + "%";   //全文搜索
+                    break;
+                case 1:
+                    SearchContent = searchText + "%";         //仅在开头
+                    break;
+                case 2:
+                    SearchContent = "%" + searchText;         //仅在结尾
+                    break;
+                default:
+                    SearchContent = "%" + searchText + "%";   //出错直接全文搜索
+                    break;
+            }
+            return SearchContent;
         }
     }
 }

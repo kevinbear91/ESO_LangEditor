@@ -151,7 +151,7 @@ namespace ESO_Lang_Editor.Model
                     foreach (var t in tableName)
                     {
                         cmd.CommandText = "SELECT * FROM " + t + " WHERE Text_EN LIKE @SEARCH";
-                        cmd.Parameters.AddWithValue("@SEARCH", "%" + CsvContent + "%");     //遍历全库查询要搜索在任意位置的文本
+                        cmd.Parameters.AddWithValue("@SEARCH", CsvContent);     //遍历全库查询要搜索在任意位置的文本
                         sr = cmd.ExecuteReader();
 
                         while (sr.Read())

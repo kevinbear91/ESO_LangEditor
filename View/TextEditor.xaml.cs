@@ -50,8 +50,8 @@ namespace ESO_Lang_Editor.View
             EditedData.ID_Index = EditData.ID_Index;
             EditedData.Text_SC = textBox_ZH.Text;
 
-            var isSuccess = connDB.UpdateDataFromEditor(EditedData);
-            MessageBox.Show(isSuccess);
+            var updateResult = connDB.UpdateDataFromEditor(EditedData);
+            MessageBox.Show(updateResult);
             this.Close();
         }
 
