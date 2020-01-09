@@ -25,12 +25,15 @@ namespace ESO_Lang_Editor.View
         {
             
             InitializeComponent();
+            var IDtypeName = new IDCatalog();
+
+            //IDtypeName.GetCategory(EditData.ID_Type)
             EditData = LangData;
             textBox_EN.Text = EditData.Text_EN;
             textBox_ZH.Text = EditData.Text_SC;
             textblock_information.Text = "当前表：" + EditData.ID_Table 
                 //+ "，数据库索引：" + EditData.IndexDB 
-                + "，类型：" + EditData.ID_Type
+                + "，类型：" + IDtypeName.GetCategory(EditData.ID_Type)    //EditData.ID_Type  
                 + "，未知列：" + EditData.ID_Unknown
                 + "，文本索引：" + EditData.ID_Index + "。";
         }

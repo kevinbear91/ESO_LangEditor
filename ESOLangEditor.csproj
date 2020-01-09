@@ -84,6 +84,7 @@
     <Compile Include="Model\FileModel_Csv.cs" />
     <Compile Include="Model\FileModel_IntoDB.cs" />
     <Compile Include="Model\FileModel_Output.cs" />
+    <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
     <Compile Include="View\CompareWindow.xaml.cs">
       <DependentUpon>CompareWindow.xaml</DependentUpon>
