@@ -17,7 +17,7 @@
         <Canvas Grid.Row="0">
             <Menu x:Name="menu" Canvas.Top="7" Canvas.Left="3">
                 <MenuItem Header="CSV编辑">
-                    <MenuItem Header="123"/>
+                    <MenuItem Header="123" Click="MenuItem_Click"/>
                     <MenuItem Header="321"/>
                     <MenuItem Header="aaaa"/>
                 </MenuItem>

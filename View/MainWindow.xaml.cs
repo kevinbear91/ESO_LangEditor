@@ -95,5 +95,11 @@ namespace ESO_Lang_Editor.View
             }
             return SearchContent;
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var compareWindows = new CompareWindow();
+            compareWindows.Show();
+        }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Convert;
+using ESO_Lang_Editor.View;
 
 namespace ESO_Lang_Editor.Model
 {
@@ -49,6 +51,61 @@ namespace ESO_Lang_Editor.Model
             return OrderdList;
         }
 
+        public Dictionary<string, string> CsvListToDict(List<FileModel_Csv> csvContent)
+        {
+            var Dict = new Dictionary<string, string>();
+
+            foreach (var data in csvContent)
+            {
+                try
+                {
+                    Dict.Add(data.GetUniqueID(false), data.textContent);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    Console.WriteLine(data.GetUniqueID(false), data.textContent);
+
+                }
+            }
+            return Dict;
+        }
+
+        public List<LangSearchModel> CsvDictToModel(Dictionary<string, string> Dict)
+        {
+            var _langData = new List<LangSearchModel>();
+
+            foreach (var data in Dict)
+            {
+                var keyField = data.Key.Split(new char[] { '-' }, 3);
+                _langData.Add (new LangSearchModel
+                {
+                    ID_Type = keyField[0],
+                    ID_Unknown = ToInt32(keyField[1]),
+                    ID_Index = ToInt32(keyField[2]),
+                    Text_EN = data.Value
+                });
+            }
+            return _langData;
+
+            /*
+            var DictConvert = new Dictionary<string, FileModel_Csv>();
+
+
+            foreach (var data in Dict)
+            {
+                var keyField = data.Key.Split(new char[] { '-' },3);
+                DictConvert.Add(data.Key, new FileModel_Csv{
+                    stringID = ToUInt32(keyField[0]),
+                    stringUnknow = ToUInt16(keyField[1]),
+                    stringIndex = ToUInt32(keyField[2]),
+                    textContent = data.Value
+                });
+            }
+            return DictConvert;
+            */
+        }
+
 
         public Dictionary<string, string> CsvCompareNonChange(Dictionary<string, string> OldDict, Dictionary<string, string> NewDict)
         {
@@ -70,7 +127,7 @@ namespace ESO_Lang_Editor.Model
             foreach (var entry in DiffDictionary(OldDict, NewDict))
             {
                 if (entry.Value == "different")
-                    ContentEdited.Add(entry.Key, OldDict[entry.Key]);
+                    ContentEdited.Add(entry.Key, NewDict[entry.Key]);
 
             }
             return ContentEdited;
@@ -83,7 +140,7 @@ namespace ESO_Lang_Editor.Model
             foreach (var entry in DiffDictionary(OldDict, NewDict))
             {
                 if (entry.Value == "added")
-                    ContentAdded.Add(entry.Key, OldDict[entry.Key]);
+                    ContentAdded.Add(entry.Key, NewDict[entry.Key]);
 
             }
             return ContentAdded;
