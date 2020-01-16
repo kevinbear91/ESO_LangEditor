@@ -87,8 +87,11 @@
     <Compile Include="Model\FileModel_Output.cs" />
     <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
-    <Compile Include="View\CompareWindow.xaml.cs">
-      <DependentUpon>CompareWindow.xaml</DependentUpon>
+    <Compile Include="View\CompareWithDBWindow.xaml.cs">
+      <DependentUpon>CompareWithDBWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CompareCsvWindow.xaml.cs">
+      <DependentUpon>CompareCsvWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LangSearchModel.cs" />
     <Compile Include="View\SearchTextInPosition.cs" />
@@ -97,7 +100,11 @@
       <DependentUpon>TextEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindowOption.cs" />
-    <Page Include="View\CompareWindow.xaml">
+    <Page Include="View\CompareWithDBWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CompareCsvWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

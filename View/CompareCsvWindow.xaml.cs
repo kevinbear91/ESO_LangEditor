@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Convert;
 using FileHelpers;
 using ESO_Lang_Editor.Model;
 
@@ -20,13 +21,13 @@ namespace ESO_Lang_Editor.View
     /// <summary>
     /// CompareWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class CompareWindow : Window
+    public partial class CompareCsvWindow : Window
     {
         CsvParser fileParser = new CsvParser();
         private Dictionary<string, string> OldDict;
         private Dictionary<string, string> NewDict;
 
-        public CompareWindow()
+        public CompareCsvWindow()
         {
             InitializeComponent();
 
@@ -70,10 +71,11 @@ namespace ESO_Lang_Editor.View
             if (OldFileURLtextBox.Text != "" && NewFileURLtextBox.Text != "")
             {
                 //LoadCsv_Buton.IsEnabled = false;
-                
-                OldDict = LoadCsv(OldFileURLtextBox.Text, OldStatus_textBlock);
+
+                //OldDict = LoadCsv(OldFileURLtextBox.Text, OldStatus_textBlock);
+                OldDict = fileParser.LoadDB();
                 //NewStatus_textBlock.Text = "正在读取文件……";
-                NewDict = LoadCsv(NewFileURLtextBox.Text, NewStatus_textBlock);
+                NewDict = fileParser.LoadCsv(NewFileURLtextBox.Text);
             }
 
             CompareAdded_Button.IsEnabled = true;
@@ -82,19 +84,6 @@ namespace ESO_Lang_Editor.View
 
         }
 
-
-        private Dictionary<string, string> LoadCsv(string path, TextBlock statusTextBox)
-        {
-            var engine = new FileHelperEngine<FileModel_Csv>(Encoding.UTF8);
-            //var engine2 = new FileHelperAsyncEngine<FileModel_Csv>(Encoding.UTF8);
-            statusTextBox.Text = "正在读取文件……";
-            var reader = engine.ReadFile(path).ToList();
-            statusTextBox.Text = "正在转换……";
-            var Dict = fileParser.CsvListToDict(reader);
-
-            statusTextBox.Text = "共 " + (Dict.Count+1) + " 条数据。" ;
-            return Dict;
-        }
 
         private void CompareAdded_Button_Click(object sender, RoutedEventArgs e)
         {

@@ -96,10 +96,16 @@ namespace ESO_Lang_Editor.View
             return SearchContent;
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void CsvFileCompare_Click(object sender, RoutedEventArgs e)
         {
-            var compareWindows = new CompareWindow();
-            compareWindows.Show();
+            var compareCsvWindows = new CompareCsvWindow();
+            compareCsvWindows.Show();
+        }
+
+        private void CsvCompareWithDB_Click(object sender, RoutedEventArgs e)
+        {
+            var compareWithDBWindows = new CompareWithDBWindow();
+            compareWithDBWindows.Show();
         }
     }
 }

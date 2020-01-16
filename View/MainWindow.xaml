@@ -16,9 +16,13 @@
 
         <Canvas Grid.Row="0">
             <Menu x:Name="menu" Canvas.Top="7" Canvas.Left="3">
+                <MenuItem Header="导出">
+                    <MenuItem Header="导出已翻译内容"/>
+                    <MenuItem Header="导出至转换文本"/>
+                </MenuItem>
                 <MenuItem Header="CSV编辑">
-                    <MenuItem Header="123" Click="MenuItem_Click"/>
-                    <MenuItem Header="321"/>
+                    <MenuItem Header="CSV与数据库对比" Click="CsvCompareWithDB_Click"/>
+                    <MenuItem Header="双CSV增改删对比" Click="CsvFileCompare_Click"/>
                     <MenuItem Header="aaaa"/>
                 </MenuItem>
                 <MenuItem Header="帮助">

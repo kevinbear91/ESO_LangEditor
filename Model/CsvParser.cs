@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Convert;
+using FileHelpers;
 using ESO_Lang_Editor.View;
 
 namespace ESO_Lang_Editor.Model
@@ -87,24 +88,48 @@ namespace ESO_Lang_Editor.Model
                 });
             }
             return _langData;
-
-            /*
-            var DictConvert = new Dictionary<string, FileModel_Csv>();
+        }
 
 
-            foreach (var data in Dict)
+        public Dictionary<string, string> LoadCsv(string path)
+        {
+            var engine = new FileHelperEngine<FileModel_Csv>(Encoding.UTF8);
+            //var engine2 = new FileHelperAsyncEngine<FileModel_Csv>(Encoding.UTF8);
+            //statusTextBox.Text = "正在读取文件……";
+            var reader = engine.ReadFile(path).ToList();
+            //statusTextBox.Text = "正在转换……";
+            var Dict = CsvListToDict(reader);
+
+            //statusTextBox.Text = "共 " + (Dict.Count + 1) + " 条数据。";
+            return Dict;
+        }
+
+        public Dictionary<string, string> LoadDB()
+        {
+            var db = new SQLiteController();
+            List<FileModel_Csv> csvFileModel = new List<FileModel_Csv>();
+
+            var searchData = db.FullSearchData();
+
+            foreach (var data in searchData)
             {
-                var keyField = data.Key.Split(new char[] { '-' },3);
-                DictConvert.Add(data.Key, new FileModel_Csv{
-                    stringID = ToUInt32(keyField[0]),
-                    stringUnknow = ToUInt16(keyField[1]),
-                    stringIndex = ToUInt32(keyField[2]),
-                    textContent = data.Value
+                csvFileModel.Add(new FileModel_Csv
+                {
+
+                    stringID = ToUInt32(data.ID_Type),
+                    stringUnknow = ToUInt16(data.ID_Unknown),
+                    stringIndex = ToUInt32(data.ID_Index),
+                    textContent = data.Text_EN
                 });
             }
-            return DictConvert;
-            */
+
+            var Dict = CsvListToDict(csvFileModel);
+            //statusTextBox.Text = "共 " + (Dict.Count + 1) + " 条数据。";
+
+            return Dict;
         }
+
+
 
 
         public Dictionary<string, string> CsvCompareNonChange(Dictionary<string, string> OldDict, Dictionary<string, string> NewDict)
