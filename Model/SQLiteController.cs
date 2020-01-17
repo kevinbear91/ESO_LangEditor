@@ -78,7 +78,7 @@ namespace ESO_Lang_Editor.Model
         }
 
 
-        public void AddDataArray(Dictionary<string, FileModel_IntoDB> CsvContent)
+        public void AddDataArray(List<FileModel_IntoDB> CsvContent)
         {
             
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
@@ -98,20 +98,20 @@ namespace ESO_Lang_Editor.Model
                         //    "(ID_Type, ID_Index, ID_Unknown, ID_Offset, Text_EN, Text_SC, Text_JF) " +
                         //    "VALUES ('" + ToInt32(line.stringID) + "', " + ToInt32(line.stringIndex) + "', " + ToInt32(line.stringUnknow) + "', " + ToInt32(line.stringOffset) + "', " + line.textContent + "', " + Text_SC + "', " + Text_JF + ")";
 
-                        cmd.CommandText = "INSERT INTO ID_" + line.Value.stringID + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @ID_Offset, @Text_EN, @Text_SC)";
+                        cmd.CommandText = "INSERT INTO ID_" + line.stringID + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @ID_Offset, @Text_EN, @Text_SC)";
                         cmd.Parameters.AddRange(new[]
                         {
-                            new SQLiteParameter("@ID_Type", line.Value.stringID),
-                            new SQLiteParameter("@ID_Unknown", line.Value.stringUnknow),
-                            new SQLiteParameter("@ID_Index", line.Value.stringIndex),
-                            new SQLiteParameter("@ID_Offset", line.Value.stringOffset),
-                            new SQLiteParameter("@Text_SC", line.Value.ZH_text),
-                            new SQLiteParameter("@Text_EN", line.Value.EN_text),
+                            new SQLiteParameter("@ID_Type", line.stringID),
+                            new SQLiteParameter("@ID_Unknown", line.stringUnknow),
+                            new SQLiteParameter("@ID_Index", line.stringIndex),
+                            new SQLiteParameter("@ID_Offset", line.stringOffset),
+                            new SQLiteParameter("@Text_SC", line.ZH_text),
+                            new SQLiteParameter("@Text_EN", line.EN_text),
                         });
 
                         cmd.ExecuteNonQuery();
                         //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
-                        Console.WriteLine("插入了{0}, {1}, {2}", line.Value.stringID, line.Value.stringUnknow, line.Value.stringIndex);
+                        Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
                     }
                     tx.Commit();
                 }
@@ -222,7 +222,7 @@ namespace ESO_Lang_Editor.Model
                                 ID_Unknown = sr.GetInt32(1),               //游戏内文本Unknown列
                                 ID_Index = sr.GetInt32(2),                 //游戏内文本Index
                                 Text_EN = sr.GetString(4),                 //英语原文
-                                //Text_SC = sr.GetString(5)                  //汉化文本
+                                Text_SC = sr.GetString(5)                  //汉化文本
                             });
                         }
                         sr.Close();
@@ -274,6 +274,45 @@ namespace ESO_Lang_Editor.Model
             }
 
         }
+
+        public void UpdateDataArrayFromCompare(List<FileModel_IntoDB> CsvContent)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+                SQLiteTransaction tx = conn.BeginTransaction();
+                cmd.Transaction = tx;
+
+                try
+                {
+                    foreach (var line in CsvContent)
+                    {
+                        cmd.CommandText = "UPDATE ID_" + ToInt32(line.stringID) + " SET Text_EN=@Text_EN,Text_SC=@Text_SC "
+                            + "WHERE (ID_Unknown='" + ToInt32(line.stringUnknow)              //Unknown + Index 才是唯一，只有Index会数据污染。
+                            + "'AND ID_Index='" + ToInt32(line.stringIndex) + "')";
+                        cmd.Parameters.AddRange(new[]
+                        {
+                            new SQLiteParameter("@Text_EN", line.EN_text),
+                            new SQLiteParameter("@Text_SC", line.ZH_text),
+                        });
+
+                        cmd.ExecuteNonQuery();
+                        //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
+                        Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
+                    }
+                    tx.Commit();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("插入数据：" + CsvContent.Count + "失败：" + ex.Message);
+                }
+
+            }
+
+        }
+
 
         public string UpdateDataFromEditor(LangSearchModel CsvContent)
         {

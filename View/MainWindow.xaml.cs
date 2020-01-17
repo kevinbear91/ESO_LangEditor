@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,14 +22,20 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MainWindowOption windowsOptions;
+        //private MainWindowOption windowsOptions;
         List<LangSearchModel> SearchData;
+
+        ObservableCollection<string> searchTextInPosition;
+        ObservableCollection<string> searchTextType;
 
         public MainWindow()
         {
-            windowsOptions = new MainWindowOption();
-            DataContext = windowsOptions;
+            //windowsOptions = new MainWindowOption();
+            //DataContext = windowsOptions;
             InitializeComponent();
+            SearchTextInPositionInit();
+            SearchTextTypeInit();
+
             textBlock_Info.Text = "";
         }
 
@@ -38,13 +45,22 @@ namespace ESO_Lang_Editor.View
                 SearchData = null;
                 LangSearch.Items.Clear();
 
-            SearchData = windowsOptions.SearchLang(SearchCheck());
+            SearchData = SearchLang(SearchCheck());
 
             foreach (var data in SearchData)
             {
                 LangSearch.Items.Add(data);
             }
             textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+        }
+
+        public List<LangSearchModel> SearchLang(string SearchBarText)
+        {
+            var DBFile = new SQLiteController();
+
+            var da1 = DBFile.SearchData(SearchBarText);
+
+            return da1;
         }
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -106,6 +122,50 @@ namespace ESO_Lang_Editor.View
         {
             var compareWithDBWindows = new CompareWithDBWindow();
             compareWithDBWindows.Show();
+        }
+
+        private void ExportToText_Click(object sender, RoutedEventArgs e)
+        {
+            var export = new ExportFromDB();
+            MessageBoxResult result = MessageBox.Show("输出数据库的文本内容至Text,文件名分别为ID.txt 与Text. txt"
+                + Environment.NewLine
+                + "其中ID文件为合并ID, Text为内容。"
+                + "点击确定开始输出，不导出请点取消。"
+                + Environment.NewLine
+                + "点击确定之后请耐心等待，输出完毕后会弹出提示!","提示",MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            switch(result)
+            {
+                case MessageBoxResult.OK:
+                    export.ExportAsText();
+                    MessageBox.Show("导出完成!" ,"完成",MessageBoxButton.OK,MessageBoxImage.Information);
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+        }
+
+        private void SearchTextInPositionInit()
+        {
+            searchTextInPosition = new ObservableCollection<string>();
+
+            searchTextInPosition.Add("包含全文");
+            searchTextInPosition.Add("仅包含开头");
+            searchTextInPosition.Add("仅包含结尾");
+
+            SearchTextPositionComboBox.ItemsSource = searchTextInPosition;
+            SearchTextPositionComboBox.SelectedIndex = 0;
+        }
+
+        private void SearchTextTypeInit()
+        {
+            searchTextType = new ObservableCollection<string>();
+
+            searchTextType.Add("搜编号");
+            searchTextType.Add("搜英文");
+            searchTextType.Add("搜译文");
+
+            SearchTypeComboBox.ItemsSource = searchTextType;
+            SearchTypeComboBox.SelectedIndex = 1;
         }
     }
 }

@@ -11,29 +11,6 @@ namespace ESO_Lang_Editor.Model
 {
     class CsvParser
     {
-
-
-        /// <summary>
-        /// 将读取的csv文件把数组转换成List<csvItem>。
-        /// </summary>
-        /// <param name="content">csvItem[] 格式</param>
-        /// <returns>List<csvItem></returns>
-        public List<FileModel_Csv> CsvFileParser(FileModel_Csv[] content)
-        {
-            var csvContent = new List<FileModel_Csv>();
-            //Dictionary<string, csvItem> csvContent = new Dictionary<string, csvItem>();
-            foreach (var item in content)
-            {
-                //Console.WriteLine("ID: {0}, 未知: {1}, 索引: {2}, 文本: {3}",item.stringID, item.stringUnknow,
-                //         item.stringIndex, item.textContent);
-                //csvContent.Add(csv.
-                csvContent.Add(item);
-
-            }
-            //Console.WriteLine(csvContent.Count);
-            return csvContent;
-        }
-
         /// <summary>
         /// 从传进的CSV文本，按照ID和Index从小到大排序。
         /// </summary>
@@ -44,11 +21,6 @@ namespace ESO_Lang_Editor.Model
             List<FileModel_Csv> OrderdList = csvContent.OrderBy(t => t.stringID).
                 ThenBy(t => t.stringIndex).ToList();
 
-            //foreach (var item in OrderdList)
-            //{
-            //    Console.WriteLine("ID: {0}, 未知: {1}, 索引: {2}, 文本: {3}", item.stringID, item.stringUnknow,
-            //            item.stringIndex, item.textContent);
-            //}
             return OrderdList;
         }
 
@@ -94,42 +66,11 @@ namespace ESO_Lang_Editor.Model
         public Dictionary<string, string> LoadCsv(string path)
         {
             var engine = new FileHelperEngine<FileModel_Csv>(Encoding.UTF8);
-            //var engine2 = new FileHelperAsyncEngine<FileModel_Csv>(Encoding.UTF8);
-            //statusTextBox.Text = "正在读取文件……";
             var reader = engine.ReadFile(path).ToList();
-            //statusTextBox.Text = "正在转换……";
             var Dict = CsvListToDict(reader);
 
-            //statusTextBox.Text = "共 " + (Dict.Count + 1) + " 条数据。";
             return Dict;
         }
-
-        public Dictionary<string, string> LoadDB()
-        {
-            var db = new SQLiteController();
-            List<FileModel_Csv> csvFileModel = new List<FileModel_Csv>();
-
-            var searchData = db.FullSearchData();
-
-            foreach (var data in searchData)
-            {
-                csvFileModel.Add(new FileModel_Csv
-                {
-
-                    stringID = ToUInt32(data.ID_Type),
-                    stringUnknow = ToUInt16(data.ID_Unknown),
-                    stringIndex = ToUInt32(data.ID_Index),
-                    textContent = data.Text_EN
-                });
-            }
-
-            var Dict = CsvListToDict(csvFileModel);
-            //statusTextBox.Text = "共 " + (Dict.Count + 1) + " 条数据。";
-
-            return Dict;
-        }
-
-
 
 
         public Dictionary<string, string> CsvCompareNonChange(Dictionary<string, string> OldDict, Dictionary<string, string> NewDict)
@@ -183,15 +124,6 @@ namespace ESO_Lang_Editor.Model
             return ContentRemoved;
         }
 
-
-        public void CsvCompare(Dictionary<string, string> OldDict, Dictionary<string, string> NewDict)
-        {
-            foreach (var entry in DiffDictionary(OldDict, NewDict))
-            {
-
-            }
-
-        }
 
         private static Dictionary<string, string> DiffDictionary(Dictionary<string, string> first, Dictionary<string, string> second)
         {

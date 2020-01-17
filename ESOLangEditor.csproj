@@ -81,10 +81,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\CsvParser.cs" />
-    <Compile Include="Model\CsvReader.cs" />
+    <Compile Include="Model\ExportFromDB.cs" />
     <Compile Include="Model\FileModel_Csv.cs" />
     <Compile Include="Model\FileModel_IntoDB.cs" />
-    <Compile Include="Model\FileModel_Output.cs" />
     <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
     <Compile Include="View\CompareWithDBWindow.xaml.cs">
@@ -94,12 +93,9 @@
       <DependentUpon>CompareCsvWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LangSearchModel.cs" />
-    <Compile Include="View\SearchTextInPosition.cs" />
-    <Compile Include="View\SearchType.cs" />
     <Compile Include="View\TextEditor.xaml.cs">
       <DependentUpon>TextEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MainWindowOption.cs" />
     <Page Include="View\CompareWithDBWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

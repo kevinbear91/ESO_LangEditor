@@ -45,7 +45,7 @@
         </Canvas>
 
         <Button x:Name="LoadCsv_Buton" Content="开始读取" HorizontalAlignment="Left" Margin="381,56,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1" Height="19" Click="LoadCsv_Buton_Click"/>
-        <Button x:Name="SaveToDB_Button" Content="保存" HorizontalAlignment="Left" Margin="11,317,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1" Grid.Column="1" Height="19"/>
+        <Button x:Name="SaveToDB_Button" Content="保存" HorizontalAlignment="Left" Margin="11,317,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1" Grid.Column="1" Height="19" Click="SaveToDB_Button_Click"/>
         <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" Margin="10,349,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1" Grid.Column="1" Height="19"/>
         <ComboBox x:Name="CompareOptions_comboBox" HorizontalAlignment="Left" Margin="381,21,0,0" Grid.Row="1" VerticalAlignment="Top" Width="90"/>
 
