@@ -63,13 +63,21 @@ namespace ESO_Lang_Editor.Model
         }
 
 
-        public Dictionary<string, string> LoadCsv(string path)
+        public Dictionary<string, string> LoadCsvToDict(string path)
         {
             var engine = new FileHelperEngine<FileModel_Csv>(Encoding.UTF8);
             var reader = engine.ReadFile(path).ToList();
             var Dict = CsvListToDict(reader);
 
             return Dict;
+        }
+
+        public List<FileModel_Csv> LoadCsvToList(string path)
+        {
+            var engine = new FileHelperEngine<FileModel_Csv>(Encoding.UTF8);
+            var reader = engine.ReadFile(path).ToList();
+
+            return reader;
         }
 
 

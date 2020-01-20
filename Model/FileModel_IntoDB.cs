@@ -7,11 +7,11 @@ namespace ESO_Lang_Editor.Model
     {
         public int stringID { get; set; }
 
-        public int stringUnknow { get; set; }
+        public int stringUnknown { get; set; }
 
         public int stringIndex { get; set; }
 
-        public int stringOffset { get; set; }
+        //public int stringOffset { get; set; }
 
         public string EN_text { get; set; }
 
@@ -20,7 +20,7 @@ namespace ESO_Lang_Editor.Model
         public string GetUniqueID(bool isGetFieldID)
         {
             string fieldID = ToUInt32(stringID).ToString(); 
-            string fieldUnknown = ToUInt32(stringUnknow).ToString(); 
+            string fieldUnknown = ToUInt32(stringUnknown).ToString(); 
             string fieldIndex = ToUInt32(stringIndex).ToString();
             if (isGetFieldID)
             {

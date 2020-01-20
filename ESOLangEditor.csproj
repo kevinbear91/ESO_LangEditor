@@ -92,6 +92,9 @@
     <Compile Include="View\CompareCsvWindow.xaml.cs">
       <DependentUpon>CompareCsvWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\CreateDB_ImportCSV.xaml.cs">
+      <DependentUpon>CreateDB_ImportCSV.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LangSearchModel.cs" />
     <Compile Include="View\TextEditor.xaml.cs">
       <DependentUpon>TextEditor.xaml</DependentUpon>
@@ -101,6 +104,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CompareCsvWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CreateDB_ImportCSV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

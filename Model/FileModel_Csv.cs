@@ -11,7 +11,7 @@ namespace ESO_Lang_Editor.Model
         [FieldQuoted]
         public UInt32 stringID { get; set; }
         [FieldQuoted]
-        public UInt16 stringUnknow { get; set; }
+        public UInt16 stringUnknown { get; set; }
         [FieldQuoted]
         public UInt32 stringIndex { get; set; }
         [FieldQuoted]
@@ -23,7 +23,7 @@ namespace ESO_Lang_Editor.Model
         {
 
             string fieldID = ToUInt32(stringID).ToString(); 
-            string fieldUnknown = ToUInt32(stringUnknow).ToString(); 
+            string fieldUnknown = ToUInt32(stringUnknown).ToString(); 
             string fieldIndex = ToUInt32(stringIndex).ToString();
             if (isGetFieldID)
             {

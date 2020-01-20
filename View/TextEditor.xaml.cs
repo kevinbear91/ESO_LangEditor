@@ -47,14 +47,32 @@ namespace ESO_Lang_Editor.View
         {
             var EditedData = new LangSearchModel();
             var connDB = new SQLiteController();
+            connDB.ConnectTranslateDB();
 
-            EditedData.ID_Table = EditData.ID_Table;
-            EditedData.ID_Unknown = EditData.ID_Unknown;
-            EditedData.ID_Index = EditData.ID_Index;
-            EditedData.Text_SC = textBox_ZH.Text;
+            if (connDB.CheckTableIfExist(EditData.ID_Table))
+            {
+                EditedData.ID_Table = EditData.ID_Table;
+                EditedData.ID_Unknown = EditData.ID_Unknown;
+                EditedData.ID_Index = EditData.ID_Index;
+                EditedData.Text_SC = textBox_ZH.Text;
 
-            var updateResult = connDB.UpdateDataFromEditor(EditedData);
-            MessageBox.Show(updateResult);
+
+                var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+                MessageBox.Show(updateResult);
+            }
+            else
+            {
+                connDB.CreateTableToTranselateDB(EditData.ID_Table);
+                EditedData.ID_Table = EditData.ID_Table;
+                EditedData.ID_Unknown = EditData.ID_Unknown;
+                EditedData.ID_Index = EditData.ID_Index;
+                EditedData.Text_SC = textBox_ZH.Text;
+
+
+                var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+                MessageBox.Show(updateResult);
+            }
+            
             this.Close();
         }
 

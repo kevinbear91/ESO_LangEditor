@@ -75,7 +75,7 @@ namespace ESO_Lang_Editor.View
                 if (OldDict == null && NewDict == null)
                 {
                     OldDict = LoadDB();
-                    NewDict = fileParser.LoadCsv(NewFileURLtextBox.Text);
+                    NewDict = fileParser.LoadCsvToDict(NewFileURLtextBox.Text);
 
                     CompareData();
                 }
@@ -185,8 +185,8 @@ namespace ESO_Lang_Editor.View
                 {
                     stringID = ToInt32(line.ID_Type),
                     stringIndex = ToInt32(line.ID_Index),
-                    stringOffset = ToInt32(line.ID_Table),
-                    stringUnknow = ToInt32(line.ID_Unknown),
+                    //stringOffset = ToInt32(line.ID_Table),
+                    stringUnknown = ToInt32(line.ID_Unknown),
                     EN_text = line.Text_EN,
                     ZH_text = line.Text_EN,
                 });

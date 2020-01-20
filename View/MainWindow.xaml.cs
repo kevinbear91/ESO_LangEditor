@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
@@ -112,6 +113,34 @@ namespace ESO_Lang_Editor.View
             return SearchContent;
         }
 
+        private void CreateDB_Click(object sender, RoutedEventArgs e)
+        {
+
+            var createDBWindow = new CreateDB_ImportCSV();
+
+            createDBWindow.Show();
+
+            /*
+            OpenFileDialog dialog = new OpenFileDialog();
+            //dialog.Filter = "csv (*.csv)|.csv";
+            if (dialog.ShowDialog(this) == true)
+            {
+                if (dialog.FileName.EndsWith(".csv"))
+                {
+                    
+
+                }
+                else
+                {
+                    MessageBox.Show("仅支持读取 .csv 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //textBoxName.Text = "";
+                }
+            }
+            */
+
+
+        }
+
         private void CsvFileCompare_Click(object sender, RoutedEventArgs e)
         {
             var compareCsvWindows = new CompareCsvWindow();
@@ -166,6 +195,14 @@ namespace ESO_Lang_Editor.View
 
             SearchTypeComboBox.ItemsSource = searchTextType;
             SearchTypeComboBox.SelectedIndex = 1;
+        }
+
+        private void ExportID_Click(object sender, RoutedEventArgs e)
+        {
+            int[] ID = new int[] { 38727365, 198758357, 132143172 };
+
+            var export = new ExportFromDB();
+            export.ExportIDArray(ID);
         }
     }
 }

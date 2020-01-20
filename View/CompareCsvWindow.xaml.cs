@@ -75,7 +75,7 @@ namespace ESO_Lang_Editor.View
                 //OldDict = LoadCsv(OldFileURLtextBox.Text, OldStatus_textBlock);
                 //OldDict = fileParser.LoadDB();
                 //NewStatus_textBlock.Text = "正在读取文件……";
-                NewDict = fileParser.LoadCsv(NewFileURLtextBox.Text);
+                NewDict = fileParser.LoadCsvToDict(NewFileURLtextBox.Text);
             }
 
             CompareAdded_Button.IsEnabled = true;

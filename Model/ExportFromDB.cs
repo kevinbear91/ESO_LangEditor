@@ -32,6 +32,7 @@ namespace ESO_Lang_Editor.Model
                 {
                     sw.WriteLine(s);
                 }
+                outputIDFile = null;
                 sw.Flush();
                 sw.Close();
             }
@@ -42,6 +43,39 @@ namespace ESO_Lang_Editor.Model
                 {
                     sw.WriteLine(s);
                 }
+                outputTextFile = null;
+                sw.Flush();
+                sw.Close();
+            }
+
+        }
+
+        public void ExportIDArray(int[] ID_Array)
+        {
+            var outputFile = new List<string>();
+            var connDB = new SQLiteController();
+            var dbData = connDB.FullSearchData();
+
+            foreach (var item in dbData)
+            {
+                if (ID_Array.Contains(ToInt32(item.ID_Type)))
+                    outputFile.Add(item.ID_Type 
+                        + "-" 
+                        + item.ID_Unknown 
+                        + "-" 
+                        + item.ID_Index 
+                        + "&"
+                        + item.Text_EN 
+                        + "&"
+                        + item.Text_SC);
+            }
+            using (StreamWriter sw = new StreamWriter("ExportIDArray.txt"))
+            {
+                foreach (string s in outputFile)
+                {
+                    sw.WriteLine(s);
+                }
+                
                 sw.Flush();
                 sw.Close();
             }
