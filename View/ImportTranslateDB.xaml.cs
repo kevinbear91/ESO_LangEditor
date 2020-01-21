@@ -1,0 +1,92 @@
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using ESO_Lang_Editor.Model;
+
+namespace ESO_Lang_Editor.View
+{
+    /// <summary>
+    /// ImportTranslateDB.xaml 的交互逻辑
+    /// </summary>
+    public partial class ImportTranslateDB : Window
+    {
+        ObservableCollection<string> IDList;
+        List<string> fileList;
+        List<LangSearchModel> SearchData;
+
+        public ImportTranslateDB()
+        {
+            InitializeComponent();
+        }
+
+
+        private void Import_button_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Multiselect = true;
+
+            fileList = new List<string>();
+
+            if (dialog.ShowDialog(this) == true)
+            {
+                if (dialog.FileName.EndsWith(".db"))
+                {
+                    foreach (var file in dialog.FileNames)
+                    {
+                        fileList.Add(System.IO.Path.GetFileName(file));
+                    }
+                    FileID_listBox.ItemsSource = fileList;
+                }
+                else
+                {
+                    MessageBox.Show("仅支持读取 .db 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    FileID_listBox.ItemsSource = "";
+                }
+            }
+        }
+
+
+        private void IDList_SelectChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int seletedIndex = FileID_listBox.SelectedIndex;
+
+            var DBFile = new SQLiteController();
+            string dbPath;
+
+            if (TranslateData_dataGrid.Items.Count > 1)
+                SearchData = null;
+                TranslateData_dataGrid.Items.Clear();
+
+            if(fileList.Count >= 0 && seletedIndex == -1)
+            {
+                dbPath = @"..\..\Data\" + fileList.ElementAt(0);
+            }
+            else
+            {
+                dbPath = @"..\..\Data\" + fileList.ElementAt(seletedIndex);
+            }
+
+            SearchData = DBFile.FullSearchTranslateDB(dbPath);
+
+            foreach (var data in SearchData)
+            {
+                TranslateData_dataGrid.Items.Add(data);
+            }
+            //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+
+        }
+    }
+}

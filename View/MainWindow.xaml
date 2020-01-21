@@ -17,6 +17,7 @@
         <Canvas Grid.Row="0">
             <Menu x:Name="menu" Canvas.Top="7" Canvas.Left="3">
                 <MenuItem Header="导入">
+                    <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"/>
                     <MenuItem Header="创建数据库" Click="CreateDB_Click"/>
                     <MenuItem Header="CSV与数据库对比" Click="CsvCompareWithDB_Click"/>
                     <MenuItem Header="双CSV增改删对比" Click="CsvFileCompare_Click"/>

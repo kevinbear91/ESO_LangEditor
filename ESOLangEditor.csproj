@@ -95,6 +95,9 @@
     <Compile Include="View\CreateDB_ImportCSV.xaml.cs">
       <DependentUpon>CreateDB_ImportCSV.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ImportTranslateDB.xaml.cs">
+      <DependentUpon>ImportTranslateDB.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LangSearchModel.cs" />
     <Compile Include="View\TextEditor.xaml.cs">
       <DependentUpon>TextEditor.xaml</DependentUpon>
@@ -108,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CreateDB_ImportCSV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ImportTranslateDB.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

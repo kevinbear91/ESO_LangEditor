@@ -482,8 +482,8 @@ namespace ESO_Lang_Editor.Model
                             new SQLiteParameter("@ID_Unknown", CsvContent.ID_Unknown),
                             new SQLiteParameter("@ID_Index", CsvContent.ID_Index),
                             //new SQLiteParameter("@ID_Offset", CsvContent.),
-                            new SQLiteParameter("@Text_SC", CsvContent.Text_EN),
-                            new SQLiteParameter("@Text_EN", CsvContent.Text_SC),
+                            new SQLiteParameter("@Text_EN", CsvContent.Text_EN),
+                            new SQLiteParameter("@Text_SC", CsvContent.Text_SC),
                         });
                         cmd.ExecuteNonQuery();
                         return CsvContent.Text_SC + " 更新成功！";
@@ -518,6 +518,67 @@ namespace ESO_Lang_Editor.Model
             }
 
         }
+
+        public List<LangSearchModel> FullSearchTranslateDB(string dbFile)
+        {
+            var _LangViewData = new List<LangSearchModel>();
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+                //SQLiteTransaction tx = conn.BeginTransaction();
+                //cmd.Transaction = tx;
+
+                //string lineContent = "Null";
+                try
+                {
+                    List<string> tableName = new List<string>();   //表名列表
+
+                    cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";   //获得当前所有表名
+                    SQLiteDataReader sr = cmd.ExecuteReader();
+                    while (sr.Read())
+                    {
+                        tableName.Add(sr.GetString(0));
+                    }
+                    sr.Close();
+
+
+                    foreach (var t in tableName)
+                    {
+                        cmd.CommandText = "SELECT * FROM " + t;
+                        //cmd.Parameters.AddWithValue("@SEARCH", CsvContent);     //遍历全库查询要搜索在任意位置的文本
+                        sr = cmd.ExecuteReader();
+
+                        while (sr.Read())
+                        {
+                            //Console.WriteLine("查询了{0},{1},{2}", sr.GetInt32(0), sr.GetInt32(2), sr.GetString(5));
+                            _LangViewData.Add(new LangSearchModel
+                            {
+                                //ID_Table = t.ToString(),                   //数据表名
+                                //IndexDB = sr.FieldCount,                   //数据表索引列
+                                ID_Type = sr.GetInt32(0).ToString(),       //游戏内文本ID
+                                ID_Unknown = sr.GetInt32(1),               //游戏内文本Unknown列
+                                ID_Index = sr.GetInt32(2),                 //游戏内文本Index
+                                Text_EN = sr.GetString(3),                 //英语原文
+                                Text_SC = sr.GetString(4)                  //汉化文本
+                                
+                            });
+                            //Console.WriteLine("查询了{0}, {1}, {2}", sr.GetInt32(0).ToString(), sr.GetInt32(1), sr.GetString(4));
+                        }
+                        sr.Close();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("查询数据：失败：" + ex.Message);
+                }
+                return _LangViewData;
+            }
+
+        }
+
 
 
 

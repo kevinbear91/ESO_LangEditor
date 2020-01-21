@@ -204,5 +204,11 @@ namespace ESO_Lang_Editor.View
             var export = new ExportFromDB();
             export.ExportIDArray(ID);
         }
+
+        private void ImportTranslate_Click(object sender, RoutedEventArgs e)
+        {
+            var importTranslate = new ImportTranslateDB();
+            importTranslate.Show();
+        }
     }
 }

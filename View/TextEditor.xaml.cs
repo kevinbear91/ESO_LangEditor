@@ -52,11 +52,13 @@ namespace ESO_Lang_Editor.View
             if (connDB.CheckTableIfExist(EditData.ID_Table))
             {
                 EditedData.ID_Table = EditData.ID_Table;
+                EditedData.ID_Type = EditData.ID_Type;
                 EditedData.ID_Unknown = EditData.ID_Unknown;
                 EditedData.ID_Index = EditData.ID_Index;
+                EditedData.Text_EN = EditData.Text_EN;
                 EditedData.Text_SC = textBox_ZH.Text;
 
-
+                //Console.WriteLine("ID")
                 var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
                 MessageBox.Show(updateResult);
             }
@@ -64,8 +66,10 @@ namespace ESO_Lang_Editor.View
             {
                 connDB.CreateTableToTranselateDB(EditData.ID_Table);
                 EditedData.ID_Table = EditData.ID_Table;
+                EditedData.ID_Type = EditData.ID_Type;
                 EditedData.ID_Unknown = EditData.ID_Unknown;
                 EditedData.ID_Index = EditData.ID_Index;
+                EditedData.Text_EN = EditData.Text_EN;
                 EditedData.Text_SC = textBox_ZH.Text;
 
 
