@@ -368,6 +368,47 @@ namespace ESO_Lang_Editor.Model
 
         }
 
+        public bool UpdateTextScFromImportDB(List<LangSearchModel> CsvContent)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+                SQLiteTransaction tx = conn.BeginTransaction();
+                cmd.Transaction = tx;
+
+                try
+                {
+                    foreach (var line in CsvContent)
+                    {
+                        cmd.CommandText = "UPDATE ID_" + ToInt32(line.ID_Type) + " SET Text_SC=@Text_SC "
+                            + "WHERE (ID_Unknown='" + ToInt32(line.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
+                            + "'AND ID_Index='" + ToInt32(line.ID_Index) + "')";
+                        cmd.Parameters.AddRange(new[]
+                        {
+                            //new SQLiteParameter("@Text_EN", line.EN_text),
+                            new SQLiteParameter("@Text_SC", line.Text_SC),
+                        });
+
+                        cmd.ExecuteNonQuery();
+                        //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
+                        Console.WriteLine("更新了{0}, {1}, {2}", line.ID_Table, line.ID_Unknown, line.ID_Index);
+                    }
+                    tx.Commit();
+                    return  true;
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                    throw new Exception("更新数据失败：" + ex.Message);
+                }
+
+            }
+
+        }
+
 
         public void AddData(int CsvID, int ID, int Unknown, int Offset, string Text_EN, string Text_SC, string Text_JF)
         {

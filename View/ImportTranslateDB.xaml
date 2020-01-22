@@ -14,7 +14,7 @@
             <RowDefinition Height="67*"/>
         </Grid.RowDefinitions>
         <Canvas Grid.Row="0">
-            <Button x:Name="Import_button" Content="浏览……" Canvas.Left="90" Canvas.Top="24" Width="75" Click="Import_button_Click"/>
+            <Button x:Name="Import_button" Content="浏览……" Canvas.Left="77" Canvas.Top="24" Width="75" Click="Import_button_Click"/>
 
         </Canvas>
 
@@ -34,8 +34,13 @@
 
         <Canvas Grid.Row="2">
 
+            <TextBlock x:Name="TotalFiles_textBlock" Canvas.Left="10" TextWrapping="Wrap" Text="" Canvas.Top="2" Width="247"/>
+
         </Canvas>
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,25,0,0" TextWrapping="Wrap" Text="导入翻译：" VerticalAlignment="Top"/>
+        <Canvas Grid.Row="3">
+            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="77" Width="75" Canvas.Top="10" Click="ImportToDB_button_Click"/>
+        </Canvas>
 
     </Grid>
 </Window>
