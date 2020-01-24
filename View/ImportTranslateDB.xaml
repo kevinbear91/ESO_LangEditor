@@ -19,10 +19,12 @@
         </Canvas>
 
         <Canvas Grid.Row="1">
-            <DataGrid x:Name="TranslateData_dataGrid" Height="196" Canvas.Left="174" Canvas.Top="10" Width="510">
+            <DataGrid x:Name="TranslateData_dataGrid" Height="196" Canvas.Left="174" Canvas.Top="10" Width="510" IsReadOnly="True">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="100" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="100" IsReadOnly="True"/>
+                    <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="80" />
+                    <DataGridTextColumn Binding="{Binding ID_Unknown}"  Header="Unknown" Width="60" />
+                    <DataGridTextColumn Binding="{Binding ID_Index}"  Header="索引" Width="100" />
+                    <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="100" />
                     <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="300"/>
                 </DataGrid.Columns>
             </DataGrid>

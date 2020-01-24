@@ -105,7 +105,7 @@ namespace ESO_Lang_Editor.View
 
             foreach (var s in FileID_listBox.SelectedItems)
             {
-                //按GUI列表选择的对象数目来读取索引，用索引探测已选定的文件路径。
+                //按GUI列表选择的对象数目来读取索引，用索引探测已选定的文件路径来搜索翻译后的数据库文件，然后将所有内容存储到变量中。
                 importData = DBFile.FullSearchTranslateDB(filePath.ElementAt(FileID_listBox.Items.IndexOf(s)));
                 isSuccess = DBFile.UpdateTextScFromImportDB(importData);
 

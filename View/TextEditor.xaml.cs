@@ -49,7 +49,7 @@ namespace ESO_Lang_Editor.View
             var connDB = new SQLiteController();
             connDB.ConnectTranslateDB();
 
-            if (connDB.CheckTableIfExist(EditData.ID_Table))
+            if (SaveToMainDB_checkBox.IsChecked == true)
             {
                 EditedData.ID_Table = EditData.ID_Table;
                 EditedData.ID_Type = EditData.ID_Type;
@@ -58,26 +58,46 @@ namespace ESO_Lang_Editor.View
                 EditedData.Text_EN = EditData.Text_EN;
                 EditedData.Text_SC = textBox_ZH.Text;
 
-                //Console.WriteLine("ID")
-                var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+                var updateResult = connDB.UpdateDataFromEditor(EditedData);
+
                 MessageBox.Show(updateResult);
+
             }
             else
             {
-                connDB.CreateTableToTranselateDB(EditData.ID_Table);
-                EditedData.ID_Table = EditData.ID_Table;
-                EditedData.ID_Type = EditData.ID_Type;
-                EditedData.ID_Unknown = EditData.ID_Unknown;
-                EditedData.ID_Index = EditData.ID_Index;
-                EditedData.Text_EN = EditData.Text_EN;
-                EditedData.Text_SC = textBox_ZH.Text;
+                if (connDB.CheckTableIfExist(EditData.ID_Table))
+                {
+                    EditedData.ID_Table = EditData.ID_Table;
+                    EditedData.ID_Type = EditData.ID_Type;
+                    EditedData.ID_Unknown = EditData.ID_Unknown;
+                    EditedData.ID_Index = EditData.ID_Index;
+                    EditedData.Text_EN = EditData.Text_EN;
+                    EditedData.Text_SC = textBox_ZH.Text;
+
+                    //Console.WriteLine("ID")
+                    var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+                    MessageBox.Show(updateResult);
+                }
+                else
+                {
+                    connDB.CreateTableToTranselateDB(EditData.ID_Table);
+                    EditedData.ID_Table = EditData.ID_Table;
+                    EditedData.ID_Type = EditData.ID_Type;
+                    EditedData.ID_Unknown = EditData.ID_Unknown;
+                    EditedData.ID_Index = EditData.ID_Index;
+                    EditedData.Text_EN = EditData.Text_EN;
+                    EditedData.Text_SC = textBox_ZH.Text;
 
 
-                var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
-                MessageBox.Show(updateResult);
+                    var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+                    MessageBox.Show(updateResult);
+                }
+
             }
-            
             this.Close();
+
+
+            
         }
 
         /*

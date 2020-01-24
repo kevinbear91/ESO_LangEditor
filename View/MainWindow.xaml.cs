@@ -210,5 +210,23 @@ namespace ESO_Lang_Editor.View
             var importTranslate = new ImportTranslateDB();
             importTranslate.Show();
         }
+
+        private void SearchTextBlock_EnterPress(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && SearchTextBox.IsFocused)
+            {
+                if(LangSearch.Items.Count > 1)
+                SearchData = null;
+                LangSearch.Items.Clear();
+
+                SearchData = SearchLang(SearchCheck());
+
+                foreach (var data in SearchData)
+                {
+                    LangSearch.Items.Add(data);
+                }
+                textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+            }
+        }
     }
 }

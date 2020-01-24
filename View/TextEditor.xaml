@@ -55,6 +55,7 @@
             <TextBlock x:Name="textblock_information" Canvas.Left="20" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="11" Width="471"/>
 
         </Canvas>
+        <CheckBox x:Name="SaveToMainDB_checkBox" Content="保存到主数据库" Grid.Column="2" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="7" VerticalAlignment="Top" ToolTip="仅适用于打包及核对导入人员，译员请勿打勾，否则无法保存到导出数据库！"/>
 
 
     </Grid>
