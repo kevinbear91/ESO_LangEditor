@@ -47,18 +47,18 @@
         <Canvas Grid.Row="2">
 
             <DataGrid x:Name="LangSearch" AutoGenerateColumns="False" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
-                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16">
+                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16" SelectionChanged="LangSearchDataGrid_SelectionChanged" MouseRightButtonUp="LangSearch_MouseRightUp">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="100" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="300" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="300"/>
                 </DataGrid.Columns>
-                <ListBoxItem/>
+                
             </DataGrid>
         </Canvas>
         <Canvas Grid.Row="3">
-            <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="" />
-
+            <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="" Width="230" />
+            <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="" Width="230" />
         </Canvas>
 
 

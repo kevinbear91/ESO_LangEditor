@@ -5,57 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="文本编辑" Height="473" Width="635" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="文本编辑" Height="506" Width="750" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFEEEEEE">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="496*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="155*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="27*"/>
-            <RowDefinition Height="23*"/>
-            <RowDefinition Height="149*"/>
-            <RowDefinition Height="16*"/>
-            <RowDefinition Height="23*"/>
-            <RowDefinition Height="156*"/>
-            <RowDefinition Height="13*"/>
-            <RowDefinition Height="32*"/>
+            <RowDefinition Height="29*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="160*"/>
+            <RowDefinition Height="17*"/>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="161*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="15*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="491*"/>
-            <ColumnDefinition Width="26*"/>
-            <ColumnDefinition Width="112*"/>
-        </Grid.ColumnDefinitions>
 
 
-        <Canvas Grid.Row="1">
+
+        <Canvas Grid.Row="1" Grid.ColumnSpan="3">
             <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="20,1,0,0" TextWrapping="Wrap" Text="原文：" VerticalAlignment="Top" Grid.Row="1" Height="15" Width="55"/>
         </Canvas>
 
-        <Canvas Grid.Row="2">
+        <Canvas Grid.Row="2" Grid.ColumnSpan="3">
             <ScrollViewer Name="sv_textBox_EN" HorizontalAlignment="Left" Height="145" Margin="20,0,0,0" VerticalAlignment="Top" Width="469">
                 <TextBox x:Name="textBox_EN" TextWrapping="Wrap" IsReadOnly="True" />
             </ScrollViewer>
         </Canvas>
-        <Canvas Grid.Row="4">
+        <Canvas Grid.Row="4" Grid.ColumnSpan="3">
             <TextBlock x:Name="textBlock_Copy" HorizontalAlignment="Left" Margin="20,0,0,0" TextWrapping="Wrap" Text="译文：" VerticalAlignment="Top" Grid.Row="2" Height="15" Width="55"/>
         </Canvas>
 
-        <Canvas Grid.Row="5" Grid.Column="0">
+        <Canvas Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3">
 
             <ScrollViewer Name="sv_textBox_ZH" HorizontalAlignment="Left" Height="145" Margin="20,0,0,0" VerticalAlignment="Top" Width="469">
                 <TextBox x:Name="textBox_ZH"  TextWrapping="Wrap"  AllowDrop="False"/>
             </ScrollViewer>
+            <Expander x:Name="List_expander" Header="展开列表" HorizontalAlignment="Left" Height="394" VerticalAlignment="Top" Width="283" ExpandDirection="Right" Canvas.Left="451" Canvas.Top="-249" UseLayoutRounding="False" Expanded="List_expander_Expanded" Collapsed="List_expander_Collapsed">
+                <Grid Background="#FFE5E5E5" Margin="0,49,0,0">
+                    <DataGrid x:Name="List_dataGrid" HorizontalAlignment="Left" Height="343" VerticalAlignment="Top" Width="231" SelectionMode="Single" SelectionChanged="List_datagrid_SelectionChanged">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="50" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="80" IsReadOnly="True"/>
+                            <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="80"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </Expander>
         </Canvas>
 
-        <Canvas Grid.Column="3" Grid.Row="5">
-            <StackPanel Grid.Column="1" Grid.Row="5">
-                <Button x:Name="button_save" Content="保存" HorizontalAlignment="Left" Margin="0,1,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_save_Click"/>
-                <Button x:Name="button_cancel" Content="取消" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_cancel_Click"/>
-            </StackPanel>
+        <Canvas  Grid.Row="6" Grid.ColumnSpan="3">
+            <Button x:Name="button_save" Content="保存" HorizontalAlignment="Left" Margin="22,5,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_save_Click" Grid.Row="6"/>
+            <Button x:Name="button_cancel" Content="取消" HorizontalAlignment="Left" Margin="127,5,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_cancel_Click" Grid.Row="6"/>
+            <CheckBox x:Name="SaveToMainDB_checkBox" Content="保存到主数据库" HorizontalAlignment="Left" Margin="377,5,0,0" Grid.Row="6" VerticalAlignment="Top" ToolTip="仅适用于打包及核对导入人员，译员请勿打勾，否则无法保存到导出数据库！" Height="15" Width="104"/>
         </Canvas>
-        <Canvas  Grid.Row="7">
-            <TextBlock x:Name="textblock_information" Canvas.Left="20" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="11" Width="471"/>
+
+        <Canvas  Grid.Row="7" Grid.ColumnSpan="3">
+            <TextBlock x:Name="textblock_information" Canvas.Left="20" TextWrapping="Wrap" Text="TextBlock" Width="470"/>
 
         </Canvas>
-        <CheckBox x:Name="SaveToMainDB_checkBox" Content="保存到主数据库" Grid.Column="2" HorizontalAlignment="Left" Margin="0,10,0,0" Grid.Row="7" VerticalAlignment="Top" ToolTip="仅适用于打包及核对导入人员，译员请勿打勾，否则无法保存到导出数据库！"/>
+
+
 
 
     </Grid>

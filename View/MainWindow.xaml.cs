@@ -25,6 +25,8 @@ namespace ESO_Lang_Editor.View
     {
         //private MainWindowOption windowsOptions;
         List<LangSearchModel> SearchData;
+        List<LangSearchModel> SelectedDatas;
+        LangSearchModel SelectedData;
 
         ObservableCollection<string> searchTextInPosition;
         ObservableCollection<string> searchTextType;
@@ -71,14 +73,16 @@ namespace ESO_Lang_Editor.View
             IInputElement obj = datagrid.InputHitTest(aP);
             DependencyObject target = obj as DependencyObject;
 
+            if (SelectedDatas != null)
+                SelectedDatas.Clear();
 
             while (target != null)
             {
                 if (target is DataGridRow)
-                    if (datagrid.SelectedIndex != -1 )
+                    if (datagrid.SelectedIndex != -1)
                     {
-                        LangSearchModel data = (LangSearchModel)datagrid.SelectedItem;
-                        TextEditor textEditor = new TextEditor(data);
+                        SelectedData = (LangSearchModel)datagrid.SelectedItem;
+                        TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
                         textEditor.Show();
                         //MessageBox.Show(data.Text_SC);
 
@@ -227,6 +231,40 @@ namespace ESO_Lang_Editor.View
                 }
                 textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
             }
+        }
+
+        private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            textBlock_SelectionInfo.Text = "已选择 " + LangSearch.SelectedItems.Count + " 条文本";
+
+
+
+        }
+
+        private void LangSearch_MouseRightUp(object sender, MouseButtonEventArgs e)
+        {
+            DataGrid grid = (DataGrid)sender;
+            var selectedItems = grid.SelectedItems;
+
+            if (SelectedDatas != null)
+                SelectedDatas.Clear();
+            
+            SelectedDatas = new List<LangSearchModel>();
+
+
+
+            if (selectedItems.Count > 1)
+            {
+                foreach (var selectedItem in selectedItems)
+                {
+                    if (selectedItem != null)
+                        SelectedDatas.Add((LangSearchModel)selectedItem);
+                }
+
+                TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
+                textEditor.Show();
+            }
+                
         }
     }
 }

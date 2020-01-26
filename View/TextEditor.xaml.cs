@@ -21,21 +21,19 @@ namespace ESO_Lang_Editor.View
     public partial class TextEditor : Window
     {
         private LangSearchModel EditData;
-        public TextEditor(LangSearchModel LangData)
+        IDCatalog IDtypeName = new IDCatalog();
+        private List<LangSearchModel> SelectedItems;
+
+        public TextEditor(LangSearchModel LangData, List<LangSearchModel> SelectedItemsList)
         {
             
             InitializeComponent();
-            var IDtypeName = new IDCatalog();
+            this.Width = 530;
+          
+            SelectedItems = SelectedItemsList;
 
-            //IDtypeName.GetCategory(EditData.ID_Type)
-            EditData = LangData;
-            textBox_EN.Text = EditData.Text_EN;
-            textBox_ZH.Text = EditData.Text_SC;
-            textblock_information.Text = "当前表：" + EditData.ID_Table 
-                //+ "，数据库索引：" + EditData.IndexDB 
-                + "，类型：" + IDtypeName.GetCategory(EditData.ID_Type)    //EditData.ID_Type  
-                + "，未知列：" + EditData.ID_Unknown
-                + "，文本索引：" + EditData.ID_Index + "。";
+            List_Datagrid_Display(LangData);
+
         }
 
         private void button_cancel_Click(object sender, RoutedEventArgs e)
@@ -100,6 +98,18 @@ namespace ESO_Lang_Editor.View
             
         }
 
+        private void List_expander_Expanded(object sender, RoutedEventArgs e)
+        {
+            this.Width = 750;
+            List_expander.Header = "收起列表";
+        }
+
+        private void List_expander_Collapsed(object sender, RoutedEventArgs e)
+        {
+            this.Width = 530;
+            List_expander.Header = "展开列表";
+        }
+
         /*
         public TextEditor(LangSearchModel Data) : base()
         {
@@ -108,6 +118,68 @@ namespace ESO_Lang_Editor.View
         }
         */
 
+        private void List_Datagrid_Display(LangSearchModel LangData)
+        {
+            //var IDtypeName = new IDCatalog();
+
+            if (List_dataGrid.Items.Count > 1)
+                //SearchData = null;
+                List_dataGrid.Items.Clear();
+
+            //SearchData = SearchLang(SearchCheck());
+            if (SelectedItems != null && SelectedItems.Count > 1)
+            {
+                List_expander.Visibility = Visibility.Visible;
+
+                foreach (var item in SelectedItems)
+                {
+                    List_dataGrid.Items.Add(item);
+                }
+                List_dataGrid.SelectedIndex = 0;
+
+                //EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+
+                SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
+
+            }
+            else
+            {
+                List_expander.Visibility = Visibility.Hidden;
+
+                //EditData = LangData;
+                SetEditDataTextBlocks(LangData);
+
+ 
+            }
+
+            //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+        }
+
+        private void List_datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var IDtypeName = new IDCatalog();
+            DataGrid datagrid = sender as DataGrid;
+ 
+            if (datagrid.SelectedIndex != -1)
+            {
+                SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
+            }
+
+
+        }
+
+        private void SetEditDataTextBlocks(LangSearchModel Data)
+        {
+            EditData = Data;
+
+            textBox_EN.Text = Data.Text_EN;
+            textBox_ZH.Text = Data.Text_SC;
+            textblock_information.Text = "当前表：" + Data.ID_Table
+                    //+ "，数据库索引：" + EditData.IndexDB 
+                    + "，类型：" + IDtypeName.GetCategory(Data.ID_Type)    //EditData.ID_Type  
+                    + "，未知列：" + Data.ID_Unknown
+                    + "，文本索引：" + Data.ID_Index + "。";
+        }
 
     }
 }
