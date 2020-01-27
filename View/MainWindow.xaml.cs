@@ -39,6 +39,10 @@ namespace ESO_Lang_Editor.View
             SearchTextInPositionInit();
             SearchTextTypeInit();
 
+            string version = " Alpha 0.1 - e4ed87fd";
+
+            Title = "ESO文本查询编辑器" + version; 
+
             textBlock_Info.Text = "";
         }
 

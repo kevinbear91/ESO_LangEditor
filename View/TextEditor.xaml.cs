@@ -21,8 +21,10 @@ namespace ESO_Lang_Editor.View
     public partial class TextEditor : Window
     {
         private LangSearchModel EditData;
-        IDCatalog IDtypeName = new IDCatalog();
         private List<LangSearchModel> SelectedItems;
+        private int selectedListIndex;
+
+        IDCatalog IDtypeName = new IDCatalog();
 
         public TextEditor(LangSearchModel LangData, List<LangSearchModel> SelectedItemsList)
         {
@@ -43,19 +45,13 @@ namespace ESO_Lang_Editor.View
 
         private void button_save_Click(object sender, RoutedEventArgs e)
         {
-            var EditedData = new LangSearchModel();
+            //var EditedData = new LangSearchModel();
             var connDB = new SQLiteController();
             connDB.ConnectTranslateDB();
 
             if (SaveToMainDB_checkBox.IsChecked == true)
             {
-                EditedData.ID_Table = EditData.ID_Table;
-                EditedData.ID_Type = EditData.ID_Type;
-                EditedData.ID_Unknown = EditData.ID_Unknown;
-                EditedData.ID_Index = EditData.ID_Index;
-                EditedData.Text_EN = EditData.Text_EN;
-                EditedData.Text_SC = textBox_ZH.Text;
-
+                var EditedData = SetEditedData();
                 var updateResult = connDB.UpdateDataFromEditor(EditedData);
 
                 MessageBox.Show(updateResult);
@@ -65,37 +61,31 @@ namespace ESO_Lang_Editor.View
             {
                 if (connDB.CheckTableIfExist(EditData.ID_Table))
                 {
-                    EditedData.ID_Table = EditData.ID_Table;
-                    EditedData.ID_Type = EditData.ID_Type;
-                    EditedData.ID_Unknown = EditData.ID_Unknown;
-                    EditedData.ID_Index = EditData.ID_Index;
-                    EditedData.Text_EN = EditData.Text_EN;
-                    EditedData.Text_SC = textBox_ZH.Text;
-
-                    //Console.WriteLine("ID")
+                    var EditedData = SetEditedData();
                     var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+
                     MessageBox.Show(updateResult);
                 }
                 else
                 {
                     connDB.CreateTableToTranselateDB(EditData.ID_Table);
-                    EditedData.ID_Table = EditData.ID_Table;
-                    EditedData.ID_Type = EditData.ID_Type;
-                    EditedData.ID_Unknown = EditData.ID_Unknown;
-                    EditedData.ID_Index = EditData.ID_Index;
-                    EditedData.Text_EN = EditData.Text_EN;
-                    EditedData.Text_SC = textBox_ZH.Text;
 
-
+                    var EditedData = SetEditedData();
                     var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
+
                     MessageBox.Show(updateResult);
                 }
 
             }
-            this.Close();
 
-
-            
+            if (List_dataGrid.Items.Count > 1)
+            {
+                List_dataGrid.Items.RemoveAt(selectedListIndex);
+            }
+            else
+            {
+                this.Close();
+            }
         }
 
         private void List_expander_Expanded(object sender, RoutedEventArgs e)
@@ -110,14 +100,6 @@ namespace ESO_Lang_Editor.View
             List_expander.Header = "展开列表";
         }
 
-        /*
-        public TextEditor(LangSearchModel Data) : base()
-        {
-            
-            Data = EditData;
-        }
-        */
-
         private void List_Datagrid_Display(LangSearchModel LangData)
         {
             //var IDtypeName = new IDCatalog();
@@ -130,6 +112,7 @@ namespace ESO_Lang_Editor.View
             if (SelectedItems != null && SelectedItems.Count > 1)
             {
                 List_expander.Visibility = Visibility.Visible;
+                List_expander.IsExpanded = true;
 
                 foreach (var item in SelectedItems)
                 {
@@ -145,7 +128,7 @@ namespace ESO_Lang_Editor.View
             else
             {
                 List_expander.Visibility = Visibility.Hidden;
-
+                List_expander.IsExpanded = false;
                 //EditData = LangData;
                 SetEditDataTextBlocks(LangData);
 
@@ -163,6 +146,7 @@ namespace ESO_Lang_Editor.View
             if (datagrid.SelectedIndex != -1)
             {
                 SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
+                selectedListIndex = List_dataGrid.SelectedIndex;
             }
 
 
@@ -181,5 +165,18 @@ namespace ESO_Lang_Editor.View
                     + "，文本索引：" + Data.ID_Index + "。";
         }
 
+        private LangSearchModel SetEditedData()
+        {
+            var EditedData = new LangSearchModel();
+
+            EditedData.ID_Table = EditData.ID_Table;
+            EditedData.ID_Type = EditData.ID_Type;
+            EditedData.ID_Unknown = EditData.ID_Unknown;
+            EditedData.ID_Index = EditData.ID_Index;
+            EditedData.Text_EN = EditData.Text_EN;
+            EditedData.Text_SC = textBox_ZH.Text;
+
+            return EditedData;
+        }
     }
 }
