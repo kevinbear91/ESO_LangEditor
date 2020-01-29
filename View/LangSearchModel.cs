@@ -17,6 +17,7 @@ namespace ESO_Lang_Editor.View
         private int _ID_Index;
         private string _Text_EN;
         private string _Text_SC;
+        private int _isTranslated;
 
         public string ID_Table
         {
@@ -87,8 +88,17 @@ namespace ESO_Lang_Editor.View
                 NotifyPropertyChanged("Text_SC");
             }
         }
+        public int isTranslated
+        {
+            get { return _isTranslated; }
+            set
+            {
+                _isTranslated = value;
+                NotifyPropertyChanged("isTranslated");
+            }
+        }
 
-
+        /*
         public List<LangSearchModel> SearchLang(string SearchBarText)
         {
             var DBFile = new SQLiteController();
@@ -102,6 +112,7 @@ namespace ESO_Lang_Editor.View
 
             return lang;
         }
+        */
 
         public event PropertyChangedEventHandler PropertyChanged;
 

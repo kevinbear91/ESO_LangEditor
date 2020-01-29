@@ -65,7 +65,7 @@ namespace ESO_Lang_Editor.View
         {
             var DBFile = new SQLiteController();
 
-            var da1 = DBFile.SearchData(SearchBarText);
+            var da1 = DBFile.SearchData(SearchBarText, SearchField());
 
             return da1;
         }
@@ -99,7 +99,6 @@ namespace ESO_Lang_Editor.View
         {
             //获得已选择的搜索文本所在位置， 默认selectedSearchTextPosition = 0
             int selectedSearchTextPosition = SearchTextPositionComboBox.SelectedIndex;
-            var selectedSearchType = SearchTypeComboBox.SelectedIndex;
             string searchText = SearchTextBox.Text;
             string SearchContent;
 
@@ -119,6 +118,34 @@ namespace ESO_Lang_Editor.View
                     break;
             }
             return SearchContent;
+        }
+
+        private int SearchField()
+        {
+            //搜索字段， 默认selectedSearchTextPosition = 1
+            
+            var selectedSearchType = SearchTypeComboBox.SelectedIndex;
+            int searchField;
+
+            switch (selectedSearchType)
+            {
+                case 0:
+                    searchField = 0;   //搜ID
+                    break;
+                case 1:
+                    searchField = 1;   //搜英文
+                    break;
+                case 2:
+                    searchField = 2;   //搜汉化
+                    break;
+                case 3:
+                    searchField = 3;   //搜是否已翻译
+                    break;
+                default:
+                    searchField = 1;   //出错搜英文
+                    break;
+            }
+            return searchField;
         }
 
         private void CreateDB_Click(object sender, RoutedEventArgs e)
@@ -160,6 +187,13 @@ namespace ESO_Lang_Editor.View
             var compareWithDBWindows = new CompareWithDBWindow();
             compareWithDBWindows.Show();
         }
+
+        private void ExportTranslate_Click(object sender, RoutedEventArgs e)
+        {
+            var exportTranslateWindow = new ExportTranslate();
+            exportTranslateWindow.Show();
+        }
+
 
         private void ExportToText_Click(object sender, RoutedEventArgs e)
         {
@@ -270,5 +304,7 @@ namespace ESO_Lang_Editor.View
             }
                 
         }
+
+        
     }
 }

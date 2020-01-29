@@ -57,6 +57,7 @@ namespace ESO_Lang_Editor.View
                 MessageBox.Show(updateResult);
 
             }
+            /*
             else
             {
                 if (connDB.CheckTableIfExist(EditData.ID_Table))
@@ -77,6 +78,7 @@ namespace ESO_Lang_Editor.View
                 }
 
             }
+            */
 
             if (List_dataGrid.Items.Count > 1)
             {
@@ -175,6 +177,7 @@ namespace ESO_Lang_Editor.View
             EditedData.ID_Index = EditData.ID_Index;
             EditedData.Text_EN = EditData.Text_EN;
             EditedData.Text_SC = textBox_ZH.Text;
+            EditedData.isTranslated = 1;
 
             return EditedData;
         }

@@ -83,7 +83,6 @@ namespace ESO_Lang_Editor.View
                     stringUnknown = ToInt16(keyField[1]),
                     stringIndex = ToInt32(keyField[2]),
                     EN_text = en.Value
-
                 });
             }
 
@@ -103,7 +102,8 @@ namespace ESO_Lang_Editor.View
                     stringUnknown = c.Value.stringUnknown,
                     stringIndex = c.Value.stringIndex,
                     EN_text = c.Value.EN_text,
-                    ZH_text = c.Value.ZH_text
+                    ZH_text = c.Value.ZH_text,
+                    Istranslated = 0
                 });
                
             }

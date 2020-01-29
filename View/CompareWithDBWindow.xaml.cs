@@ -189,6 +189,7 @@ namespace ESO_Lang_Editor.View
                     stringUnknown = ToInt32(line.ID_Unknown),
                     EN_text = line.Text_EN,
                     ZH_text = line.Text_EN,
+                    Istranslated = 0
                 });
             }
 

@@ -23,5 +23,12 @@ namespace ESO_Lang_Editor.View
         {
             InitializeComponent();
         }
+
+        private void SearchTranslatedText()
+        {
+
+        }
+
+
     }
 }

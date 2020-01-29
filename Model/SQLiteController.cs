@@ -10,25 +10,25 @@ namespace ESO_Lang_Editor.Model
     class SQLiteController
     {
         SQLiteConnection Conn;
-        string FilePath = @"Data\CsvTest.db";
+        string csvDataPath = @"Data\CsvData.db";
         string TranselateFilePath = @"..\..\Data\Transelate_.db";
 
         public void ConnectSQLite()
         {
             //SQLiteConnection Conn;
 
-            if (!File.Exists(FilePath))
+            if (!File.Exists(csvDataPath))
             {
-                SQLiteConnection.CreateFile(FilePath);
+                SQLiteConnection.CreateFile(csvDataPath);
             }
             try
             {
-                Conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;");
+                Conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;");
                 Conn.Open();
             }
             catch (Exception ex)
             {
-                throw new Exception("打开数据库：" + FilePath + "的连接失败：" + ex.Message);
+                throw new Exception("打开数据库：" + csvDataPath + "的连接失败：" + ex.Message);
             }
         }
 
@@ -36,7 +36,7 @@ namespace ESO_Lang_Editor.Model
         {
             try
             {
-                string sql = "CREATE TABLE ID_" + CsvID + "(ID_Type int, ID_Unknown int, ID_Index int, ID_Offset int, Text_EN text, Text_SC text)";
+                string sql = "CREATE TABLE ID_" + CsvID + "(ID_Type int, ID_Unknown int, ID_Index int, ID_Offset int, Text_EN text, Text_SC text, isTranslated int)";
                 SQLiteCommand command = new SQLiteCommand(sql, Conn);
                 command.ExecuteNonQuery();
             }
@@ -50,7 +50,7 @@ namespace ESO_Lang_Editor.Model
         public string CreateDBFileFromCSV(List<FileModel_IntoDB> Content)
         {
             List<int> tableID = new List<int>();
-            FilePath = @"Data\CsvTest.db";
+            //csvDataPath = @"Data\CsvTest.db";
 
             foreach (var table in Content)
             {
@@ -70,7 +70,7 @@ namespace ESO_Lang_Editor.Model
 
         public void CreateTableArray(List<int> CsvID)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -81,7 +81,7 @@ namespace ESO_Lang_Editor.Model
                 {
                     foreach (var id in CsvID)
                     {
-                        cmd.CommandText = "CREATE TABLE ID_" + id + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text)";
+                        cmd.CommandText = "CREATE TABLE ID_" + id + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text, isTranslated int)";
                         cmd.ExecuteNonQuery();
                         //Console.WriteLine("创建了{0}表", id);
                     }
@@ -103,7 +103,7 @@ namespace ESO_Lang_Editor.Model
         public void AddDataArray(List<FileModel_IntoDB> CsvContent)
         {
             
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -120,7 +120,7 @@ namespace ESO_Lang_Editor.Model
                         //    "(ID_Type, ID_Index, ID_Unknown, ID_Offset, Text_EN, Text_SC, Text_JF) " +
                         //    "VALUES ('" + ToInt32(line.stringID) + "', " + ToInt32(line.stringIndex) + "', " + ToInt32(line.stringUnknow) + "', " + ToInt32(line.stringOffset) + "', " + line.textContent + "', " + Text_SC + "', " + Text_JF + ")";
 
-                        cmd.CommandText = "INSERT INTO ID_" + line.stringID + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC)";
+                        cmd.CommandText = "INSERT INTO ID_" + line.stringID + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated)";
                         cmd.Parameters.AddRange(new[]
                         {
                             new SQLiteParameter("@ID_Type", line.stringID),
@@ -129,6 +129,7 @@ namespace ESO_Lang_Editor.Model
                             //new SQLiteParameter("@ID_Offset", line.stringOffset),
                             new SQLiteParameter("@Text_SC", line.ZH_text),
                             new SQLiteParameter("@Text_EN", line.EN_text),
+                            new SQLiteParameter("@isTranslated", line.Istranslated),
                         });
 
                         cmd.ExecuteNonQuery();
@@ -145,18 +146,35 @@ namespace ESO_Lang_Editor.Model
         }
 
 
-        public List<LangSearchModel> SearchData(string CsvContent)
+        public List<LangSearchModel> SearchData(string CsvContent, int SearchField)
         {
             var _LangViewData = new List<LangSearchModel>();
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            string fieldName;
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
                 cmd.Connection = conn;
-                //SQLiteTransaction tx = conn.BeginTransaction();
-                //cmd.Transaction = tx;
 
-                //string lineContent = "Null";
+                switch(SearchField)
+                {
+                    case 0:
+                        fieldName = "ID_Type";
+                        break;
+                    case 1:
+                        fieldName = "Text_EN";
+                        break;
+                    case 2:
+                        fieldName = "Text_SC";
+                        break;
+                    case 3:
+                        fieldName = "isTranslated";
+                        break;
+                    default:
+                        fieldName = "Text_EN";
+                        break;
+                }
+
                 try
                 {
                     List<string> tableName = new List<string>();   //表名列表
@@ -172,7 +190,7 @@ namespace ESO_Lang_Editor.Model
 
                     foreach (var t in tableName)
                     {
-                        cmd.CommandText = "SELECT * FROM " + t + " WHERE Text_EN LIKE @SEARCH";
+                        cmd.CommandText = "SELECT * FROM " + t + " WHERE " + fieldName + " LIKE @SEARCH";
                         cmd.Parameters.AddWithValue("@SEARCH", CsvContent);     //遍历全库查询要搜索在任意位置的文本
                         sr = cmd.ExecuteReader();
 
@@ -186,7 +204,8 @@ namespace ESO_Lang_Editor.Model
                                 ID_Unknown = sr.GetInt32(1),               //游戏内文本Unknown列
                                 ID_Index = sr.GetInt32(2),                 //游戏内文本Index
                                 Text_EN = sr.GetString(3),                 //英语原文
-                                Text_SC = sr.GetString(4)                  //汉化文本
+                                Text_SC = sr.GetString(4),                 //汉化文本
+                                isTranslated = sr.GetInt32(5)              //是否翻译
                             });
                         }
                         sr.Close();
@@ -205,7 +224,7 @@ namespace ESO_Lang_Editor.Model
         public List<LangSearchModel> FullSearchData()
         {
             var _LangViewData = new List<LangSearchModel>();
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -243,8 +262,9 @@ namespace ESO_Lang_Editor.Model
                                 ID_Type = sr.GetInt32(0).ToString(),       //游戏内文本ID
                                 ID_Unknown = sr.GetInt32(1),               //游戏内文本Unknown列
                                 ID_Index = sr.GetInt32(2),                 //游戏内文本Index
-                                Text_EN = sr.GetString(4),                 //英语原文
-                                Text_SC = sr.GetString(5)                  //汉化文本
+                                Text_EN = sr.GetString(3),                 //英语原文
+                                Text_SC = sr.GetString(4),                 //汉化文本
+                                isTranslated = sr.GetInt32(5)              //是否已翻译
                             });
                         }
                         sr.Close();
@@ -264,7 +284,7 @@ namespace ESO_Lang_Editor.Model
 
         public void UpdateDataArrayEN(List<FileModel_Csv> CsvContent)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -299,7 +319,7 @@ namespace ESO_Lang_Editor.Model
 
         public void UpdateDataArrayFromCompare(List<FileModel_IntoDB> CsvContent)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -311,13 +331,14 @@ namespace ESO_Lang_Editor.Model
                 {
                     foreach (var line in CsvContent)
                     {
-                        cmd.CommandText = "UPDATE ID_" + ToInt32(line.stringID) + " SET Text_EN=@Text_EN,Text_SC=@Text_SC "
+                        cmd.CommandText = "UPDATE ID_" + ToInt32(line.stringID) + " SET Text_EN=@Text_EN,Text_SC=@Text_SC,isTranslated=@isTranslated "
                             + "WHERE (ID_Unknown='" + ToInt32(line.stringUnknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
                             + "'AND ID_Index='" + ToInt32(line.stringIndex) + "')";
                         cmd.Parameters.AddRange(new[]
                         {
                             new SQLiteParameter("@Text_EN", line.EN_text),
                             new SQLiteParameter("@Text_SC", line.ZH_text),
+                            new SQLiteParameter("@isTranslated", line.Istranslated),
                         });
 
                         cmd.ExecuteNonQuery();
@@ -338,7 +359,7 @@ namespace ESO_Lang_Editor.Model
 
         public string UpdateDataFromEditor(LangSearchModel CsvContent)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -346,11 +367,16 @@ namespace ESO_Lang_Editor.Model
 
                 try
                 {
-                    cmd.CommandText = "UPDATE " + CsvContent.ID_Table + " SET Text_SC=@Text_SC" 
+                    cmd.CommandText = "UPDATE " + CsvContent.ID_Table + " SET Text_SC=@Text_SC,isTranslated=@isTranslated"
                         + " WHERE (ID_Unknown='" + ToInt32(CsvContent.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
                         + "'AND ID_Index='" + ToInt32(CsvContent.ID_Index) + "')";
 
-                    cmd.Parameters.Add(new SQLiteParameter("@Text_SC", CsvContent.Text_SC));
+                    cmd.Parameters.AddRange(new[] 
+                    {
+                        new SQLiteParameter("@Text_SC", CsvContent.Text_SC),
+                        new SQLiteParameter("@isTranslated", CsvContent.isTranslated)
+
+                    });
                     cmd.ExecuteNonQuery();
                     return CsvContent.Text_SC + " 更新成功！";
 
@@ -370,7 +396,7 @@ namespace ESO_Lang_Editor.Model
 
         public bool UpdateTextScFromImportDB(List<LangSearchModel> CsvContent)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + FilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -447,6 +473,7 @@ namespace ESO_Lang_Editor.Model
             }
         }
 
+        /*
         public bool CheckTableIfExist(string tableName)
         {
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselateFilePath + ";Version=3;"))
@@ -559,6 +586,8 @@ namespace ESO_Lang_Editor.Model
             }
 
         }
+
+         */
 
         public List<LangSearchModel> FullSearchTranslateDB(string dbFile)
         {

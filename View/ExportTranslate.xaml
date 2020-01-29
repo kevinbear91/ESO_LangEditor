@@ -5,23 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="ExportTranslate" Height="450" Width="800" Background="#FFEEEEEE">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="28*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
+        Title="导出翻译文本" Height="411" Width="521" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FFEEEEEE" Margin="0,-1,0,1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="23*"/>
-            <RowDefinition Height="362*"/>
-            <RowDefinition Height="34*"/>
+            <RowDefinition Height="17"/>
+            <RowDefinition Height="9*"/>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
-        <Canvas  Grid.Row="1" Grid.ColumnSpan="2">
-            <DataGrid x:Name="dataGrid" Height="342" Canvas.Left="10" Canvas.Top="10" Width="651"/>
-            <ComboBox x:Name="comboBox" Canvas.Left="672" Canvas.Top="35" Width="120"/>
-            <Button x:Name="button" Content="Button" Canvas.Left="672" Canvas.Top="91" Width="75"/>
-            <Button x:Name="button1" Content="Button" Canvas.Left="672" Canvas.Top="136" Width="75"/>
 
+        <GroupBox Header="已翻译内容" Grid.Row="1" Margin="20,0,0,0" BorderBrush="#FF959595"  Width="481" Height="295" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Canvas>
+                <DataGrid x:Name="Changed_DataGrid" Height="255" Width="449" Grid.Row="1" Canvas.Left="10" Canvas.Top="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="80"/>
+                        <DataGridTextColumn Binding="{Binding ID_Unknown}"  Header="文本Unknow" Width="50"/>
+                        <DataGridTextColumn Binding="{Binding ID_Index}"  Header="文本索引" Width="50"/>
+                        <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英语"/>
+                        <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Canvas>
+        </GroupBox>
+
+        <Canvas Margin="20,0,0,0" Grid.Row="3">
+            <TextBlock x:Name="Status_textBlock" Canvas.Left="5" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center" HorizontalAlignment="Center" Width="301" Canvas.Top="5"/>
+
+        </Canvas>
+
+        <Canvas Grid.Row="2">
+            <Button x:Name="ExportTranslate_Button" Content="导出" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="2" Height="19" Canvas.Left="27" Canvas.Top="10"/>
+            <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="2" Height="19" Canvas.Left="118" Canvas.Top="10"/>
         </Canvas>
 
     </Grid>

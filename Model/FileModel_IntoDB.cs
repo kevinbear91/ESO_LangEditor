@@ -11,7 +11,7 @@ namespace ESO_Lang_Editor.Model
 
         public int stringIndex { get; set; }
 
-        //public int stringOffset { get; set; }
+        public int Istranslated { get; set; }
 
         public string EN_text { get; set; }
 
