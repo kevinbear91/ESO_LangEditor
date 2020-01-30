@@ -47,7 +47,7 @@ namespace ESO_Lang_Editor.View
         {
             //var EditedData = new LangSearchModel();
             var connDB = new SQLiteController();
-            connDB.ConnectTranslateDB();
+            //connDB.ConnectTranslateDB();
 
             if (SaveToMainDB_checkBox.IsChecked == true)
             {

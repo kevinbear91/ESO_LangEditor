@@ -11,11 +11,14 @@ namespace ESO_Lang_Editor.Model
     {
         SQLiteConnection Conn;
         string csvDataPath = @"Data\CsvData.db";
-        string TranselateFilePath = @"..\..\Data\Transelate_.db";
+        //string TranselateFilePath = @"..\..\Data\Transelate_.db";
 
         public void ConnectSQLite()
         {
             //SQLiteConnection Conn;
+
+            if (!Directory.Exists("Data"))
+                Directory.CreateDirectory("Data");
 
             if (!File.Exists(csvDataPath))
             {
@@ -454,6 +457,7 @@ namespace ESO_Lang_Editor.Model
 
         }
 
+        /*
         public void ConnectTranslateDB()
         {
             //SQLiteConnection Conn;
@@ -472,11 +476,11 @@ namespace ESO_Lang_Editor.Model
                 throw new Exception("打开数据库：" + TranselateFilePath + "的连接失败：" + ex.Message);
             }
         }
+        */
 
-        /*
-        public bool CheckTableIfExist(string tableName)
+        public bool CheckTableIfExist(string tableName, string TranselatedDBPath)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselateFilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -498,23 +502,23 @@ namespace ESO_Lang_Editor.Model
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("创建数据表" + tableName + "失败：" + ex.Message);
+                    throw new Exception("查询数据表" + tableName + "失败：" + ex.Message);
                 }
 
 
             }
         }
 
-        public void CreateTableToTranselateDB(string TableName)
+        public void CreateTableToTranselateDB(string TableName, string TranselatedDBPath)
         {
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselateFilePath + ";Version=3;"))
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
                 cmd.Connection = conn;
                 try
                 {
-                    cmd.CommandText = "CREATE TABLE " + TableName + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text)";
+                    cmd.CommandText = "CREATE TABLE " + TableName + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text, isTranslated int)";
                     cmd.ExecuteNonQuery();
 
                 }
@@ -525,10 +529,34 @@ namespace ESO_Lang_Editor.Model
             }
         }
 
-        public string AddOrUpdateDataFromEditor(LangSearchModel CsvContent)
+        public void CreateTranslateDBwithData(List<LangSearchModel> CsvContent, string TranselatedDBPath)
         {
+            if (!File.Exists(TranselatedDBPath))
+            {
+                SQLiteConnection.CreateFile(TranselatedDBPath);
+            }
+            try
+            {
+                Conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;");
+                Conn.Open();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("打开数据库：" + TranselatedDBPath + "的连接失败：" + ex.Message);
+            }
 
-            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselateFilePath + ";Version=3;"))
+
+            foreach (var table in CsvContent)
+            {
+                if (!CheckTableIfExist(table.ID_Table, TranselatedDBPath))
+                {
+                    CreateTableToTranselateDB(table.ID_Table, TranselatedDBPath);
+                }
+
+            }
+ 
+ 
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;"))
             {
                 conn.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
@@ -536,58 +564,57 @@ namespace ESO_Lang_Editor.Model
 
                 try
                 {
-                    cmd.CommandText = "SELECT * FROM " + CsvContent.ID_Table 
-                        + " WHERE (ID_Unknown='" + ToInt32(CsvContent.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
-                        + "'AND ID_Index='" + ToInt32(CsvContent.ID_Index) + "')";
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-
-                    if (count == 0)
+                    foreach (var content in CsvContent)
                     {
-                        cmd.CommandText = "INSERT INTO " + CsvContent.ID_Table + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC)";
-                        cmd.Parameters.AddRange(new[]
+                        cmd.CommandText = "SELECT * FROM " + content.ID_Table
+                        + " WHERE (ID_Unknown='" + ToInt32(content.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
+                        + "'AND ID_Index='" + ToInt32(content.ID_Index) + "')";
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (count == 0)
                         {
-                            new SQLiteParameter("@ID_Type", CsvContent.ID_Type),
-                            new SQLiteParameter("@ID_Unknown", CsvContent.ID_Unknown),
-                            new SQLiteParameter("@ID_Index", CsvContent.ID_Index),
+                            cmd.CommandText = "INSERT INTO " + content.ID_Table + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated)";
+                            cmd.Parameters.AddRange(new[]
+                            {
+                            new SQLiteParameter("@ID_Type", content.ID_Type),
+                            new SQLiteParameter("@ID_Unknown", content.ID_Unknown),
+                            new SQLiteParameter("@ID_Index", content.ID_Index),
                             //new SQLiteParameter("@ID_Offset", CsvContent.),
-                            new SQLiteParameter("@Text_EN", CsvContent.Text_EN),
-                            new SQLiteParameter("@Text_SC", CsvContent.Text_SC),
+                            new SQLiteParameter("@Text_EN", content.Text_EN),
+                            new SQLiteParameter("@Text_SC", content.Text_SC),
+                            new SQLiteParameter("@isTranslated", content.isTranslated),
                         });
-                        cmd.ExecuteNonQuery();
-                        return CsvContent.Text_SC + " 更新成功！";
+                            cmd.ExecuteNonQuery();
+                            //return content.Text_SC + " 更新成功！";
+                        }
+                        else
+                        {
+                            cmd.CommandText = "UPDATE " + content.ID_Table + " SET Text_SC=@Text_SC"
+                            + " WHERE (ID_Unknown='" + ToInt32(content.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
+                            + "'AND ID_Index='" + ToInt32(content.ID_Index) + "')";
+
+                            cmd.Parameters.Add(new SQLiteParameter("@Text_SC", content.Text_SC));
+                            cmd.ExecuteNonQuery();
+                            //return content.Text_SC + " 更新成功！";
+                        }
                     }
-                    else
-                    {
-                        cmd.CommandText = "UPDATE " + CsvContent.ID_Table + " SET Text_SC=@Text_SC"
-                        + " WHERE (ID_Unknown='" + ToInt32(CsvContent.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
-                        + "'AND ID_Index='" + ToInt32(CsvContent.ID_Index) + "')";
-
-                        cmd.Parameters.Add(new SQLiteParameter("@Text_SC", CsvContent.Text_SC));
-                        cmd.ExecuteNonQuery();
-                        return CsvContent.Text_SC + " 更新成功！";
-                    }
-
-
-
-
 
                     
-
                     //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
                     //Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
 
                 }
                 catch (Exception ex)
                 {
-                    return "插入数据：" + CsvContent.Text_SC + " 失败：" + ex.Message;
-                    throw new Exception("插入数据：" + CsvContent.Text_SC + "失败：" + ex.Message);
+                    //return "插入数据失败：" + ex.Message;
+                    throw new Exception("插入数据失败：" + ex.Message);
                 }
 
             }
 
         }
 
-         */
+         
 
         public List<LangSearchModel> FullSearchTranslateDB(string dbFile)
         {

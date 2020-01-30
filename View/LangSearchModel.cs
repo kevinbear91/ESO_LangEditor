@@ -98,22 +98,6 @@ namespace ESO_Lang_Editor.View
             }
         }
 
-        /*
-        public List<LangSearchModel> SearchLang(string SearchBarText)
-        {
-            var DBFile = new SQLiteController();
-
-            var lang = DBFile.SearchData(SearchBarText);
-
-            //foreach (var data in LangSearch)
-            //{
-            //    Debug.WriteLine(data.Text_EN);
-            //}
-
-            return lang;
-        }
-        */
-
         public event PropertyChangedEventHandler PropertyChanged;
 
 

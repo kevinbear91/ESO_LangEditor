@@ -16,7 +16,7 @@
 
         <GroupBox Header="已翻译内容" Grid.Row="1" Margin="20,0,0,0" BorderBrush="#FF959595"  Width="481" Height="295" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Canvas>
-                <DataGrid x:Name="Changed_DataGrid" Height="255" Width="449" Grid.Row="1" Canvas.Left="10" Canvas.Top="10">
+                <DataGrid x:Name="Translated_DataGrid" Height="255" Width="449" Grid.Row="1" Canvas.Left="10" Canvas.Top="10">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="80"/>
                         <DataGridTextColumn Binding="{Binding ID_Unknown}"  Header="文本Unknow" Width="50"/>
@@ -34,8 +34,8 @@
         </Canvas>
 
         <Canvas Grid.Row="2">
-            <Button x:Name="ExportTranslate_Button" Content="导出" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="2" Height="19" Canvas.Left="27" Canvas.Top="10"/>
-            <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="2" Height="19" Canvas.Left="118" Canvas.Top="10"/>
+            <Button x:Name="ExportTranslate_Button" Content="导出" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="2" Height="19" Canvas.Left="27" Canvas.Top="10" Click="ExportTranslate_Button_Click"/>
+            <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Grid.Row="2" Height="19" Canvas.Left="118" Canvas.Top="10" Click="Cancel_Button_Click"/>
         </Canvas>
 
     </Grid>
