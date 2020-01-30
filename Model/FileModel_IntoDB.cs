@@ -1,5 +1,4 @@
-﻿using System;
-using static System.Convert;
+﻿using static System.Convert;
 
 namespace ESO_Lang_Editor.Model
 {
