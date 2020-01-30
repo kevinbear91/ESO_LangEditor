@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using ESO_Lang_Editor.Model;
 using Microsoft.Win32;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 using static System.Convert;
-using ESO_Lang_Editor.Model;
-using System.Collections.ObjectModel;
 
 namespace ESO_Lang_Editor.View
 {
@@ -46,13 +46,13 @@ namespace ESO_Lang_Editor.View
                 }
                 else
                 {
-                    MessageBox.Show("仅支持读取 .csv 文件！","提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("仅支持读取 .csv 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                     textBoxName.Text = "";
                 }
             }
         }
 
-        
+
         private void LoadCsv_Buton_Click(object sender, RoutedEventArgs e)
         {
             string fileName;
@@ -77,10 +77,10 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                MessageBox.Show("未选择CSV文件！","错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("未选择CSV文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        
+
         private void CompareData()
         {
             int CompareOptionsIndex = CompareOptions_comboBox.SelectedIndex;
@@ -89,7 +89,7 @@ namespace ESO_Lang_Editor.View
 
             if (Changed_DataGrid.Items.Count > 1)
                 addedParser = null;
-                Changed_DataGrid.Items.Clear();
+            Changed_DataGrid.Items.Clear();
 
             switch (CompareOptionsIndex)
             {
@@ -187,12 +187,12 @@ namespace ESO_Lang_Editor.View
             {
                 case 0:
                     connDB.AddDataArray(dbFileModel);
-                    MessageBox.Show("加入完成！ 共" + dbFileModel.Count + " 条数据。", "结果", 
+                    MessageBox.Show("加入完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case 1:
                     connDB.UpdateDataArrayFromCompare(dbFileModel);
-                    MessageBox.Show("修改完成！ 共" + dbFileModel.Count + " 条数据。", "结果", 
+                    MessageBox.Show("修改完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case 2:

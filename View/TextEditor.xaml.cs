@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ESO_Lang_Editor.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {
@@ -19,10 +19,10 @@ namespace ESO_Lang_Editor.View
 
         public TextEditor(LangSearchModel LangData, List<LangSearchModel> SelectedItemsList)
         {
-            
+
             InitializeComponent();
             this.Width = 530;
-          
+
             SelectedItems = SelectedItemsList;
 
             List_Datagrid_Display(LangData);
@@ -125,7 +125,7 @@ namespace ESO_Lang_Editor.View
                 //EditData = LangData;
                 SetEditDataTextBlocks(LangData);
 
- 
+
             }
 
             //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
@@ -135,7 +135,7 @@ namespace ESO_Lang_Editor.View
         {
             var IDtypeName = new IDCatalog();
             DataGrid datagrid = sender as DataGrid;
- 
+
             if (datagrid.SelectedIndex != -1)
             {
                 SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));

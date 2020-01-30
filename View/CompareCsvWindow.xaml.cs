@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using ESO_Lang_Editor.Model;
 using Microsoft.Win32;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
-using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {

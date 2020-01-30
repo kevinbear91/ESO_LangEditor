@@ -1,10 +1,10 @@
-﻿using Microsoft.Win32;
+﻿using ESO_Lang_Editor.Model;
+using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {
@@ -62,10 +62,10 @@ namespace ESO_Lang_Editor.View
 
             if (TranslateData_dataGrid.Items.Count > 1)
                 SearchData = null;
-                TranslateData_dataGrid.Items.Clear();
+            TranslateData_dataGrid.Items.Clear();
 
-            
-            if(filePath.Count >= 0 && seletedIndex == -1)
+
+            if (filePath.Count >= 0 && seletedIndex == -1)
             {
                 dbPath = filePath.ElementAt(0);
             }
@@ -73,7 +73,7 @@ namespace ESO_Lang_Editor.View
             {
                 dbPath = filePath.ElementAt(seletedIndex);
             }
-            
+
 
             SearchData = DBFile.FullSearchTranslateDB(dbPath);
 

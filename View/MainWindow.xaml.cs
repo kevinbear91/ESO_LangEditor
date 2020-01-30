@@ -1,11 +1,11 @@
-﻿using System;
+﻿using ESO_Lang_Editor.Model;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {
@@ -32,29 +32,20 @@ namespace ESO_Lang_Editor.View
 
             string version = " Alpha 0.1 - 60b222f2";
 
-            Title = "ESO文本查询编辑器" + version; 
+            Title = "ESO文本查询编辑器" + version;
 
             textBlock_Info.Text = "";
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LangSearch.Items.Count > 1)
-                SearchData = null;
-                LangSearch.Items.Clear();
-
-            SearchData = SearchLang(SearchCheck());
-
-            foreach (var data in SearchData)
-            {
-                LangSearch.Items.Add(data);
-            }
-            textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+            SearchDB();
         }
 
         public List<LangSearchModel> SearchLang(string SearchBarText)
         {
             var DBFile = new SQLiteController();
+            SearchData = null;
 
             var da1 = DBFile.SearchData(SearchBarText, SearchField());
 
@@ -114,7 +105,7 @@ namespace ESO_Lang_Editor.View
         private int SearchField()
         {
             //搜索字段， 默认selectedSearchTextPosition = 1
-            
+
             var selectedSearchType = SearchTypeComboBox.SelectedIndex;
             int searchField;
 
@@ -194,12 +185,12 @@ namespace ESO_Lang_Editor.View
                 + "其中ID文件为合并ID, Text为内容。"
                 + "点击确定开始输出，不导出请点取消。"
                 + Environment.NewLine
-                + "点击确定之后请耐心等待，输出完毕后会弹出提示!","提示",MessageBoxButton.OKCancel, MessageBoxImage.Information);
-            switch(result)
+                + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            switch (result)
             {
                 case MessageBoxResult.OK:
                     export.ExportAsText();
-                    MessageBox.Show("导出完成!" ,"完成",MessageBoxButton.OK,MessageBoxImage.Information);
+                    MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case MessageBoxResult.Cancel:
                     break;
@@ -248,17 +239,7 @@ namespace ESO_Lang_Editor.View
         {
             if (e.Key == Key.Enter && SearchTextBox.IsFocused)
             {
-                if(LangSearch.Items.Count > 1)
-                SearchData = null;
-                LangSearch.Items.Clear();
-
-                SearchData = SearchLang(SearchCheck());
-
-                foreach (var data in SearchData)
-                {
-                    LangSearch.Items.Add(data);
-                }
-                textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+                SearchDB();
             }
         }
 
@@ -277,7 +258,7 @@ namespace ESO_Lang_Editor.View
 
             if (SelectedDatas != null)
                 SelectedDatas.Clear();
-            
+
             SelectedDatas = new List<LangSearchModel>();
 
 
@@ -293,9 +274,53 @@ namespace ESO_Lang_Editor.View
                 TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
                 textEditor.Show();
             }
-                
+
         }
 
-        
+        private void SearchDB()
+        {
+            MessageBoxResult result = MessageBoxResult.Cancel;
+
+
+            if (SearchTextBox.Text == "" || SearchTextBox.Text == " ")
+            {
+                result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
+                    MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            }
+            else
+            {
+                SearchData = SearchLang(SearchCheck());
+            }
+
+            switch (result)
+            {
+                case MessageBoxResult.OK:
+                    SearchData = SearchLang(SearchCheck());
+                    foreach (var data in SearchData)
+                    {
+                        LangSearch.Items.Add(data);
+                    }
+                    textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+
+            if (SearchData != null)
+            {
+                if (LangSearch.Items.Count > 1)
+                {
+
+                    LangSearch.Items.Clear();
+                }
+
+                foreach (var data in SearchData)
+                {
+                    LangSearch.Items.Add(data);
+                }
+                textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+            }
+        }
+
     }
 }

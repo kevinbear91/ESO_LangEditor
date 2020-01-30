@@ -1,6 +1,6 @@
-﻿using System;
+﻿using FileHelpers;
+using System;
 using static System.Convert;
-using FileHelpers;
 
 namespace ESO_Lang_Editor.Model
 {
@@ -22,8 +22,8 @@ namespace ESO_Lang_Editor.Model
         public string GetUniqueID(bool isGetFieldID)
         {
 
-            string fieldID = ToUInt32(stringID).ToString(); 
-            string fieldUnknown = ToUInt32(stringUnknown).ToString(); 
+            string fieldID = ToUInt32(stringID).ToString();
+            string fieldUnknown = ToUInt32(stringUnknown).ToString();
             string fieldIndex = ToUInt32(stringIndex).ToString();
             if (isGetFieldID)
             {

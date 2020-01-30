@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using static System.Convert;
-using System.IO;
 
 namespace ESO_Lang_Editor.Model
 {
@@ -56,13 +56,13 @@ namespace ESO_Lang_Editor.Model
             foreach (var item in dbData)
             {
                 if (ID_Array.Contains(ToInt32(item.ID_Type)))
-                    outputFile.Add(item.ID_Type 
-                        + "-" 
-                        + item.ID_Unknown 
-                        + "-" 
-                        + item.ID_Index 
+                    outputFile.Add(item.ID_Type
+                        + "-"
+                        + item.ID_Unknown
+                        + "-"
+                        + item.ID_Index
                         + "&"
-                        + item.Text_EN 
+                        + item.Text_EN
                         + "&"
                         + item.Text_SC);
             }
@@ -72,7 +72,7 @@ namespace ESO_Lang_Editor.Model
                 {
                     sw.WriteLine(s);
                 }
-                
+
                 sw.Flush();
                 sw.Close();
             }

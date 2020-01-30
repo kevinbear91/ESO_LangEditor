@@ -1,8 +1,8 @@
-﻿using System;
+﻿using ESO_Lang_Editor.Model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {
@@ -59,7 +59,7 @@ namespace ESO_Lang_Editor.View
                 MessageBox.Show("导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            
+
 
         }
 

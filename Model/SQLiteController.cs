@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using ESO_Lang_Editor.View;
+using System;
 using System.Collections.Generic;
-using static System.Convert;
 using System.Data.SQLite;
-using ESO_Lang_Editor.View;
+using System.IO;
+using static System.Convert;
 
 namespace ESO_Lang_Editor.Model
 {
@@ -105,7 +105,7 @@ namespace ESO_Lang_Editor.Model
 
         public void AddDataArray(List<FileModel_IntoDB> CsvContent)
         {
-            
+
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
@@ -159,7 +159,7 @@ namespace ESO_Lang_Editor.Model
                 SQLiteCommand cmd = new SQLiteCommand();
                 cmd.Connection = conn;
 
-                switch(SearchField)
+                switch (SearchField)
                 {
                     case 0:
                         fieldName = "ID_Type";
@@ -200,7 +200,8 @@ namespace ESO_Lang_Editor.Model
                         while (sr.Read())
                         {
                             //Console.WriteLine("查询了{0},{1},{2}", sr.GetInt32(0), sr.GetInt32(2), sr.GetString(5));
-                            _LangViewData.Add(new LangSearchModel {
+                            _LangViewData.Add(new LangSearchModel
+                            {
                                 ID_Table = t.ToString(),                   //数据表名
                                 //IndexDB = sr.FieldCount,                   //数据表索引列
                                 ID_Type = sr.GetInt32(0).ToString(),       //游戏内文本ID
@@ -221,7 +222,7 @@ namespace ESO_Lang_Editor.Model
                 }
                 return _LangViewData;
             }
-            
+
         }
 
         public List<LangSearchModel> FullSearchData()
@@ -374,7 +375,7 @@ namespace ESO_Lang_Editor.Model
                         + " WHERE (ID_Unknown='" + ToInt32(CsvContent.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
                         + "'AND ID_Index='" + ToInt32(CsvContent.ID_Index) + "')";
 
-                    cmd.Parameters.AddRange(new[] 
+                    cmd.Parameters.AddRange(new[]
                     {
                         new SQLiteParameter("@Text_SC", CsvContent.Text_SC),
                         new SQLiteParameter("@isTranslated", CsvContent.isTranslated)
@@ -383,8 +384,8 @@ namespace ESO_Lang_Editor.Model
                     cmd.ExecuteNonQuery();
                     return CsvContent.Text_SC + " 更新成功！";
 
-                        //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
-                        //Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
+                    //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
+                    //Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
 
                 }
                 catch (Exception ex)
@@ -425,7 +426,7 @@ namespace ESO_Lang_Editor.Model
                         Console.WriteLine("更新了{0}, {1}, {2}", line.ID_Table, line.ID_Unknown, line.ID_Index);
                     }
                     tx.Commit();
-                    return  true;
+                    return true;
 
                 }
                 catch (Exception ex)
@@ -554,8 +555,8 @@ namespace ESO_Lang_Editor.Model
                 }
 
             }
- 
- 
+
+
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;"))
             {
                 conn.Open();
@@ -599,7 +600,7 @@ namespace ESO_Lang_Editor.Model
                         }
                     }
 
-                    
+
                     //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
                     //Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
 
@@ -614,7 +615,7 @@ namespace ESO_Lang_Editor.Model
 
         }
 
-         
+
 
         public List<LangSearchModel> FullSearchTranslateDB(string dbFile)
         {
@@ -659,7 +660,7 @@ namespace ESO_Lang_Editor.Model
                                 ID_Index = sr.GetInt32(2),                 //游戏内文本Index
                                 Text_EN = sr.GetString(3),                 //英语原文
                                 Text_SC = sr.GetString(4)                  //汉化文本
-                                
+
                             });
                             //Console.WriteLine("查询了{0}, {1}, {2}", sr.GetInt32(0).ToString(), sr.GetInt32(1), sr.GetString(4));
                         }

@@ -1,11 +1,10 @@
-﻿using System;
+﻿using ESO_Lang_Editor.View;
+using FileHelpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using static System.Convert;
-using FileHelpers;
-using ESO_Lang_Editor.View;
 
 namespace ESO_Lang_Editor.Model
 {
@@ -51,7 +50,7 @@ namespace ESO_Lang_Editor.Model
             foreach (var data in Dict)
             {
                 var keyField = data.Key.Split(new char[] { '-' }, 3);
-                _langData.Add (new LangSearchModel
+                _langData.Add(new LangSearchModel
                 {
                     ID_Type = keyField[0],
                     ID_Unknown = ToInt32(keyField[1]),

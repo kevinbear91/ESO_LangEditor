@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using ESO_Lang_Editor.Model;
+using Microsoft.Win32;
+using System.Collections.Generic;
 using System.Windows;
 using static System.Convert;
-using Microsoft.Win32;
-using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {
@@ -83,7 +83,7 @@ namespace ESO_Lang_Editor.View
 
 
             List<FileModel_IntoDB> outputList = new List<FileModel_IntoDB>();
-            foreach(var c in intoDBContent)
+            foreach (var c in intoDBContent)
             {
                 outputList.Add(new FileModel_IntoDB
                 {
@@ -94,7 +94,7 @@ namespace ESO_Lang_Editor.View
                     ZH_text = c.Value.ZH_text,
                     Istranslated = 0
                 });
-               
+
             }
 
             db.CreateDBFileFromCSV(outputList);
