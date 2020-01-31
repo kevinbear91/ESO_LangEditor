@@ -40,40 +40,29 @@ namespace ESO_Lang_Editor.View
             var connDB = new SQLiteController();
             //connDB.ConnectTranslateDB();
 
-            if (SaveToMainDB_checkBox.IsChecked == true)
-            {
-                var EditedData = SetEditedData();
-                var updateResult = connDB.UpdateDataFromEditor(EditedData);
+            var EditedData = SetEditedData();
+            var updateResult = connDB.UpdateDataFromEditor(EditedData);
 
-                MessageBox.Show(updateResult);
+            //MessageBox.Show(updateResult);
 
-            }
-            /*
-            else
-            {
-                if (connDB.CheckTableIfExist(EditData.ID_Table))
-                {
-                    var EditedData = SetEditedData();
-                    var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
-
-                    MessageBox.Show(updateResult);
-                }
-                else
-                {
-                    connDB.CreateTableToTranselateDB(EditData.ID_Table);
-
-                    var EditedData = SetEditedData();
-                    var updateResult = connDB.AddOrUpdateDataFromEditor(EditedData);
-
-                    MessageBox.Show(updateResult);
-                }
-
-            }
-            */
 
             if (List_dataGrid.Items.Count > 1)
             {
-                List_dataGrid.Items.RemoveAt(selectedListIndex);
+                int i = List_dataGrid.SelectedIndex;
+                
+                List_dataGrid.Items.RemoveAt(i);
+                SelectedItems.RemoveAt(i);
+
+                if (i > 0)
+                {
+                    List_dataGrid.SelectedIndex = i - 1;
+                }
+                else
+                {
+                    List_dataGrid.SelectedIndex = 0;
+                }
+                MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+                SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
             }
             else
             {
@@ -113,8 +102,6 @@ namespace ESO_Lang_Editor.View
                 }
                 List_dataGrid.SelectedIndex = 0;
 
-                //EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
-
                 SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
 
             }
@@ -127,6 +114,7 @@ namespace ESO_Lang_Editor.View
 
 
             }
+            
 
             //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
         }
@@ -139,7 +127,7 @@ namespace ESO_Lang_Editor.View
             if (datagrid.SelectedIndex != -1)
             {
                 SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
-                selectedListIndex = List_dataGrid.SelectedIndex;
+                //selectedListIndex = List_dataGrid.SelectedIndex;
             }
 
 
