@@ -45,7 +45,7 @@ namespace ESO_Lang_Editor.View
             if (!Directory.Exists("Export"))
                 Directory.CreateDirectory("Export");
 
-            string dbPath = @"Export\Transelate_" + number + ".db";
+            string dbPath = @"Export\Translate_" + number + ".db";
 
             connDB.CreateTranslateDBwithData(SearchData, dbPath);
 

@@ -61,7 +61,7 @@ namespace ESO_Lang_Editor.View
                 {
                     List_dataGrid.SelectedIndex = 0;
                 }
-                MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+                //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
                 SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
             }
             else

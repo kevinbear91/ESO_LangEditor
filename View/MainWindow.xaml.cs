@@ -30,7 +30,7 @@ namespace ESO_Lang_Editor.View
             SearchTextInPositionInit();
             SearchTextTypeInit();
 
-            string version = " Alpha 0.1 - 60b222f2";
+            string version = " Alpha 0.2 - b45f10a6";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -308,7 +308,7 @@ namespace ESO_Lang_Editor.View
 
             if (SearchData != null)
             {
-                if (LangSearch.Items.Count > 1)
+                if (LangSearch.Items.Count >= 1)
                 {
 
                     LangSearch.Items.Clear();
@@ -322,5 +322,14 @@ namespace ESO_Lang_Editor.View
             }
         }
 
+        private void OpenHelpURLinBrowser(object sender, RoutedEventArgs e)
+        {
+            GoToSite("https://bevisbear.com/eso-zh-addon-export-guide");
+        }
+
+        public static void GoToSite(string url)
+        {
+            System.Diagnostics.Process.Start(url);
+        }
     }
 }

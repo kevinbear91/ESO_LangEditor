@@ -29,7 +29,7 @@
                     <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
                 </MenuItem>
                 <MenuItem Header="帮助">
-                    <MenuItem Header="关于……"/>
+                    <MenuItem Header="关于……" Click="OpenHelpURLinBrowser"/>
                 </MenuItem>
             </Menu>
             <Border BorderBrush="#FF898989" BorderThickness="0,0,0,1" Height="26" Canvas.Top="5" Width="794"/>
