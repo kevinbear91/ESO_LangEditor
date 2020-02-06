@@ -61,7 +61,6 @@
         <Canvas  Grid.Row="6" Grid.ColumnSpan="3">
             <Button x:Name="button_save" Content="保存" HorizontalAlignment="Left" Margin="22,5,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_save_Click" Grid.Row="6"/>
             <Button x:Name="button_cancel" Content="取消" HorizontalAlignment="Left" Margin="127,5,0,0" VerticalAlignment="Top" Width="75" Height="19" Click="button_cancel_Click" Grid.Row="6"/>
-            <CheckBox x:Name="SaveToMainDB_checkBox" Content="保存到主数据库" HorizontalAlignment="Left" Margin="377,5,0,0" Grid.Row="6" VerticalAlignment="Top" ToolTip="仅适用于打包及核对导入人员，译员请勿打勾，否则无法保存到导出数据库！" Height="15" Width="104" IsEnabled="False" IsChecked="True"/>
         </Canvas>
 
         <Canvas  Grid.Row="7" Grid.ColumnSpan="3">

@@ -27,6 +27,8 @@
                     <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
                     <MenuItem Header="导出至转换文本" Click="ExportToText_Click"/>
                     <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
+                    <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
+                    <MenuItem Header="简体文本转换至繁体" Click="ExportToCHT_Click"/>
                 </MenuItem>
                 <MenuItem Header="帮助">
                     <MenuItem Header="关于……" Click="OpenHelpURLinBrowser"/>

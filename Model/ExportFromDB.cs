@@ -17,13 +17,16 @@ namespace ESO_Lang_Editor.Model
 
             var dbData = connDB.FullSearchData();
 
+            if (!Directory.Exists("_tmp"))
+                Directory.CreateDirectory("_tmp");
+
             foreach (var item in dbData)
             {
                 outputIDFile.Add(item.ID_Type + "-" + item.ID_Unknown + "-" + item.ID_Index);
                 outputTextFile.Add(item.Text_SC);
             }
 
-            using (StreamWriter sw = new StreamWriter("ID.txt"))
+            using (StreamWriter sw = new StreamWriter("_tmp/ID.txt"))
             {
                 foreach (string s in outputIDFile)
                 {
@@ -34,7 +37,7 @@ namespace ESO_Lang_Editor.Model
                 sw.Close();
             }
 
-            using (StreamWriter sw = new StreamWriter("Text.txt"))
+            using (StreamWriter sw = new StreamWriter("_tmp/Text.txt"))
             {
                 foreach (string s in outputTextFile)
                 {
@@ -53,6 +56,9 @@ namespace ESO_Lang_Editor.Model
             var connDB = new SQLiteController();
             var dbData = connDB.FullSearchData();
 
+            if (!Directory.Exists("_tmp"))
+                Directory.CreateDirectory("_tmp");
+
             foreach (var item in dbData)
             {
                 if (ID_Array.Contains(ToInt32(item.ID_Type)))
@@ -66,7 +72,7 @@ namespace ESO_Lang_Editor.Model
                         + "&"
                         + item.Text_SC);
             }
-            using (StreamWriter sw = new StreamWriter("ExportIDArray.txt"))
+            using (StreamWriter sw = new StreamWriter("_tmp/ExportIDArray.txt"))
             {
                 foreach (string s in outputFile)
                 {

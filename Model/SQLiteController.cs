@@ -71,6 +71,16 @@ namespace ESO_Lang_Editor.Model
 
 
 
+        /// <summary>
+        /// 批量创建表和字段。
+        /// ID_Type 为文本ID
+        /// ID_Unknow 为文本位置列
+        /// ID_Index 为索引列
+        /// Text_EN 为英语原文
+        /// Text_SC 为译文
+        /// isTranslated 为是否汉化的标记，供导出用。
+        /// </summary>
+        /// <param name="CsvID"></param>
         public void CreateTableArray(List<int> CsvID)
         {
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
@@ -439,46 +449,6 @@ namespace ESO_Lang_Editor.Model
 
         }
 
-
-        public void AddData(int CsvID, int ID, int Unknown, int Offset, string Text_EN, string Text_SC, string Text_JF)
-        {
-
-            /*
-            try
-            {
-                string sql = "insert into " + CsvID + " (ID_Type, ID_Unknown, ID_Index, ID_Offset, Text_EN, Text_SC, Text_JF) values ('" + ID + "', " + Unknown + "', " + Offset + "', " + Text_EN + "', " + Text_SC + "', " + Text_JF + ")";
-                SQLiteCommand command = new SQLiteCommand(sql, Conn);
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("插入数据：" + CsvID + ":" + ID + "," + Unknown + "," + Offset + "," + Text_EN + "," + Text_SC + "," + Text_JF + "失败：" + ex.Message);
-            }
-            */
-
-        }
-
-        /*
-        public void ConnectTranslateDB()
-        {
-            //SQLiteConnection Conn;
-
-            if (!File.Exists(TranselateFilePath))
-            {
-                SQLiteConnection.CreateFile(TranselateFilePath);
-            }
-            try
-            {
-                Conn = new SQLiteConnection("Data Source=" + TranselateFilePath + ";Version=3;");
-                Conn.Open();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("打开数据库：" + TranselateFilePath + "的连接失败：" + ex.Message);
-            }
-        }
-        */
-
         public bool CheckTableIfExist(string tableName, string TranselatedDBPath)
         {
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;"))
@@ -496,10 +466,6 @@ namespace ESO_Lang_Editor.Model
                         return true;
                     else
                         return false;
-
-                    //string sql = "CREATE TABLE ID_" + CsvID + "(ID_Type int, ID_Unknown int, ID_Index int, ID_Offset int, Text_EN text, Text_SC text, Text_JF text)";
-                    //SQLiteCommand command = new SQLiteCommand(sql, Conn);
-                    //command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
@@ -600,10 +566,6 @@ namespace ESO_Lang_Editor.Model
                         }
                     }
 
-
-                    //lineContent = line.stringID.ToString() + line.stringUnknow.ToString() + line.stringIndex.ToString();
-                    //Console.WriteLine("更新了{0}, {1}, {2}", line.stringID, line.stringUnknow, line.stringIndex);
-
                 }
                 catch (Exception ex)
                 {
@@ -675,16 +637,6 @@ namespace ESO_Lang_Editor.Model
                 return _LangViewData;
             }
 
-        }
-
-
-
-
-        private string GetRandomNumber()
-        {
-            Random rnd = new Random();
-            string number = rnd.Next(1234, 9876).ToString();
-            return number;
         }
     }
 }

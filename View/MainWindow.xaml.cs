@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,7 +31,7 @@ namespace ESO_Lang_Editor.View
             SearchTextInPositionInit();
             SearchTextTypeInit();
 
-            string version = " Alpha 0.2 - b45f10a6";
+            string version = " Alpha 0.2 - 897a27ab";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -324,12 +325,71 @@ namespace ESO_Lang_Editor.View
 
         private void OpenHelpURLinBrowser(object sender, RoutedEventArgs e)
         {
-            GoToSite("https://bevisbear.com/eso-zh-addon-export-guide");
+            GoToSite("https://bevisbear.com/eso-lang-editor-help-doc");
         }
 
         public static void GoToSite(string url)
         {
             System.Diagnostics.Process.Start(url);
         }
+
+        private void ExportToLang_Click(object sender, RoutedEventArgs e)
+        {
+            ToLang();
+        }
+
+        private void ExportToCHT_Click(object sender, RoutedEventArgs e)
+        {
+            ToCHT();
+        }
+
+        private void ToLang()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"EsoExtractData\EsoExtractData.exe";
+
+            MessageBoxResult result = MessageBox.Show("将导出的Text文件直接转换为.lang文件，是否导出简体？"
+                + Environment.NewLine
+                + "点击“是”导出简体，点击“否”导出繁体（需要先转换至繁体中文）"
+                + Environment.NewLine
+                + "什么都不做请点取消。"
+                + Environment.NewLine
+                + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    startInfo.Arguments = @" -x _tmp\Text.txt -i _tmp\ID.txt -t -o zh.lang";
+                    break;
+                case MessageBoxResult.No:
+                    startInfo.Arguments = @" -x _tmp\Text_cht.txt -i _tmp\ID.txt -t -o zh.lang";
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+
+            if (result != MessageBoxResult.Cancel)
+            {
+                Process proc = new Process();
+                proc.StartInfo = startInfo;
+                proc.Start();
+                proc.WaitForExit();
+
+                //System.IO.Directory.Delete("_tmp", true);
+            }
+        }
+
+        private void ToCHT()
+        {
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"opencc\opencc.exe";
+            startInfo.Arguments = @" -i _tmp\Text.txt -o _tmp\Text_cht.txt -c opencc\s2twp.json";
+
+            Process proc = new Process();
+            proc.StartInfo = startInfo;
+            proc.Start();
+            proc.WaitForExit();
+        }
+        
     }
 }
