@@ -32,6 +32,7 @@ namespace ESO_Lang_Editor.View
 
             foreach (var data in SearchData)
             {
+                data.isTranslated = 2;
                 Translated_DataGrid.Items.Add(data);
             }
             Status_textBlock.Text = "总计搜索到" + Translated_DataGrid.Items.Count + "条结果。";
@@ -58,8 +59,6 @@ namespace ESO_Lang_Editor.View
             {
                 MessageBox.Show("导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-
 
         }
 

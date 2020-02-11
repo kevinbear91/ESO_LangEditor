@@ -24,8 +24,7 @@ namespace ESO_Lang_Editor.View
             InitializeComponent();
             CompareOptionsInit();
 
-            SaveToDB_Button.IsEnabled = false;
-            Cancel_Button.IsEnabled = false;
+            CheckSaveToDBButtonCanEnable();
 
         }
 
@@ -67,12 +66,13 @@ namespace ESO_Lang_Editor.View
                     NewDict = fileParser.LoadCsvToDict(NewFileURLtextBox.Text);
 
                     CompareData();
+                    CheckSaveToDBButtonCanEnable();
                 }
                 else
                 {
                     CompareData();
 
-                    SaveToDB_Button.IsEnabled = true;
+                    CheckSaveToDBButtonCanEnable();
                 }
             }
             else
@@ -167,6 +167,15 @@ namespace ESO_Lang_Editor.View
             var connDB = new SQLiteController();
             var dbFileModel = new List<FileModel_IntoDB>();
             int CompareOptionsIndex = CompareOptions_comboBox.SelectedIndex;
+            int rowStats = CompareOptions_comboBox.SelectedIndex;
+            string updateStats = VersionInput_textBox.Text;
+            
+
+            if (updateStats == "" || updateStats == "更新版本号")
+                MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+
+
 
             foreach (var line in langData)
             {
@@ -178,7 +187,9 @@ namespace ESO_Lang_Editor.View
                     stringUnknown = ToInt32(line.ID_Unknown),
                     EN_text = line.Text_EN,
                     ZH_text = line.Text_EN,
-                    Istranslated = 0
+                    Istranslated = 0,
+                    RowStats = rowStats,
+                    UpdateStats = updateStats,
                 });
             }
 
@@ -196,12 +207,47 @@ namespace ESO_Lang_Editor.View
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case 2:
-                    //删除 todo
+                    connDB.DeleteDataList(dbFileModel);
+                    MessageBox.Show("删除完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 default:
                     //connDB.AddDataArray(dbFileModel);
                     break;
             }
+
+        }
+
+        private void VersionInput_GetFocus(object sender, RoutedEventArgs e)
+        {
+            if (VersionInput_textBox.Text == "更新版本号")
+                VersionInput_textBox.Text = "";
+        }
+
+        private void VersionInput_Lostfocus(object sender, RoutedEventArgs e)
+        {
+            if (VersionInput_textBox.Text == "")
+                VersionInput_textBox.Text = "更新版本号";
+            CheckSaveToDBButtonCanEnable();
+
+        }
+
+        private bool CheckSaveToDBButtonCanEnable()
+        {
+            if (NewFileURLtextBox.Text != "" 
+                && VersionInput_textBox.Text != "" 
+                && VersionInput_textBox.Text != "更新版本号"
+                && langData != null)
+            {
+                SaveToDB_Button.IsEnabled = true;
+                return true;
+            }
+            else
+            {
+                SaveToDB_Button.IsEnabled = false;
+                return false;
+            }
+
 
         }
     }

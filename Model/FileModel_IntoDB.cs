@@ -12,6 +12,10 @@ namespace ESO_Lang_Editor.Model
 
         public int Istranslated { get; set; }
 
+        public int RowStats { get; set; }
+
+        public string UpdateStats { get; set; }
+
         public string EN_text { get; set; }
 
         public string ZH_text { get; set; }

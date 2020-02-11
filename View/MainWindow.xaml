@@ -20,8 +20,7 @@
                     <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"/>
                     <MenuItem Header="创建数据库" Click="CreateDB_Click"/>
                     <MenuItem Header="CSV与数据库对比" Click="CsvCompareWithDB_Click"/>
-                    <MenuItem Header="双CSV增改删对比" Click="CsvFileCompare_Click"/>
-                    
+                    <MenuItem Header="字段" Click="fildAdd_Click"/>
                 </MenuItem>
                 <MenuItem Header="导出">
                     <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
@@ -30,8 +29,11 @@
                     <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
                     <MenuItem Header="简体文本转换至繁体" Click="ExportToCHT_Click"/>
                 </MenuItem>
+                <MenuItem Header="高级">
+                    <MenuItem Header="数据库调整" Click="DatabaseModiy_Click"/>
+                </MenuItem>
                 <MenuItem Header="帮助">
-                    <MenuItem Header="关于……" Click="OpenHelpURLinBrowser"/>
+                    <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
                 </MenuItem>
             </Menu>
             <Border BorderBrush="#FF898989" BorderThickness="0,0,0,1" Height="26" Canvas.Top="5" Width="794"/>

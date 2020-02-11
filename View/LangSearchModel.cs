@@ -2,11 +2,20 @@
 
 namespace ESO_Lang_Editor.View
 {
+    /// <summary>
+    /// <para>string ID_Table 表名</para>
+    /// <para>int ID_Type 为文本ID</para>
+    /// <para>int ID_Unknow 为文本位置列</para>
+    /// <para>int ID_Index 为索引列</para>
+    /// <para>string Text_EN 为英语原文</para>
+    /// <para>string Text_SC 为译文</para>
+    /// <para>int isTranslated, 0 - 未翻译， 1 - 已翻译， 2 - 导入的已翻译文本</para>
+    /// </summary>
     public class LangSearchModel : INotifyPropertyChanged
     {
         private string _ID_Table;
         private int _ID_IndexDB;
-        private string _ID_Type;
+        private int _ID_Type;
         private int _ID_Unknown;
         private int _ID_Index;
         private string _Text_EN;
@@ -33,7 +42,7 @@ namespace ESO_Lang_Editor.View
             }
         }
 
-        public string ID_Type
+        public int ID_Type
         {
             get { return _ID_Type; }
             set

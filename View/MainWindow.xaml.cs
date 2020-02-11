@@ -390,6 +390,90 @@ namespace ESO_Lang_Editor.View
             proc.Start();
             proc.WaitForExit();
         }
-        
+
+        private void xFileCompare_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new FileModel_IntoDB();
+            List<LangSearchModel> intoDBContent = new List<LangSearchModel>();
+
+            string[] lines = System.IO.File.ReadAllLines(@"E:\BeginningCsharp\ESO_ZH\Reader_test2\bin\Debug\Export.txt");
+
+            foreach (var line in lines)
+            {
+                var keyField = line.Split(new char[] { '%' }, 4);
+                intoDBContent.Add(new LangSearchModel
+                {
+                    ID_Table = "ID_" + keyField[0],
+                    ID_Unknown = System.Convert.ToInt32(keyField[1]),
+                    ID_Index = System.Convert.ToInt32(keyField[2]),
+                    Text_SC = keyField[3],
+                    isTranslated = 1
+                });
+                /*
+                Console.WriteLine("id:{0}, unknow: {1}, index: {2}, text: {3}",System.Convert.ToString(keyField[0]), 
+                    System.Convert.ToString(keyField[1]), 
+                    System.Convert.ToString(keyField[2]),
+                    System.Convert.ToString(keyField[3]));
+                    */
+            }
+            var connDB = new SQLiteController();
+            //connDB.ConnectTranslateDB();
+
+            //var EditedData = SetEditedData();
+            //connDB.UpdateDataFromEditor2(intoDBContent);
+
+            /*
+            foreach (var data in intoDBContent)
+            {
+                
+                Console.WriteLine("id:{0}, unknow: {1}, index: {2}, text: {3}", data.ID_Table,
+                    data.ID_Unknown,
+                    data.ID_Index,
+                    data.Text_SC);
+            }
+            */
+            //var updateResult = connDB.UpdateDataFromEditor(EditedData);
+        }
+
+        private void SetTranslate_Click(object sender, RoutedEventArgs e)
+        {
+            var DBFile = new SQLiteController();
+            List<LangSearchModel> SearchData33;
+
+            var updateData = new List<LangSearchModel>();
+
+            SearchData33 = DBFile.SearchData("1", 3);
+
+            foreach(var data in SearchData33)
+            {
+                updateData.Add(new LangSearchModel
+                {
+                    ID_Index = data.ID_Index,
+                    ID_Table = data.ID_Table,
+                    ID_Type = data.ID_Type,
+                    ID_Unknown = data.ID_Unknown,
+                    isTranslated = 2
+                });
+            }
+
+            DBFile.UpdateTextScFromImportDB(updateData);
+
+            MessageBox.Show("完成！");
+
+        }
+
+        private void fildAdd_Click(object sender, RoutedEventArgs e)
+        {
+            var DBFile = new SQLiteController();
+
+            DBFile.FieldAdd("RowStats", "int", 0);
+        }
+
+        private void DatabaseModiy_Click(object sender, RoutedEventArgs e)
+        {
+            var databaseWindow = new DatabaseModifyWindow();
+
+            databaseWindow.Show();
+        }
     }
 }

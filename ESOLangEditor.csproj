@@ -115,6 +115,9 @@
     <Compile Include="View\CreateDB_ImportCSV.xaml.cs">
       <DependentUpon>CreateDB_ImportCSV.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\DatabaseModifyWindow.xaml.cs">
+      <DependentUpon>DatabaseModifyWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ExportTranslate.xaml.cs">
       <DependentUpon>ExportTranslate.xaml</DependentUpon>
     </Compile>
@@ -134,6 +137,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CreateDB_ImportCSV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DatabaseModifyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

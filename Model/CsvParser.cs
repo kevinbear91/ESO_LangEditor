@@ -52,7 +52,7 @@ namespace ESO_Lang_Editor.Model
                 var keyField = data.Key.Split(new char[] { '-' }, 3);
                 _langData.Add(new LangSearchModel
                 {
-                    ID_Type = keyField[0],
+                    ID_Type = ToInt32(keyField[0]),
                     ID_Unknown = ToInt32(keyField[1]),
                     ID_Index = ToInt32(keyField[2]),
                     Text_EN = data.Value
