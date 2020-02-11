@@ -24,6 +24,9 @@ namespace ESO_Lang_Editor.View
             InitializeComponent();
             CompareOptionsInit();
 
+
+
+
             CheckSaveToDBButtonCanEnable();
 
         }
@@ -176,39 +179,59 @@ namespace ESO_Lang_Editor.View
                         MessageBoxButton.OK, MessageBoxImage.Warning);
 
 
-
-            foreach (var line in langData)
+            if (CompareOptionsIndex == 1)
             {
-                dbFileModel.Add(new FileModel_IntoDB
+                var data = connDB.SearchZHbyIndexWithUnknown(langData);
+                
+                foreach(var d in data)
                 {
-                    stringID = ToInt32(line.ID_Type),
-                    stringIndex = ToInt32(line.ID_Index),
-                    //stringOffset = ToInt32(line.ID_Table),
-                    stringUnknown = ToInt32(line.ID_Unknown),
-                    EN_text = line.Text_EN,
-                    ZH_text = line.Text_EN,
-                    Istranslated = 0,
-                    RowStats = rowStats,
-                    UpdateStats = updateStats,
-                });
+                    dbFileModel.Add(new FileModel_IntoDB
+                    {
+                        stringID = d.stringID,
+                        stringIndex = d.stringIndex,
+                        stringUnknown = d.stringUnknown,
+                        EN_text = d.EN_text,
+                        ZH_text = d.ZH_text,
+                        Istranslated = d.Istranslated,
+                        //RowStats = rowStats,         //插入数据库内直接定义
+                        UpdateStats = updateStats,
+                    });
+                }
+            }
+            else
+            {
+                foreach (var line in langData)
+                {
+                    dbFileModel.Add(new FileModel_IntoDB
+                    {
+                        stringID = ToInt32(line.ID_Type),
+                        stringIndex = ToInt32(line.ID_Index),
+                        stringUnknown = ToInt32(line.ID_Unknown),
+                        EN_text = line.Text_EN,
+                        ZH_text = line.Text_EN,
+                        Istranslated = 0,
+                        //RowStats = rowStats,         //插入数据库内直接定义
+                        UpdateStats = updateStats,
+                    });
+                }
             }
 
 
             switch (CompareOptionsIndex)
             {
                 case 0:
-                    connDB.AddDataArray(dbFileModel);
+                    connDB.AddDataList(dbFileModel);
                     MessageBox.Show("加入完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case 1:
-                    connDB.UpdateDataArrayFromCompare(dbFileModel);
-                    MessageBox.Show("修改完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
+                    connDB.MarkChangedDataList(dbFileModel);
+                    MessageBox.Show("标记修改完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case 2:
-                    connDB.DeleteDataList(dbFileModel);
-                    MessageBox.Show("删除完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
+                    connDB.MarkDeleteDataList(dbFileModel);
+                    MessageBox.Show("标记删除完成！ 共" + dbFileModel.Count + " 条数据。", "结果",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 default:
@@ -220,14 +243,14 @@ namespace ESO_Lang_Editor.View
 
         private void VersionInput_GetFocus(object sender, RoutedEventArgs e)
         {
-            if (VersionInput_textBox.Text == "更新版本号")
+            if (VersionInput_textBox.Text == "更新版本号(必填)")
                 VersionInput_textBox.Text = "";
         }
 
         private void VersionInput_Lostfocus(object sender, RoutedEventArgs e)
         {
             if (VersionInput_textBox.Text == "")
-                VersionInput_textBox.Text = "更新版本号";
+                VersionInput_textBox.Text = "更新版本号(必填)";
             CheckSaveToDBButtonCanEnable();
 
         }
@@ -235,8 +258,9 @@ namespace ESO_Lang_Editor.View
         private bool CheckSaveToDBButtonCanEnable()
         {
             if (NewFileURLtextBox.Text != "" 
-                && VersionInput_textBox.Text != "" 
-                && VersionInput_textBox.Text != "更新版本号"
+                && VersionInput_textBox.Text != ""
+                && VersionInput_textBox.Text != " "
+                && VersionInput_textBox.Text != "更新版本号(必填)"
                 && langData != null)
             {
                 SaveToDB_Button.IsEnabled = true;

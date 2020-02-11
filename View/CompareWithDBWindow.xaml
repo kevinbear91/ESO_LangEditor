@@ -23,7 +23,7 @@
 
         <GroupBox Header="变更文本内容" Grid.Row="1" Margin="20,76,0,0" BorderBrush="#FF959595"  Width="481" Height="295" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Canvas>
-                <DataGrid x:Name="Changed_DataGrid" Height="255" Width="449" Grid.Row="1" Canvas.Left="10" Canvas.Top="10">
+                <DataGrid x:Name="Changed_DataGrid" Height="255" Width="449" Grid.Row="1" Canvas.Left="10" Canvas.Top="10" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="80"/>
                         <DataGridTextColumn Binding="{Binding ID_Unknown}"  Header="文本Unknow" Width="50"/>

@@ -52,29 +52,37 @@ namespace ESO_Lang_Editor.View
 
             var DBFile = new SQLiteController();
 
-            if (seletedType == 0)
+
+            if (fieldName != "" && !fieldName.Contains(" ") && initContent != "" && !initContent.Contains(" "))
             {
-                if (IsTextAllowed(initContent))
+                if (seletedType == 0)
                 {
-                    DBFile.FieldAdd(fieldName, "int", System.Convert.ToInt32(initContent));
-                    Console.WriteLine("字段名：{0}, 类型：int, 初始内容：{1}，创建成功。", fieldName, initContent);
+                    if (IsTextAllowed(initContent))
+                    {
+                        DBFile.FieldAdd(fieldName, "int", System.Convert.ToInt32(initContent));
+                        Console.WriteLine("字段名：{0}, 类型：int, 初始内容：{1}，创建成功。", fieldName, initContent);
+                    }
+                    else
+                    {
+                        MessageBox.Show("非 int 类型的初始内容请选择 string，如为 int 请仅输入半角数字！", "警告",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("非 int 类型的初始内容请选择 string，如为 int 请仅输入半角数字！", "警告",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                    DBFile.FieldAdd(fieldName, "string", initContent);
+                    Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。", fieldName, initContent);
                 }
             }
             else
             {
-                DBFile.FieldAdd(fieldName, "string", initContent);
-                Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。",fieldName, initContent);
+                MessageBox.Show("两个输入框都不能为空或包含空格！", "警告",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
+            
+
         }
-
-
-
 
         private static readonly Regex _regex = new Regex("[^0-9.-]+");
         private static bool IsTextAllowed(string text)

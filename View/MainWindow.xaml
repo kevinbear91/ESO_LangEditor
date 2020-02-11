@@ -20,7 +20,6 @@
                     <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"/>
                     <MenuItem Header="创建数据库" Click="CreateDB_Click"/>
                     <MenuItem Header="CSV与数据库对比" Click="CsvCompareWithDB_Click"/>
-                    <MenuItem Header="字段" Click="fildAdd_Click"/>
                 </MenuItem>
                 <MenuItem Header="导出">
                     <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />

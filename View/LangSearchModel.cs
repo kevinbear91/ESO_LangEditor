@@ -10,6 +10,8 @@ namespace ESO_Lang_Editor.View
     /// <para>string Text_EN 为英语原文</para>
     /// <para>string Text_SC 为译文</para>
     /// <para>int isTranslated, 0 - 未翻译， 1 - 已翻译， 2 - 导入的已翻译文本</para>
+    /// <para>int RowStats, 0 - 原始存在， 10 - 新增内容， 20 - 已修改内容， 30 - 已删除内容， 40 - 修改前的内容</para>
+    /// <para>string UpdateStats, 哪个版本做出的修改</para>
     /// </summary>
     public class LangSearchModel : INotifyPropertyChanged
     {
@@ -21,6 +23,9 @@ namespace ESO_Lang_Editor.View
         private string _Text_EN;
         private string _Text_SC;
         private int _isTranslated;
+        private int _RowStats;
+        private string _UpdateStats;
+
 
         public string ID_Table
         {
@@ -98,6 +103,26 @@ namespace ESO_Lang_Editor.View
             {
                 _isTranslated = value;
                 NotifyPropertyChanged("isTranslated");
+            }
+        }
+
+        public int RowStats
+        {
+            get { return _RowStats; }
+            set
+            {
+                _RowStats = value;
+                NotifyPropertyChanged("RowStats");
+            }
+        }
+
+        public string UpdateStats
+        {
+            get { return _UpdateStats; }
+            set
+            {
+                _UpdateStats = value;
+                NotifyPropertyChanged("UpdateStats");
             }
         }
 

@@ -19,11 +19,14 @@
                 <TextBox x:Name="InitContentInput_textBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" Canvas.Left="230" Canvas.Top="8"/>
                 <TextBlock x:Name="InitContent_textBlock" Canvas.Left="172" TextWrapping="Wrap" Text="初始值：" Canvas.Top="10"/>
                 <ComboBox x:Name="InputType_comboBox" Canvas.Left="336" Canvas.Top="7" Width="80"/>
-                <Button x:Name="AddField_button" Content="执行" Canvas.Left="452" Canvas.Top="8" Width="75" Click="AddField_button_Click"/>
+                <Button x:Name="AddField_button_disabled" Content="执行" Canvas.Left="452" Canvas.Top="8" Width="75" Click="AddField_button_Click" IsEnabled="False"/>
 
 
             </Canvas>
         </GroupBox>
+        <Button x:Name="AddField_button" HorizontalAlignment="Left" Margin="232,22,0,0" Grid.Row="2" VerticalAlignment="Top" Width="137" Click="AddField_button_Click" ToolTip="数据库炸了概不负责。">
+            <Image x:Name="image" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="137" Source="/ESO_LangEditor;component/Media/20200211200615.jpg"/>
+        </Button>
 
 
 
