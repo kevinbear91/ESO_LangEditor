@@ -9,7 +9,7 @@ namespace ESO_Lang_Editor.View
     /// <para>int ID_Index 为索引列</para>
     /// <para>string Text_EN 为英语原文</para>
     /// <para>string Text_SC 为译文</para>
-    /// <para>int isTranslated, 0 - 未翻译， 1 - 已翻译， 2 - 导入的已翻译文本</para>
+    /// <para>int isTranslated, 0 - 未翻译， 1 - 已翻译， 2 - 导入的已翻译文本， 3 - 已修改内容已翻译</para>
     /// <para>int RowStats, 0 - 原始存在， 10 - 新增内容， 20 - 已修改内容， 30 - 已删除内容， 40 - 修改前的内容</para>
     /// <para>string UpdateStats, 哪个版本做出的修改</para>
     /// </summary>

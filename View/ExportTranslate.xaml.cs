@@ -28,11 +28,19 @@ namespace ESO_Lang_Editor.View
                 SearchData = null;
             Translated_DataGrid.Items.Clear();
 
-            SearchData = DBFile.SearchData("1", 3);
+            SearchData = DBFile.SearchData("1", 3, false);
 
             foreach (var data in SearchData)
             {
-                data.isTranslated = 2;
+                if (data.isTranslated == 1 && data.RowStats == 20)
+                {
+                    data.isTranslated = 3;
+                }
+                else
+                {
+                    data.isTranslated = 2;
+                }
+                
                 Translated_DataGrid.Items.Add(data);
             }
             Status_textBlock.Text = "总计搜索到" + Translated_DataGrid.Items.Count + "条结果。";

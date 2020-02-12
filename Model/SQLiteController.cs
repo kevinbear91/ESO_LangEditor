@@ -148,10 +148,15 @@ namespace ESO_Lang_Editor.Model
         }
 
 
-        public List<LangSearchModel> SearchData(string CsvContent, int SearchField)
+        public List<LangSearchModel> SearchData(string CsvContent, int SearchField, bool SearchAbandonContent)
         {
             var _LangViewData = new List<LangSearchModel>();
             string fieldName;
+            string rowStatsInt = " AND RowStats < 30";
+
+            if (SearchAbandonContent)
+                rowStatsInt = "";
+
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
@@ -192,10 +197,10 @@ namespace ESO_Lang_Editor.Model
 
                     foreach (var t in tableName)
                     {
-                        cmd.CommandText = "SELECT * FROM " + t 
-                            + " WHERE " + fieldName 
-                            + " AND RowStats IN ( 0, 10, 20 )"
-                            + " LIKE @SEARCH";
+                        cmd.CommandText = "SELECT * FROM " + t
+                            + " WHERE " + fieldName
+                            + " LIKE @SEARCH"
+                            + rowStatsInt;
                         cmd.Parameters.AddWithValue("@SEARCH", CsvContent);     //遍历全库查询要搜索在任意位置的文本
                         sr = cmd.ExecuteReader();
 

@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="ESO文本查询编辑器" Height="450" Width="800" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="ESO文本查询编辑器" Height="469" Width="800" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="31"/>
-            <RowDefinition Height="55"/>
-            <RowDefinition Height="299"/>
-            <RowDefinition Height="36"/>
+            <RowDefinition Height="76"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="32"/>
         </Grid.RowDefinitions>
 
         <Canvas Grid.Row="0">
@@ -45,6 +45,7 @@
             <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" RenderTransformOrigin="0.2,0.609" Click="SearchButton_Click"/>
             <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" />
             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90"/>
+            <CheckBox x:Name="SearchAbandon_checkBox" Content="搜索废弃内容" Canvas.Left="483" Canvas.Top="51" ToolTip="与废弃内容一起搜索（例如已经删除的文本）" Checked="SearchAbandon_checkBox_Checked" Unchecked="SearchAbandon_checkBox_Unchecked"/>
         </Canvas>
 
         <Canvas Grid.Row="2">
@@ -56,7 +57,7 @@
                     <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="300" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="300"/>
                 </DataGrid.Columns>
-                
+
             </DataGrid>
         </Canvas>
         <Canvas Grid.Row="3">

@@ -135,15 +135,28 @@ namespace ESO_Lang_Editor.View
 
         private void SetEditDataTextBlocks(LangSearchModel Data)
         {
+            string modifyInfo = "，编辑信息：正常.";
+
+            if (Data.isTranslated == 2 && Data.RowStats == 20)
+                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
+
+            if (Data.isTranslated == 3 && Data.RowStats == 20)
+                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+
+            if (Data.RowStats == 30)
+                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本删除，请勿编辑。";
+
+
             EditData = Data;
 
             textBox_EN.Text = Data.Text_EN;
             textBox_ZH.Text = Data.Text_SC;
-            textblock_information.Text = "当前表：" + Data.ID_Table
-                    //+ "，数据库索引：" + EditData.IndexDB 
-                    + "，类型：" + IDtypeName.GetCategory(Data.ID_Type.ToString())    //EditData.ID_Type  
+            textblock_information.Text = //"当前表：" + Data.ID_Table
+                                         //+ "，数据库索引：" + EditData.IndexDB 
+                    "类型：" + IDtypeName.GetCategory(Data.ID_Type.ToString())    //EditData.ID_Type  
                     + "，未知列：" + Data.ID_Unknown
-                    + "，文本索引：" + Data.ID_Index + "。";
+                    + "，文本索引：" + Data.ID_Index
+                    + modifyInfo;
         }
 
         private LangSearchModel SetEditedData()

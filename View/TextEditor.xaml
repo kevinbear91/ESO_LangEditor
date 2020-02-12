@@ -16,11 +16,11 @@
             <RowDefinition Height="29*"/>
             <RowDefinition Height="25*"/>
             <RowDefinition Height="160*"/>
-            <RowDefinition Height="17*"/>
-            <RowDefinition Height="25*"/>
-            <RowDefinition Height="161*"/>
-            <RowDefinition Height="40*"/>
-            <RowDefinition Height="15*"/>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="21*"/>
+            <RowDefinition Height="159*"/>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="31*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
 
@@ -64,7 +64,7 @@
         </Canvas>
 
         <Canvas  Grid.Row="7" Grid.ColumnSpan="3">
-            <TextBlock x:Name="textblock_information" Canvas.Left="20" TextWrapping="Wrap" Text="TextBlock" Width="470"/>
+            <TextBlock x:Name="textblock_information" Canvas.Left="20" TextWrapping="Wrap" Text="TextBlock" Width="470" Height="31"/>
 
         </Canvas>
 

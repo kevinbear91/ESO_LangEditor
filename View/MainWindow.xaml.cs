@@ -23,6 +23,8 @@ namespace ESO_Lang_Editor.View
         ObservableCollection<string> searchTextInPosition;
         ObservableCollection<string> searchTextType;
 
+        bool Searchabandon = false;
+
         public MainWindow()
         {
             //windowsOptions = new MainWindowOption();
@@ -48,7 +50,7 @@ namespace ESO_Lang_Editor.View
             var DBFile = new SQLiteController();
             SearchData = null;
 
-            var da1 = DBFile.SearchData(SearchBarText, SearchField());
+            var da1 = DBFile.SearchData(SearchBarText, SearchField(), Searchabandon);
 
             return da1;
         }
@@ -343,6 +345,13 @@ namespace ESO_Lang_Editor.View
             ToCHT();
         }
 
+        private void DatabaseModiy_Click(object sender, RoutedEventArgs e)
+        {
+            var databaseWindow = new DatabaseModifyWindow();
+
+            databaseWindow.Show();
+        }
+
         private void ToLang()
         {
             ProcessStartInfo startInfo = new ProcessStartInfo();
@@ -395,6 +404,17 @@ namespace ESO_Lang_Editor.View
             MessageBox.Show("完成！");
         }
 
+        private void SearchAbandon_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Searchabandon = true;
+        }
+
+        private void SearchAbandon_checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Searchabandon = false;
+        }
+
+        /*
         private void SetTranslate_Click(object sender, RoutedEventArgs e)
         {
             var DBFile = new SQLiteController();
@@ -429,11 +449,7 @@ namespace ESO_Lang_Editor.View
             DBFile.FieldAdd("RowStats", "int", 0);
         }
 
-        private void DatabaseModiy_Click(object sender, RoutedEventArgs e)
-        {
-            var databaseWindow = new DatabaseModifyWindow();
-
-            databaseWindow.Show();
-        }
+        
+        */
     }
 }
