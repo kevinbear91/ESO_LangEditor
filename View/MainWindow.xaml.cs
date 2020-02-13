@@ -1,5 +1,6 @@
 ﻿using ESO_Lang_Editor.Model;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -24,20 +25,28 @@ namespace ESO_Lang_Editor.View
         ObservableCollection<string> searchTextType;
 
         bool Searchabandon = false;
+        
 
         public MainWindow()
         {
             //windowsOptions = new MainWindowOption();
             //DataContext = windowsOptions;
             InitializeComponent();
+            SearchTextBox.IsEnabled = false;
+            SearchButton.IsEnabled = false;
+
+
             SearchTextInPositionInit();
             SearchTextTypeInit();
+            
 
             string version = " Alpha 0.2 - 897a27ab";
 
             Title = "ESO文本查询编辑器" + version;
 
             textBlock_Info.Text = "";
+            
+            UpdatedDB_Check();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -135,29 +144,9 @@ namespace ESO_Lang_Editor.View
 
         private void CreateDB_Click(object sender, RoutedEventArgs e)
         {
-
             var createDBWindow = new CreateDB_ImportCSV();
 
             createDBWindow.Show();
-
-            /*
-            OpenFileDialog dialog = new OpenFileDialog();
-            //dialog.Filter = "csv (*.csv)|.csv";
-            if (dialog.ShowDialog(this) == true)
-            {
-                if (dialog.FileName.EndsWith(".csv"))
-                {
-                    
-
-                }
-                else
-                {
-                    MessageBox.Show("仅支持读取 .csv 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //textBoxName.Text = "";
-                }
-            }
-            */
-
 
         }
 
@@ -249,8 +238,6 @@ namespace ESO_Lang_Editor.View
         private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             textBlock_SelectionInfo.Text = "已选择 " + LangSearch.SelectedItems.Count + " 条文本";
-
-
 
         }
 
@@ -412,6 +399,88 @@ namespace ESO_Lang_Editor.View
         private void SearchAbandon_checkBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Searchabandon = false;
+        }
+
+        private void UpdatedDB_Check()
+        {
+            string csvDataPath = @"Data\CsvData.db";
+            string csvDataUpdatePath = @"Data\CsvData.update";
+
+            if (File.Exists(csvDataPath) && File.Exists(csvDataUpdatePath))
+            {
+                var DBFile = new SQLiteController();
+                SearchData = DBFile.SearchData("1", 3, false);
+
+                if (SearchData.Count >= 1)
+                {
+                    foreach (var data in SearchData)
+                    {
+                        if (data.isTranslated == 1 && data.RowStats == 20)
+                        {
+                            data.isTranslated = 3;
+                        }
+                        else
+                        {
+                            data.isTranslated = 2;
+                        }
+                    }
+
+                    var exportTranslate = new ExportFromDB();
+                    string exportPath = exportTranslate.ExportTranslateDB(SearchData);
+
+                    if (File.Exists(exportPath))
+                    {
+                        MessageBox.Show("新版本已有更新的数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
+                            + Environment.NewLine
+                            + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！", 
+                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        File.Delete(csvDataPath);
+                        File.Move(csvDataUpdatePath, csvDataPath);
+                        File.Delete(csvDataUpdatePath);
+
+                        SearchTextBox.IsEnabled = true;
+                        SearchButton.IsEnabled = true;
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("新版本已有更新的数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    File.Delete(csvDataPath);
+                    File.Move(csvDataUpdatePath, csvDataPath);
+                    File.Delete(csvDataUpdatePath);
+
+                    SearchTextBox.IsEnabled = true;
+                    SearchButton.IsEnabled = true;
+                }
+                
+            }
+            else if (File.Exists(csvDataPath))
+            {
+                SearchTextBox.IsEnabled = true;
+                SearchButton.IsEnabled = true;
+            }
+            else if (File.Exists(csvDataUpdatePath))
+            {
+                File.Move(csvDataUpdatePath, csvDataPath);
+                File.Delete(csvDataUpdatePath);
+
+                SearchTextBox.IsEnabled = true;
+                SearchButton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         /*

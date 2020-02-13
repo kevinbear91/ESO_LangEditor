@@ -48,20 +48,14 @@ namespace ESO_Lang_Editor.View
 
         private void ExportTranslate_Button_Click(object sender, RoutedEventArgs e)
         {
-            var connDB = new SQLiteController();
-            string number = GetRandomNumber();
+            var exportTranslate = new ExportFromDB();
 
-            if (!Directory.Exists("Export"))
-                Directory.CreateDirectory("Export");
-
-            string dbPath = @"Export\Translate_" + number + ".db";
-
-            connDB.CreateTranslateDBwithData(SearchData, dbPath);
+            string exportPath = exportTranslate.ExportTranslateDB(SearchData);
 
 
-            if (File.Exists(dbPath))
+            if (File.Exists(exportPath))
             {
-                MessageBox.Show("导出成功，请将 " + dbPath + " 发送给校对或导入人员。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("导出成功，请将 " + exportPath + " 发送给校对或导入人员。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
@@ -75,11 +69,6 @@ namespace ESO_Lang_Editor.View
             this.Close();
         }
 
-        private string GetRandomNumber()
-        {
-            Random rnd = new Random();
-            string number = rnd.Next(1234, 9876).ToString();
-            return number;
-        }
+        
     }
 }

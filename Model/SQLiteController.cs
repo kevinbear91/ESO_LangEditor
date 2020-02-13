@@ -23,15 +23,7 @@ namespace ESO_Lang_Editor.Model
             {
                 SQLiteConnection.CreateFile(csvDataPath);
             }
-            try
-            {
-                Conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;");
-                Conn.Open();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("打开数据库：" + csvDataPath + "的连接失败：" + ex.Message);
-            }
+
         }
 
         public void CreateTable(int CsvID)
@@ -221,7 +213,7 @@ namespace ESO_Lang_Editor.Model
                         }
                         sr.Close();
                     }
-
+                    //conn.Close();
                 }
                 catch (Exception ex)
                 {
@@ -276,7 +268,7 @@ namespace ESO_Lang_Editor.Model
                         }
                         sr.Close();
                     }
-
+                    conn.Close();
                 }
                 catch (Exception ex)
                 {
@@ -886,6 +878,7 @@ namespace ESO_Lang_Editor.Model
             {
                 SQLiteConnection.CreateFile(TranselatedDBPath);
             }
+            /*
             try
             {
                 Conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;");
@@ -895,7 +888,7 @@ namespace ESO_Lang_Editor.Model
             {
                 throw new Exception("打开数据库：" + TranselatedDBPath + "的连接失败：" + ex.Message);
             }
-
+            */
 
             foreach (var table in CsvContent)
             {
