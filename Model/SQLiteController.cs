@@ -797,8 +797,8 @@ namespace ESO_Lang_Editor.Model
                     foreach (var line in CsvContent)
                     {
                         cmd.CommandText = "UPDATE ID_" + ToInt32(line.ID_Type) 
-                            + " SET isTranslated=@isTranslated "
-                            + "WHERE (ID_Unknown='" + ToInt32(line.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
+                            + " SET Text_SC=@Text_SC,isTranslated=@isTranslated"
+                            + " WHERE (ID_Unknown='" + ToInt32(line.ID_Unknown)              //Unknown + Index 才是唯一，只有Index会数据污染。
                             + "'AND ID_Index='" + ToInt32(line.ID_Index) + "')";
                         cmd.Parameters.AddRange(new[]
                         {

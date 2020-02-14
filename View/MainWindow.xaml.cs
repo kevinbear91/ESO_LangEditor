@@ -40,7 +40,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " Alpha 0.2 - 897a27ab";
+            string version = " beta 0.8 - 6843a764";
 
             Title = "ESO文本查询编辑器" + version;
 
