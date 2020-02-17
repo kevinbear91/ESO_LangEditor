@@ -30,6 +30,7 @@
                 </MenuItem>
                 <MenuItem Header="高级">
                     <MenuItem Header="数据库调整" Click="DatabaseModiy_Click"/>
+                    <MenuItem Header="str" Click="str_Click"/>
                 </MenuItem>
                 <MenuItem Header="帮助">
                     <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>

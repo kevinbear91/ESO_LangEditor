@@ -483,6 +483,12 @@ namespace ESO_Lang_Editor.View
 
         }
 
+        private void str_Click(object sender, RoutedEventArgs e)
+        {
+            var str = new strFile();
+            str.ParserLua();
+        }
+
         /*
         private void SetTranslate_Click(object sender, RoutedEventArgs e)
         {

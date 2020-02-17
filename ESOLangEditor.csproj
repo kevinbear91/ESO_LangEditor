@@ -106,6 +106,7 @@
     <Compile Include="Model\FileModel_IntoDB.cs" />
     <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
+    <Compile Include="Model\strFile.cs" />
     <Compile Include="View\CompareWithDBWindow.xaml.cs">
       <DependentUpon>CompareWithDBWindow.xaml</DependentUpon>
     </Compile>
