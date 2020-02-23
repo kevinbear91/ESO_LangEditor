@@ -16,7 +16,7 @@ namespace ESO_Lang_Editor.Model
 
             var connDB = new SQLiteController();
 
-            var dbData = connDB.FullSearchData();
+            var dbData = connDB.FullSearchData(false);
 
             if (!Directory.Exists("_tmp"))
                 Directory.CreateDirectory("_tmp");
@@ -55,7 +55,7 @@ namespace ESO_Lang_Editor.Model
         {
             var outputFile = new List<string>();
             var connDB = new SQLiteController();
-            var dbData = connDB.FullSearchData();
+            var dbData = connDB.FullSearchData(false);
 
             if (!Directory.Exists("_tmp"))
                 Directory.CreateDirectory("_tmp");

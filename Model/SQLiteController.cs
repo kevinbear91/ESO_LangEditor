@@ -224,9 +224,16 @@ namespace ESO_Lang_Editor.Model
 
         }
 
-        public List<LangSearchModel> FullSearchData()
+        public List<LangSearchModel> FullSearchData(bool SearchAbandonContent)
         {
             var _LangViewData = new List<LangSearchModel>();
+
+            string rowStatsInt = "RowStats < 30";
+
+            if (SearchAbandonContent)
+                rowStatsInt = "";
+
+
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
@@ -248,7 +255,8 @@ namespace ESO_Lang_Editor.Model
 
                     foreach (var t in tableName)
                     {
-                        cmd.CommandText = "SELECT * FROM " + t;
+                        cmd.CommandText = "SELECT * FROM " + t 
+                            + " WHERE " + rowStatsInt;
                         sr = cmd.ExecuteReader();
 
                         while (sr.Read())
@@ -1010,5 +1018,6 @@ namespace ESO_Lang_Editor.Model
             }
 
         }
+
     }
 }

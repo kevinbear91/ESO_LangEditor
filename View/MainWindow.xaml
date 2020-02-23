@@ -18,19 +18,20 @@
             <Menu x:Name="menu" Canvas.Top="7" Canvas.Left="3">
                 <MenuItem Header="导入">
                     <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"/>
-                    <MenuItem Header="创建数据库" Click="CreateDB_Click"/>
                     <MenuItem Header="CSV与数据库对比" Click="CsvCompareWithDB_Click"/>
+                    <MenuItem Header="Lua与数据库对比" Click="LuaCompareWithDB_Click"/>
                 </MenuItem>
                 <MenuItem Header="导出">
                     <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
                     <MenuItem Header="导出至转换文本" Click="ExportToText_Click"/>
                     <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
-                    <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
-                    <MenuItem Header="简体文本转换至繁体" Click="ExportToCHT_Click"/>
                 </MenuItem>
                 <MenuItem Header="高级">
+                    <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
+                    <MenuItem Header="简体文本转换至繁体" Click="ExportToCHT_Click"/>
+                    <MenuItem Header="创建数据库" Click="CreateDB_Click"/>
+                    <MenuItem Header="创建UI Str数据库" Click="CreateStrDB_Click"/>
                     <MenuItem Header="数据库调整" Click="DatabaseModiy_Click"/>
-                    <MenuItem Header="str" Click="str_Click"/>
                 </MenuItem>
                 <MenuItem Header="帮助">
                     <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>

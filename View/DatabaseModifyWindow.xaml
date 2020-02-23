@@ -9,10 +9,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35*"/>
-            <RowDefinition Height="67*"/>
-            <RowDefinition Height="169*"/>
+            <RowDefinition Height="92*"/>
+            <RowDefinition Height="144*"/>
         </Grid.RowDefinitions>
-        <GroupBox x:Name="groupBox" Header="增加字段" HorizontalAlignment="Left" Height="57" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="574">
+        <GroupBox x:Name="groupBox" Header="增加字段" HorizontalAlignment="Left" Height="82" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="574">
             <Canvas>
                 <TextBox x:Name="FieldNameInput_textBox" HorizontalAlignment="Left" Height="18" TextWrapping="Wrap" VerticalAlignment="Top" Width="80" Canvas.Left="65" Canvas.Top="8"/>
                 <TextBlock x:Name="FieldName_textBlock" Canvas.Left="7" TextWrapping="Wrap" Text="字段名：" Canvas.Top="10"/>
@@ -20,12 +20,14 @@
                 <TextBlock x:Name="InitContent_textBlock" Canvas.Left="172" TextWrapping="Wrap" Text="初始值：" Canvas.Top="10"/>
                 <ComboBox x:Name="InputType_comboBox" Canvas.Left="336" Canvas.Top="7" Width="80"/>
                 <Button x:Name="AddField_button_disabled" Content="执行" Canvas.Left="452" Canvas.Top="8" Width="75" Click="AddField_button_Click" IsEnabled="False"/>
+                <CheckBox x:Name="ToStrDB_checkBox" Content="增加到Str数据库" Canvas.Left="172" Canvas.Top="42" Checked="ToStrDB_checkBox_Checked" Unchecked="ToStrDB_checkBox_Unchecked"/>
+                <ComboBox x:Name="StrDBTableName_comboBox" Canvas.Left="336" Canvas.Top="39" Width="80"/>
 
 
             </Canvas>
         </GroupBox>
-        <Button x:Name="AddField_button" HorizontalAlignment="Left" Margin="232,22,0,0" Grid.Row="2" VerticalAlignment="Top" Width="137" Click="AddField_button_Click" ToolTip="数据库炸了概不负责。">
-            <Image x:Name="image" HorizontalAlignment="Left" Height="130" VerticalAlignment="Top" Width="137" Source="/ESO_LangEditor;component/Media/20200211200615.jpg"/>
+        <Button x:Name="AddField_button" HorizontalAlignment="Left" Margin="232,22,0,0" Grid.Row="2" VerticalAlignment="Top" Width="104" Click="AddField_button_Click" ToolTip="数据库炸了概不负责。" Height="100">
+            <Image x:Name="image" HorizontalAlignment="Left" Height="106" VerticalAlignment="Top" Width="99" Source="/ESO_LangEditor;component/Media/20200211200615.jpg"/>
         </Button>
 
 

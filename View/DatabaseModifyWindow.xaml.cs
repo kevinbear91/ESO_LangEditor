@@ -23,13 +23,15 @@ namespace ESO_Lang_Editor.View
     public partial class DatabaseModifyWindow : Window
     {
         ObservableCollection<string> addFieldType;
-        
+        ObservableCollection<string> StrDBName;
+
 
         public DatabaseModifyWindow()
         {
             InitializeComponent();
 
             AddFieldTypeComboxInit();
+            StrDBNameComboxInit();
         }
 
         private void AddFieldTypeComboxInit()
@@ -43,6 +45,19 @@ namespace ESO_Lang_Editor.View
             InputType_comboBox.SelectedIndex = 0;
 
         }
+        private void StrDBNameComboxInit()
+        {
+            StrDBName = new ObservableCollection<string>();
+
+            StrDBName.Add("PreGame");
+            StrDBName.Add("Client");
+
+            StrDBTableName_comboBox.ItemsSource = StrDBName;
+            StrDBTableName_comboBox.SelectedIndex = 0;
+
+            StrDBTableName_comboBox.IsEnabled = false;
+
+        }
 
         private void AddField_button_Click(object sender, RoutedEventArgs e)
         {
@@ -50,28 +65,55 @@ namespace ESO_Lang_Editor.View
             string initContent = InitContentInput_textBox.Text;
             int seletedType = InputType_comboBox.SelectedIndex;
 
-            var DBFile = new SQLiteController();
-
-
+            
             if (fieldName != "" && !fieldName.Contains(" ") && initContent != "" && !initContent.Contains(" "))
             {
-                if (seletedType == 0)
+                if (ToStrDB_checkBox.IsChecked == true)
                 {
-                    if (IsTextAllowed(initContent))
+                    var strDB = new UIstrFile();
+                    string tableName = StrDBTableName_comboBox.SelectedItem.ToString();
+
+                    if (seletedType == 0)
                     {
-                        DBFile.FieldAdd(fieldName, "int", System.Convert.ToInt32(initContent));
-                        Console.WriteLine("字段名：{0}, 类型：int, 初始内容：{1}，创建成功。", fieldName, initContent);
+                        if (IsTextAllowed(initContent))
+                        {
+                            strDB.FieldAdd(fieldName, "int", Convert.ToInt32(initContent), tableName);
+                            Console.WriteLine("字段名：{0}, 类型：int, 初始内容：{1}，创建成功。", fieldName, initContent);
+                        }
+                        else
+                        {
+                            MessageBox.Show("非 int 类型的初始内容请选择 string，如为 int 请仅输入半角数字！", "警告",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
                     }
                     else
                     {
-                        MessageBox.Show("非 int 类型的初始内容请选择 string，如为 int 请仅输入半角数字！", "警告",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                        strDB.FieldAdd(fieldName, "string", initContent, tableName);
+                        Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。", fieldName, initContent);
                     }
                 }
                 else
                 {
-                    DBFile.FieldAdd(fieldName, "string", initContent);
-                    Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。", fieldName, initContent);
+                    var DBFile = new SQLiteController();
+
+                    if (seletedType == 0)
+                    {
+                        if (IsTextAllowed(initContent))
+                        {
+                            DBFile.FieldAdd(fieldName, "int", Convert.ToInt32(initContent));
+                            Console.WriteLine("字段名：{0}, 类型：int, 初始内容：{1}，创建成功。", fieldName, initContent);
+                        }
+                        else
+                        {
+                            MessageBox.Show("非 int 类型的初始内容请选择 string，如为 int 请仅输入半角数字！", "警告",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                    else
+                    {
+                        DBFile.FieldAdd(fieldName, "string", initContent);
+                        Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。", fieldName, initContent);
+                    }
                 }
             }
             else
@@ -80,14 +122,22 @@ namespace ESO_Lang_Editor.View
                         MessageBoxButton.OK, MessageBoxImage.Warning);
             }
 
-            
-
         }
 
         private static readonly Regex _regex = new Regex("[^0-9.-]+");
         private static bool IsTextAllowed(string text)
         {
             return !_regex.IsMatch(text);
+        }
+
+        private void ToStrDB_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            StrDBTableName_comboBox.IsEnabled = true;
+        }
+
+        private void ToStrDB_checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            StrDBTableName_comboBox.IsEnabled = false;
         }
     }
 }

@@ -106,12 +106,18 @@
     <Compile Include="Model\FileModel_IntoDB.cs" />
     <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
-    <Compile Include="Model\strFile.cs" />
+    <Compile Include="Model\UIstrFile.cs" />
+    <Compile Include="View\CompareLuaWithDBWindow.xaml.cs">
+      <DependentUpon>CompareLuaWithDBWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CompareWithDBWindow.xaml.cs">
       <DependentUpon>CompareWithDBWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CompareCsvWindow.xaml.cs">
       <DependentUpon>CompareCsvWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CreateDB_ImportLua.xaml.cs">
+      <DependentUpon>CreateDB_ImportLua.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\CreateDB_ImportCSV.xaml.cs">
       <DependentUpon>CreateDB_ImportCSV.xaml</DependentUpon>
@@ -129,6 +135,10 @@
     <Compile Include="View\TextEditor.xaml.cs">
       <DependentUpon>TextEditor.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\CompareLuaWithDBWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\CompareWithDBWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -136,6 +146,10 @@
     <Page Include="View\CompareCsvWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CreateDB_ImportLua.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CreateDB_ImportCSV.xaml">
       <SubType>Designer</SubType>
@@ -218,6 +232,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Media\20200211200615.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Media\FontLib.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

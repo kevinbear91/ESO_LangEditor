@@ -485,8 +485,20 @@ namespace ESO_Lang_Editor.View
 
         private void str_Click(object sender, RoutedEventArgs e)
         {
-            var str = new strFile();
-            str.ParserLua();
+            var str = new UIstrFile();
+            //str.createDB();
+        }
+
+        private void CreateStrDB_Click(object sender, RoutedEventArgs e)
+        {
+            var createStrDB = new CreateDB_ImportLua();
+            createStrDB.Show();
+        }
+
+        private void LuaCompareWithDB_Click(object sender, RoutedEventArgs e)
+        {
+            var compareluaWindow = new CompareLuaWithDBWindow();
+            compareluaWindow.Show();
         }
 
         /*
