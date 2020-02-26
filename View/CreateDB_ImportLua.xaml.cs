@@ -63,16 +63,24 @@ namespace ESO_Lang_Editor.View
 
         private void Import_button_Click(object sender, RoutedEventArgs e)
         {
-            UIstrFile fileParser = new UIstrFile();
             string DBname = ImportDBName_comboBox.SelectedItem.ToString();
+            string updateStats = UpdateStats_textBox.Text;
 
-            var Lua_EN = fileParser.ParserLua(ImportPathEN_textBox.Text);
-            var Str_CN = fileParser.ParserStr(ImportPathCN_textBox.Text);
+            if (updateStats == "" || updateStats == " " || updateStats == null)
+            {
+                MessageBox.Show("初始版本号不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                UI_StrController fileParser = new UI_StrController();
 
-            fileParser.createDB(Lua_EN, Str_CN, DBname);
+                var Lua_EN = fileParser.ParserLua(ImportPathEN_textBox.Text);
+                var Str_CN = fileParser.ParserStr(ImportPathCN_textBox.Text);
 
-            MessageBox.Show("创建完成！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-           
+                fileParser.createDB(Lua_EN, Str_CN, DBname, updateStats);
+
+                MessageBox.Show("创建完成！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
     }
 }

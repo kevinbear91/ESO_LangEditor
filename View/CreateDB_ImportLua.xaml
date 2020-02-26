@@ -29,8 +29,10 @@
         </Canvas>
 
         <Canvas Grid.Row="3">
-            <TextBlock x:Name="ImportDBName_textBlock" Canvas.Left="21" TextWrapping="Wrap" Text="数据库名："  Height="17" Width="91" VerticalAlignment="Bottom" Canvas.Top="14"/>
-            <ComboBox x:Name="ImportDBName_comboBox" Canvas.Left="112" Canvas.Top="14" Width="120"/>
+            <TextBlock x:Name="ImportDBName_textBlock" Canvas.Left="21" TextWrapping="Wrap" Text="数据库名："  Height="17" Width="91" VerticalAlignment="Bottom" Canvas.Top="15"/>
+            <ComboBox x:Name="ImportDBName_comboBox" Canvas.Left="112" Canvas.Top="13" Width="120"/>
+            <TextBlock x:Name="textBlock" Canvas.Left="267" TextWrapping="Wrap" Text="版本号：" Canvas.Top="16"/>
+            <TextBox x:Name="UpdateStats_textBox" Height="23" Canvas.Left="339" TextWrapping="Wrap" Canvas.Top="12" Width="120" ToolTip="string类型，比如可以输入Update24"/>
 
         </Canvas>
         <Button x:Name="Import_button" Content="导入并创建" HorizontalAlignment="Left" Margin="211,37,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75" Click="Import_button_Click" Height="19"/>

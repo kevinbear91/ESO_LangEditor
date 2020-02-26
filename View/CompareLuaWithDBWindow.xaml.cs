@@ -13,7 +13,7 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class CompareLuaWithDBWindow : Window
     {
-        UIstrFile LuaParser = new UIstrFile();
+        UI_StrController LuaParser = new UI_StrController();
         private Dictionary<string, string> NewDict;
         private Dictionary<string, string> langData;
         public ObservableCollection<string> compareOptions { get; set; }

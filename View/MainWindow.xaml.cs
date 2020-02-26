@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Data;
 
 namespace ESO_Lang_Editor.View
 {
@@ -20,6 +21,11 @@ namespace ESO_Lang_Editor.View
         List<LangSearchModel> SearchData;
         List<LangSearchModel> SelectedDatas;
         LangSearchModel SelectedData;
+
+        UIstrFile SelectedStrData;
+        List<UIstrFile> searchStrData;
+        List<UIstrFile> SelectedStrDatas;
+        private bool isStr;
 
         ObservableCollection<string> searchTextInPosition;
         ObservableCollection<string> searchTextType;
@@ -45,13 +51,72 @@ namespace ESO_Lang_Editor.View
             Title = "ESO文本查询编辑器" + version;
 
             textBlock_Info.Text = "";
-            
+
+            //LangSearch.AutoGeneratingColumn += LangDataGridAutoGenerateColumns;
+
+            GeneratingColumns(false);
+
             UpdatedDB_Check();
+        }
+
+
+        private void GeneratingColumns(bool isStr)
+        {
+            if (isStr)
+            {
+                DataGridTextColumn c1 = new DataGridTextColumn();
+                c1.Header = "UI ID";
+                c1.Binding = new Binding("UI_ID");
+                c1.Width = 200;
+                LangSearch.Columns.Add(c1);
+
+                DataGridTextColumn c2 = new DataGridTextColumn();
+                c2.Header = "英文";
+                c2.Width = 200;
+                c2.Binding = new Binding("UI_EN");
+                LangSearch.Columns.Add(c2);
+
+                DataGridTextColumn c3 = new DataGridTextColumn();
+                c3.Header = "汉化";
+                c3.Width = 200;
+                c3.Binding = new Binding("UI_ZH");
+                LangSearch.Columns.Add(c3);
+            }
+            else
+            {
+                DataGridTextColumn c1 = new DataGridTextColumn();
+                c1.Header = "文本ID";
+                c1.Binding = new Binding("ID_Type");
+                c1.Width = 110;
+                LangSearch.Columns.Add(c1);
+
+                DataGridTextColumn c2 = new DataGridTextColumn();
+                c2.Header = "英文";
+                c2.Width = 200;
+                c2.Binding = new Binding("Text_EN");
+                LangSearch.Columns.Add(c2);
+
+                DataGridTextColumn c3 = new DataGridTextColumn();
+                c3.Header = "汉化";
+                c3.Width = 200;
+                c3.Binding = new Binding("Text_SC");
+                LangSearch.Columns.Add(c3);
+            }
+
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            SearchDB();
+
+            if (SearchStr_checkBox.IsChecked == true)
+            {
+                SearchStrDB();
+            }
+            else
+            {
+                SearchDB();
+            }
+            
         }
 
         public List<LangSearchModel> SearchLang(string SearchBarText)
@@ -59,9 +124,20 @@ namespace ESO_Lang_Editor.View
             var DBFile = new SQLiteController();
             SearchData = null;
 
-            var da1 = DBFile.SearchData(SearchBarText, SearchField(), Searchabandon);
+            var data = DBFile.SearchData(SearchBarText, SearchField(), Searchabandon);
 
-            return da1;
+            return data;
+        }
+
+        public List<UIstrFile> SearchStr(string SearchBarText)
+        {
+            var uiStr = new UI_StrController();
+
+            searchStrData = null;
+
+            var data = uiStr.SearchData(SearchBarText, SearchField(), Searchabandon);
+
+            return data;
         }
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -79,10 +155,21 @@ namespace ESO_Lang_Editor.View
                 if (target is DataGridRow)
                     if (datagrid.SelectedIndex != -1)
                     {
-                        SelectedData = (LangSearchModel)datagrid.SelectedItem;
-                        TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
-                        textEditor.Show();
-                        //MessageBox.Show(data.Text_SC);
+                        if (isStr)
+                        {
+                            SelectedStrData = (UIstrFile)datagrid.SelectedItem;
+                            TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
+                            textEditor.Show();
+                            //MessageBox.Show(data.Text_SC);
+                        }
+                        else
+                        {
+                            SelectedData = (LangSearchModel)datagrid.SelectedItem;
+                            TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
+                            textEditor.Show();
+                            //MessageBox.Show(data.Text_SC);
+                        }
+
 
                     }
 
@@ -231,7 +318,14 @@ namespace ESO_Lang_Editor.View
         {
             if (e.Key == Key.Enter && SearchTextBox.IsFocused)
             {
-                SearchDB();
+                if (SearchStr_checkBox.IsChecked == true)
+                {
+                    SearchStrDB();
+                }
+                else
+                {
+                    SearchDB();
+                }
             }
         }
 
@@ -246,23 +340,43 @@ namespace ESO_Lang_Editor.View
             DataGrid grid = (DataGrid)sender;
             var selectedItems = grid.SelectedItems;
 
-            if (SelectedDatas != null)
-                SelectedDatas.Clear();
-
-            SelectedDatas = new List<LangSearchModel>();
-
-
-
-            if (selectedItems.Count > 1)
+            if (isStr)
             {
-                foreach (var selectedItem in selectedItems)
-                {
-                    if (selectedItem != null)
-                        SelectedDatas.Add((LangSearchModel)selectedItem);
-                }
+                if (SelectedStrDatas != null)
+                    SelectedStrDatas.Clear();
 
-                TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
-                textEditor.Show();
+                SelectedStrDatas = new List<UIstrFile>();
+
+                if (selectedItems.Count > 1)
+                {
+                    foreach (var selectedItem in selectedItems)
+                    {
+                        if (selectedItem != null)
+                            SelectedStrDatas.Add((UIstrFile)selectedItem);
+                    }
+
+                    TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
+                    textEditor.Show();
+                }
+            }
+            else
+            {
+                if (SelectedDatas != null)
+                    SelectedDatas.Clear();
+
+                SelectedDatas = new List<LangSearchModel>();
+
+                if (selectedItems.Count > 1)
+                {
+                    foreach (var selectedItem in selectedItems)
+                    {
+                        if (selectedItem != null)
+                            SelectedDatas.Add((LangSearchModel)selectedItem);
+                    }
+
+                    TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
+                    textEditor.Show();
+                }
             }
 
         }
@@ -270,7 +384,7 @@ namespace ESO_Lang_Editor.View
         private void SearchDB()
         {
             MessageBoxResult result = MessageBoxResult.Cancel;
-
+            
 
             if (SearchTextBox.Text == "" || SearchTextBox.Text == " ")
             {
@@ -305,6 +419,51 @@ namespace ESO_Lang_Editor.View
                 }
 
                 foreach (var data in SearchData)
+                {
+                    LangSearch.Items.Add(data);
+                }
+                textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+            }
+        }
+
+        private void SearchStrDB()
+        {
+            MessageBoxResult result = MessageBoxResult.Cancel;
+
+
+            if (SearchTextBox.Text == "" || SearchTextBox.Text == " ")
+            {
+                result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
+                    MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            }
+            else
+            {
+                searchStrData = SearchStr(SearchCheck());
+            }
+
+            switch (result)
+            {
+                case MessageBoxResult.OK:
+                    searchStrData = SearchStr(SearchCheck());
+                    foreach (var data in searchStrData)
+                    {
+                        LangSearch.Items.Add(data);
+                    }
+                    textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+
+            if (searchStrData != null)
+            {
+                if (LangSearch.Items.Count >= 1)
+                {
+
+                    LangSearch.Items.Clear();
+                }
+
+                foreach (var data in searchStrData)
                 {
                     LangSearch.Items.Add(data);
                 }
@@ -500,6 +659,31 @@ namespace ESO_Lang_Editor.View
             var compareluaWindow = new CompareLuaWithDBWindow();
             compareluaWindow.Show();
         }
+
+        private void SearchStr_checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            LangSearch.Columns.Clear();
+            LangSearch.Items.Clear();
+
+            isStr = true;
+
+            GeneratingColumns(isStr);
+
+        }
+
+        private void SearchStr_checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            LangSearch.Columns.Clear();
+            LangSearch.Items.Clear();
+
+            isStr = false;
+
+            GeneratingColumns(isStr);
+        }
+
+
+
+
 
         /*
         private void SetTranslate_Click(object sender, RoutedEventArgs e)

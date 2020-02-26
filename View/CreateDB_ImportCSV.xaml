@@ -10,8 +10,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="40*"/>
             <RowDefinition Height="26*"/>
-            <RowDefinition Height="48*"/>
-            <RowDefinition Height="115*"/>
+            <RowDefinition Height="49*"/>
+            <RowDefinition Height="36*"/>
+            <RowDefinition Height="80*"/>
         </Grid.RowDefinitions>
         <Canvas  Grid.Row="1">
             <TextBlock x:Name="ImportEN_textBlock" Canvas.Left="21" TextWrapping="Wrap" Text="导入英文CSV：" Canvas.Top="4" Height="17" Width="91"/>
@@ -26,7 +27,12 @@
             <Button x:Name="LoadCN_button" Content="浏览……" Canvas.Left="381" Canvas.Top="19" Width="75" VerticalAlignment="Bottom" Click="LoadCN_button_Click"/>
 
         </Canvas>
-        <Button x:Name="Import_button" Content="导入并创建" HorizontalAlignment="Left" Margin="211,44,0,0" Grid.Row="3" VerticalAlignment="Top" Width="75" Click="Import_button_Click"/>
+        <Button x:Name="Import_button" Content="导入并创建" HorizontalAlignment="Left" Margin="211,19,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75" Click="Import_button_Click"/>
+        <Canvas Grid.Row="3">
+            <TextBlock x:Name="textBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="版本号：" VerticalAlignment="Top" Canvas.Left="21" Canvas.Top="13"/>
+            <TextBox x:Name="UpdateStats_textBox" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Canvas.Left="111" Canvas.Top="10" ToolTip="string类型，比如可以输入Update24"/>
+
+        </Canvas>
 
     </Grid>
 </Window>

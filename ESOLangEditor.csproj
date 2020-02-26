@@ -107,6 +107,7 @@
     <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
     <Compile Include="Model\UIstrFile.cs" />
+    <Compile Include="Model\UI_StrController.cs" />
     <Compile Include="View\CompareLuaWithDBWindow.xaml.cs">
       <DependentUpon>CompareLuaWithDBWindow.xaml</DependentUpon>
     </Compile>

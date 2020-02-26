@@ -83,7 +83,7 @@ namespace ESO_Lang_Editor.Model
                 {
                     foreach (var id in CsvID)
                     {
-                        cmd.CommandText = "CREATE TABLE ID_" + id + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text, isTranslated int)";
+                        cmd.CommandText = "CREATE TABLE ID_" + id + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text, isTranslated int, UpdateStats text)";
                         cmd.ExecuteNonQuery();
                         //Console.WriteLine("创建了{0}表", id);
                     }
@@ -116,7 +116,7 @@ namespace ESO_Lang_Editor.Model
                     foreach (var line in CsvContent)
                     {
                         cmd.CommandText = "INSERT INTO ID_" + line.stringID 
-                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated)";
+                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @UpdateStats)";
                         cmd.Parameters.AddRange(new[]
                         {
                             new SQLiteParameter("@ID_Type", line.stringID),
@@ -125,6 +125,7 @@ namespace ESO_Lang_Editor.Model
                             new SQLiteParameter("@Text_SC", line.ZH_text),
                             new SQLiteParameter("@Text_EN", line.EN_text),
                             new SQLiteParameter("@isTranslated", line.Istranslated),
+                            new SQLiteParameter("@UpdateStats", line.UpdateStats),
                         });
 
                         cmd.ExecuteNonQuery();
@@ -228,7 +229,7 @@ namespace ESO_Lang_Editor.Model
         {
             var _LangViewData = new List<LangSearchModel>();
 
-            string rowStatsInt = "RowStats < 30";
+            string rowStatsInt = " WHERE RowStats in (0,10,20)";
 
             if (SearchAbandonContent)
                 rowStatsInt = "";
@@ -256,7 +257,7 @@ namespace ESO_Lang_Editor.Model
                     foreach (var t in tableName)
                     {
                         cmd.CommandText = "SELECT * FROM " + t 
-                            + " WHERE " + rowStatsInt;
+                            + rowStatsInt;
                         sr = cmd.ExecuteReader();
 
                         while (sr.Read())
@@ -271,7 +272,8 @@ namespace ESO_Lang_Editor.Model
                                 ID_Index = sr.GetInt32(2),                 //游戏内文本Index
                                 Text_EN = sr.GetString(3),                 //英语原文
                                 Text_SC = sr.GetString(4),                 //汉化文本
-                                isTranslated = sr.GetInt32(5)              //是否已翻译
+                                isTranslated = sr.GetInt32(5),              //是否已翻译
+                                UpdateStats = sr.GetString(6),
                             });
                         }
                         sr.Close();

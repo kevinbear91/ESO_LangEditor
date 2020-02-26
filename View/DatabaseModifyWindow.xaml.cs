@@ -70,7 +70,7 @@ namespace ESO_Lang_Editor.View
             {
                 if (ToStrDB_checkBox.IsChecked == true)
                 {
-                    var strDB = new UIstrFile();
+                    var strDB = new UI_StrController();
                     string tableName = StrDBTableName_comboBox.SelectedItem.ToString();
 
                     if (seletedType == 0)

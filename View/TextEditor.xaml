@@ -32,7 +32,7 @@
 
         <Canvas Grid.Row="2" Grid.ColumnSpan="3">
             <ScrollViewer Name="sv_textBox_EN" HorizontalAlignment="Left" Height="145" Margin="20,0,0,0" VerticalAlignment="Top" Width="469">
-                <TextBox x:Name="textBox_EN" TextWrapping="Wrap" IsReadOnly="True" />
+                <TextBox x:Name="textBox_EN" TextWrapping="Wrap" />
             </ScrollViewer>
         </Canvas>
         <Canvas Grid.Row="4" Grid.ColumnSpan="3">
@@ -44,15 +44,13 @@
             <ScrollViewer Name="sv_textBox_ZH" HorizontalAlignment="Left" Height="145" Margin="20,0,0,0" VerticalAlignment="Top" Width="469">
                 <TextBox x:Name="textBox_ZH"  TextWrapping="Wrap"  AllowDrop="False"/>
             </ScrollViewer>
-            <Expander x:Name="List_expander" Header="展开列表" HorizontalAlignment="Left" Height="394" VerticalAlignment="Top" Width="283" ExpandDirection="Right" Canvas.Left="451" Canvas.Top="-249" UseLayoutRounding="False" Expanded="List_expander_Expanded" Collapsed="List_expander_Collapsed">
+            <Expander x:Name="List_expander" Header="展开列表" HorizontalAlignment="Left" Height="394" VerticalAlignment="Top" Width="283" ExpandDirection="Right" Canvas.Left="451" Canvas.Top="-235" UseLayoutRounding="False" Expanded="List_expander_Expanded" Collapsed="List_expander_Collapsed">
                 <Grid Background="#FFE5E5E5" Margin="0,49,0,0">
-                    <DataGrid x:Name="List_dataGrid" HorizontalAlignment="Left" Height="343" VerticalAlignment="Top" Width="231" SelectionMode="Single" SelectionChanged="List_datagrid_SelectionChanged">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="50" IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="80" IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="80"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <DataGrid x:Name="List_dataGrid" HorizontalAlignment="Left" Height="343" VerticalAlignment="Top" Width="231"
+                              IsReadOnly="True"
+                              SelectionMode="Single" 
+                              SelectionChanged="List_datagrid_SelectionChanged"
+                              AutoGenerateColumns="True" />
 
                 </Grid>
             </Expander>

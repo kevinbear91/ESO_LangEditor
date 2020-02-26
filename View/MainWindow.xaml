@@ -44,23 +44,20 @@
         <Canvas  Grid.Row="1">
             <Label x:Name="label" Content="文本：" Margin="10,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>
             <TextBox x:Name="SearchTextBox"  Height="21" Margin="48,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="413" AllowDrop="True" VerticalContentAlignment="Center" HorizontalScrollBarVisibility="Auto" KeyDown="SearchTextBlock_EnterPress"/>
-            <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" RenderTransformOrigin="0.2,0.609" Click="SearchButton_Click"/>
+            <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" Click="SearchButton_Click"/>
             <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" />
             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90"/>
-            <CheckBox x:Name="SearchAbandon_checkBox" Content="搜索废弃内容" Canvas.Left="483" Canvas.Top="51" ToolTip="与废弃内容一起搜索（例如已经删除的文本）" Checked="SearchAbandon_checkBox_Checked" Unchecked="SearchAbandon_checkBox_Unchecked"/>
+            <CheckBox x:Name="SearchAbandon_checkBox" Content="搜索废弃内容" Canvas.Left="48" Canvas.Top="51" ToolTip="与废弃内容一起搜索（例如已经删除的文本）" Checked="SearchAbandon_checkBox_Checked" Unchecked="SearchAbandon_checkBox_Unchecked"/>
+            <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Canvas.Left="182" Canvas.Top="51" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" />
         </Canvas>
 
         <Canvas Grid.Row="2">
 
-            <DataGrid x:Name="LangSearch" AutoGenerateColumns="False" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
-                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16" SelectionChanged="LangSearchDataGrid_SelectionChanged" MouseRightButtonUp="LangSearch_MouseRightUp">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="100" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Text_EN}"  Header="英文" Width="300" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Text_SC}"  Header="汉化" Width="300"/>
-                </DataGrid.Columns>
-
-            </DataGrid>
+            <DataGrid x:Name="LangSearch" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
+                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16" 
+                      SelectionChanged="LangSearchDataGrid_SelectionChanged" 
+                      MouseRightButtonUp="LangSearch_MouseRightUp"
+                      AutoGenerateColumns="True" />
         </Canvas>
         <Canvas Grid.Row="3">
             <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="" Width="230" />
