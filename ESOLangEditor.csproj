@@ -216,9 +216,7 @@
   <ItemGroup>
     <Resource Include="ESO.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
       <Visible>False</Visible>
@@ -235,7 +233,9 @@
     <Resource Include="Media\20200211200615.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Media\FontLib.txt" />
+    <Content Include="Data\FontLib.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

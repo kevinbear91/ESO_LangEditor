@@ -681,6 +681,31 @@ namespace ESO_Lang_Editor.View
             GeneratingColumns(isStr);
         }
 
+        private void ExportToStr_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("导出UI STR内容，请选择导出数据库"
+                + Environment.NewLine
+                + "点击“是”导出Pregame，点击“否”导出Client。"
+                + Environment.NewLine
+                + "什么都不做请点取消。"
+                + Environment.NewLine
+                + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+
+            var strExport = new ExportFromDB();
+
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    strExport.ExportStrDB("Pregame");
+                    break;
+                case MessageBoxResult.No:
+                    strExport.ExportStrDB("Client");
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+        }
+
 
 
 

@@ -498,7 +498,7 @@ namespace ESO_Lang_Editor.Model
                         {
                             _LangViewData.Add(new UIstrFile
                             {
-                                //ID_Table = t.ToString(),                   
+                                UI_Table = t.ToString(),                   
                                 //IndexDB = sr.FieldCount,                   
                                 UI_ID = sr.GetString(0),
                                 UI_EN = sr.GetString(1),

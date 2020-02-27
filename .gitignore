@@ -10,7 +10,7 @@
 *.userosscache
 *.sln.docstates
 CsvTest.db
-Data/
+Data/*.db*
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

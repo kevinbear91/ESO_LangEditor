@@ -24,6 +24,7 @@
                 <MenuItem Header="导出">
                     <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
                     <MenuItem Header="导出至转换文本" Click="ExportToText_Click"/>
+                    <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
                     <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
                 </MenuItem>
                 <MenuItem Header="高级">
