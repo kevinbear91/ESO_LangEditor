@@ -110,6 +110,28 @@ namespace ESO_Lang_Editor.Model
             return dbPath;
         }
 
+        public string ExportTranslateDB(List<UIstrFile> Data)
+        {
+            var connDB = new UI_StrController();
+            string number = GetRandomNumber();
+            //List<UIstrFile> data = SearchData;
+
+            if (!Directory.Exists("Export"))
+                Directory.CreateDirectory("Export");
+
+            string dbPath = @"Export\Translate_Str_" + number + ".db";
+
+            if (File.Exists(dbPath))
+            {
+                ExportTranslateDB(Data);
+            }
+            else
+            {
+                connDB.CreateTranslateStrDBwithData(Data, dbPath);
+            }
+
+            return dbPath;
+        }
 
         public void ExportStrDB(string TableName)
         {

@@ -1,10 +1,13 @@
 ﻿using ESO_Lang_Editor.Model;
 using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.SQLite;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace ESO_Lang_Editor.View
 {
@@ -13,15 +16,74 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class ImportTranslateDB : Window
     {
-        ObservableCollection<string> IDList;
-        List<string> filePath;
-        List<LangSearchModel> SearchData;
+        private ObservableCollection<string> IDList;
+        private List<string> filePath;
+        private List<LangSearchModel> SearchData;
+        private List<UIstrFile> SearchStrData;
+
+        private bool isStr;
 
         public ImportTranslateDB()
         {
             InitializeComponent();
         }
 
+        private void GeneratingColumns(bool isStr)
+        {
+            if (isStr)
+            {
+                DataGridTextColumn c1 = new DataGridTextColumn();
+                c1.Header = "UI ID";
+                c1.Binding = new Binding("UI_ID");
+                c1.Width = 200;
+                TranslateData_dataGrid.Columns.Add(c1);
+
+                DataGridTextColumn c2 = new DataGridTextColumn();
+                c2.Header = "英文";
+                c2.Width = 200;
+                c2.Binding = new Binding("UI_EN");
+                TranslateData_dataGrid.Columns.Add(c2);
+
+                DataGridTextColumn c3 = new DataGridTextColumn();
+                c3.Header = "汉化";
+                c3.Width = 200;
+                c3.Binding = new Binding("UI_ZH");
+                TranslateData_dataGrid.Columns.Add(c3);
+            }
+            else
+            {
+                DataGridTextColumn c1 = new DataGridTextColumn();
+                c1.Header = "ID";
+                c1.Binding = new Binding("ID_Type");
+                c1.Width = 80;
+                TranslateData_dataGrid.Columns.Add(c1);
+
+                DataGridTextColumn c2 = new DataGridTextColumn();
+                c2.Header = "Unknown";
+                c2.Width = 40;
+                c2.Binding = new Binding("ID_Unknown");
+                TranslateData_dataGrid.Columns.Add(c2);
+
+                DataGridTextColumn c3 = new DataGridTextColumn();
+                c3.Header = "索引";
+                c3.Width = 50;
+                c3.Binding = new Binding("ID_Index");
+                TranslateData_dataGrid.Columns.Add(c3);
+
+                DataGridTextColumn c4 = new DataGridTextColumn();
+                c4.Header = "英文";
+                c4.Width = 100;
+                c4.Binding = new Binding("Text_EN");
+                TranslateData_dataGrid.Columns.Add(c4);
+
+                DataGridTextColumn c5 = new DataGridTextColumn();
+                c5.Header = "汉化";
+                c5.Width = 300;
+                c5.Binding = new Binding("Text_SC");
+                TranslateData_dataGrid.Columns.Add(c5);
+            }
+
+        }
 
         private void Import_button_Click(object sender, RoutedEventArgs e)
         {
@@ -57,7 +119,6 @@ namespace ESO_Lang_Editor.View
         {
             int seletedIndex = FileID_listBox.SelectedIndex;
 
-            var DBFile = new SQLiteController();
             string dbPath;
 
             if (TranslateData_dataGrid.Items.Count > 1)
@@ -68,22 +129,44 @@ namespace ESO_Lang_Editor.View
             if (filePath.Count >= 0 && seletedIndex == -1)
             {
                 dbPath = filePath.ElementAt(0);
+                DataGridSet(dbPath);
             }
             else
             {
                 dbPath = filePath.ElementAt(seletedIndex);
+                DataGridSet(dbPath);
             }
 
-
-            SearchData = DBFile.FullSearchTranslateDB(dbPath);
-
-            foreach (var data in SearchData)
+            if (isStr)
             {
-                TranslateData_dataGrid.Items.Add(data);
-            }
-            //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+                var strDB = new UI_StrController();
+                SearchStrData = strDB.FullSearchStrDB(dbPath);
 
-            TotalFiles_textBlock.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                foreach (var data in SearchStrData)
+                {
+                    TranslateData_dataGrid.Items.Add(data);
+                }
+                //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+
+                TotalFiles_textBlock.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+            }
+            else
+            {
+                var DBFile = new SQLiteController();
+                SearchData = DBFile.FullSearchTranslateDB(dbPath);
+
+                foreach (var data in SearchData)
+                {
+                    TranslateData_dataGrid.Items.Add(data);
+                }
+                //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+
+                TotalFiles_textBlock.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+            }
+            
+
+
+            
 
         }
 
@@ -106,5 +189,55 @@ namespace ESO_Lang_Editor.View
             }
 
         }
+
+        public void DataGridSet(string DBPath)
+        {
+            TranslateData_dataGrid.Columns.Clear();
+            TranslateData_dataGrid.Items.Clear();
+
+            if (CheckTableIfExist("Pregame", DBPath) || CheckTableIfExist("Client", DBPath))
+            {
+                isStr = true;
+                GeneratingColumns(true);
+            }
+            else
+            {
+                isStr = false;
+                GeneratingColumns(false);
+            }
+
+
+        }
+
+        #region  检查表是否存在
+
+        public bool CheckTableIfExist(string tableName, string DBPath)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + DBPath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+
+                try
+                {
+                    cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
+                    var table = cmd.ExecuteScalar();
+
+                    if (table != null && table.ToString() == tableName)
+                        return true;
+                    else
+                        return false;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("查询数据表" + tableName + "失败：" + ex.Message);
+                }
+
+
+            }
+        }
+
+        #endregion
     }
 }

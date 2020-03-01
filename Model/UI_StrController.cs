@@ -526,6 +526,72 @@ namespace ESO_Lang_Editor.Model
 
         #endregion
 
+        #region STR数据库相关 -- 全局搜索
+
+        public List<UIstrFile> FullSearchStrDB(string dbFile)
+        {
+            var _LangViewData = new List<UIstrFile>();
+
+            string rowStatsInt = " WHERE RowStats < 30";
+
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + dbFile + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+
+                try
+                {
+                    List<string> tableName = new List<string>();   //表名列表
+
+                    cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";   //获得当前所有表名
+                    SQLiteDataReader sr = cmd.ExecuteReader();
+                    while (sr.Read())
+                    {
+                        tableName.Add(sr.GetString(0));
+                    }
+                    sr.Close();
+
+
+                    foreach (var t in tableName)
+                    {
+                        cmd.CommandText = "SELECT * FROM " + t
+                            + rowStatsInt;
+
+                        sr = cmd.ExecuteReader();
+
+                        while (sr.Read())
+                        {
+                            _LangViewData.Add(new UIstrFile
+                            {
+                                UI_Table = t.ToString(),
+                                //IndexDB = sr.FieldCount,                   
+                                UI_ID = sr.GetString(0),
+                                UI_EN = sr.GetString(1),
+                                UI_ZH = sr.GetString(2),
+                                UI_Version = sr.GetInt32(3),
+                                RowStats = sr.GetInt32(4),
+                                isTranslated = sr.GetInt32(5),
+                                UpdateStats = sr.GetString(6),
+
+                            });
+                            //Console.WriteLine("查询了{0}, {1}, {2}", sr.GetInt32(0).ToString(), sr.GetInt32(1), sr.GetString(4));
+                        }
+                        sr.Close();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("查询数据：失败：" + ex.Message);
+                }
+                return _LangViewData;
+            }
+
+        }
+
+        #endregion
+
         #region Str数据库 -- 更新编辑后的文本
 
         public string UpdateStrFromEditor(UIstrFile Content)
@@ -709,7 +775,7 @@ namespace ESO_Lang_Editor.Model
 
         #region 搜索数据库
 
-        public List<UIstrFile> SearchData(string CsvContent, int SearchField, bool SearchAbandonContent)
+        public List<UIstrFile> SearchData(string Content, int SearchField, bool SearchAbandonContent)
         {
             var _LangViewData = new List<UIstrFile>();
             string fieldName;
@@ -762,14 +828,14 @@ namespace ESO_Lang_Editor.Model
                             + " WHERE " + fieldName
                             + " LIKE @SEARCH"
                             + rowStatsInt;
-                        cmd.Parameters.AddWithValue("@SEARCH", CsvContent);     //遍历全库查询要搜索在任意位置的文本
+                        cmd.Parameters.AddWithValue("@SEARCH", Content);     //遍历全库查询要搜索在任意位置的文本
                         sr = cmd.ExecuteReader();
 
                         while (sr.Read())
                         {
                             _LangViewData.Add(new UIstrFile
                             {
-                                UI_Table = t.ToString(),                   //数据表名
+                                UI_Table = t,                   //数据表名
                                 UI_ID = sr.GetString(0),                  //游戏内文本ID
                                 UI_EN = sr.GetString(1),               //
                                 UI_ZH = sr.GetString(2),                 //
@@ -777,6 +843,7 @@ namespace ESO_Lang_Editor.Model
                                 isTranslated = sr.GetInt32(5),              //是否翻译
                                 UpdateStats = sr.GetString(6),
                             });
+                            Console.WriteLine("查找了{0}, {1}, {2}", t, sr.GetString(0), sr.GetString(2));
                         }
                         sr.Close();
                     }
@@ -784,9 +851,86 @@ namespace ESO_Lang_Editor.Model
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("查询数据：" + CsvContent + "失败：" + ex.Message);
+                    throw new Exception("查询数据：" + Content + "失败：" + ex.Message);
                 }
                 return _LangViewData;
+            }
+
+        }
+
+        #endregion
+
+
+        #region 创建导出翻译数据库文件
+
+        public void CreateTranslateStrDBwithData(List<UIstrFile> Content, string TranselatedDBPath)
+        {
+            if (!File.Exists(TranselatedDBPath))
+            {
+                SQLiteConnection.CreateFile(TranselatedDBPath);
+            }
+
+            foreach (var table in Content)
+            {
+                if (!CheckTableIfExist(table.UI_Table, TranselatedDBPath))
+                {
+                    CreateTableToStrDB(table.UI_Table, TranselatedDBPath);
+                }
+
+            }
+
+
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + TranselatedDBPath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+                SQLiteTransaction tx = conn.BeginTransaction();
+                cmd.Transaction = tx;
+
+                try
+                {
+                    foreach (var c in Content)
+                    {
+                        cmd.CommandText = "SELECT * FROM " + c.UI_Table
+                        + " WHERE UI_ID='" + c.UI_ID + "'";
+                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        if (count == 0)
+                        {
+                            cmd.CommandText = "INSERT INTO " + c.UI_Table + " VALUES(@UI_ID, @UI_EN, @UI_ZH, @UI_Version, @RowStats, @isTranslated, @UpdateStats)";
+                            cmd.Parameters.AddRange(new[]
+                            {
+                            new SQLiteParameter("@UI_ID", c.UI_ID),
+                            new SQLiteParameter("@UI_EN", c.UI_EN),
+                            new SQLiteParameter("@UI_ZH", c.UI_ZH),
+                            new SQLiteParameter("@UI_Version", c.UI_Version),
+                            new SQLiteParameter("@RowStats", c.RowStats),
+                            new SQLiteParameter("@isTranslated", c.isTranslated),
+                            new SQLiteParameter("@UpdateStats", c.UpdateStats),
+                            });
+                            Console.WriteLine("插入了{0}, {1}, {2}", c.UI_ID, c.UI_EN, c.UI_ZH);
+                            cmd.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            cmd.CommandText = "UPDATE " + c.UI_Table + " SET UI_ZH=@UI_ZH"
+                            + " WHERE UI_ID='" + c.UI_ID + "'";
+
+                            cmd.Parameters.Add(new SQLiteParameter("@UI_ZH", c.UI_ZH));
+                            Console.WriteLine("插入了{0}, {1}, {2}", c.UI_ID, c.UI_EN, c.UI_ZH);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                    tx.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    //return "插入数据失败：" + ex.Message;
+                    throw new Exception("插入数据失败：" + ex.Message);
+                }
+
             }
 
         }
