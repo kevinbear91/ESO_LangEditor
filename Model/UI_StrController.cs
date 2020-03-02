@@ -498,7 +498,7 @@ namespace ESO_Lang_Editor.Model
                         {
                             _LangViewData.Add(new UIstrFile
                             {
-                                UI_Table = t.ToString(),                   
+                                UI_Table = t.ToString(),
                                 //IndexDB = sr.FieldCount,                   
                                 UI_ID = sr.GetString(0),
                                 UI_EN = sr.GetString(1),
@@ -936,5 +936,55 @@ namespace ESO_Lang_Editor.Model
         }
 
         #endregion
+
+
+        #region 导入翻译文本
+
+        public bool UpdateTextScFromImportDB(List<UIstrFile> Content)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + UIstrDBPath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+                SQLiteTransaction tx = conn.BeginTransaction();
+                cmd.Transaction = tx;
+
+                try
+                {
+                    foreach (var line in Content)
+                    {
+                        cmd.CommandText = "UPDATE " + line.UI_Table
+                        + " SET UI_ZH=@UI_ZH, isTranslated=@isTranslated"
+                        + " WHERE UI_ID = '" + line.UI_ID + "'";
+                        cmd.Parameters.AddRange(new[]
+                        {
+                            //new SQLiteParameter("@Text_EN", line.EN_text),
+                            new SQLiteParameter("@UI_ZH", line.UI_ZH),
+                            new SQLiteParameter("@isTranslated", line.isTranslated),
+                        });
+
+                        cmd.ExecuteNonQuery();
+
+                        Console.WriteLine("更新了{0}, {1}, {2}", line.UI_Table, line.UI_ID, line.UI_ZH);
+                    }
+                    tx.Commit();
+                    return true;
+
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                    throw new Exception("更新数据失败：" + ex.Message);
+                }
+
+            }
+
+
+        }
+
+        #endregion
+
     }
+
 }

@@ -46,7 +46,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " beta 0.8 - 6843a764";
+            string version = " v1.3 - b5cfcd8d";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -565,6 +565,11 @@ namespace ESO_Lang_Editor.View
             string csvDataPath = @"Data\CsvData.db";
             string csvDataUpdatePath = @"Data\CsvData.update";
 
+            string strDataPath = @"Data\UI_Str.db";
+            string strDataUpdatePath = @"Data\UI_Str.update";
+
+
+            #region  检查CSV数据库更新
             if (File.Exists(csvDataPath) && File.Exists(csvDataUpdatePath))
             {
                 var DBFile = new SQLiteController();
@@ -639,6 +644,85 @@ namespace ESO_Lang_Editor.View
             {
                 MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            #endregion
+
+
+            #region 检查 UI STR数据库更新
+            if (File.Exists(strDataPath) && File.Exists(strDataUpdatePath))
+            {
+                var strDB = new UI_StrController();
+                searchStrData = strDB.SearchData("1", 3, false);
+
+                if (searchStrData.Count >= 1)
+                {
+                    foreach (var data in searchStrData)
+                    {
+                        if (data.isTranslated == 1 && data.RowStats == 20)
+                        {
+                            data.isTranslated = 3;
+                        }
+                        else
+                        {
+                            data.isTranslated = 2;
+                        }
+                    }
+
+                    var exportTranslate = new ExportFromDB();
+                    string exportPath = exportTranslate.ExportTranslateDB(searchStrData);
+
+                    if (File.Exists(exportPath))
+                    {
+                        MessageBox.Show("新版本已有更新的UI数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
+                            + Environment.NewLine
+                            + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！",
+                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        File.Delete(strDataPath);
+                        File.Move(strDataUpdatePath, strDataPath);
+                        File.Delete(strDataUpdatePath);
+
+                        SearchTextBox.IsEnabled = true;
+                        SearchButton.IsEnabled = true;
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("新版本已有更新的UI数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    File.Delete(strDataPath);
+                    File.Move(strDataUpdatePath, strDataPath);
+                    File.Delete(strDataUpdatePath);
+
+                    SearchTextBox.IsEnabled = true;
+                    SearchButton.IsEnabled = true;
+                }
+
+            }
+            else if (File.Exists(strDataPath))
+            {
+                SearchTextBox.IsEnabled = true;
+                SearchButton.IsEnabled = true;
+            }
+            else if (File.Exists(strDataUpdatePath))
+            {
+                File.Move(strDataUpdatePath, strDataPath);
+                File.Delete(strDataUpdatePath);
+
+                SearchTextBox.IsEnabled = true;
+                SearchButton.IsEnabled = true;
+            }
+            else
+            {
+                MessageBox.Show("无法找到UI数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            #endregion
 
         }
 

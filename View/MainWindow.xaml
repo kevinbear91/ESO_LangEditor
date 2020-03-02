@@ -48,8 +48,8 @@
             <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" Click="SearchButton_Click"/>
             <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" />
             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90"/>
-            <CheckBox x:Name="SearchAbandon_checkBox" Content="搜索废弃内容" Canvas.Left="48" Canvas.Top="51" ToolTip="与废弃内容一起搜索（例如已经删除的文本）" Checked="SearchAbandon_checkBox_Checked" Unchecked="SearchAbandon_checkBox_Unchecked"/>
-            <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Canvas.Left="182" Canvas.Top="51" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" />
+            <CheckBox x:Name="SearchAbandon_checkBox" Content="搜索废弃内容" Canvas.Left="48" Canvas.Top="41" ToolTip="与废弃内容一起搜索（例如已经删除的文本）" Checked="SearchAbandon_checkBox_Checked" Unchecked="SearchAbandon_checkBox_Unchecked"/>
+            <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Canvas.Left="182" Canvas.Top="41" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" />
         </Canvas>
 
         <Canvas Grid.Row="2">

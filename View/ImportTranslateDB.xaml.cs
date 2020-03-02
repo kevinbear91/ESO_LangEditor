@@ -172,21 +172,44 @@ namespace ESO_Lang_Editor.View
 
         private void ImportToDB_button_Click(object sender, RoutedEventArgs e)
         {
-            var DBFile = new SQLiteController();
-            bool isSuccess;
-            List<LangSearchModel> importData;
-
-            foreach (var s in FileID_listBox.SelectedItems)
+            if (isStr)
             {
-                //按GUI列表选择的对象数目来读取索引，用索引探测已选定的文件路径来搜索翻译后的数据库文件，然后将所有内容存储到变量中。
-                importData = DBFile.FullSearchTranslateDB(filePath.ElementAt(FileID_listBox.Items.IndexOf(s)));
-                isSuccess = DBFile.UpdateTextScFromImportDB(importData);
+                var strDB = new UI_StrController();
+                bool isSuccess;
+                List<UIstrFile> importData;
 
-                if (isSuccess)
-                    MessageBox.Show("导入成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                else
-                    MessageBox.Show("导入失败！请检查文件！", "失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                foreach (var s in FileID_listBox.SelectedItems)
+                {
+                    //按GUI列表选择的对象数目来读取索引，用索引探测已选定的文件路径来搜索翻译后的数据库文件，然后将所有内容存储到变量中。
+                    importData = strDB.FullSearchStrDB(filePath.ElementAt(FileID_listBox.Items.IndexOf(s)));
+                    isSuccess = strDB.UpdateTextScFromImportDB(importData);;
+
+                    if (isSuccess)
+                        MessageBox.Show("导入成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else
+                        MessageBox.Show("导入失败！请检查文件！", "失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
+            else
+            {
+                var DBFile = new SQLiteController();
+                bool isSuccess;
+                List<LangSearchModel> importData;
+
+                foreach (var s in FileID_listBox.SelectedItems)
+                {
+                    //按GUI列表选择的对象数目来读取索引，用索引探测已选定的文件路径来搜索翻译后的数据库文件，然后将所有内容存储到变量中。
+                    importData = DBFile.FullSearchTranslateDB(filePath.ElementAt(FileID_listBox.Items.IndexOf(s)));
+                    isSuccess = DBFile.UpdateTextScFromImportDB(importData);
+
+                    if (isSuccess)
+                        MessageBox.Show("导入成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    else
+                        MessageBox.Show("导入失败！请检查文件！", "失败", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            
 
         }
 
