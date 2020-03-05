@@ -39,7 +39,7 @@ namespace ESO_Lang_Editor.View
             addFieldType = new ObservableCollection<string>();
 
             addFieldType.Add("int");
-            addFieldType.Add("string");
+            addFieldType.Add("text");
 
             InputType_comboBox.ItemsSource = addFieldType;
             InputType_comboBox.SelectedIndex = 0;
@@ -88,8 +88,8 @@ namespace ESO_Lang_Editor.View
                     }
                     else
                     {
-                        strDB.FieldAdd(fieldName, "string", initContent, tableName);
-                        Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。", fieldName, initContent);
+                        strDB.FieldAdd(fieldName, "text", initContent, tableName);
+                        Console.WriteLine("字段名：{0}, 类型：text, 初始内容：{1}，创建成功。", fieldName, initContent);
                     }
                 }
                 else
@@ -105,14 +105,14 @@ namespace ESO_Lang_Editor.View
                         }
                         else
                         {
-                            MessageBox.Show("非 int 类型的初始内容请选择 string，如为 int 请仅输入半角数字！", "警告",
+                            MessageBox.Show("非 int 类型的初始内容请选择 text，如为 int 请仅输入半角数字！", "警告",
                             MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
                     else
                     {
-                        DBFile.FieldAdd(fieldName, "string", initContent);
-                        Console.WriteLine("字段名：{0}, 类型：string, 初始内容：{1}，创建成功。", fieldName, initContent);
+                        DBFile.FieldAdd(fieldName, "text", initContent);
+                        Console.WriteLine("字段名：{0}, 类型：text, 初始内容：{1}，创建成功。", fieldName, initContent);
                     }
                 }
             }

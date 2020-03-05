@@ -34,7 +34,6 @@ namespace ESO_Lang_Editor.Model
                 {
                     sw.WriteLine(s);
                 }
-                outputIDFile = null;
                 sw.Flush();
                 sw.Close();
             }
@@ -45,7 +44,6 @@ namespace ESO_Lang_Editor.Model
                 {
                     sw.WriteLine(s);
                 }
-                outputTextFile = null;
                 sw.Flush();
                 sw.Close();
             }

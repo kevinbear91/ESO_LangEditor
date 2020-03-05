@@ -273,8 +273,9 @@ namespace ESO_Lang_Editor.Model
                                 Text_EN = sr.GetString(3),                 //英语原文
                                 Text_SC = sr.GetString(4),                 //汉化文本
                                 isTranslated = sr.GetInt32(5),              //是否已翻译
-                                UpdateStats = sr.GetString(6),
+                                UpdateStats = sr.GetString(7),
                             });
+                            Console.WriteLine("查询了{0},{1},{2},{3}", sr.GetInt32(0), sr.GetInt32(1), sr.GetInt32(2), sr.GetString(3));
                         }
                         sr.Close();
                     }
