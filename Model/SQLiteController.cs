@@ -11,6 +11,7 @@ namespace ESO_Lang_Editor.Model
     {
         SQLiteConnection Conn;
         string csvDataPath = @"Data\CsvData.db";
+        List<string> csvTableID;
 
         public void ConnectSQLite()
         {
@@ -26,11 +27,36 @@ namespace ESO_Lang_Editor.Model
 
         }
 
+        /*
+        public void GetTableID()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
+            {
+                conn.Open();
+                SQLiteCommand cmd = new SQLiteCommand();
+                cmd.Connection = conn;
+                SQLiteTransaction tx = conn.BeginTransaction();
+                cmd.Transaction = tx;
+
+                //List<string> tableName = new List<string>();   //表名列表
+
+                cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";   //获得当前所有表名
+                SQLiteDataReader sr = cmd.ExecuteReader();
+
+                while (sr.Read())
+                {
+                    csvTableID.Add(sr.GetString(0));
+                }
+                sr.Close();
+            }
+        }
+        */
+
         public void CreateTable(int CsvID)
         {
             try
             {
-                string sql = "CREATE TABLE ID_" + CsvID + "(ID_Type int, ID_Unknown int, ID_Index int, ID_Offset int, Text_EN text, Text_SC text, isTranslated int)";
+                string sql = "CREATE TABLE ID_" + CsvID + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text, isTranslated int, UpdateStats text)";
                 SQLiteCommand command = new SQLiteCommand(sql, Conn);
                 command.ExecuteNonQuery();
             }
@@ -115,21 +141,42 @@ namespace ESO_Lang_Editor.Model
                 {
                     foreach (var line in CsvContent)
                     {
-                        cmd.CommandText = "INSERT INTO ID_" + line.stringID 
-                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @UpdateStats)";
-                        cmd.Parameters.AddRange(new[]
+                        if (csvTableID.Contains("ID_" + line.stringID))
                         {
-                            new SQLiteParameter("@ID_Type", line.stringID),
-                            new SQLiteParameter("@ID_Unknown", line.stringUnknown),
-                            new SQLiteParameter("@ID_Index", line.stringIndex),
-                            new SQLiteParameter("@Text_SC", line.ZH_text),
-                            new SQLiteParameter("@Text_EN", line.EN_text),
-                            new SQLiteParameter("@isTranslated", line.Istranslated),
-                            new SQLiteParameter("@UpdateStats", line.UpdateStats),
-                        });
+                            cmd.CommandText = "INSERT INTO ID_" + line.stringID 
+                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @UpdateStats)";
+                            cmd.Parameters.AddRange(new[]
+                            {
+                                new SQLiteParameter("@ID_Type", line.stringID),
+                                new SQLiteParameter("@ID_Unknown", line.stringUnknown),
+                                new SQLiteParameter("@ID_Index", line.stringIndex),
+                                new SQLiteParameter("@Text_SC", line.ZH_text),
+                                new SQLiteParameter("@Text_EN", line.EN_text),
+                                new SQLiteParameter("@isTranslated", line.Istranslated),
+                                new SQLiteParameter("@UpdateStats", line.UpdateStats),
+                            });
+                            cmd.ExecuteNonQuery();
+                            Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknown, line.stringIndex);
+                        }
+                        else
+                        {
+                            CreateTable(line.stringID);
 
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknown, line.stringIndex);
+                            cmd.CommandText = "INSERT INTO ID_" + line.stringID
+                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @UpdateStats)";
+                            cmd.Parameters.AddRange(new[]
+                            {
+                                new SQLiteParameter("@ID_Type", line.stringID),
+                                new SQLiteParameter("@ID_Unknown", line.stringUnknown),
+                                new SQLiteParameter("@ID_Index", line.stringIndex),
+                                new SQLiteParameter("@Text_SC", line.ZH_text),
+                                new SQLiteParameter("@Text_EN", line.EN_text),
+                                new SQLiteParameter("@isTranslated", line.Istranslated),
+                                new SQLiteParameter("@UpdateStats", line.UpdateStats),
+                            });
+                            cmd.ExecuteNonQuery();
+                            Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknown, line.stringIndex);
+                        }
                     }
                     tx.Commit();
                 }
@@ -475,6 +522,8 @@ namespace ESO_Lang_Editor.Model
         /// <param name="CsvContent"></param>
         public void AddDataList(List<FileModel_IntoDB> CsvContent)
         {
+            List<string> csvTableID = new List<string>();
+
             using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + csvDataPath + ";Version=3;"))
             {
                 conn.Open();
@@ -483,26 +532,61 @@ namespace ESO_Lang_Editor.Model
                 SQLiteTransaction tx = conn.BeginTransaction();
                 cmd.Transaction = tx;
 
+                cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";   //获得当前所有表名
+                SQLiteDataReader sr = cmd.ExecuteReader();
+
+                while (sr.Read())
+                {
+                    csvTableID.Add(sr.GetString(0));
+                }
+                sr.Close();
+
                 try
                 {
                     foreach (var line in CsvContent)
                     {
-                        cmd.CommandText = "INSERT INTO ID_" + line.stringID
-                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @RowStats, @UpdateStats)";
-                        cmd.Parameters.AddRange(new[]
+                        if (csvTableID.Contains("ID_" + line.stringID))
                         {
-                            new SQLiteParameter("@ID_Type", line.stringID),
-                            new SQLiteParameter("@ID_Unknown", line.stringUnknown),
-                            new SQLiteParameter("@ID_Index", line.stringIndex),
-                            new SQLiteParameter("@Text_SC", line.ZH_text),
-                            new SQLiteParameter("@Text_EN", line.EN_text),
-                            new SQLiteParameter("@isTranslated", line.Istranslated),
-                            new SQLiteParameter("@RowStats", 10),            //新插入的内容状态一律为10
-                            new SQLiteParameter("@UpdateStats", line.UpdateStats),
-                        });
+                            cmd.CommandText = "INSERT INTO ID_" + line.stringID
+                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @RowStats, @UpdateStats)";
+                            cmd.Parameters.AddRange(new[]
+                            {
+                                new SQLiteParameter("@ID_Type", line.stringID),
+                                new SQLiteParameter("@ID_Unknown", line.stringUnknown),
+                                new SQLiteParameter("@ID_Index", line.stringIndex),
+                                new SQLiteParameter("@Text_SC", line.ZH_text),
+                                new SQLiteParameter("@Text_EN", line.EN_text),
+                                new SQLiteParameter("@isTranslated", line.Istranslated),
+                                new SQLiteParameter("@RowStats", 10),            //新插入的内容状态一律为10
+                                new SQLiteParameter("@UpdateStats", line.UpdateStats),
+                            });
 
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknown, line.stringIndex);
+                            cmd.ExecuteNonQuery();
+                            Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknown, line.stringIndex);
+                        }
+                        else
+                        {
+                            cmd.CommandText = "CREATE TABLE ID_" + line.stringID + "(ID_Type int, ID_Unknown int, ID_Index int, Text_EN text, Text_SC text, isTranslated int, RowStats int, UpdateStats text)";
+                            cmd.ExecuteNonQuery();
+                            Console.WriteLine("创建了 ID_{0} 表", line.stringID);
+                            csvTableID.Add("ID_" + line.stringID);
+
+                            cmd.CommandText = "INSERT INTO ID_" + line.stringID
+                            + " VALUES(@ID_Type, @ID_Unknown, @ID_Index, @Text_EN, @Text_SC, @isTranslated, @RowStats, @UpdateStats)";
+                            cmd.Parameters.AddRange(new[]
+                            {
+                                new SQLiteParameter("@ID_Type", line.stringID),
+                                new SQLiteParameter("@ID_Unknown", line.stringUnknown),
+                                new SQLiteParameter("@ID_Index", line.stringIndex),
+                                new SQLiteParameter("@Text_SC", line.ZH_text),
+                                new SQLiteParameter("@Text_EN", line.EN_text),
+                                new SQLiteParameter("@isTranslated", line.Istranslated),
+                                new SQLiteParameter("@RowStats", 10),            //新插入的内容状态一律为10
+                                new SQLiteParameter("@UpdateStats", line.UpdateStats),
+                            });
+                            cmd.ExecuteNonQuery();
+                            Console.WriteLine("插入了{0}, {1}, {2}", line.stringID, line.stringUnknown, line.stringIndex);
+                        }
 
                     }
                     tx.Commit();

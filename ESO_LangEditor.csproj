@@ -100,10 +100,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\CsvParser.cs" />
-    <Compile Include="Model\ExportFromDB.cs" />
-    <Compile Include="Model\FileModel_Csv.cs" />
-    <Compile Include="Model\FileModel_IntoDB.cs" />
     <Compile Include="Model\IDCatalog.cs" />
     <Compile Include="Model\SQLiteController.cs" />
     <Compile Include="Model\UIstrFile.cs" />
@@ -236,6 +232,7 @@
     <Content Include="Data\FontLib.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Data\IDCatalog.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
