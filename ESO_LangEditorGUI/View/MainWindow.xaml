@@ -1,0 +1,70 @@
+﻿<Window x:Class="ESO_Lang_Editor.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ESO_Lang_Editor.View"
+        mc:Ignorable="d"
+        Title="ESO文本查询编辑器" Height="469" Width="800" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FFEEEEEE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="31"/>
+            <RowDefinition Height="76"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="32"/>
+        </Grid.RowDefinitions>
+
+        <Canvas Grid.Row="0">
+            <Menu x:Name="menu" Canvas.Top="7" Canvas.Left="3">
+                <MenuItem Header="导入">
+                    <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"/>
+                    <MenuItem Header="CSV与数据库对比" Click="CsvCompareWithDB_Click"/>
+                    <MenuItem Header="Lua与数据库对比" Click="LuaCompareWithDB_Click"/>
+                </MenuItem>
+                <MenuItem Header="导出">
+                    <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
+                    <MenuItem Header="导出至转换文本" Click="ExportToText_Click"/>
+                    <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
+                    <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
+                </MenuItem>
+                <MenuItem Header="高级">
+                    <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
+                    <MenuItem Header="简体文本转换至繁体" Click="ExportToCHT_Click"/>
+                    <MenuItem Header="创建数据库" Click="CreateDB_Click"/>
+                    <MenuItem Header="创建UI Str数据库" Click="CreateStrDB_Click"/>
+                    <MenuItem Header="数据库调整" Click="DatabaseModiy_Click"/>
+                </MenuItem>
+                <MenuItem Header="帮助">
+                    <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
+                </MenuItem>
+            </Menu>
+            <Border BorderBrush="#FF898989" BorderThickness="0,0,0,1" Height="26" Canvas.Top="5" Width="794"/>
+
+        </Canvas>
+
+        <Canvas  Grid.Row="1">
+            <Label x:Name="label" Content="文本：" Margin="10,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>
+            <TextBox x:Name="SearchTextBox"  Height="21" Margin="48,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="413" AllowDrop="True" VerticalContentAlignment="Center" HorizontalScrollBarVisibility="Auto" KeyDown="SearchTextBlock_EnterPress"/>
+            <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" Click="SearchButton_Click"/>
+            <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" />
+            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90"/>
+            <CheckBox x:Name="SearchAbandon_checkBox" Content="搜索废弃内容" Canvas.Left="48" Canvas.Top="41" ToolTip="与废弃内容一起搜索（例如已经删除的文本）" Checked="SearchAbandon_checkBox_Checked" Unchecked="SearchAbandon_checkBox_Unchecked"/>
+            <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Canvas.Left="182" Canvas.Top="41" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" />
+        </Canvas>
+
+        <Canvas Grid.Row="2">
+
+            <DataGrid x:Name="LangSearch" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
+                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16" 
+                      SelectionChanged="LangSearchDataGrid_SelectionChanged" 
+                      MouseRightButtonUp="LangSearch_MouseRightUp"
+                      AutoGenerateColumns="True" />
+        </Canvas>
+        <Canvas Grid.Row="3">
+            <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="" Width="230" />
+            <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="" Width="230" />
+        </Canvas>
+
+
+    </Grid>
+</Window>
