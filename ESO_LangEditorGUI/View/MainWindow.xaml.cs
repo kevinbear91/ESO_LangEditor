@@ -1,4 +1,4 @@
-﻿using ESO_Lang_Editor.Model;
+﻿using ESO_LangEditorLib;
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -22,9 +22,9 @@ namespace ESO_Lang_Editor.View
         List<LangSearchModel> SelectedDatas;
         LangSearchModel SelectedData;
 
-        UIstrFile SelectedStrData;
-        List<UIstrFile> searchStrData;
-        List<UIstrFile> SelectedStrDatas;
+        //UIstrFile SelectedStrData;
+        //List<UIstrFile> searchStrData;
+        //List<UIstrFile> SelectedStrDatas;
         private bool isStr;
 
         ObservableCollection<string> searchTextInPosition;
@@ -46,7 +46,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v1.7";
+            string version = " v2.x";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -55,6 +55,10 @@ namespace ESO_Lang_Editor.View
             //LangSearch.AutoGeneratingColumn += LangDataGridAutoGenerateColumns;
 
             GeneratingColumns(false);
+
+            var db = new SqliteController();
+            db.CreateTable();
+
 
             UpdatedDB_Check();
         }
@@ -110,7 +114,7 @@ namespace ESO_Lang_Editor.View
 
             if (SearchStr_checkBox.IsChecked == true)
             {
-                SearchStrDB();
+                //SearchStrDB();
             }
             else
             {
@@ -119,26 +123,26 @@ namespace ESO_Lang_Editor.View
             
         }
 
-        public List<LangSearchModel> SearchLang(string SearchBarText)
-        {
-            var DBFile = new SQLiteController();
-            SearchData = null;
+        //public List<LangSearchModel> SearchLang(string SearchBarText)
+        //{
+        //    var DBFile = new SQLiteController();
+        //    SearchData = null;
 
-            var data = DBFile.SearchData(SearchBarText, SearchField(), Searchabandon);
+        //    var data = DBFile.SearchData(SearchBarText, SearchField(), Searchabandon);
 
-            return data;
-        }
+        //    return data;
+        //}
 
-        public List<UIstrFile> SearchStr(string SearchBarText)
-        {
-            var uiStr = new UI_StrController();
+        //public List<UIstrFile> SearchStr(string SearchBarText)
+        //{
+        //    var uiStr = new UI_StrController();
 
-            searchStrData = null;
+        //    searchStrData = null;
 
-            var data = uiStr.SearchData(SearchBarText, SearchField(), Searchabandon);
+        //    var data = uiStr.SearchData(SearchBarText, SearchField(), Searchabandon);
 
-            return data;
-        }
+        //    return data;
+        //}
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -157,9 +161,9 @@ namespace ESO_Lang_Editor.View
                     {
                         if (isStr)
                         {
-                            SelectedStrData = (UIstrFile)datagrid.SelectedItem;
-                            TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
-                            textEditor.Show();
+                            //SelectedStrData = (UIstrFile)datagrid.SelectedItem;
+                            //TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
+                            //textEditor.Show();
                             //MessageBox.Show(data.Text_SC);
                         }
                         else
@@ -239,8 +243,8 @@ namespace ESO_Lang_Editor.View
 
         private void CsvFileCompare_Click(object sender, RoutedEventArgs e)
         {
-            var compareCsvWindows = new CompareCsvWindow();
-            compareCsvWindows.Show();
+            //var compareCsvWindows = new CompareCsvWindow();
+            //compareCsvWindows.Show();
         }
 
         private void CsvCompareWithDB_Click(object sender, RoutedEventArgs e)
@@ -251,29 +255,29 @@ namespace ESO_Lang_Editor.View
 
         private void ExportTranslate_Click(object sender, RoutedEventArgs e)
         {
-            var exportTranslateWindow = new ExportTranslate();
-            exportTranslateWindow.Show();
+            //var exportTranslateWindow = new ExportTranslate();
+            //exportTranslateWindow.Show();
         }
 
 
         private void ExportToText_Click(object sender, RoutedEventArgs e)
         {
-            var export = new ExportFromDB();
-            MessageBoxResult result = MessageBox.Show("输出数据库的文本内容至Text,文件名分别为ID.txt 与Text. txt"
-                + Environment.NewLine
-                + "其中ID文件为合并ID, Text为内容。"
-                + "点击确定开始输出，不导出请点取消。"
-                + Environment.NewLine
-                + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-            switch (result)
-            {
-                case MessageBoxResult.OK:
-                    export.ExportAsText();
-                    MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
-                    break;
-                case MessageBoxResult.Cancel:
-                    break;
-            }
+            //var export = new ExportFromDB();
+            //MessageBoxResult result = MessageBox.Show("输出数据库的文本内容至Text,文件名分别为ID.txt 与Text. txt"
+            //    + Environment.NewLine
+            //    + "其中ID文件为合并ID, Text为内容。"
+            //    + "点击确定开始输出，不导出请点取消。"
+            //    + Environment.NewLine
+            //    + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            //switch (result)
+            //{
+            //    case MessageBoxResult.OK:
+            //        export.ExportAsText();
+            //        MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+            //        break;
+            //    case MessageBoxResult.Cancel:
+            //        break;
+            //}
         }
 
         private void SearchTextInPositionInit()
@@ -302,31 +306,31 @@ namespace ESO_Lang_Editor.View
 
         private void ExportID_Click(object sender, RoutedEventArgs e)
         {
-            int[] ID = new int[] { 38727365, 198758357, 132143172 };
+            //int[] ID = new int[] { 38727365, 198758357, 132143172 };
 
-            var export = new ExportFromDB();
-            export.ExportIDArray(ID);
+            ////var export = new ExportFromDB();
+            //export.ExportIDArray(ID);
         }
 
         private void ImportTranslate_Click(object sender, RoutedEventArgs e)
         {
-            var importTranslate = new ImportTranslateDB();
-            importTranslate.Show();
+           // var importTranslate = new ImportTranslateDB();
+            //importTranslate.Show();
         }
 
         private void SearchTextBlock_EnterPress(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter && SearchTextBox.IsFocused)
-            {
-                if (SearchStr_checkBox.IsChecked == true)
-                {
-                    SearchStrDB();
-                }
-                else
-                {
-                    SearchDB();
-                }
-            }
+            //if (e.Key == Key.Enter && SearchTextBox.IsFocused)
+            //{
+            //    if (SearchStr_checkBox.IsChecked == true)
+            //    {
+            //        SearchStrDB();
+            //    }
+            //    else
+            //    {
+            //        SearchDB();
+            //    }
+            //}
         }
 
         private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -342,22 +346,22 @@ namespace ESO_Lang_Editor.View
 
             if (isStr)
             {
-                if (SelectedStrDatas != null)
-                    SelectedStrDatas.Clear();
+                //if (SelectedStrDatas != null)
+                //    SelectedStrDatas.Clear();
 
-                SelectedStrDatas = new List<UIstrFile>();
+                //SelectedStrDatas = new List<UIstrFile>();
 
-                if (selectedItems.Count > 1)
-                {
-                    foreach (var selectedItem in selectedItems)
-                    {
-                        if (selectedItem != null)
-                            SelectedStrDatas.Add((UIstrFile)selectedItem);
-                    }
+                //if (selectedItems.Count > 1)
+                //{
+                //    foreach (var selectedItem in selectedItems)
+                //    {
+                //        if (selectedItem != null)
+                //            SelectedStrDatas.Add((UIstrFile)selectedItem);
+                //    }
 
-                    TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
-                    textEditor.Show();
-                }
+                //    TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
+                //    textEditor.Show();
+                //}
             }
             else
             {
@@ -393,13 +397,13 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                SearchData = SearchLang(SearchCheck());
+                //SearchData = SearchLang(SearchCheck());
             }
 
             switch (result)
             {
                 case MessageBoxResult.OK:
-                    SearchData = SearchLang(SearchCheck());
+                    //SearchData = SearchLang(SearchCheck());
                     foreach (var data in SearchData)
                     {
                         LangSearch.Items.Add(data);
@@ -426,50 +430,50 @@ namespace ESO_Lang_Editor.View
             }
         }
 
-        private void SearchStrDB()
-        {
-            MessageBoxResult result = MessageBoxResult.Cancel;
+        //private void SearchStrDB()
+        //{
+        //    MessageBoxResult result = MessageBoxResult.Cancel;
 
 
-            if (SearchTextBox.Text == "" || SearchTextBox.Text == " ")
-            {
-                result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
-                    MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            }
-            else
-            {
-                searchStrData = SearchStr(SearchCheck());
-            }
+        //    if (SearchTextBox.Text == "" || SearchTextBox.Text == " ")
+        //    {
+        //        result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
+        //            MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        //    }
+        //    else
+        //    {
+        //        searchStrData = SearchStr(SearchCheck());
+        //    }
 
-            switch (result)
-            {
-                case MessageBoxResult.OK:
-                    searchStrData = SearchStr(SearchCheck());
-                    foreach (var data in searchStrData)
-                    {
-                        LangSearch.Items.Add(data);
-                    }
-                    textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
-                    break;
-                case MessageBoxResult.Cancel:
-                    break;
-            }
+        //    switch (result)
+        //    {
+        //        case MessageBoxResult.OK:
+        //            searchStrData = SearchStr(SearchCheck());
+        //            foreach (var data in searchStrData)
+        //            {
+        //                LangSearch.Items.Add(data);
+        //            }
+        //            textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+        //            break;
+        //        case MessageBoxResult.Cancel:
+        //            break;
+        //    }
 
-            if (searchStrData != null)
-            {
-                if (LangSearch.Items.Count >= 1)
-                {
+        //    if (searchStrData != null)
+        //    {
+        //        if (LangSearch.Items.Count >= 1)
+        //        {
 
-                    LangSearch.Items.Clear();
-                }
+        //            LangSearch.Items.Clear();
+        //        }
 
-                foreach (var data in searchStrData)
-                {
-                    LangSearch.Items.Add(data);
-                }
-                textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
-            }
-        }
+        //        foreach (var data in searchStrData)
+        //        {
+        //            LangSearch.Items.Add(data);
+        //        }
+        //        textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+        //    }
+        //}
 
         private void OpenHelpURLinBrowser(object sender, RoutedEventArgs e)
         {
@@ -493,9 +497,9 @@ namespace ESO_Lang_Editor.View
 
         private void DatabaseModiy_Click(object sender, RoutedEventArgs e)
         {
-            var databaseWindow = new DatabaseModifyWindow();
+            //var databaseWindow = new DatabaseModifyWindow();
 
-            databaseWindow.Show();
+            //databaseWindow.Show();
         }
 
         private void ToLang()
@@ -562,186 +566,186 @@ namespace ESO_Lang_Editor.View
 
         private void UpdatedDB_Check()
         {
-            string csvDataPath = @"Data\CsvData.db";
-            string csvDataUpdatePath = @"Data\CsvData.update";
+            //string csvDataPath = @"Data\CsvData.db";
+            //string csvDataUpdatePath = @"Data\CsvData.update";
 
-            string strDataPath = @"Data\UI_Str.db";
-            string strDataUpdatePath = @"Data\UI_Str.update";
+            //string strDataPath = @"Data\UI_Str.db";
+            //string strDataUpdatePath = @"Data\UI_Str.update";
 
 
-            #region  检查CSV数据库更新
-            if (File.Exists(csvDataPath) && File.Exists(csvDataUpdatePath))
-            {
-                var DBFile = new SQLiteController();
-                SearchData = DBFile.SearchData("1", 3, false);
+            //#region  检查CSV数据库更新
+            //if (File.Exists(csvDataPath) && File.Exists(csvDataUpdatePath))
+            //{
+            //    var DBFile = new SQLiteController();
+            //    SearchData = DBFile.SearchData("1", 3, false);
 
-                if (SearchData.Count >= 1)
-                {
-                    foreach (var data in SearchData)
-                    {
-                        if (data.isTranslated == 1 && data.RowStats == 20)
-                        {
-                            data.isTranslated = 3;
-                        }
-                        else
-                        {
-                            data.isTranslated = 2;
-                        }
-                    }
+            //    if (SearchData.Count >= 1)
+            //    {
+            //        foreach (var data in SearchData)
+            //        {
+            //            if (data.isTranslated == 1 && data.RowStats == 20)
+            //            {
+            //                data.isTranslated = 3;
+            //            }
+            //            else
+            //            {
+            //                data.isTranslated = 2;
+            //            }
+            //        }
 
-                    var exportTranslate = new ExportFromDB();
-                    string exportPath = exportTranslate.ExportTranslateDB(SearchData);
+            //        var exportTranslate = new ExportFromDB();
+            //        string exportPath = exportTranslate.ExportTranslateDB(SearchData);
 
-                    if (File.Exists(exportPath))
-                    {
-                        MessageBox.Show("新版本已有更新的数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
-                            + Environment.NewLine
-                            + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！", 
-                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            //        if (File.Exists(exportPath))
+            //        {
+            //            MessageBox.Show("新版本已有更新的数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
+            //                + Environment.NewLine
+            //                + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！", 
+            //                "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                        File.Delete(csvDataPath);
-                        File.Move(csvDataUpdatePath, csvDataPath);
-                        File.Delete(csvDataUpdatePath);
+            //            GC.Collect();
+            //            GC.WaitForPendingFinalizers();
+            //            File.Delete(csvDataPath);
+            //            File.Move(csvDataUpdatePath, csvDataPath);
+            //            File.Delete(csvDataUpdatePath);
 
-                        SearchTextBox.IsEnabled = true;
-                        SearchButton.IsEnabled = true;
+            //            SearchTextBox.IsEnabled = true;
+            //            SearchButton.IsEnabled = true;
 
-                    }
-                    else
-                    {
-                        MessageBox.Show("新版本已有更新的数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else
-                {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    File.Delete(csvDataPath);
-                    File.Move(csvDataUpdatePath, csvDataPath);
-                    File.Delete(csvDataUpdatePath);
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("新版本已有更新的数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        GC.Collect();
+            //        GC.WaitForPendingFinalizers();
+            //        File.Delete(csvDataPath);
+            //        File.Move(csvDataUpdatePath, csvDataPath);
+            //        File.Delete(csvDataUpdatePath);
 
-                    SearchTextBox.IsEnabled = true;
-                    SearchButton.IsEnabled = true;
-                }
+            //        SearchTextBox.IsEnabled = true;
+            //        SearchButton.IsEnabled = true;
+            //    }
                 
-            }
-            else if (File.Exists(csvDataPath))
-            {
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-            }
-            else if (File.Exists(csvDataUpdatePath))
-            {
-                File.Move(csvDataUpdatePath, csvDataPath);
-                File.Delete(csvDataUpdatePath);
+            //}
+            //else if (File.Exists(csvDataPath))
+            //{
+            //    SearchTextBox.IsEnabled = true;
+            //    SearchButton.IsEnabled = true;
+            //}
+            //else if (File.Exists(csvDataUpdatePath))
+            //{
+            //    File.Move(csvDataUpdatePath, csvDataPath);
+            //    File.Delete(csvDataUpdatePath);
 
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-            }
-            else
-            {
-                MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            #endregion
+            //    SearchTextBox.IsEnabled = true;
+            //    SearchButton.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            //#endregion
 
 
-            #region 检查 UI STR数据库更新
-            if (File.Exists(strDataPath) && File.Exists(strDataUpdatePath))
-            {
-                var strDB = new UI_StrController();
-                searchStrData = strDB.SearchData("1", 3, false);
+            //#region 检查 UI STR数据库更新
+            //if (File.Exists(strDataPath) && File.Exists(strDataUpdatePath))
+            //{
+            //    var strDB = new UI_StrController();
+            //    searchStrData = strDB.SearchData("1", 3, false);
 
-                if (searchStrData.Count >= 1)
-                {
-                    foreach (var data in searchStrData)
-                    {
-                        if (data.isTranslated == 1 && data.RowStats == 20)
-                        {
-                            data.isTranslated = 3;
-                        }
-                        else
-                        {
-                            data.isTranslated = 2;
-                        }
-                    }
+            //    if (searchStrData.Count >= 1)
+            //    {
+            //        foreach (var data in searchStrData)
+            //        {
+            //            if (data.isTranslated == 1 && data.RowStats == 20)
+            //            {
+            //                data.isTranslated = 3;
+            //            }
+            //            else
+            //            {
+            //                data.isTranslated = 2;
+            //            }
+            //        }
 
-                    var exportTranslate = new ExportFromDB();
-                    string exportPath = exportTranslate.ExportTranslateDB(searchStrData);
+            //        var exportTranslate = new ExportFromDB();
+            //        string exportPath = exportTranslate.ExportTranslateDB(searchStrData);
 
-                    if (File.Exists(exportPath))
-                    {
-                        MessageBox.Show("新版本已有更新的UI数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
-                            + Environment.NewLine
-                            + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！",
-                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            //        if (File.Exists(exportPath))
+            //        {
+            //            MessageBox.Show("新版本已有更新的UI数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
+            //                + Environment.NewLine
+            //                + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！",
+            //                "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                        GC.Collect();
-                        GC.WaitForPendingFinalizers();
-                        File.Delete(strDataPath);
-                        File.Move(strDataUpdatePath, strDataPath);
-                        File.Delete(strDataUpdatePath);
+            //            GC.Collect();
+            //            GC.WaitForPendingFinalizers();
+            //            File.Delete(strDataPath);
+            //            File.Move(strDataUpdatePath, strDataPath);
+            //            File.Delete(strDataUpdatePath);
 
-                        SearchTextBox.IsEnabled = true;
-                        SearchButton.IsEnabled = true;
+            //            SearchTextBox.IsEnabled = true;
+            //            SearchButton.IsEnabled = true;
 
-                    }
-                    else
-                    {
-                        MessageBox.Show("新版本已有更新的UI数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else
-                {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    File.Delete(strDataPath);
-                    File.Move(strDataUpdatePath, strDataPath);
-                    File.Delete(strDataUpdatePath);
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("新版本已有更新的UI数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        GC.Collect();
+            //        GC.WaitForPendingFinalizers();
+            //        File.Delete(strDataPath);
+            //        File.Move(strDataUpdatePath, strDataPath);
+            //        File.Delete(strDataUpdatePath);
 
-                    SearchTextBox.IsEnabled = true;
-                    SearchButton.IsEnabled = true;
-                }
+            //        SearchTextBox.IsEnabled = true;
+            //        SearchButton.IsEnabled = true;
+            //    }
 
-            }
-            else if (File.Exists(strDataPath))
-            {
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-            }
-            else if (File.Exists(strDataUpdatePath))
-            {
-                File.Move(strDataUpdatePath, strDataPath);
-                File.Delete(strDataUpdatePath);
+            //}
+            //else if (File.Exists(strDataPath))
+            //{
+            //    SearchTextBox.IsEnabled = true;
+            //    SearchButton.IsEnabled = true;
+            //}
+            //else if (File.Exists(strDataUpdatePath))
+            //{
+            //    File.Move(strDataUpdatePath, strDataPath);
+            //    File.Delete(strDataUpdatePath);
 
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-            }
-            else
-            {
-                MessageBox.Show("无法找到UI数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            #endregion
+            //    SearchTextBox.IsEnabled = true;
+            //    SearchButton.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("无法找到UI数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+            //#endregion
 
         }
 
-        private void str_Click(object sender, RoutedEventArgs e)
-        {
-            var str = new UIstrFile();
-            //str.createDB();
-        }
+        //private void str_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var str = new UIstrFile();
+        //    //str.createDB();
+        //}
 
         private void CreateStrDB_Click(object sender, RoutedEventArgs e)
         {
-            var createStrDB = new CreateDB_ImportLua();
-            createStrDB.Show();
+        //    var createStrDB = new CreateDB_ImportLua();
+        //    createStrDB.Show();
         }
 
         private void LuaCompareWithDB_Click(object sender, RoutedEventArgs e)
         {
-            var compareluaWindow = new CompareLuaWithDBWindow();
-            compareluaWindow.Show();
+        //    var compareluaWindow = new CompareLuaWithDBWindow();
+        //    compareluaWindow.Show();
         }
 
         private void SearchStr_checkBox_Checked(object sender, RoutedEventArgs e)
@@ -767,27 +771,27 @@ namespace ESO_Lang_Editor.View
 
         private void ExportToStr_Click(object sender, RoutedEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("导出UI STR内容，请选择导出数据库"
-                + Environment.NewLine
-                + "点击“是”导出Pregame，点击“否”导出Client。"
-                + Environment.NewLine
-                + "什么都不做请点取消。"
-                + Environment.NewLine
-                + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+        //    MessageBoxResult result = MessageBox.Show("导出UI STR内容，请选择导出数据库"
+        //        + Environment.NewLine
+        //        + "点击“是”导出Pregame，点击“否”导出Client。"
+        //        + Environment.NewLine
+        //        + "什么都不做请点取消。"
+        //        + Environment.NewLine
+        //        + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
-            var strExport = new ExportFromDB();
+        //    var strExport = new ExportFromDB();
 
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    strExport.ExportStrDB("Pregame");
-                    break;
-                case MessageBoxResult.No:
-                    strExport.ExportStrDB("Client");
-                    break;
-                case MessageBoxResult.Cancel:
-                    break;
-            }
+        //    switch (result)
+        //    {
+        //        case MessageBoxResult.Yes:
+        //            strExport.ExportStrDB("Pregame");
+        //            break;
+        //        case MessageBoxResult.No:
+        //            strExport.ExportStrDB("Client");
+        //            break;
+        //        case MessageBoxResult.Cancel:
+        //            break;
+        //    }
         }
 
 

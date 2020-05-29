@@ -14,7 +14,7 @@ namespace ESO_Lang_Editor.View
     public partial class ExportTranslate : Window
     {
         private List<LangSearchModel> SearchData;
-        private List<UIstrFile> SearchStrData;
+        //private List<UIstrFile> SearchStrData;
 
         private bool isStr;
 

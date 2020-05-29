@@ -15,8 +15,8 @@ namespace ESO_Lang_Editor.View
         private LangSearchModel EditData;
         private List<LangSearchModel> SelectedItems;
 
-        private UIstrFile EditStrData;
-        private List<UIstrFile> SelectedStrItems;
+        //private UIstrFile EditStrData;
+        //private List<UIstrFile> SelectedStrItems;
 
         private int selectedListIndex;
 
@@ -38,20 +38,20 @@ namespace ESO_Lang_Editor.View
             List_Datagrid_Display(LangData);
 
         }
-        public TextEditor(UIstrFile LangData, List<UIstrFile> SelectedItemsList)
-        {
+        //public TextEditor(UIstrFile LangData, List<UIstrFile> SelectedItemsList)
+        //{
 
-            InitializeComponent();
-            this.Width = 530;
+        //    InitializeComponent();
+        //    this.Width = 530;
 
-            isStr = true;
-            SelectedStrItems = SelectedItemsList;
-            GeneratingColumns(isStr);
-            textBox_EN.IsReadOnly = false;
+        //    isStr = true;
+        //    SelectedStrItems = SelectedItemsList;
+        //    GeneratingColumns(isStr);
+        //    textBox_EN.IsReadOnly = false;
 
-            List_Datagrid_Display(LangData);
+        //    List_Datagrid_Display(LangData);
 
-        }
+        //}
 
         private void GeneratingColumns(bool isStr)
         {
@@ -115,43 +115,43 @@ namespace ESO_Lang_Editor.View
 
             if(isStr)
             {
-                var StrDB = new UI_StrController();
-                var EditedStrData = SetEditedStrData();
+                //var StrDB = new UI_StrController();
+                //var EditedStrData = SetEditedStrData();
 
-                var updateResult = StrDB.UpdateStrFromEditor(EditedStrData);
+                //var updateResult = StrDB.UpdateStrFromEditor(EditedStrData);
 
-                MessageBox.Show(updateResult);
+                //MessageBox.Show(updateResult);
 
-                if (List_dataGrid.Items.Count > 1)
-                {
-                    int i = List_dataGrid.SelectedIndex;
+                //if (List_dataGrid.Items.Count > 1)
+                //{
+                //    int i = List_dataGrid.SelectedIndex;
 
-                    List_dataGrid.Items.RemoveAt(i);
-                    SelectedStrItems.RemoveAt(i);
+                //    List_dataGrid.Items.RemoveAt(i);
+                //    SelectedStrItems.RemoveAt(i);
 
-                    if (i > 0)
-                    {
-                        List_dataGrid.SelectedIndex = i - 1;
-                    }
-                    else
-                    {
-                        List_dataGrid.SelectedIndex = 0;
-                    }
-                    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
-                    SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
-                }
-                else
-                {
-                    this.Close();
-                }
+                //    if (i > 0)
+                //    {
+                //        List_dataGrid.SelectedIndex = i - 1;
+                //    }
+                //    else
+                //    {
+                //        List_dataGrid.SelectedIndex = 0;
+                //    }
+                //    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+                //    SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
+                //}
+                //else
+                //{
+                //    this.Close();
+                //}
             }
             else
             {
-                var connDB = new SQLiteController();
+                //var connDB = new SQLiteController();
                 var EditedData = SetEditedData();
-                var updateResult = connDB.UpdateDataFromEditor(EditedData);
+                //var updateResult = connDB.UpdateDataFromEditor(EditedData);
 
-                MessageBox.Show(updateResult);
+                //MessageBox.Show(updateResult);
 
                 if (List_dataGrid.Items.Count > 1)
                 {
@@ -231,42 +231,42 @@ namespace ESO_Lang_Editor.View
         }
 
 
-        private void List_Datagrid_Display(UIstrFile LangData)
-        {
-            //var IDtypeName = new IDCatalog();
+        //private void List_Datagrid_Display(UIstrFile LangData)
+        //{
+        //    //var IDtypeName = new IDCatalog();
 
-            if (List_dataGrid.Items.Count > 1)
-                //SearchData = null;
-                List_dataGrid.Items.Clear();
+        //    if (List_dataGrid.Items.Count > 1)
+        //        //SearchData = null;
+        //        List_dataGrid.Items.Clear();
 
             //SearchData = SearchLang(SearchCheck());
-            if (SelectedStrItems != null && SelectedStrItems.Count > 1)
-            {
-                List_expander.Visibility = Visibility.Visible;
-                List_expander.IsExpanded = true;
+            //if (SelectedStrItems != null && SelectedStrItems.Count > 1)
+            //{
+            //    List_expander.Visibility = Visibility.Visible;
+            //    List_expander.IsExpanded = true;
 
-                foreach (var item in SelectedStrItems)
-                {
-                    List_dataGrid.Items.Add(item);
-                }
-                List_dataGrid.SelectedIndex = 0;
+            //    foreach (var item in SelectedStrItems)
+            //    {
+            //        List_dataGrid.Items.Add(item);
+            //    }
+            //    List_dataGrid.SelectedIndex = 0;
 
-                SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
+            //    SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
 
-            }
-            else
-            {
-                List_expander.Visibility = Visibility.Hidden;
-                List_expander.IsExpanded = false;
-                //EditData = LangData;
-                SetEditDataTextBlocks(LangData);
+            //}
+            //else
+            //{
+            //    List_expander.Visibility = Visibility.Hidden;
+            //    List_expander.IsExpanded = false;
+            //    //EditData = LangData;
+            //    SetEditDataTextBlocks(LangData);
 
 
-            }
+            //}
 
 
             //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
-        }
+        //}
 
 
         private void List_datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -278,7 +278,7 @@ namespace ESO_Lang_Editor.View
             {
                 if(isStr)
                 {
-                    SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
+                   // SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
                 }
                 else
                 {
@@ -318,31 +318,31 @@ namespace ESO_Lang_Editor.View
                     + modifyInfo;
         }
 
-        private void SetEditDataTextBlocks(UIstrFile Data)
-        {
-            string modifyInfo = "，编辑信息：正常.";
+        //private void SetEditDataTextBlocks(UIstrFile Data)
+        //{
+        //    string modifyInfo = "，编辑信息：正常.";
 
-            if (Data.isTranslated == 2 && Data.RowStats == 20)
-                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
+        //    if (Data.isTranslated == 2 && Data.RowStats == 20)
+        //        modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
 
-            if (Data.isTranslated == 3 && Data.RowStats == 20)
-                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+        //    if (Data.isTranslated == 3 && Data.RowStats == 20)
+        //        modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
 
-            if (Data.RowStats == 30)
-                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本删除，请勿编辑。";
+        //    if (Data.RowStats == 30)
+        //        modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本删除，请勿编辑。";
 
 
-            EditStrData = Data;
+        //    EditStrData = Data;
 
-            textBox_EN.Text = Data.UI_EN;
-            textBox_ZH.Text = Data.UI_ZH;
-            textblock_information.Text = "当前表：" + Data.UI_Table
-                                         //+ "，数据库索引：" + EditData.IndexDB 
+        //    textBox_EN.Text = Data.UI_EN;
+        //    textBox_ZH.Text = Data.UI_ZH;
+        //    textblock_information.Text = "当前表：" + Data.UI_Table
+        //                                 //+ "，数据库索引：" + EditData.IndexDB 
                       
-                    //"，未知列：" + Data.ID_Unknown
-                    //+ "，文本索引：" + Data.ID_Index
-                    + modifyInfo;
-        }
+        //            //"，未知列：" + Data.ID_Unknown
+        //            //+ "，文本索引：" + Data.ID_Index
+        //            + modifyInfo;
+        //}
 
         private LangSearchModel SetEditedData()
         {
@@ -359,19 +359,19 @@ namespace ESO_Lang_Editor.View
             return EditedData;
         }
 
-        private UIstrFile SetEditedStrData()
-        {
-            var EditedData = new UIstrFile();
+        //private UIstrFile SetEditedStrData()
+        //{
+        //    var EditedData = new UIstrFile();
 
-            EditedData.UI_Table = EditStrData.UI_Table;
-            EditedData.UI_ID = EditStrData.UI_ID;
-            EditedData.UI_EN = textBox_EN.Text;
-            EditedData.UI_ZH = textBox_ZH.Text;
-            EditedData.isTranslated = 1;
+        //    EditedData.UI_Table = EditStrData.UI_Table;
+        //    EditedData.UI_ID = EditStrData.UI_ID;
+        //    EditedData.UI_EN = textBox_EN.Text;
+        //    EditedData.UI_ZH = textBox_ZH.Text;
+        //    EditedData.isTranslated = 1;
 
-            System.Console.WriteLine("UI_Table：{0}, UI_ID：{1}, UI_EN：{2}。", EditedData.UI_Table, EditedData.UI_ID, EditedData.UI_EN);
+        //    System.Console.WriteLine("UI_Table：{0}, UI_ID：{1}, UI_EN：{2}。", EditedData.UI_Table, EditedData.UI_ID, EditedData.UI_EN);
 
-            return EditedData;
-        }
+        //    return EditedData;
+        //}
     }
 }

@@ -54,60 +54,60 @@ namespace ESO_Lang_Editor.View
 
         private void Import_button_Click(object sender, RoutedEventArgs e)
         {
-            CsvParser fileParser = new CsvParser();
-            var db = new SQLiteController();
-            Dictionary<string, FileModel_IntoDB> intoDBContent = new Dictionary<string, FileModel_IntoDB>();
-            string updateStats = UpdateStats_textBox.Text;
+            //CsvParser fileParser = new CsvParser();
+            //var db = new SQLiteController();
+            //Dictionary<string, FileModel_IntoDB> intoDBContent = new Dictionary<string, FileModel_IntoDB>();
+            //string updateStats = UpdateStats_textBox.Text;
 
-            if (updateStats == "" || updateStats == " " || updateStats == null)
-            {
-                MessageBox.Show("初始版本号不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                var csvContentEN = fileParser.LoadCsvToDict(ImportPathEN_textBox.Text);
-                var csvContentCN = fileParser.LoadCsvToDict(ImportPathCN_textBox.Text);
-
-
-                foreach (var en in csvContentEN)
-                {
-                    var keyField = en.Key.Split(new char[] { '-' }, 3);
-                    intoDBContent.Add(en.Key, new FileModel_IntoDB
-                    {
-                        stringID = ToInt32(keyField[0]),
-                        stringUnknown = ToInt16(keyField[1]),
-                        stringIndex = ToInt32(keyField[2]),
-                        EN_text = en.Value
-                    });
-                }
-
-                foreach (var zh in csvContentCN)
-                {
-                    if (intoDBContent.ContainsKey(zh.Key))
-                        intoDBContent[zh.Key].ZH_text = zh.Value;
-                }
+            //if (updateStats == "" || updateStats == " " || updateStats == null)
+            //{
+            //    MessageBox.Show("初始版本号不能为空！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //}
+            //else
+            //{
+            //    var csvContentEN = fileParser.LoadCsvToDict(ImportPathEN_textBox.Text);
+            //    var csvContentCN = fileParser.LoadCsvToDict(ImportPathCN_textBox.Text);
 
 
-                List<FileModel_IntoDB> outputList = new List<FileModel_IntoDB>();
-                foreach (var c in intoDBContent)
-                {
-                    outputList.Add(new FileModel_IntoDB
-                    {
-                        stringID = c.Value.stringID,
-                        stringUnknown = c.Value.stringUnknown,
-                        stringIndex = c.Value.stringIndex,
-                        EN_text = c.Value.EN_text,
-                        ZH_text = c.Value.ZH_text,
-                        Istranslated = 0,
-                        UpdateStats = updateStats,
-                    });
+            //    foreach (var en in csvContentEN)
+            //    {
+            //        var keyField = en.Key.Split(new char[] { '-' }, 3);
+            //        intoDBContent.Add(en.Key, new FileModel_IntoDB
+            //        {
+            //            stringID = ToInt32(keyField[0]),
+            //            stringUnknown = ToInt16(keyField[1]),
+            //            stringIndex = ToInt32(keyField[2]),
+            //            EN_text = en.Value
+            //        });
+            //    }
 
-                }
+            //    foreach (var zh in csvContentCN)
+            //    {
+            //        if (intoDBContent.ContainsKey(zh.Key))
+            //            intoDBContent[zh.Key].ZH_text = zh.Value;
+            //    }
 
-                db.CreateDBFileFromCSV(outputList);
 
-                MessageBox.Show("创建完成！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            //    List<FileModel_IntoDB> outputList = new List<FileModel_IntoDB>();
+            //    foreach (var c in intoDBContent)
+            //    {
+            //        outputList.Add(new FileModel_IntoDB
+            //        {
+            //            stringID = c.Value.stringID,
+            //            stringUnknown = c.Value.stringUnknown,
+            //            stringIndex = c.Value.stringIndex,
+            //            EN_text = c.Value.EN_text,
+            //            ZH_text = c.Value.ZH_text,
+            //            Istranslated = 0,
+            //            UpdateStats = updateStats,
+            //        });
+
+            //    }
+
+            //    db.CreateDBFileFromCSV(outputList);
+
+            //    MessageBox.Show("创建完成！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            //}
 
                 
         }

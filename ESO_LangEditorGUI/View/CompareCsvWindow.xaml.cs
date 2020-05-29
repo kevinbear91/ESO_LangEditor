@@ -11,7 +11,7 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class CompareCsvWindow : Window
     {
-        CsvParser fileParser = new CsvParser();
+        
         private Dictionary<string, string> OldDict;
         private Dictionary<string, string> NewDict;
 

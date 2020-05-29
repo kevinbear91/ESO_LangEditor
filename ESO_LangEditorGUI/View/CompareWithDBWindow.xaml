@@ -39,6 +39,7 @@
             <Button x:Name="SaveToDB_Button" Content="保存" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="19" Click="SaveToDB_Button_Click" Canvas.Left="311"/>
             <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="19" Canvas.Left="406"/>
             <TextBox x:Name="VersionInput_textBox" Height="19" Canvas.Left="153" TextWrapping="Wrap" Text="更新版本号(必填)" Width="120" Background="White" SelectionTextBrush="White" OpacityMask="Black" Foreground="Black" GotFocus="VersionInput_GetFocus" LostFocus="VersionInput_Lostfocus"/>
+            <ComboBox x:Name="TableName_comboBox" Canvas.Left="26" Width="100" Canvas.Top="-1"/>
 
         </Canvas>
 
