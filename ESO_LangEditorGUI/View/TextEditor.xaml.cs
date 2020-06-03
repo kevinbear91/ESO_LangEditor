@@ -1,4 +1,6 @@
 ﻿using ESO_Lang_Editor.Model;
+using ESO_LangEditorLib.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,8 +14,8 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class TextEditor : Window
     {
-        private LangSearchModel EditData;
-        private List<LangSearchModel> SelectedItems;
+        private LangData EditData;
+        private List<LangData> SelectedItems;
 
         //private UIstrFile EditStrData;
         //private List<UIstrFile> SelectedStrItems;
@@ -24,7 +26,7 @@ namespace ESO_Lang_Editor.View
 
         IDCatalog IDtypeName = new IDCatalog();
 
-        public TextEditor(LangSearchModel LangData, List<LangSearchModel> SelectedItemsList)
+        public TextEditor(LangData LangData, List<LangData> SelectedItemsList)
         {
 
             InitializeComponent();
@@ -79,7 +81,7 @@ namespace ESO_Lang_Editor.View
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "文本ID";
-                c1.Binding = new Binding("ID_Type");
+                c1.Binding = new Binding("UniqueID");
                 c1.Width = 100;
                 List_dataGrid.Columns.Add(c1);
 
@@ -92,7 +94,7 @@ namespace ESO_Lang_Editor.View
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
                 c3.Width = 100;
-                c3.Binding = new Binding("Text_SC");
+                c3.Binding = new Binding("Text_ZH");
                 List_dataGrid.Columns.Add(c3);
             }
 
@@ -147,9 +149,10 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                //var connDB = new SQLiteController();
-                var EditedData = SetEditedData();
-                //var updateResult = connDB.UpdateDataFromEditor(EditedData);
+                var EditedData = GetEditedData();
+
+                MessageBox.Show("ID: " + EditedData.UniqueID +
+                    Environment.NewLine + "ZH: " + EditedData.Text_ZH);
 
                 //MessageBox.Show(updateResult);
 
@@ -193,24 +196,25 @@ namespace ESO_Lang_Editor.View
             List_expander.Header = "展开列表";
         }
 
-        private void List_Datagrid_Display(LangSearchModel LangData)
+        private void List_Datagrid_Display(LangData LangData)
         {
             //var IDtypeName = new IDCatalog();
 
             if (List_dataGrid.Items.Count > 1)
-                //SearchData = null;
                 List_dataGrid.Items.Clear();
 
-            //SearchData = SearchLang(SearchCheck());
             if (SelectedItems != null && SelectedItems.Count > 1)
             {
                 List_expander.Visibility = Visibility.Visible;
                 List_expander.IsExpanded = true;
 
-                foreach (var item in SelectedItems)
-                {
-                    List_dataGrid.Items.Add(item);
-                }
+                List_dataGrid.ItemsSource = SelectedItems;
+
+                //foreach (var item in SelectedItems)
+                //{
+                //    List_dataGrid.Items.Add(item);
+                //}
+
                 List_dataGrid.SelectedIndex = 0;
 
                 SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
@@ -222,8 +226,6 @@ namespace ESO_Lang_Editor.View
                 List_expander.IsExpanded = false;
                 //EditData = LangData;
                 SetEditDataTextBlocks(LangData);
-
-
             }
             
 
@@ -292,29 +294,24 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        private void SetEditDataTextBlocks(LangSearchModel Data)
+        private void SetEditDataTextBlocks(LangData Data)
         {
             string modifyInfo = "，编辑信息：正常.";
 
-            if (Data.isTranslated == 2 && Data.RowStats == 20)
+            if (Data.IsTranslated == 2 && Data.RowStats == 2)
                 modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
 
-            if (Data.isTranslated == 3 && Data.RowStats == 20)
+            if (Data.IsTranslated == 3 && Data.RowStats == 2)
                 modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
-
-            if (Data.RowStats == 30)
-                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本删除，请勿编辑。";
 
 
             EditData = Data;
 
             textBox_EN.Text = Data.Text_EN;
-            textBox_ZH.Text = Data.Text_SC;
-            textblock_information.Text = //"当前表：" + Data.ID_Table
-                                         //+ "，数据库索引：" + EditData.IndexDB 
-                    "类型：" + IDtypeName.GetCategory(Data.ID_Type.ToString())    //EditData.ID_Type  
-                    + "，未知列：" + Data.ID_Unknown
-                    + "，文本索引：" + Data.ID_Index
+            textBox_ZH.Text = Data.Text_ZH;
+            textblock_information.Text = "类型：" + IDtypeName.GetCategory(Data.ID.ToString())   
+                    + "，未知列：" + Data.Unknown
+                    + "，文本索引：" + Data.Lang_Index
                     + modifyInfo;
         }
 
@@ -344,17 +341,14 @@ namespace ESO_Lang_Editor.View
         //            + modifyInfo;
         //}
 
-        private LangSearchModel SetEditedData()
+        private LangData GetEditedData()
         {
-            var EditedData = new LangSearchModel();
-
-            EditedData.ID_Table = EditData.ID_Table;
-            EditedData.ID_Type = EditData.ID_Type;
-            EditedData.ID_Unknown = EditData.ID_Unknown;
-            EditedData.ID_Index = EditData.ID_Index;
-            EditedData.Text_EN = EditData.Text_EN;
-            EditedData.Text_SC = textBox_ZH.Text;
-            EditedData.isTranslated = 1;
+            var EditedData = new LangData
+            {
+                UniqueID = EditData.UniqueID,
+                Text_ZH = textBox_ZH.Text,
+                IsTranslated = 1
+            };
 
             return EditedData;
         }

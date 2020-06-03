@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ESO_LangEditorLib.Models
 {
-    class CsvData
+    public class CsvData
     {
         public string UniqueID { get; set; }
         public int Fileid { get; set; }

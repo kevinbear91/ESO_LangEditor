@@ -1,15 +1,15 @@
 ﻿using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Convert;
 
 namespace ESO_LangEditorLib
 {
-    class CsvParser
+    public class CsvParser
     {
 
         public async Task<List<CsvData>> CsvReader(string path)
@@ -18,40 +18,68 @@ namespace ESO_LangEditorLib
             List<CsvData> csvData = new List<CsvData>();
             using (StreamReader reader = new StreamReader(path))
             {
-                Console.WriteLine("Opened file.");
+                Debug.WriteLine("Opened file.");
+
                 string id;
                 string unknown;
                 string index;
                 string text;
-                while ((result = await reader.ReadLineAsync()).Skip(1) != null)
+                bool passedFirstLine = false;
+
+                while ((result = await reader.ReadLineAsync()) != null)
                 {
-                    //Console.WriteLine(result);
-
                     string[] words = result.Trim().Split(new char[] { ',' }, 5);
-                    id = words[0].Trim('"');
-                    unknown = words[1].Trim('"');
-                    index = words[2].Trim('"');
-                    text = words[4].Substring(1, words[4].Length - 2);
-
-                    csvData.Add(new CsvData
+                    
+                    if(passedFirstLine)
                     {
-                        UniqueID = id + "-" + unknown + "-" + index,
-                        Fileid = ToInt32(id),
-                        Unknown = ToInt32(unknown),
-                        Index = ToInt32(index),
-                        Text = text,
-                    }); ;
+                        ParserCsvAddToList(csvData, out id, out unknown, out index, out text, words);
+                    }
+                    else
+                    {
+                        id = words[0].Trim('"');
 
-                    Console.WriteLine("ID: " + id + ", "
-                        + "Unknown: " + unknown + ", "
-                        + "Index: " + index + ", "
-                        + "Text: " + text);
+                        if (id == "ID")
+                        { 
+                            passedFirstLine = true;
+                            Debug.WriteLine("Have header line, set to skip." );
+                        }
+                        else
+                        {
+                            ParserCsvAddToList(csvData, out id, out unknown, out index, out text, words);
+                        }
+                    }
                 }
                 reader.Close();
-                Console.WriteLine("Total lines: " + csvData.Count);
+                Debug.WriteLine("Total lines: " + csvData.Count);
                 //MessageBox.Show("读取完毕，共 " + csvData.Count + " 行数据。");
             }
             return csvData;
+
+            #region 分析CSV文件，并将分析后的文本加入 List<CsvData>
+
+            static void ParserCsvAddToList(List<CsvData> csvData, out string id, out string unknown, out string index, out string text, string[] words)
+            {
+                id = words[0].Trim('"');
+                unknown = words[1].Trim('"');
+                index = words[2].Trim('"');
+                text = words[4].Substring(1, words[4].Length - 2);
+
+                csvData.Add(new CsvData
+                {
+                    UniqueID = id + "-" + unknown + "-" + index,
+                    Fileid = ToInt32(id),
+                    Unknown = ToInt32(unknown),
+                    Index = ToInt32(index),
+                    Text = text,
+                }); ;
+
+                //Debug.WriteLine("ID: " + id + ", "
+                //    + "Unknown: " + unknown + ", "
+                //    + "Index: " + index + ", "
+                //    + "Text: " + text);
+            }
+
+            #endregion
         }
 
 

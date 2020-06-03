@@ -1,6 +1,10 @@
-﻿using ESO_Lang_Editor.Model;
+﻿using ESO_LangEditorLib;
+using ESO_LangEditorLib.Models;
 using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows;
 using static System.Convert;
 
@@ -11,6 +15,10 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class CreateDB_ImportCSV : Window
     {
+        private List<CsvData> csvData = new List<CsvData>();
+        private List<LangData> langData = new List<LangData>();
+        private int importButtonSwitchInt = 0;
+
         public CreateDB_ImportCSV()
         {
             InitializeComponent();
@@ -52,8 +60,90 @@ namespace ESO_Lang_Editor.View
             }
         }
 
-        private void Import_button_Click(object sender, RoutedEventArgs e)
+        private async void Import_button_Click(object sender, RoutedEventArgs e)
         {
+            switch (importButtonSwitchInt)
+            {
+                case 0:
+                    string csvPath = ImportPathEN_textBox.Text;
+
+                    CsvParser csvParser = new CsvParser();
+
+                    LoadEN_button.IsEnabled = false;
+                    LoadCN_button.IsEnabled = false;
+                    Import_button.IsEnabled = false;
+                    Import_button.Content = "正在读取……";
+                    
+
+                    try
+                    {
+                        csvData = await csvParser.CsvReader(csvPath);
+
+                        LoadEN_button.IsEnabled = false;
+                        LoadCN_button.IsEnabled = true;
+
+                        importButtonSwitchInt = 1;
+
+                        Import_button.IsEnabled = true;
+                        Import_button.Content = "导入";
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        MessageBox.Show("无法读取.csv文件，或许不是转换后的语言.csv文件。", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                        LoadEN_button.IsEnabled = true;
+                        LoadCN_button.IsEnabled = true;
+
+                        importButtonSwitchInt = 0;
+
+                        Import_button.IsEnabled = true;
+                        Import_button.Content = "读取";
+                    }
+
+                    break;
+
+                case 1:
+                    string updateStats = UpdateStats_textBox.Text;
+
+                    Import_button.IsEnabled = false;
+                    Import_button.Content = "正在导入";
+
+                    ForEachCsvData(csvData, updateStats, false);
+
+                    importButtonSwitchInt = 2;
+
+                    Import_button.IsEnabled = true;
+                    Import_button.Content = "可写入";
+                    break;
+
+                case 2:
+                    // TO DO...
+                    //SqliteController db = new SqliteController();
+                    Lang_DbController db = new Lang_DbController();
+                    Import_button.IsEnabled = false;
+                    Import_button.Content = "正在创建数据库……";
+
+                    db.InsertDataFromCsv(langData);
+
+                    //db.InsertDataFromCsv(langData);
+
+                    MessageBox.Show("创建完成！", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Import_button.IsEnabled = true;
+                    Import_button.Content = "读取";
+                    break;
+
+
+            }
+            
+            
+
+            
+
+            
+
+
+
+
             //CsvParser fileParser = new CsvParser();
             //var db = new SQLiteController();
             //Dictionary<string, FileModel_IntoDB> intoDBContent = new Dictionary<string, FileModel_IntoDB>();
@@ -109,7 +199,171 @@ namespace ESO_Lang_Editor.View
             //    MessageBox.Show("创建完成！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             //}
 
+
+        }
+
+        //public List<LangData> langData { get; set; };
+
+        //private async Task<List<LangData>> CsvDataToLangData (List<CsvData> csvData, bool isZH)
+        //{
+        //    //List<LangData> langData = new List<LangData>();
+            
+        //    string updateStats = UpdateStats_textBox.Text;
+
+        //    ForEachCsvData(csvData, updateStats, false);
+
+        //}
+
+        private void ForEachCsvData(IEnumerable<CsvData> _csvData, string updateStats, bool isZH)
+        {
+
+            if (isZH)
+            {
+                foreach (var data in _csvData)
+                {
+                    langData.Add(new LangData
+                    {
+                        UniqueID = data.UniqueID,
+                        ID = data.Fileid,
+                        Unknown = data.Unknown,
+                        Lang_Index = data.Index,
+                        Text_ZH = data.Text,       //汉化文本
+                        UpdateStats = updateStats,
+                        IsTranslated = 0,
+                        RowStats = 1,
+                    });
+                }
                 
+            }
+            else
+            {
+                foreach (var data in _csvData)
+                {
+                    langData.Add(new LangData
+                    {
+                        UniqueID = data.UniqueID,
+                        ID = data.Fileid,
+                        Unknown = data.Unknown,
+                        Lang_Index = data.Index,
+                        Text_EN = data.Text,          //英语文本
+                        Text_ZH = "TODO",
+                        UpdateStats = updateStats,
+                        IsTranslated = 0,
+                        RowStats = 1,
+                    });;
+                }
+                System.Diagnostics.Debug.WriteLine("langdata lines total: " + langData.Count);
+            }
+
+
+            //foreach (var data in _csvData)
+            //{
+            //    //SaveToLangData(data, updateStats);
+            //}
+        }
+
+        private void SaveToLangData(CsvData csvData, string updateStats, bool isZH)
+        {
+            if(isZH)
+            {
+                langData.Add(new LangData
+                {
+                    UniqueID = csvData.UniqueID,
+                    ID = csvData.Fileid,
+                    Unknown = csvData.Unknown,
+                    Lang_Index = csvData.Index,
+                    Text_ZH = csvData.Text,
+                    UpdateStats = updateStats,
+                    IsTranslated = 0,
+                    RowStats = 1,
+                });
+            }
+            else
+            {
+                langData.Add(new LangData
+                {
+                    UniqueID = csvData.UniqueID,
+                    ID = csvData.Fileid,
+                    Unknown = csvData.Unknown,
+                    Lang_Index = csvData.Index,
+                    Text_EN = csvData.Text,
+                    UpdateStats = updateStats,
+                    IsTranslated = 0,
+                    RowStats = 1,
+                });
+            }    
+            
+        }
+
+        private async void DbAction_button_Click(object sender, RoutedEventArgs e)
+        {
+            DbAction_button.IsEnabled = false;
+            DbAction_button.Content = "正在读取";
+
+            Lang_DbController db = new Lang_DbController();
+            var oldLangdb = db.GetSearchOldDataAsync();
+
+            DbAction_button.IsEnabled = true;
+            DbAction_button.Content = "读取";
+
+            foreach(var o in oldLangdb)
+            {
+                
+                        if (o.RowStats == 10)
+                        {
+                            langData.Add(new LangData
+                            {
+                                UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
+                                ID = o.ID,
+                                Unknown = o.Unknown,
+                                Lang_Index = o.Index,
+                                Text_EN = o.Text_EN,
+                                Text_ZH = o.Text_SC,
+                                UpdateStats = o.UpdateStats,
+                                IsTranslated = o.isTranslated,
+                                RowStats = 1,
+                            });
+                        }
+                        else if (o.RowStats == 20)
+                        {
+                            langData.Add(new LangData
+                            {
+                                UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
+                                ID = o.ID,
+                                Unknown = o.Unknown,
+                                Lang_Index = o.Index,
+                                Text_EN = o.Text_EN,
+                                Text_ZH = o.Text_SC,
+                                UpdateStats = o.UpdateStats,
+                                IsTranslated = o.isTranslated,
+                                RowStats = 2,
+                            });
+                        }
+                        else
+                        {
+                            langData.Add(new LangData
+                            {
+                                UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
+                                ID = o.ID,
+                                Unknown = o.Unknown,
+                                Lang_Index = o.Index,
+                                Text_EN = o.Text_EN,
+                                Text_ZH = o.Text_SC,
+                                UpdateStats = o.UpdateStats,
+                                IsTranslated = o.isTranslated,
+                                RowStats = o.RowStats,
+                            });
+                        }
+                
+                Debug.WriteLine("lang data: " + langData.Count);
+
+            }
+
+            db.InsertDataFromCsv(langData);
+
+            MessageBox.Show("完成", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            //Debug.WriteLine("old data: " + oldDbData.Count);
         }
     }
 }

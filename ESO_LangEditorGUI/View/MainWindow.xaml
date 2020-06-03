@@ -54,11 +54,12 @@
 
         <Canvas Grid.Row="2">
 
-            <DataGrid x:Name="LangSearch" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
+            <DataGrid x:Name="LangData" Canvas.Left="10" Width="770" Height="290" AllowDrop="True"
                       MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16" 
                       SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                       MouseRightButtonUp="LangSearch_MouseRightUp"
-                      AutoGenerateColumns="True" />
+                      AutoGenerateColumns="False">
+            </DataGrid> 
         </Canvas>
         <Canvas Grid.Row="3">
             <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="" Width="230" />
