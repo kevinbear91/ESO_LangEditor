@@ -16,7 +16,7 @@ namespace ESO_Lang_Editor.View
 
         private Dictionary<string, string> OldDict;
         private Dictionary<string, string> NewDict;
-        private List<LangSearchModel> langData;
+        //private List<LangSearchModel> langData;
         public ObservableCollection<string> compareOptions { get; set; }
 
         public CompareWithDBWindow()
@@ -113,10 +113,10 @@ namespace ESO_Lang_Editor.View
 
            // langData = fileParser.CsvDictToModel(addedParser);
 
-            foreach (var data in langData)
-            {
-                Changed_DataGrid.Items.Add(data);
-            }
+            //foreach (var data in langData)
+            //{
+            //    Changed_DataGrid.Items.Add(data);
+            //}
             Status_textBlock.Text = "总计搜索到" + Changed_DataGrid.Items.Count + "条结果。";
         }
 
@@ -142,14 +142,14 @@ namespace ESO_Lang_Editor.View
             //var addedParser = fileParser.CsvCompareAdded(OldDict, NewDict);
             //var langData = fileParser.CsvDictToModel(addedParser);
 
-            if (Changed_DataGrid.Items.Count > 1)
-                langData = null;
-            Changed_DataGrid.Items.Clear();
+            //if (Changed_DataGrid.Items.Count > 1)
+            //    langData = null;
+            //Changed_DataGrid.Items.Clear();
 
-            foreach (var data in langData)
-            {
-                Changed_DataGrid.Items.Add(data);
-            }
+            //foreach (var data in langData)
+            //{
+            //    Changed_DataGrid.Items.Add(data);
+            //}
             //NewStatus_textBlock.Text = "总计搜索到" + Changed_DataGrid.Items.Count + "条结果。";
         }
 
@@ -261,7 +261,7 @@ namespace ESO_Lang_Editor.View
                 && VersionInput_textBox.Text != ""
                 && VersionInput_textBox.Text != " "
                 && VersionInput_textBox.Text != "更新版本号(必填)"
-                && langData != null)
+                /*&& langData != null*/)
             {
                 SaveToDB_Button.IsEnabled = true;
                 return true;

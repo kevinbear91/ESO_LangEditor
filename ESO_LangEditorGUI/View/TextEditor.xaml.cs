@@ -30,7 +30,7 @@ namespace ESO_Lang_Editor.View
         {
 
             InitializeComponent();
-            this.Width = 530;
+            //this.Width = 530;
 
             isStr = false;
             SelectedItems = SelectedItemsList;
