@@ -58,5 +58,7 @@ namespace ESO_LangEditorLib.Models
         // 3 = EN_Text修改过内容, ZH_Text已订正翻译
         //[SugarColumn(IsNullable = false)]
         public int RowStats { get; set; }
+
     }
+    
 }

@@ -15,7 +15,7 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class CreateDB_ImportCSV : Window
     {
-        private List<CsvData> csvData = new List<CsvData>();
+        private List<LangData> csvData = new List<LangData>();
         private List<LangData> langData = new List<LangData>();
         private int importButtonSwitchInt = 0;
 
@@ -77,7 +77,7 @@ namespace ESO_Lang_Editor.View
 
                     try
                     {
-                        csvData = await csvParser.CsvReader(csvPath);
+                        //csvData = await csvParser.CsvReader(csvPath);
 
                         LoadEN_button.IsEnabled = false;
                         LoadCN_button.IsEnabled = true;
@@ -214,7 +214,7 @@ namespace ESO_Lang_Editor.View
 
         //}
 
-        private void ForEachCsvData(IEnumerable<CsvData> _csvData, string updateStats, bool isZH)
+        private void ForEachCsvData(IEnumerable<LangData> _csvData, string updateStats, bool isZH)
         {
 
             if (isZH)
@@ -224,10 +224,10 @@ namespace ESO_Lang_Editor.View
                     langData.Add(new LangData
                     {
                         UniqueID = data.UniqueID,
-                        ID = data.Fileid,
+                        ID = data.ID,
                         Unknown = data.Unknown,
-                        Lang_Index = data.Index,
-                        Text_ZH = data.Text,       //汉化文本
+                        Lang_Index = data.Lang_Index,
+                        Text_ZH = data.Text_EN,       //汉化文本
                         UpdateStats = updateStats,
                         IsTranslated = 0,
                         RowStats = 1,
@@ -242,10 +242,10 @@ namespace ESO_Lang_Editor.View
                     langData.Add(new LangData
                     {
                         UniqueID = data.UniqueID,
-                        ID = data.Fileid,
+                        ID = data.ID,
                         Unknown = data.Unknown,
-                        Lang_Index = data.Index,
-                        Text_EN = data.Text,          //英语文本
+                        Lang_Index = data.Lang_Index,
+                        Text_EN = data.Text_EN,          //英语文本
                         Text_ZH = "TODO",
                         UpdateStats = updateStats,
                         IsTranslated = 0,

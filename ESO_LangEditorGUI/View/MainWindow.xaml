@@ -58,7 +58,7 @@
                       SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                       MouseRightButtonUp="LangSearch_MouseRightUp"
                       AutoGenerateColumns="False" VerticalAlignment="Top" Margin="10,0,10,10"
-                      ColumnWidth="200*" AlternationCount="25"/>
+                      ColumnWidth="200*" />
 
         
             

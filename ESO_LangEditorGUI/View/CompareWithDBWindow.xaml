@@ -13,25 +13,42 @@
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="CSV文件（新）" Grid.Row="1" Margin="20,10,0,0" BorderBrush="#FF959595" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Width="345">
+        <GroupBox Header="CSV文件（新）" Grid.Row="1" Margin="20,10,0,0" BorderBrush="#FF959595" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Width="481">
             <Canvas>
-                <TextBox x:Name="NewFileURLtextBox" Height="19" Canvas.Left="10" Canvas.Top="10" Text="" VerticalAlignment="Top" Width="220" Grid.Row="1" Grid.Column="1" />
-                <Button x:Name="BrowseNewFileButton" Content="浏览……" Canvas.Left="244" Canvas.Top="10" Width="75" Grid.Row="1" Grid.Column="1" Height="19" Click="BrowseNewFileButton_Click"/>
+                <TextBox x:Name="NewFileURLtextBox" Height="19" Canvas.Left="10" Canvas.Top="10" Text="" Width="240" Grid.Row="1" Grid.Column="1" />
+                <Button x:Name="BrowseNewFileButton" Content="浏览……" Canvas.Left="276" Canvas.Top="10" Width="75" Grid.Row="1" Grid.Column="1" Height="19" Click="BrowseNewFileButton_Click"/>
+                <Button x:Name="LoadCsv_Buton" Content="开始读取" Width="75" Height="19" Click="LoadCsv_Buton_Click" Canvas.Left="371" Canvas.Top="10"/>
 
             </Canvas>
         </GroupBox>
 
         <GroupBox Header="变更文本内容" Grid.Row="1" Margin="20,76,0,0" BorderBrush="#FF959595"  Width="481" Height="295" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Canvas>
-                <DataGrid x:Name="Changed_DataGrid" Height="234" Width="449" Grid.Row="1" Canvas.Left="10" Canvas.Top="10" IsReadOnly="True">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ID_Type}"  Header="文本ID" Width="80"/>
-                        <DataGridTextColumn Binding="{Binding ID_Unknown}"  Header="文本Unknow" Width="50"/>
-                        <DataGridTextColumn Binding="{Binding ID_Index}"  Header="文本索引" Width="50"/>
-                        <DataGridTextColumn Binding="{Binding Text_EN}"  Header="文本内容"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+
                 <TextBlock x:Name="Status_textBlock" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center" HorizontalAlignment="Center" Width="440" Canvas.Top="254" Canvas.Left="10"/>
+                <TabControl x:Name="text_Tabs" Height="273" Width="469">
+                    <TabItem x:Name="Added_tabitem" Header="新增" Visibility="Visible">
+                        <Grid Background="#FFE5E5E5">
+                            <DataGrid x:Name="Added_DataGrid" Height="234" Width="449" 
+                          Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
+                          IsReadOnly="True" AutoGenerateColumns="False" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="Changed_tabitem" Header="变更">
+                        <Grid Background="#FFE5E5E5">
+                            <DataGrid x:Name="Changed_DataGrid" Height="234" Width="449" 
+                          Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
+                          IsReadOnly="True" AutoGenerateColumns="False" />
+                        </Grid>
+                    </TabItem>
+                    <TabItem x:Name="Removed_tabitem" Header="移除" Visibility="Visible">
+                        <Grid Background="#FFE5E5E5" Visibility="Visible">
+                            <DataGrid x:Name="Removed_DataGrid" Height="234" Width="449" 
+                          Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
+                          IsReadOnly="True" AutoGenerateColumns="False" />
+                        </Grid>
+                    </TabItem>
+                </TabControl>
             </Canvas>
         </GroupBox>
 
@@ -42,9 +59,6 @@
             <ComboBox x:Name="TableName_comboBox" Canvas.Left="26" Width="100" Canvas.Top="-1"/>
 
         </Canvas>
-
-        <Button x:Name="LoadCsv_Buton" Content="开始读取" HorizontalAlignment="Left" Margin="381,56,0,0" VerticalAlignment="Top" Width="75" Grid.Row="1" Height="19" Click="LoadCsv_Buton_Click"/>
-        <ComboBox x:Name="CompareOptions_comboBox" HorizontalAlignment="Left" Margin="381,21,0,0" Grid.Row="1" VerticalAlignment="Top" Width="90" Height="21"/>
 
     </Grid>
 </Window>

@@ -348,18 +348,20 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                SearchData = await Task.Run(() => { 
-                    var query = db.GetLangsAsync(selectedSearchType, selectedSearchTextPosition, searchText);
+                SearchData = await Task.Run(() =>
+                {
+                    var query = db.GetLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
                     return query;
                 });
-                
+
             }
 
             switch (result)
             {
                 case MessageBoxResult.OK:
-                    SearchData = await Task.Run(() => {
-                        var query = db.GetLangsAsync(selectedSearchType, selectedSearchTextPosition, searchText);
+                    SearchData = await Task.Run(() =>
+                    {
+                        var query = db.GetLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
                         return query;
                     });
                     break;

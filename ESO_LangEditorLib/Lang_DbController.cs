@@ -44,7 +44,7 @@ namespace ESO_LangEditorLib
         /// <param name="searchPos">搜索位置</param>
         /// <param name="searchWord">搜索文本</param>
         /// <returns></returns>
-        public async Task<List<LangData>> GetLangsAsync(int field, int searchPos, string searchWord)
+        public async Task<List<LangData>> GetLangsListAsync(int field, int searchPos, string searchWord)
         {
             List<LangData> data = new List<LangData>();
 
@@ -67,15 +67,37 @@ namespace ESO_LangEditorLib
                     4 => await Db.langData.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
                     _ => await Db.langData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
                 };
+                //await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToDictionaryAsync(d => d.UniqueID),
+                //data = await q.ToDictionaryAsync(q => q.UniqueID);
             }
 
             return data;
         }
 
 
+        public async Task<Dictionary<string, LangData>> GetAllLangsDictionaryAsync()
+        {
+            Dictionary<string, LangData> data = new Dictionary<string, LangData>();
 
+            using (var Db = new Lang_DbContext())
+            {
+                data = await Db.langData.ToDictionaryAsync(d => d.UniqueID);
 
+                //data = q.ToDictionary(q => q.UniqueID);
+            }
+            return data;
+        }
 
+        public async Task UpdateLangsEN(List<LangData> langList)
+        {
+
+            //using (var Db = new Lang_DbContext())
+            //{
+            //    Db.UpdateRange(langList.)
+
+            //}
+
+        }
 
 
 

@@ -30,7 +30,7 @@ namespace ESO_Lang_Editor.View
         {
 
             InitializeComponent();
-            //this.Width = 530;
+            this.Height = 480;
 
             isStr = false;
             SelectedItems = SelectedItemsList;
@@ -62,18 +62,18 @@ namespace ESO_Lang_Editor.View
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "UI ID";
                 c1.Binding = new Binding("UI_ID");
-                c1.Width = 100;
+                //c1.Width = 100;
                 List_dataGrid.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
                 c2.Header = "英文";
-                c2.Width = 100;
+                //c2.Width = 100;
                 c2.Binding = new Binding("UI_EN");
                 List_dataGrid.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
-                c3.Width = 100;
+                //c3.Width = 100;
                 c3.Binding = new Binding("UI_ZH");
                 List_dataGrid.Columns.Add(c3);
             }
@@ -82,18 +82,18 @@ namespace ESO_Lang_Editor.View
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "文本ID";
                 c1.Binding = new Binding("UniqueID");
-                c1.Width = 100;
+                //c1.Width = 100;
                 List_dataGrid.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
                 c2.Header = "英文";
-                c2.Width = 100;
+                //c2.Width = 100;
                 c2.Binding = new Binding("Text_EN");
                 List_dataGrid.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
-                c3.Width = 100;
+                //c3.Width = 100;
                 c3.Binding = new Binding("Text_ZH");
                 List_dataGrid.Columns.Add(c3);
             }
@@ -186,13 +186,14 @@ namespace ESO_Lang_Editor.View
 
         private void List_expander_Expanded(object sender, RoutedEventArgs e)
         {
-            this.Width = 750;
+            this.Height = 600;
+            
             List_expander.Header = "收起列表";
         }
 
         private void List_expander_Collapsed(object sender, RoutedEventArgs e)
         {
-            this.Width = 530;
+            this.Height = 480;
             List_expander.Header = "展开列表";
         }
 
