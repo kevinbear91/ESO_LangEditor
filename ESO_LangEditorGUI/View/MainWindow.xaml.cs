@@ -162,10 +162,10 @@ namespace ESO_Lang_Editor.View
                         }
                         else
                         {
-                            SelectedData = (LangData)datagrid.SelectedItem;
-                            TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
+                            //SelectedData = ;
+                            TextEditor textEditor = new TextEditor((LangData)datagrid.SelectedItem);
                             textEditor.Show();
-                            //MessageBox.Show(data.Text_SC);
+                            //MessageBox.Show((LangData)datagrid.SelectedItem);
                         }
 
 
@@ -320,7 +320,7 @@ namespace ESO_Lang_Editor.View
                             SelectedDatas.Add((LangData)selectedItem);
                     }
 
-                    TextEditor textEditor = new TextEditor(SelectedData, SelectedDatas);
+                    TextEditor textEditor = new TextEditor(SelectedDatas);
                     textEditor.Show();
                 }
             }

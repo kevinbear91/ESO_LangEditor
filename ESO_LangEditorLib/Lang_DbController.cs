@@ -88,15 +88,26 @@ namespace ESO_LangEditorLib
             return data;
         }
 
+
+
+        public async Task AddNewLangs(List<LangData> langList)
+        {
+            using var Db = new Lang_DbContext();
+            Db.AddRange(langList);
+            await Db.SaveChangesAsync();
+        }
+
         public async Task UpdateLangsEN(List<LangData> langList)
         {
-
-            //using (var Db = new Lang_DbContext())
-            //{
-            //    Db.UpdateRange(langList.)
-
-            //}
-
+            using var Db = new Lang_DbContext();
+            Db.UpdateRange(langList);
+            await Db.SaveChangesAsync();
+        }
+        public async Task DeleteLangs(List<LangData> langList)
+        {
+            using var Db = new Lang_DbContext();
+            Db.RemoveRange(langList);
+            await Db.SaveChangesAsync();
         }
 
 

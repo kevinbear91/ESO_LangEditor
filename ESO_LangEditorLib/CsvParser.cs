@@ -107,7 +107,7 @@ namespace ESO_LangEditorLib
 
                     if (passedFirstLine)
                     {
-                        ParserCsvAddToList(csvData, out id, out unknown, out index, out text, words);
+                        ParserCsvAddToDict(csvData, out id, out unknown, out index, out text, words);
                     }
                     else
                     {
@@ -120,7 +120,7 @@ namespace ESO_LangEditorLib
                         }
                         else
                         {
-                            ParserCsvAddToList(csvData, out id, out unknown, out index, out text, words);
+                            ParserCsvAddToDict(csvData, out id, out unknown, out index, out text, words);
                         }
                     }
                 }
@@ -130,7 +130,7 @@ namespace ESO_LangEditorLib
             }
             return csvData;
 
-            static void ParserCsvAddToList(Dictionary<string, LangData> csvData, out string id, out string unknown, out string index, out string text, string[] words)
+            static void ParserCsvAddToDict(Dictionary<string, LangData> csvData, out string id, out string unknown, out string index, out string text, string[] words)
             #region 分析CSV文件，并将分析后的文本加入 Dictionary<string, LangData>
             {
 
@@ -138,8 +138,7 @@ namespace ESO_LangEditorLib
                 id = words[0].Trim('"');
                 unknown = words[1].Trim('"');
                 index = words[2].Trim('"');
-                text = words[4].Substring(1, words[4].Length - 2);
-
+                text = words[4].Substring(1, words[4].Length - 2).Replace("\"\"","\"");
                 string key = id + "-" + unknown + "-" + index;
 
                 csvData.Add(key, new LangData

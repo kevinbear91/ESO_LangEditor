@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -35,14 +37,22 @@ namespace ESO_Lang_Editor.View
         private List<LangData> removedList = new List<LangData>();
         private Dictionary<string, LangData> removed = new Dictionary<string, LangData>();
 
-        public ObservableCollection<string> compareOptions { get; set; }
+        private Lang_DbController db = new Lang_DbController();
+
+        //public List<NameList> nameList = new List<NameList>();
+
+        //class NameList
+        //{
+        //    List<LangData> langDataName { get; set; }
+        //    DataGrid dataGridName { get; set; }
+        //    TabItem tabItemName { get; set; }
+        //}
 
         public CompareWithDBWindow()
         {
             InitializeComponent();
 
             CheckSaveToDBButtonCanEnable();
-
         }
 
         private void BrowseNewFileButton_Click(object sender, RoutedEventArgs e)
@@ -83,49 +93,27 @@ namespace ESO_Lang_Editor.View
             if (NewFileURLtextBox.Text != "")
             {
                 filePath = NewFileURLtextBox.Text;  //&& fileName != NewFileURLtextBox.Text
+                LoadCsv_Buton.IsEnabled = false;
+                SaveToDB_Button.IsEnabled = false;
 
                 CsvDict = await csvparser.CsvReaderToDictionaryAsync(filePath);
 
-                var db = new Lang_DbController();
+                
 
-                //dbLangDict = await db.GetAllLangsDictionaryAsync();
+                dbLangDict = await Task.Run(() => db.GetAllLangsDictionaryAsync());
 
-                dbLangDict = await csvparser.CsvReaderToDictionaryAsync(@"D:\eso_zh\eso_zh\en.lang.csv");
-
+                //dbLangDict = await csvparser.CsvReaderToDictionaryAsync(@"D:\eso_zh\eso_zh\en.lang.csv");
 
                 DiffDictionary(dbLangDict, CsvDict);
 
-
-                //removed = dbLang.Except(csvData).ToList();
-
                 Debug.WriteLine(dbLangDict.Count());
 
+                //LoadCsv_Buton.IsEnabled = false;
+                SaveToDB_Button.IsEnabled = true;
+
+                
 
 
-                //foreach(var other in csvData)
-                //{
-                //    if (dbLang.Except())
-                //}
-
-
-                //db.GetLangsAsync(1, 0, "");
-
-
-
-                //if (OldDict == null && NewDict == null)
-                //{
-                //    OldDict = LoadDB();
-                //    NewDict = fileParser.LoadCsvToDict(NewFileURLtextBox.Text);
-
-                //    CompareData();
-                //    CheckSaveToDBButtonCanEnable();
-                //}
-                //else
-                //{
-                //    CompareData();
-
-                //    CheckSaveToDBButtonCanEnable();
-                //}
             }
             else
             {
@@ -151,13 +139,34 @@ namespace ESO_Lang_Editor.View
                     }
                     else
                     {
-                        changed.Add(other.Value);
+                        changed.Add(new LangData { 
+                        UniqueID = other.Value.UniqueID,
+                        ID = other.Value.ID,
+                        Unknown = other.Value.Unknown,
+                        Lang_Index = other.Value.Lang_Index,
+                        Text_EN = other.Value.Text_EN,
+                        Text_ZH = firstValue.Text_ZH,
+                        UpdateStats = VersionInput_textBox.Text,
+                        IsTranslated = firstValue.IsTranslated,
+                        RowStats = 2,
+                        });
                         removed.Remove(other.Key);
                     }
                 }
                 else
                 {
-                    added.Add(other.Value);
+                    added.Add(new LangData
+                    {
+                        UniqueID = other.Value.UniqueID,
+                        ID = other.Value.ID,
+                        Unknown = other.Value.Unknown,
+                        Lang_Index = other.Value.Lang_Index,
+                        Text_EN = other.Value.Text_EN,
+                        Text_ZH = other.Value.Text_EN,
+                        UpdateStats = VersionInput_textBox.Text,
+                        IsTranslated = 0,
+                        RowStats = 1,
+                    });
                     removed.Remove(other.Key);
                 }
             }
@@ -175,10 +184,12 @@ namespace ESO_Lang_Editor.View
 
         private void SetCompareUI()
         {
-            List<TabItem> tabs = new List<TabItem>();
-            tabs.Add(Added_tabitem); 
-            tabs.Add(Changed_tabitem);
-            tabs.Add(Removed_tabitem);
+            List<TabItem> tabs = new List<TabItem>
+            {
+                Added_tabitem,
+                Changed_tabitem,
+                Removed_tabitem
+            };
 
             GeneratingColumns(added, Added_DataGrid, Added_tabitem);
             GeneratingColumns(changed, Changed_DataGrid, Changed_tabitem);
@@ -232,45 +243,57 @@ namespace ESO_Lang_Editor.View
         }
 
 
-        
 
-
-
-        private void CompareAdded_Button_Click(object sender, RoutedEventArgs e)
-        {
-            //var addedParser = fileParser.CsvCompareAdded(OldDict, NewDict);
-            //var langData = fileParser.CsvDictToModel(addedParser);
-
-            //if (Changed_DataGrid.Items.Count > 1)
-            //    langData = null;
-            //Changed_DataGrid.Items.Clear();
-
-            //foreach (var data in langData)
-            //{
-            //    Changed_DataGrid.Items.Add(data);
-            //}
-            //NewStatus_textBlock.Text = "总计搜索到" + Changed_DataGrid.Items.Count + "条结果。";
-        }
-
-
-        private void SaveToDB_Button_Click(object sender, RoutedEventArgs e)
+        private async void SaveToDB_Button_Click(object sender, RoutedEventArgs e)
         {
             //var connDB = new SQLiteController();
             //var dbFileModel = new List<FileModel_IntoDB>();
-            //int CompareOptionsIndex = CompareOptions_comboBox.SelectedIndex;
             //int rowStats = CompareOptions_comboBox.SelectedIndex;
-            //string updateStats = VersionInput_textBox.Text;
-            
+            string updateStats = VersionInput_textBox.Text;
 
-            //if (updateStats == "" || updateStats == "更新版本号")
-            //    MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
-            //            MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            if (updateStats == "" || updateStats == "更新版本号")
+            {
+                MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                SaveToDB_Button.IsEnabled = false;
+                SaveToDB_Button.Content = "正在应用更改……";
+
+                if(added.Count >= 1)    //判断新加内容是否为空
+                {
+                    SaveToDB_Button.Content = "正在保存新加内容……";
+                    await Task.Run(() => db.AddNewLangs(added));
+                }
+                    
+                if(changed.Count >= 1)   //判断修改内容是否为空
+                {
+                    SaveToDB_Button.Content = "正在应用修改内容……";
+                    await Task.Run(() => db.UpdateLangsEN(changed));
+                }
+                    
+                if(removedList.Count >= 1)   //判断移除内容是否为空
+                {
+                    SaveToDB_Button.Content = "正在删除移除内容……";
+                    await Task.Run(() => db.DeleteLangs(removedList));
+                }
+                    
+            }
+
+            SaveToDB_Button.IsEnabled = true;
+            SaveToDB_Button.Content = "保存";
+
+
+
+
 
 
             //if (CompareOptionsIndex == 1)
             //{
             //    var data = connDB.SearchZHbyIndexWithUnknown(langData);
-                
+
             //    foreach(var d in data)
             //    {
             //        dbFileModel.Add(new FileModel_IntoDB
@@ -361,6 +384,11 @@ namespace ESO_Lang_Editor.View
             }
 
 
+        }
+
+        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

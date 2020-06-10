@@ -55,7 +55,8 @@ namespace ESO_LangEditorLib.Models
         // 0 = 初始内容
         // 1 = 新增内容
         // 2 = EN_Text修改过内容, 不管是否之前订正过翻译 
-        // 3 = EN_Text修改过内容, ZH_Text已订正翻译
+        // 3 = 已翻译的初始内容与新增内容
+        // 4 = EN_Text修改过内容, ZH_Text已订正翻译
         //[SugarColumn(IsNullable = false)]
         public int RowStats { get; set; }
 

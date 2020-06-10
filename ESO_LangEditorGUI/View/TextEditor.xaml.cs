@@ -26,18 +26,33 @@ namespace ESO_Lang_Editor.View
 
         IDCatalog IDtypeName = new IDCatalog();
 
-        public TextEditor(LangData LangData, List<LangData> SelectedItemsList)
+        public TextEditor(LangData LangData)
         {
 
             InitializeComponent();
             this.Height = 480;
 
+            EditData = LangData;
+
+            isStr = false;
+
+            GeneratingColumns(isStr);
+            textBox_EN.IsReadOnly = true;
+            UpdateUIContent();
+            //List_Datagrid_Display(LangData);
+
+        }
+        public TextEditor(List<LangData> SelectedItemsList)
+        {
+
+            InitializeComponent();
+            this.Height = 600;
             isStr = false;
             SelectedItems = SelectedItemsList;
             GeneratingColumns(isStr);
             textBox_EN.IsReadOnly = true;
 
-            List_Datagrid_Display(LangData);
+            List_Datagrid_Display();
 
         }
         //public TextEditor(UIstrFile LangData, List<UIstrFile> SelectedItemsList)
@@ -172,7 +187,8 @@ namespace ESO_Lang_Editor.View
                         List_dataGrid.SelectedIndex = 0;
                     }
                     //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
-                    SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
+                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+                    UpdateUIContent();
                 }
                 else
                 {
@@ -197,7 +213,7 @@ namespace ESO_Lang_Editor.View
             List_expander.Header = "展开列表";
         }
 
-        private void List_Datagrid_Display(LangData LangData)
+        private void List_Datagrid_Display()
         {
             //var IDtypeName = new IDCatalog();
 
@@ -218,7 +234,9 @@ namespace ESO_Lang_Editor.View
 
                 List_dataGrid.SelectedIndex = 0;
 
-                SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
+
+                EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+                UpdateUIContent();
 
             }
             else
@@ -226,7 +244,7 @@ namespace ESO_Lang_Editor.View
                 List_expander.Visibility = Visibility.Hidden;
                 List_expander.IsExpanded = false;
                 //EditData = LangData;
-                SetEditDataTextBlocks(LangData);
+                UpdateUIContent();
             }
             
 
@@ -285,7 +303,8 @@ namespace ESO_Lang_Editor.View
                 }
                 else
                 {
-                    SetEditDataTextBlocks(SelectedItems.ElementAt(List_dataGrid.SelectedIndex));
+                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+                    UpdateUIContent();
                 }
 
                 
@@ -295,24 +314,23 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        private void SetEditDataTextBlocks(LangData Data)
+        private void UpdateUIContent()
         {
+            textBox_EN.Text = EditData.Text_EN;
+            textBox_ZH.Text = EditData.Text_ZH;
+
+
+
+
             string modifyInfo = "，编辑信息：正常.";
 
-            if (Data.IsTranslated == 2 && Data.RowStats == 2)
-                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
+            if (EditData.RowStats == 2 && EditData.IsTranslated == 2)
+                modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
 
-            if (Data.IsTranslated == 3 && Data.RowStats == 2)
-                modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+            //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
+            //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
 
-
-            EditData = Data;
-
-            textBox_EN.Text = Data.Text_EN;
-            textBox_ZH.Text = Data.Text_ZH;
-            textblock_information.Text = "类型：" + IDtypeName.GetCategory(Data.ID.ToString())   
-                    + "，未知列：" + Data.Unknown
-                    + "，文本索引：" + Data.Lang_Index
+            textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.ID.ToString())
                     + modifyInfo;
         }
 
