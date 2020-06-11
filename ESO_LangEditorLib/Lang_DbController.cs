@@ -36,7 +36,7 @@ namespace ESO_LangEditorLib
 
         /// <summary>
         /// 搜索 lang_data 文本数据表，返回搜索到的内容
-        /// <para>@field 搜索字段索引，0为ID(int)，1为英文，2为中文，3为更新版本，4为行状态(int)</para>
+        /// <para>@field 搜索字段索引，0为ID(int)，1为英文，2为中文，3为更新版本，4为行状态(int)，5为翻译状态(int)</para>
         /// <para>@searchPos 搜索文本出现的位置，0为关键字在任意位置，1为关键字仅在开头，2为关键字仅在末尾。</para>
         /// <para>@searchWord 关键字。</para>
         /// </summary>
@@ -65,6 +65,7 @@ namespace ESO_LangEditorLib
                     2 => await Db.langData.Where(d => EF.Functions.Like(d.Text_ZH, searchPosAndWord)).ToListAsync(),
                     3 => await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
                     4 => await Db.langData.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
+                    5 => await Db.langData.Where(d => d.IsTranslated == ToInt32(searchWord)).ToListAsync(),
                     _ => await Db.langData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
                 };
                 //await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToDictionaryAsync(d => d.UniqueID),
@@ -111,6 +112,19 @@ namespace ESO_LangEditorLib
         }
 
 
+        public async Task UpdateLangsZH(LangData langList)
+        {
+            using var Db = new Lang_DbContext();
+            Db.Update(langList);
+            await Db.SaveChangesAsync();
+            
+        }
+        public async Task UpdateLangsZH(List<LangData> langList)
+        {
+            using var Db = new Lang_DbContext();
+            Db.UpdateRange(langList);
+            await Db.SaveChangesAsync();
+        }
 
 
 

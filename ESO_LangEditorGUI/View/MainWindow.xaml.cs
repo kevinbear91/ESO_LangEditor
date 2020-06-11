@@ -197,8 +197,8 @@ namespace ESO_Lang_Editor.View
 
         private void ExportTranslate_Click(object sender, RoutedEventArgs e)
         {
-            //var exportTranslateWindow = new ExportTranslate();
-            //exportTranslateWindow.Show();
+            var exportTranslateWindow = new ExportTranslate();
+            exportTranslateWindow.Show();
         }
 
 

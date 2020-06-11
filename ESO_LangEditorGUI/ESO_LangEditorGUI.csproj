@@ -12,8 +12,6 @@
     <Compile Remove="View\CompareLuaWithDBWindow.xaml.cs" />
     <Compile Remove="View\CreateDB_ImportLua.xaml.cs" />
     <Compile Remove="View\DatabaseModifyWindow.xaml.cs" />
-    <Compile Remove="View\ExportTranslate.xaml.cs" />
-    <Compile Remove="View\ImportTranslateDB.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,8 +19,6 @@
     <Page Remove="View\CompareLuaWithDBWindow.xaml" />
     <Page Remove="View\CreateDB_ImportLua.xaml" />
     <Page Remove="View\DatabaseModifyWindow.xaml" />
-    <Page Remove="View\ExportTranslate.xaml" />
-    <Page Remove="View\ImportTranslateDB.xaml" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,10 @@
 ﻿using ESO_Lang_Editor.Model;
+using ESO_LangEditorLib;
+using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,7 +16,7 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class ExportTranslate : Window
     {
-        private List<LangSearchModel> SearchData;
+        private List<LangData> SearchData;
         //private List<UIstrFile> SearchStrData;
 
         private bool isStr;
@@ -21,64 +24,63 @@ namespace ESO_Lang_Editor.View
         public ExportTranslate()
         {
             InitializeComponent();
+
+            textBlock_SelectionInfo.Text = "";
+            ExportTranslate_Button.IsEnabled = false;
+
             GeneratingColumns(false);
             InitDataGrid(false);
+
+
         }
 
 
-        private void InitDataGrid(bool isUI_Str)
+        private async Task InitDataGrid(bool isUI_Str)
         {
             isStr = isUI_Str;
 
+            textBlock_Info.Text = "正在查找……";
+
             if (isStr)
             {
-                var strDB = new UI_StrController();
+                //var strDB = new UI_StrController();
 
-                if (Translated_DataGrid.Items.Count >= 1)
-                    SearchData = null;
-                Translated_DataGrid.Items.Clear();
+                //if (Translated_DataGrid.Items.Count >= 1)
+                //    SearchData = null;
+                //Translated_DataGrid.Items.Clear();
 
-                SearchStrData = strDB.SearchData("1", 3, false);
+                //SearchStrData = strDB.SearchData("1", 3, false);
 
-                foreach (var data in SearchStrData)
-                {
-                    if (data.isTranslated == 1 && data.RowStats == 20)
-                    {
-                        data.isTranslated = 3;
-                    }
-                    else
-                    {
-                        data.isTranslated = 2;
-                    }
+                //foreach (var data in SearchStrData)
+                //{
+                //    if (data.isTranslated == 1 && data.RowStats == 20)
+                //    {
+                //        data.isTranslated = 3;
+                //    }
+                //    else
+                //    {
+                //        data.isTranslated = 2;
+                //    }
 
-                    Translated_DataGrid.Items.Add(data);
-                }
-                Status_textBlock.Text = "总计搜索到" + Translated_DataGrid.Items.Count + "条结果。";
+                //    Translated_DataGrid.Items.Add(data);
+                //}
+                //Status_textBlock.Text = "总计搜索到" + Translated_DataGrid.Items.Count + "条结果。";
             }
             else
             {
-                var DBFile = new SQLiteController();
+                var db = new Lang_DbController();
 
                 if (Translated_DataGrid.Items.Count >= 1)
                     SearchData = null;
                 Translated_DataGrid.Items.Clear();
 
-                SearchData = DBFile.SearchData("1", 3, false);
+                SearchData = await Task.Run(() => db.GetLangsListAsync(5, 0, "1"));
 
-                foreach (var data in SearchData)
-                {
-                    if (data.isTranslated == 1 && data.RowStats == 20)
-                    {
-                        data.isTranslated = 3;
-                    }
-                    else
-                    {
-                        data.isTranslated = 2;
-                    }
+                Translated_DataGrid.ItemsSource = SearchData;
 
-                    Translated_DataGrid.Items.Add(data);
-                }
-                Status_textBlock.Text = "总计搜索到" + Translated_DataGrid.Items.Count + "条结果。";
+                textBlock_Info.Text = "总计搜索到 " + SearchData.Count + " 条结果。";
+
+                ExportTranslate_Button.IsEnabled = true;
             }
             
         }
@@ -90,13 +92,15 @@ namespace ESO_Lang_Editor.View
 
             if (isStr)
             {
-                exportPath = exportTranslate.ExportTranslateDB(SearchStrData);
+                exportPath = exportTranslate.ExportTranslateDB(SearchData);
             }
             else
             {
                 exportPath = exportTranslate.ExportTranslateDB(SearchData);
             }
 
+            //MessageBox.Show(GetTimeToFileName());
+            //MessageBox.Show("导出成功，请将 " + exportPath + " 发送给校对或导入人员。", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
             if (File.Exists(exportPath))
             {
@@ -135,33 +139,21 @@ namespace ESO_Lang_Editor.View
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "ID";
-                c1.Binding = new Binding("ID_Type");
-                c1.Width = 50;
+                c1.Binding = new Binding("UniqueID");
+                //c1.Width = 50;
                 Translated_DataGrid.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "Unknown";
-                c2.Width = 30;
-                c2.Binding = new Binding("ID_Unknown");
+                c2.Header = "英文";
+                //c2.Width = 100;
+                c2.Binding = new Binding("Text_EN");
                 Translated_DataGrid.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "索引";
-                c3.Width = 30;
-                c3.Binding = new Binding("ID_Index");
+                c3.Header = "汉化";
+                c3.Width = 200;
+                c3.Binding = new Binding("Text_ZH");
                 Translated_DataGrid.Columns.Add(c3);
-
-                DataGridTextColumn c4 = new DataGridTextColumn();
-                c4.Header = "英文";
-                c4.Width = 100;
-                c4.Binding = new Binding("Text_EN");
-                Translated_DataGrid.Columns.Add(c4);
-
-                DataGridTextColumn c5 = new DataGridTextColumn();
-                c5.Header = "汉化";
-                c5.Width = 200;
-                c5.Binding = new Binding("Text_SC");
-                Translated_DataGrid.Columns.Add(c5);
             }
 
         }
@@ -192,5 +184,6 @@ namespace ESO_Lang_Editor.View
             GeneratingColumns(isStr);
             InitDataGrid(isStr);
         }
+        
     }
 }

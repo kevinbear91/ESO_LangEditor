@@ -1,8 +1,10 @@
 ﻿using ESO_Lang_Editor.Model;
+using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,6 +18,7 @@ namespace ESO_Lang_Editor.View
     {
         private LangData EditData;
         private List<LangData> SelectedItems;
+        private Lang_DbController db = new Lang_DbController();
 
         //private UIstrFile EditStrData;
         //private List<UIstrFile> SelectedStrItems;
@@ -30,13 +33,16 @@ namespace ESO_Lang_Editor.View
         {
 
             InitializeComponent();
-            this.Height = 480;
+            this.Height = 400;
 
             EditData = LangData;
 
             isStr = false;
 
             GeneratingColumns(isStr);
+            GridMover.Visibility = Visibility.Collapsed;
+            List_expander.Visibility = Visibility.Collapsed;
+
             textBox_EN.IsReadOnly = true;
             UpdateUIContent();
             //List_Datagrid_Display(LangData);
@@ -123,7 +129,7 @@ namespace ESO_Lang_Editor.View
             this.Close();
         }
 
-        private void button_save_Click(object sender, RoutedEventArgs e)
+        private async void button_save_Click(object sender, RoutedEventArgs e)
         {
             //var EditedData = new LangSearchModel();
             
@@ -164,7 +170,12 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
+                button_save.IsEnabled = false;
+
                 var EditedData = GetEditedData();
+                await Task.Run(() => db.UpdateLangsZH(EditedData));
+
+
 
                 MessageBox.Show("ID: " + EditedData.UniqueID +
                     Environment.NewLine + "ZH: " + EditedData.Text_ZH);
@@ -189,9 +200,11 @@ namespace ESO_Lang_Editor.View
                     //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
                     EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
                     UpdateUIContent();
+                    button_save.IsEnabled = true;
                 }
                 else
                 {
+                    button_save.IsEnabled = true;
                     this.Close();
                 }
             }
@@ -319,9 +332,6 @@ namespace ESO_Lang_Editor.View
             textBox_EN.Text = EditData.Text_EN;
             textBox_ZH.Text = EditData.Text_ZH;
 
-
-
-
             string modifyInfo = "，编辑信息：正常.";
 
             if (EditData.RowStats == 2 && EditData.IsTranslated == 2)
@@ -362,11 +372,27 @@ namespace ESO_Lang_Editor.View
 
         private LangData GetEditedData()
         {
+            int rowStats = EditData.RowStats;
+            //int translate = EditData.IsTranslated;
+
+            if (rowStats == 2)
+                rowStats = 4;
+            else if (rowStats != 4)
+                rowStats = 3;
+            else
+                rowStats = 4;
+
             var EditedData = new LangData
             {
                 UniqueID = EditData.UniqueID,
+                ID = EditData.ID,
+                Unknown = EditData.Unknown,
+                Lang_Index = EditData.Lang_Index,
+                Text_EN = EditData.Text_EN,
                 Text_ZH = textBox_ZH.Text,
-                IsTranslated = 1
+                UpdateStats = EditData.UpdateStats,
+                RowStats = rowStats,
+                IsTranslated = 1,
             };
 
             return EditedData;

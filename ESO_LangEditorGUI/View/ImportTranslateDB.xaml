@@ -8,35 +8,53 @@
         Title="导入翻译" Height="380" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="64*"/>
-            <RowDefinition Height="259*"/>
-            <RowDefinition Height="31*"/>
-            <RowDefinition Height="67*"/>
+            <RowDefinition Height="66*"/>
+            <RowDefinition Height="267*"/>
+            <RowDefinition Height="32*"/>
         </Grid.RowDefinitions>
         <Canvas Grid.Row="0">
             <Button x:Name="Import_button" Content="浏览……" Canvas.Left="77" Canvas.Top="24" Width="75" Click="Import_button_Click"/>
+            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="191" Width="75" Canvas.Top="23" Click="ImportToDB_button_Click"/>
+            <CheckBox Content="CheckBox" Canvas.Left="301" Canvas.Top="25"/>
 
         </Canvas>
 
-        <Canvas Grid.Row="1">
+        <Canvas  Grid.Row="1">
             <DataGrid x:Name="TranslateData_dataGrid" Height="196" Canvas.Left="174" Canvas.Top="10" Width="510" IsReadOnly="True" 
-                      AutoGenerateColumns="True" />
+                      AutoGenerateColumns="False" />
 
-            <ListBox x:Name="FileID_listBox" Height="196" Canvas.Left="10" Canvas.Top="10" Width="140" SelectionMode="Extended" SelectionChanged="IDList_SelectChanged">
-
-            </ListBox>
-
-        </Canvas>
-
-        <Canvas Grid.Row="2">
-
-            <TextBlock x:Name="TotalFiles_textBlock" Canvas.Left="10" TextWrapping="Wrap" Text="" Canvas.Top="2" Width="247"/>
+            <ListBox x:Name="FileID_listBox" Height="196" Canvas.Left="10" Canvas.Top="10" 
+                     Width="140" SelectionMode="Extended" 
+                     SelectionChanged="IDList_SelectChanged" />
 
         </Canvas>
+
+        <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="230*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+
+            <StatusBarItem Grid.Column="0">
+                <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+            </StatusBarItem>
+            <Separator Grid.Column="3" />
+        </StatusBar>
+
         <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,25,0,0" TextWrapping="Wrap" Text="导入翻译：" VerticalAlignment="Top"/>
-        <Canvas Grid.Row="3">
-            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="77" Width="75" Canvas.Top="10" Click="ImportToDB_button_Click"/>
-        </Canvas>
 
     </Grid>
 </Window>

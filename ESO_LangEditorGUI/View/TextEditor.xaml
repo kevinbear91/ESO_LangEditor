@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="文本编辑" Height="480" Width="840" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="840" MinHeight="480">
+        Title="文本编辑" Height="450" Width="840" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="840" MinHeight="480">
     <Grid x:Name="GridContent" Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="415*"/>
@@ -13,9 +13,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
-            <RowDefinition Height="333*" MaxHeight="500"/>
+            <RowDefinition Height="300*" MaxHeight="500"/>
             <RowDefinition Height="40"/>
-
             <RowDefinition Height="60*"/>
         </Grid.RowDefinitions>
 
@@ -52,6 +51,7 @@
         </Canvas>
 
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2"
+                      x:Name="GridMover"
                       Height="2" HorizontalAlignment="Stretch" 
                       ResizeDirection="Rows" 
                       Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" />

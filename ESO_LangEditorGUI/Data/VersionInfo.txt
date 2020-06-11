@@ -1,0 +1,4 @@
+﻿Update24 = 初始或龙堡(Dragonhold)
+Update25 = 苦痛风暴(Harrowstorm)
+Update26 = 灰原(Greymoor)
+Update26-Prod = 灰原(Greymoor)

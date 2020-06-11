@@ -48,7 +48,6 @@
             <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" Click="SearchButton_Click"/>
             <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" />
             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90"/>
-            <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Canvas.Left="182" Canvas.Top="41" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" />
         </Canvas>
 
 
@@ -60,34 +59,35 @@
                       AutoGenerateColumns="False" VerticalAlignment="Top" Margin="10,0,10,10"
                       ColumnWidth="200*" />
 
-        
-            
-            
-            <StatusBar Height="23" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
-                <StatusBar.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="230*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="230*"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="230*"/>
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-                    </ItemsPanelTemplate>
-                </StatusBar.ItemsPanel>
-                
-                <StatusBarItem Grid.Column="0">
-                    <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
-                </StatusBarItem>
-                <Separator Grid.Column="1" />
-                <StatusBarItem Grid.Column="2">
-                    <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
-                </StatusBarItem>
-                <Separator Grid.Column="3" />
-            </StatusBar>
-        
+
+
+
+        <StatusBar Height="23" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="230*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+
+            <StatusBarItem Grid.Column="0">
+                <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+            </StatusBarItem>
+            <Separator Grid.Column="3" />
+        </StatusBar>
+        <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" Margin="48,39,652,25" Grid.Row="1" />
+
 
 
     </Grid>

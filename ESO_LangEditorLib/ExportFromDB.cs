@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESO_LangEditorLib.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using static System.Convert;
 
 namespace ESO_LangEditorLib
 {
-    class ExportFromDB
+    public class ExportFromDB
     {
         //public void ExportAsText()
         //{
@@ -50,6 +51,39 @@ namespace ESO_LangEditorLib
 
         //}
 
+        public void ExportLangListFullColumnAsText(List<LangData> data, string directory, string fileName)
+        {
+            var outputText = new List<string>();
+
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            foreach (var d in data)
+            {
+                outputText.Add('"' + d.UniqueID
+                    + "\",\"" + d.ID
+                    + "\",\"" + d.Unknown
+                    + "\",\"" + d.Lang_Index
+                    + "\",\"" + d.Text_EN
+                    + "\",\"" + d.Text_ZH
+                    + "\",\"" + d.UpdateStats
+                    + "\",\"" + d.IsTranslated
+                    + "\",\"" + d.RowStats + '"');
+            }
+
+            using (StreamWriter sw = new StreamWriter(directory + "/" + fileName))
+            {
+                foreach (string s in outputText)
+                {
+                    sw.WriteLine(s);
+                }
+                sw.Flush();
+                sw.Close();
+            }
+
+        }
+
         //public void ExportIDArray(int[] ID_Array)
         //{
         //    var outputFile = new List<string>();
@@ -85,28 +119,28 @@ namespace ESO_LangEditorLib
 
         //}
 
-        //public string ExportTranslateDB(List<View.LangSearchModel> SearchData)
-        //{
-        //    var connDB = new SQLiteController();
-        //    string number = GetRandomNumber();
-        //    List<View.LangSearchModel> data = SearchData;
+        public string ExportTranslateDB(List<LangData> SearchData)
+        {
+            //var connDB = new SQLiteController();
+            string filName = GetTimeToFileName();
+            List<LangData> data = SearchData;
 
-        //    if (!Directory.Exists("Export"))
-        //        Directory.CreateDirectory("Export");
+            if (!Directory.Exists("Export"))
+                Directory.CreateDirectory("Export");
 
-        //    string dbPath = @"Export\Translate_" + number + ".db";
+            string dbPath = @"Export\Translate_" + filName + ".LangDB";
 
-        //    if(File.Exists(dbPath))
-        //    {
-        //        ExportTranslateDB(data);
-        //    }
-        //    else
-        //    {
-        //        connDB.CreateTranslateDBwithData(data, dbPath);
-        //    }
+            if (File.Exists(dbPath))
+            {
+                ExportTranslateDB(data);
+            }
+            else
+            {
+                ExportLangListFullColumnAsText(SearchData, "Export", "Translate_" + filName + ".LangDB");
+            }
 
-        //    return dbPath;
-        //}
+            return dbPath;
+        }
 
         //public string ExportTranslateDB(List<UIstrFile> Data)
         //{
@@ -162,7 +196,7 @@ namespace ESO_LangEditorLib
 
         //    using (StreamWriter sw = new StreamWriter("Export/zh_" + TableName + ".str"))
         //    {
-                
+
         //        foreach (string s in exportData)
         //        {
         //            sw.WriteLine(s);
@@ -180,6 +214,11 @@ namespace ESO_LangEditorLib
             Random rnd = new Random();
             string number = rnd.Next(1234, 9876).ToString();
             return number;
+        }
+
+        private string GetTimeToFileName()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
         }
     }
 
