@@ -385,12 +385,12 @@ namespace ESO_Lang_Editor.View
             var EditedData = new LangData
             {
                 UniqueID = EditData.UniqueID,
-                ID = EditData.ID,
-                Unknown = EditData.Unknown,
-                Lang_Index = EditData.Lang_Index,
-                Text_EN = EditData.Text_EN,
+                //ID = EditData.ID,
+                //Unknown = EditData.Unknown,
+                //Lang_Index = EditData.Lang_Index,
+                //Text_EN = EditData.Text_EN,
                 Text_ZH = textBox_ZH.Text,
-                UpdateStats = EditData.UpdateStats,
+                //UpdateStats = EditData.UpdateStats,
                 RowStats = rowStats,
                 IsTranslated = 1,
             };

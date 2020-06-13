@@ -12,6 +12,7 @@ namespace ESO_LangEditorLib
         public DbSet<LangData_Old> langOldData { get; set; }
         public DbSet<LangOldDataTable> langOldTable { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite(@"Data Source=Data/CsvData.db");
         protected override void OnModelCreating(ModelBuilder modelBuilder)

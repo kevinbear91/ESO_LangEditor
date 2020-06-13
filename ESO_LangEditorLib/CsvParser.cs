@@ -85,6 +85,76 @@ namespace ESO_LangEditorLib
         }
         #endregion
 
+        public async Task<List<LangData>> ExportReaderToListAsync(string path)
+        #region 读取 .LangDB 文件并返回List<LangData>
+        {
+            string result;
+            List<LangData> csvData = new List<LangData>();
+            using (StreamReader reader = new StreamReader(path))
+            {
+                Debug.WriteLine("Opened file.");
+
+                string uniqueID;
+                string id;
+                string unknown;
+                string index;
+                string text;
+                string en;
+                string zh;
+                string translate;
+                string rowStats;
+
+                //bool passedFirstLine = false;
+
+                while ((result = await reader.ReadLineAsync()) != null)
+                {
+                    string[] words = result.Trim().Split(new char[] { '\v' }, 9);
+                    ParserCsvAddToList(csvData, out uniqueID, out id, out unknown, out index, out text, out zh, out translate, out rowStats, words);
+
+                }
+                reader.Close();
+                Debug.WriteLine("Total lines: " + csvData.Count);
+                //MessageBox.Show("读取完毕，共 " + csvData.Count + " 行数据。");
+            }
+            return csvData;
+
+            static void ParserCsvAddToList(List<LangData> csvData, out string uniqueID, out string id, out string unknown, out string index, out string text, out string zh, out string translate, out string rowStats,  string[] words)
+            #region 分析.LangDB 文件，并将分析后的文本加入 List<CsvData>
+            {
+
+                uniqueID = words[0];
+                id = words[1];
+                unknown = words[2];
+                index = words[3];
+                text = words[4];
+                zh = words[5];
+                translate = words[7];
+                rowStats = words[8];
+
+                csvData.Add(new LangData
+                {
+                    UniqueID = uniqueID,
+                    ID = ToInt32(id),
+                    Unknown = ToInt32(unknown),
+                    Lang_Index = ToInt32(index),
+                    Text_EN = text,
+                    Text_ZH = zh,
+                    IsTranslated = ToInt32(translate),
+                    RowStats = ToInt32(rowStats),
+                }); ;
+
+                Debug.WriteLine("ID: " + id + ", "
+                    + "Unknown: " + unknown + ", "
+                    + "Index: " + index + ", "
+                    + "Text: " + text + ", "
+                    + "zh: " + zh + ", "
+                    + "translate: " + translate + ", "
+                    + "rowStats: " + rowStats);
+            }
+            #endregion
+        }
+        #endregion
+
 
         public async Task<Dictionary<string, LangData>> CsvReaderToDictionaryAsync(string path)
         #region 读取CSV文件并返回Dictionary<string, LangData>

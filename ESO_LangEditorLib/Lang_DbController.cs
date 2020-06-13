@@ -101,7 +101,31 @@ namespace ESO_LangEditorLib
         public async Task UpdateLangsEN(List<LangData> langList)
         {
             using var Db = new Lang_DbContext();
-            Db.UpdateRange(langList);
+
+            //int i = 0;
+            foreach (var l in langList)    //EF core 不支持List批量标记，但循环速度不差，2700条执行时间基本在1秒左右。
+            {
+                //i += 1;
+                Db.Attach(l);
+                Db.Entry(l).Property("Text_EN").IsModified = true;
+                Db.Entry(l).Property("UpdateStats").IsModified = true;
+                Db.Entry(l).Property("IsTranslated").IsModified = true;
+                Db.Entry(l).Property("RowStats").IsModified = true;
+
+                //Debug.WriteLine("UniqueID: " + l.UniqueID + ", "
+                //    + "Text_EN: " + l.Text_EN + ", "
+                //    + "UpdateStats: " + l.UpdateStats + ", "
+                //    + "Counter: " + i);
+            }
+
+            //Db.AttachRange(langList);
+            //Db.Entry(langList).Property("Text_EN").IsModified = true;
+            ////Db.Entry(langList).Property("Text_ZH").IsModified = true;
+            //Db.Entry(langList).Property("UpdateStats").IsModified = true;
+            //Db.Entry(langList).Property("IsTranslated").IsModified = true;
+            //Db.Entry(langList).Property("RowStats").IsModified = true;
+
+            //Db.UpdateRange(langList);
             await Db.SaveChangesAsync();
         }
         public async Task DeleteLangs(List<LangData> langList)
@@ -115,14 +139,33 @@ namespace ESO_LangEditorLib
         public async Task UpdateLangsZH(LangData langList)
         {
             using var Db = new Lang_DbContext();
-            Db.Update(langList);
+            Db.Attach(langList);
+            Db.Entry(langList).Property("Text_ZH").IsModified = true;
+            Db.Entry(langList).Property("IsTranslated").IsModified = true;
+            Db.Entry(langList).Property("RowStats").IsModified = true;
+
+            //Db.Update(langList);
             await Db.SaveChangesAsync();
             
         }
         public async Task UpdateLangsZH(List<LangData> langList)
         {
             using var Db = new Lang_DbContext();
-            Db.UpdateRange(langList);
+
+            foreach(var l in langList)  
+            {
+                Db.Attach(l);
+                Db.Entry(l).Property("Text_ZH").IsModified = true;
+                Db.Entry(l).Property("IsTranslated").IsModified = true;
+                Db.Entry(l).Property("RowStats").IsModified = true;
+            }
+
+            //Db.AttachRange(langList);
+            //Db.Entry(langList).Property("Text_ZH").IsModified = true;
+            //Db.Entry(langList).Property("IsTranslated").IsModified = true;
+            //Db.Entry(langList).Property("RowStats").IsModified = true;
+
+            //Db.UpdateRange(langList);
             await Db.SaveChangesAsync();
         }
 

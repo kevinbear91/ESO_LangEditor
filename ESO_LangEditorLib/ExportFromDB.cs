@@ -61,15 +61,17 @@ namespace ESO_LangEditorLib
 
             foreach (var d in data)
             {
-                outputText.Add('"' + d.UniqueID
-                    + "\",\"" + d.ID
-                    + "\",\"" + d.Unknown
-                    + "\",\"" + d.Lang_Index
-                    + "\",\"" + d.Text_EN
-                    + "\",\"" + d.Text_ZH
-                    + "\",\"" + d.UpdateStats
-                    + "\",\"" + d.IsTranslated
-                    + "\",\"" + d.RowStats + '"');
+                //能找到个合适的分隔符真鸡巴难，\v = 匹配垂直制表符，\u000B
+                //备用替代"`"
+                outputText.Add(d.UniqueID
+                    + "\v" + d.ID
+                    + "\v" + d.Unknown
+                    + "\v" + d.Lang_Index
+                    + "\v" + d.Text_EN
+                    + "\v" + d.Text_ZH
+                    + "\v" + d.UpdateStats
+                    + "\v" + d.IsTranslated
+                    + "\v" + d.RowStats);
             }
 
             using (StreamWriter sw = new StreamWriter(directory + "/" + fileName))

@@ -5,31 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="导入翻译" Height="380" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="导入翻译" Height="350" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="66*"/>
-            <RowDefinition Height="267*"/>
-            <RowDefinition Height="32*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="117*"/>
+            <RowDefinition Height="19*"/>
         </Grid.RowDefinitions>
-        <Canvas Grid.Row="0">
-            <Button x:Name="Import_button" Content="浏览……" Canvas.Left="77" Canvas.Top="24" Width="75" Click="Import_button_Click"/>
-            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="191" Width="75" Canvas.Top="23" Click="ImportToDB_button_Click"/>
-            <CheckBox Content="CheckBox" Canvas.Left="301" Canvas.Top="25"/>
+        <Canvas Grid.Row="0" Margin="0,0,0,13">
+            <TextBlock x:Name="textBlock" Canvas.Top="26" TextWrapping="Wrap" Text="导入翻译：" Height="15" Width="60" Margin="10,0,0,0" />
+            <Button x:Name="OpenFile_button" Content="浏览……" Canvas.Left="85" Canvas.Top="24" Width="75" Click="Import_button_Click"/>
+            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="184" Width="75" Canvas.Top="23" Click="ImportToDB_button_Click"/>
 
         </Canvas>
 
-        <Canvas  Grid.Row="1">
+        <Canvas  Grid.Row="1" Margin="0,0,0,5">
             <DataGrid x:Name="TranslateData_dataGrid" Height="196" Canvas.Left="174" Canvas.Top="10" Width="510" IsReadOnly="True" 
-                      AutoGenerateColumns="False" />
+                      AutoGenerateColumns="False"
+                      ColumnWidth="150*" />
 
             <ListBox x:Name="FileID_listBox" Height="196" Canvas.Left="10" Canvas.Top="10" 
                      Width="140" SelectionMode="Extended" 
                      SelectionChanged="IDList_SelectChanged" />
+            <CheckBox x:Name="ImportAll_Checkbox" Content="导入全部" Canvas.Left="80" Canvas.Top="215"/>
 
         </Canvas>
 
-        <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
+        <StatusBar Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,7,10,7">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -52,9 +54,12 @@
                 <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
             </StatusBarItem>
             <Separator Grid.Column="3" />
+            <StatusBarItem Grid.Column="4">
+                <TextBlock x:Name="textBlock_Total" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+            </StatusBarItem>
         </StatusBar>
 
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,25,0,0" TextWrapping="Wrap" Text="导入翻译：" VerticalAlignment="Top"/>
+
 
     </Grid>
 </Window>

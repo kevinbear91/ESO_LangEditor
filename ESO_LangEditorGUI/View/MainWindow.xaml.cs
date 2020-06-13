@@ -256,8 +256,8 @@ namespace ESO_Lang_Editor.View
 
         private void ImportTranslate_Click(object sender, RoutedEventArgs e)
         {
-           // var importTranslate = new ImportTranslateDB();
-            //importTranslate.Show();
+            var importTranslate = new ImportTranslateDB();
+            importTranslate.Show();
         }
 
         private async void SearchTextBlock_EnterPress(object sender, KeyEventArgs e)

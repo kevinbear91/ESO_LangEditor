@@ -252,7 +252,7 @@ namespace ESO_Lang_Editor.View
             string updateStats = VersionInput_textBox.Text;
 
 
-            if (updateStats == "" || updateStats == "更新版本号")
+            if (updateStats == "" || updateStats == "更新版本号" || updateStats == "更新版本号(必填)")
             {
                 MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
                         MessageBoxButton.OK, MessageBoxImage.Warning);

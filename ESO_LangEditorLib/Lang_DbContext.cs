@@ -11,5 +11,11 @@ namespace ESO_LangEditorLib
         public DbSet<LangData> langData { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
            => optionsBuilder.UseSqlite(@"Data Source=Data/LangData.db");
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<LangData>();
+        //    modelBuilder.Entity<List<LangData>>();
+        //}
     }
 }
