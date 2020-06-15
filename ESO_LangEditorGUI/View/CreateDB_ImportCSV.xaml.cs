@@ -67,7 +67,7 @@ namespace ESO_Lang_Editor.View
                 case 0:
                     string csvPath = ImportPathEN_textBox.Text;
 
-                    CsvParser csvParser = new CsvParser();
+                    ParserCsv csvParser = new ParserCsv();
 
                     LoadEN_button.IsEnabled = false;
                     LoadCN_button.IsEnabled = false;
@@ -119,7 +119,7 @@ namespace ESO_Lang_Editor.View
                 case 2:
                     // TO DO...
                     //SqliteController db = new SqliteController();
-                    Lang_DbController db = new Lang_DbController();
+                    LangDbController db = new LangDbController();
                     Import_button.IsEnabled = false;
                     Import_button.Content = "正在创建数据库……";
 
@@ -300,7 +300,7 @@ namespace ESO_Lang_Editor.View
             DbAction_button.IsEnabled = false;
             DbAction_button.Content = "正在读取";
 
-            Lang_DbController db = new Lang_DbController();
+            LangDbController db = new LangDbController();
             var oldLangdb = db.GetSearchOldDataAsync();
 
             DbAction_button.IsEnabled = true;

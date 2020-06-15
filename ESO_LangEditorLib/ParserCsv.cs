@@ -10,7 +10,7 @@ using static System.Convert;
 
 namespace ESO_LangEditorLib
 {
-    public class CsvParser
+    public class ParserCsv
     {
 
         public async Task<List<LangData>> CsvReaderToListAsync(string path)

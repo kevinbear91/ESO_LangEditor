@@ -68,7 +68,7 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                var db = new Lang_DbController();
+                var db = new LangDbController();
 
                 if (Translated_DataGrid.Items.Count >= 1)
                     SearchData = null;

@@ -8,7 +8,7 @@ using System.Text;
 namespace ESO_LangEditorLib.Models
 {
     
-    public class LangData_Old
+    public class LangDataOld
     {
 
         //ID列

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ESO_LangEditorLib
 {
-    public class Lang_DbContext : DbContext 
+    public class LangDbContext : DbContext 
     {
         public DbSet<LangData> langData { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

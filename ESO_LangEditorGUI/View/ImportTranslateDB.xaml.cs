@@ -25,7 +25,7 @@ namespace ESO_Lang_Editor.View
 
         private bool isStr;
 
-        private CsvParser importDB = new CsvParser();
+        private ParserCsv importDB = new ParserCsv();
 
         public ImportTranslateDB()
         {
@@ -87,7 +87,7 @@ namespace ESO_Lang_Editor.View
 
             if (dialog.ShowDialog(this) == true)
             {
-                if (dialog.FileName.EndsWith(".LangDB"))
+                if (dialog.FileName.EndsWith(".LangDB") || dialog.FileName.EndsWith(".db"))
                 {
                     foreach (var file in dialog.FileNames)
                     {
@@ -137,11 +137,24 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                SearchData = await importDB.ExportReaderToListAsync(dbPath);
-                TranslateData_dataGrid.ItemsSource = SearchData;
+                if(dbPath.EndsWith(".db"))
+                {
+                    var oldTranslate = new ImportOldTranslateDB();
 
-                textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+                    SearchData = oldTranslate.FullSearchData(dbPath);
+                    TranslateData_dataGrid.ItemsSource = SearchData;
+                    textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                    textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+                }
+                else
+                {
+                    SearchData = await importDB.ExportReaderToListAsync(dbPath);
+                    TranslateData_dataGrid.ItemsSource = SearchData;
+
+                    textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                    textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+                }
+                
             }
             
 
@@ -152,7 +165,7 @@ namespace ESO_Lang_Editor.View
 
         private async void ImportToDB_button_Click(object sender, RoutedEventArgs e)
         {
-            var db = new Lang_DbController();
+            var db = new LangDbController();
 
             if (isStr)
             {
@@ -203,7 +216,9 @@ namespace ESO_Lang_Editor.View
                         ImportAll_Checkbox.IsEnabled = false;
                         ImportToDB_button.Content = "导入中……";
 
-                        await db.UpdateLangsZH(SearchData);
+                        int importlines = await db.UpdateLangsZH(SearchData);
+
+                        MessageBox.Show("导入了 " + importlines + " 条翻译");
 
                     }
                 }
@@ -235,6 +250,14 @@ namespace ESO_Lang_Editor.View
             //    isStr = false;
             //    GeneratingColumns(false);
             //}
+
+
+        }
+
+        private void CheckIfExist()
+        {
+
+
 
 
         }

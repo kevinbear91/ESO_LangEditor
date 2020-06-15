@@ -10,12 +10,12 @@ using static System.Convert;
 
 namespace ESO_LangEditorLib
 {
-    public class Lang_DbController
+    public class LangDbController
     {
 
         public void InsertDataFromCsv(List<LangData> data)
         {
-            using (var DbContext = new Lang_DbContext())
+            using (var DbContext = new LangDbContext())
             {
                 using (var transaction = DbContext.Database.BeginTransaction())
                 {
@@ -56,7 +56,7 @@ namespace ESO_LangEditorLib
                 _ => "%" + searchWord + "%",     //默认 - 任意位置
             };
 
-            using (var Db = new Lang_DbContext())
+            using (var Db = new LangDbContext())
             {
                 data = field switch
                 {
@@ -80,7 +80,7 @@ namespace ESO_LangEditorLib
         {
             Dictionary<string, LangData> data = new Dictionary<string, LangData>();
 
-            using (var Db = new Lang_DbContext())
+            using (var Db = new LangDbContext())
             {
                 data = await Db.langData.ToDictionaryAsync(d => d.UniqueID);
 
@@ -93,20 +93,21 @@ namespace ESO_LangEditorLib
 
         public async Task AddNewLangs(List<LangData> langList)
         {
-            using var Db = new Lang_DbContext();
+            using var Db = new LangDbContext();
             Db.AddRange(langList);
             await Db.SaveChangesAsync();
         }
 
         public async Task UpdateLangsEN(List<LangData> langList)
         {
-            using var Db = new Lang_DbContext();
+            using var Db = new LangDbContext();
 
             //int i = 0;
             foreach (var l in langList)    //EF core 不支持List批量标记，但循环速度不差，2700条执行时间基本在1秒左右。
             {
                 //i += 1;
                 Db.Attach(l);
+
                 Db.Entry(l).Property("Text_EN").IsModified = true;
                 Db.Entry(l).Property("UpdateStats").IsModified = true;
                 Db.Entry(l).Property("IsTranslated").IsModified = true;
@@ -130,7 +131,7 @@ namespace ESO_LangEditorLib
         }
         public async Task DeleteLangs(List<LangData> langList)
         {
-            using var Db = new Lang_DbContext();
+            using var Db = new LangDbContext();
             Db.RemoveRange(langList);
             await Db.SaveChangesAsync();
         }
@@ -138,7 +139,7 @@ namespace ESO_LangEditorLib
 
         public async Task UpdateLangsZH(LangData langList)
         {
-            using var Db = new Lang_DbContext();
+            using var Db = new LangDbContext();
             Db.Attach(langList);
             Db.Entry(langList).Property("Text_ZH").IsModified = true;
             Db.Entry(langList).Property("IsTranslated").IsModified = true;
@@ -148,16 +149,30 @@ namespace ESO_LangEditorLib
             await Db.SaveChangesAsync();
             
         }
-        public async Task UpdateLangsZH(List<LangData> langList)
+        public async Task<int> UpdateLangsZH(List<LangData> langList)
         {
-            using var Db = new Lang_DbContext();
+            using var Db = new LangDbContext();
 
             foreach(var l in langList)  
             {
-                Db.Attach(l);
-                Db.Entry(l).Property("Text_ZH").IsModified = true;
-                Db.Entry(l).Property("IsTranslated").IsModified = true;
-                Db.Entry(l).Property("RowStats").IsModified = true;
+                if (Db.langData.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
+                {
+                    if (l.RowStats == 0)
+                    {
+                        Db.Attach(l);
+                        Db.Entry(l).Property("Text_ZH").IsModified = true;
+                        Db.Entry(l).Property("IsTranslated").IsModified = true;
+                        //Db.Entry(l).Property("RowStats").IsModified = true;
+                    }
+                    else
+                    {
+                        Db.Attach(l);
+                        Db.Entry(l).Property("Text_ZH").IsModified = true;
+                        Db.Entry(l).Property("IsTranslated").IsModified = true;
+                        Db.Entry(l).Property("RowStats").IsModified = true;
+                    }
+                    
+                }
             }
 
             //Db.AttachRange(langList);
@@ -166,16 +181,41 @@ namespace ESO_LangEditorLib
             //Db.Entry(langList).Property("RowStats").IsModified = true;
 
             //Db.UpdateRange(langList);
-            await Db.SaveChangesAsync();
+            return await Db.SaveChangesAsync();
+            //Debug.WriteLine(list);
+        }
+
+        public async Task<int> UpdateOldTranslateLangsZH(List<LangData> langList)
+        {
+            using var Db = new LangDbContext();
+
+            foreach (var l in langList)
+            {
+                if (Db.langData.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
+                {
+                    Db.Attach(l);
+                    Db.Entry(l).Property("Text_ZH").IsModified = true;
+                    Db.Entry(l).Property("IsTranslated").IsModified = true;
+                    //Db.Entry(l).Property("RowStats").IsModified = true;
+                }
+            }
+
+            //Db.AttachRange(langList);
+            //Db.Entry(langList).Property("Text_ZH").IsModified = true;
+            //Db.Entry(langList).Property("IsTranslated").IsModified = true;
+            //Db.Entry(langList).Property("RowStats").IsModified = true;
+
+            //Db.UpdateRange(langList);
+            return await Db.SaveChangesAsync();
+            //Debug.WriteLine(list);
         }
 
 
 
-
-        public List<LangData_Old> GetSearchOldDataAsync()
+        public List<LangDataOld> GetSearchOldDataAsync()
         {
-            List<LangData_Old> oldDB = new List<LangData_Old>();
-            using (var DbContext = new lang_OldDbContext())
+            List<LangDataOld> oldDB = new List<LangDataOld>();
+            using (var DbContext = new langOldDbContext())
             {
                 var dbList = DbContext.langOldTable.FromSqlRaw(@"SELECT name FROM sqlite_master WHERE TYPE='table'").ToList();
 

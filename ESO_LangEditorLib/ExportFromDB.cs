@@ -63,6 +63,7 @@ namespace ESO_LangEditorLib
             {
                 //能找到个合适的分隔符真鸡巴难，\v = 匹配垂直制表符，\u000B
                 //备用替代"`"
+                int translate = 2;
                 outputText.Add(d.UniqueID
                     + "\v" + d.ID
                     + "\v" + d.Unknown
@@ -70,7 +71,7 @@ namespace ESO_LangEditorLib
                     + "\v" + d.Text_EN
                     + "\v" + d.Text_ZH
                     + "\v" + d.UpdateStats
-                    + "\v" + d.IsTranslated
+                    + "\v" + translate
                     + "\v" + d.RowStats);
             }
 

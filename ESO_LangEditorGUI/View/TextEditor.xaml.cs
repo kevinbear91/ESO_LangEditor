@@ -18,7 +18,7 @@ namespace ESO_Lang_Editor.View
     {
         private LangData EditData;
         private List<LangData> SelectedItems;
-        private Lang_DbController db = new Lang_DbController();
+        private LangDbController db = new LangDbController();
 
         //private UIstrFile EditStrData;
         //private List<UIstrFile> SelectedStrItems;

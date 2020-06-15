@@ -337,7 +337,7 @@ namespace ESO_Lang_Editor.View
             SearchButton.Content = "正在搜索……";
             SearchTextBox.IsEnabled = false;
 
-            var db = new Lang_DbController();
+            var db = new LangDbController();
 
             MessageBoxResult result = MessageBoxResult.Cancel;
 

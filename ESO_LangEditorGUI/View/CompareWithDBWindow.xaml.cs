@@ -37,7 +37,7 @@ namespace ESO_Lang_Editor.View
         private List<LangData> removedList = new List<LangData>();
         private Dictionary<string, LangData> removed = new Dictionary<string, LangData>();
 
-        private Lang_DbController db = new Lang_DbController();
+        private LangDbController db = new LangDbController();
 
         //public List<NameList> nameList = new List<NameList>();
 
@@ -84,7 +84,7 @@ namespace ESO_Lang_Editor.View
             string filePath;
             ////List<LangSearchModel> langData;
             ///
-            CsvParser csvparser = new CsvParser();
+            ParserCsv csvparser = new ParserCsv();
             var newList = new List<LangData>();
             //removed = new List<LangData>();
 

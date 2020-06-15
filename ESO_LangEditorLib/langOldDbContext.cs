@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ESO_LangEditorLib
 {
-    public class lang_OldDbContext : DbContext
+    public class langOldDbContext : DbContext
     {
-        public DbSet<LangData_Old> langOldData { get; set; }
+        public DbSet<LangDataOld> langOldData { get; set; }
         public DbSet<LangOldDataTable> langOldTable { get; set; }
 
 
@@ -17,7 +17,7 @@ namespace ESO_LangEditorLib
            => optionsBuilder.UseSqlite(@"Data Source=Data/CsvData.db");
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LangData_Old>()
+            modelBuilder.Entity<LangDataOld>()
                 .HasNoKey();
             modelBuilder.Entity<LangOldDataTable>()
                 .HasNoKey();
