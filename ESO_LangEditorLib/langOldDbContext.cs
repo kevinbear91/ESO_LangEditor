@@ -23,5 +23,22 @@ namespace ESO_LangEditorLib
                 .HasNoKey();
         }
     }
-    
+
+    public class langOldLuaDbContext : DbContext
+    {
+        public DbSet<LuaUIDataOld> langOldLuaData { get; set; }
+        public DbSet<LuaUIDataOldTable> langOldLuaTable { get; set; }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+           => optionsBuilder.UseSqlite(@"Data Source=Data/UI_Str.db");
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<LuaUIDataOld>()
+                .HasNoKey();
+            modelBuilder.Entity<LuaUIDataOldTable>()
+                .HasNoKey();
+        }
+    }
+
 }

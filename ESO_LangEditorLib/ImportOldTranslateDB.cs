@@ -10,9 +10,9 @@ namespace ESO_LangEditorLib
     public class ImportOldTranslateDB
     {
 
-        public List<LangData> FullSearchData(string dbPath)
+        public List<LangText> FullSearchData(string dbPath)
         {
-            var _LangViewData = new List<LangData>();
+            var _LangViewData = new List<LangText>();
 
             //string rowStatsInt = " WHERE RowStats in (0,10,20)";
 
@@ -58,7 +58,7 @@ namespace ESO_LangEditorLib
 
 
                             //Console.WriteLine("查询了{0},{1},{2}", sr.GetInt32(0), sr.GetInt32(2), sr.GetString(5));
-                            _LangViewData.Add(new LangData
+                            _LangViewData.Add(new LangText
                             {
                                 UniqueID = id + "-" + unknown + "-" + index,
                                 ID = id,                   //游戏内文本ID
@@ -84,6 +84,69 @@ namespace ESO_LangEditorLib
             }
 
 
+
+        }
+
+        public List<LuaUIData> FullSearchStrDB(string LuaStrpath)
+        {
+            var _LangViewData = new List<LuaUIData>();
+
+            //string rowStatsInt = " WHERE RowStats < 30";
+
+            //if (SearchAbandonContent)
+            //    rowStatsInt = "";
+
+            using (SqliteConnection conn = new SqliteConnection("Data Source=" + LuaStrpath))
+            {
+                conn.Open();
+                SqliteCommand cmd = new SqliteCommand();
+                cmd.Connection = conn;
+
+                try
+                {
+                    List<string> tableName = new List<string>();   //表名列表
+
+                    cmd.CommandText = "SELECT name FROM sqlite_master WHERE TYPE='table'";   //获得当前所有表名
+                    SqliteDataReader sr = cmd.ExecuteReader();
+                    while (sr.Read())
+                    {
+                        tableName.Add(sr.GetString(0));
+                    }
+                    sr.Close();
+
+
+                    foreach (var t in tableName)
+                    {
+                        cmd.CommandText = "SELECT * FROM " + t;
+
+                        sr = cmd.ExecuteReader();
+
+                        while (sr.Read())
+                        {
+                            _LangViewData.Add(new LuaUIData
+                            {
+                                
+                                //IndexDB = sr.FieldCount,                   
+                                UniqueID = sr.GetString(0),
+                                Text_EN = sr.GetString(1),
+                                Text_ZH = sr.GetString(2),
+                                RowStats = sr.GetInt32(4),
+                                IsTranslated = sr.GetInt32(5),
+                                UpdateStats = sr.GetString(6),
+
+                            });
+                            //Console.WriteLine("查询了{0}, {1}, {2}", sr.GetInt32(0).ToString(), sr.GetInt32(1), sr.GetString(4));
+                        }
+                        sr.Close();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("查询数据：失败：" + ex.Message);
+                }
+                return _LangViewData;
+            }
 
         }
     }

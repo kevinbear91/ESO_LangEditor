@@ -20,7 +20,7 @@ namespace ESO_Lang_Editor.View
         private ObservableCollection<string> IDList;
         private List<string> filePath = new List<string>();
         List<string> fileList = new List<string>();
-        List<LangData> SearchData = new List<LangData>();
+        List<LangText> SearchData = new List<LangText>();
         //private List<UIstrFile> SearchStrData;
 
         private bool isStr;

@@ -21,9 +21,9 @@ namespace ESO_Lang_Editor.View
     public partial class MainWindow : Window
     {
         //private MainWindowOption windowsOptions;
-        private List<LangData> SearchData;
-        List<LangData> SelectedDatas;
-        LangData SelectedData;
+        private List<LangText> SearchData;
+        List<LangText> SelectedDatas;
+        LangText SelectedData;
 
         //UIstrFile SelectedStrData;
         //List<UIstrFile> searchStrData;
@@ -63,7 +63,7 @@ namespace ESO_Lang_Editor.View
             //var db = new SqliteController();
             //db.CreateTable();
 
-            //using (var db = new Lang_DbContext())
+            //using (var db = new LangDbContext())
             //{
             //    db.Database.EnsureCreated();
             //}
@@ -163,7 +163,7 @@ namespace ESO_Lang_Editor.View
                         else
                         {
                             //SelectedData = ;
-                            TextEditor textEditor = new TextEditor((LangData)datagrid.SelectedItem);
+                            TextEditor textEditor = new TextEditor((LangText)datagrid.SelectedItem);
                             textEditor.Show();
                             //MessageBox.Show((LangData)datagrid.SelectedItem);
                         }
@@ -310,14 +310,14 @@ namespace ESO_Lang_Editor.View
                 if (SelectedDatas != null)
                     SelectedDatas.Clear();
 
-                SelectedDatas = new List<LangData>();
+                SelectedDatas = new List<LangText>();
 
                 if (selectedItems.Count > 1)
                 {
                     foreach (var selectedItem in selectedItems)
                     {
                         if (selectedItem != null)
-                            SelectedDatas.Add((LangData)selectedItem);
+                            SelectedDatas.Add((LangText)selectedItem);
                     }
 
                     TextEditor textEditor = new TextEditor(SelectedDatas);

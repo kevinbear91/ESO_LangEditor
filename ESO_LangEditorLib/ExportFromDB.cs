@@ -51,7 +51,7 @@ namespace ESO_LangEditorLib
 
         //}
 
-        public void ExportLangListFullColumnAsText(List<LangData> data, string directory, string fileName)
+        public void ExportLangListFullColumnAsText(List<LangText> data, string directory, string fileName)
         {
             var outputText = new List<string>();
 
@@ -122,11 +122,11 @@ namespace ESO_LangEditorLib
 
         //}
 
-        public string ExportTranslateDB(List<LangData> SearchData)
+        public string ExportTranslateDB(List<LangText> SearchData)
         {
             //var connDB = new SQLiteController();
             string filName = GetTimeToFileName();
-            List<LangData> data = SearchData;
+            List<LangText> data = SearchData;
 
             if (!Directory.Exists("Export"))
                 Directory.CreateDirectory("Export");
@@ -168,49 +168,49 @@ namespace ESO_LangEditorLib
         //    return dbPath;
         //}
 
-        //public void ExportStrDB(string TableName)
-        //{
-        //    List<string> exportData = new List<string>();
-        //    var StrDB = new UI_StrController();
-        //    string line;
+        public void ExportStrDB(string TableName)
+        {
+            //List<string> exportData = new List<string>();
+            //var db = new LangDbController();
+            //string line;
 
-        //    var data = StrDB.FullSearchStrDB(false);
+            //var data = ;
 
-        //    StreamReader file = new StreamReader("Data/FontLib.txt");
+            //StreamReader file = new StreamReader("Data/FontLib.txt");
 
-        //    while ((line = file.ReadLine()) != null)
-        //    {
-        //        exportData.Add(line);
-        //    }
-        //    file.Close();
+            //while ((line = file.ReadLine()) != null)
+            //{
+            //    exportData.Add(line);
+            //}
+            //file.Close();
 
-        //    foreach (var d in data)
-        //    {
-        //        if(TableName.Contains(d.UI_Table))
-        //        {
-        //            exportData.Add("[" + d.UI_ID + "]"
-        //                + " = "
-        //                + "\"" + d.UI_ZH + "\"");
-        //        }
-        //    }
+            //foreach (var d in data)
+            //{
+            //    if (TableName.Contains(d.UI_Table))
+            //    {
+            //        exportData.Add("[" + d.UI_ID + "]"
+            //            + " = "
+            //            + "\"" + d.UI_ZH + "\"");
+            //    }
+            //}
 
-        //    if (!Directory.Exists("Export"))
-        //        Directory.CreateDirectory("Export");
+            //if (!Directory.Exists("Export"))
+            //    Directory.CreateDirectory("Export");
 
-        //    using (StreamWriter sw = new StreamWriter("Export/zh_" + TableName + ".str"))
-        //    {
+            //using (StreamWriter sw = new StreamWriter("Export/zh_" + TableName + ".str"))
+            //{
 
-        //        foreach (string s in exportData)
-        //        {
-        //            sw.WriteLine(s);
-        //        }
+            //    foreach (string s in exportData)
+            //    {
+            //        sw.WriteLine(s);
+            //    }
 
-        //        sw.Flush();
-        //        sw.Close();
-        //    }
+            //    sw.Flush();
+            //    sw.Close();
+            //}
 
 
-        //}
+        }
 
         private string GetRandomNumber()
         {

@@ -13,25 +13,53 @@ namespace ESO_LangEditorLib
     public class LangDbController
     {
 
-        public void InsertDataFromCsv(List<LangData> data)
+        public void InsertDataFromCsv(List<LangText> data)
         {
             using (var DbContext = new LangDbContext())
             {
-                using (var transaction = DbContext.Database.BeginTransaction())
-                {
-                    try
-                    {
-                        DbContext.langData.AddRange(data);
-                        DbContext.SaveChanges();
 
-                        transaction.Commit();
-                    }
-                    catch (Exception e)
+                DbContext.LangData.AddRange(data);
+                DbContext.SaveChanges();
+            }
+        }
+
+        public void InsertDataFromold(List<LuaUIData> data)
+        {
+            using (var DbContext = new LangDbContext())
+            {
+                DbContext.LuaLang.AddRange(data);
+                DbContext.SaveChanges();
+            }
+        }
+
+        public async Task<int> UpdateOrInsertLua(List<LuaUIData> luaList)
+        {
+            using var Db = new LangDbContext();
+
+            foreach (var l in luaList)
+            {
+                if (Db.LuaLang.Where(d => d.UniqueID.Contains(l.UniqueID)).Count() == 1)
+                {
+                    if (l.DataEnum == 2)
                     {
-                        Debug.WriteLine(e);
+                        Db.Attach(l);
+                        Db.Entry(l).Property("DataEnum").CurrentValue = 3;
+                        //Db.Entry(l).Property("RowStats").IsModified = true;
                     }
+                    else
+                    {
+                        Db.Add(l);
+                    }
+
+                }
+                else
+                {
+                    Db.Attach(l);
+                    Db.Entry(l).Property("DataEnum").CurrentValue = 1;
                 }
             }
+
+            return await Db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -44,9 +72,9 @@ namespace ESO_LangEditorLib
         /// <param name="searchPos">搜索位置</param>
         /// <param name="searchWord">搜索文本</param>
         /// <returns></returns>
-        public async Task<List<LangData>> GetLangsListAsync(int field, int searchPos, string searchWord)
+        public async Task<List<LangText>> GetLangsListAsync(int field, int searchPos, string searchWord)
         {
-            List<LangData> data = new List<LangData>();
+            List<LangText> data = new List<LangText>();
 
             string searchPosAndWord = searchPos switch  //设定关键字出现的位置
             {
@@ -60,13 +88,13 @@ namespace ESO_LangEditorLib
             {
                 data = field switch
                 {
-                    0 => await Db.langData.Where(d => d.ID == ToInt32(searchWord)).ToListAsync(),
-                    1 => await Db.langData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
-                    2 => await Db.langData.Where(d => EF.Functions.Like(d.Text_ZH, searchPosAndWord)).ToListAsync(),
-                    3 => await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
-                    4 => await Db.langData.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
-                    5 => await Db.langData.Where(d => d.IsTranslated == ToInt32(searchWord)).ToListAsync(),
-                    _ => await Db.langData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
+                    0 => await Db.LangData.Where(d => d.ID == ToInt32(searchWord)).ToListAsync(),
+                    1 => await Db.LangData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
+                    2 => await Db.LangData.Where(d => EF.Functions.Like(d.Text_ZH, searchPosAndWord)).ToListAsync(),
+                    3 => await Db.LangData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
+                    4 => await Db.LangData.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
+                    5 => await Db.LangData.Where(d => d.IsTranslated == ToInt32(searchWord)).ToListAsync(),
+                    _ => await Db.LangData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
                 };
                 //await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToDictionaryAsync(d => d.UniqueID),
                 //data = await q.ToDictionaryAsync(q => q.UniqueID);
@@ -76,13 +104,26 @@ namespace ESO_LangEditorLib
         }
 
 
-        public async Task<Dictionary<string, LangData>> GetAllLangsDictionaryAsync()
+        public async Task<Dictionary<string, LangText>> GetAllLangsDictionaryAsync()
         {
-            Dictionary<string, LangData> data = new Dictionary<string, LangData>();
+            Dictionary<string, LangText> data = new Dictionary<string, LangText>();
 
             using (var Db = new LangDbContext())
             {
-                data = await Db.langData.ToDictionaryAsync(d => d.UniqueID);
+                data = await Db.LangData.ToDictionaryAsync(d => d.UniqueID);
+
+                //data = q.ToDictionary(q => q.UniqueID);
+            }
+            return data;
+        }
+
+        public async Task<Dictionary<string, LuaUIData>> GetAllLuaLangsDictionaryAsync()
+        {
+            Dictionary<string, LuaUIData> data = new Dictionary<string, LuaUIData>();
+
+            using (var Db = new LangDbContext())
+            {
+                data = await Db.LuaLang.ToDictionaryAsync(d => d.UniqueID);
 
                 //data = q.ToDictionary(q => q.UniqueID);
             }
@@ -91,14 +132,21 @@ namespace ESO_LangEditorLib
 
 
 
-        public async Task AddNewLangs(List<LangData> langList)
+        public async Task AddNewLangs(List<LangText> langList)
         {
             using var Db = new LangDbContext();
             Db.AddRange(langList);
             await Db.SaveChangesAsync();
         }
 
-        public async Task UpdateLangsEN(List<LangData> langList)
+        public async Task AddNewLangs(List<LuaUIData> langList)
+        {
+            using var Db = new LangDbContext();
+            Db.AddRange(langList);
+            await Db.SaveChangesAsync();
+        }
+
+        public async Task UpdateLangsEN(List<LangText> langList)
         {
             using var Db = new LangDbContext();
 
@@ -129,7 +177,33 @@ namespace ESO_LangEditorLib
             //Db.UpdateRange(langList);
             await Db.SaveChangesAsync();
         }
-        public async Task DeleteLangs(List<LangData> langList)
+
+        public async Task UpdateLangsEN(List<LuaUIData> langList)
+        {
+            using var Db = new LangDbContext();
+
+            foreach (var l in langList)    //EF core 不支持List批量标记，但循环速度不差，2700条执行时间基本在1秒左右。
+            {
+                Db.Attach(l);
+
+                Db.Entry(l).Property("Text_EN").IsModified = true;
+                Db.Entry(l).Property("UpdateStats").IsModified = true;
+                Db.Entry(l).Property("IsTranslated").IsModified = true;
+                Db.Entry(l).Property("RowStats").IsModified = true;
+
+            }
+
+            await Db.SaveChangesAsync();
+        }
+
+        public async Task DeleteLangs(List<LangText> langList)
+        {
+            using var Db = new LangDbContext();
+            Db.RemoveRange(langList);
+            await Db.SaveChangesAsync();
+        }
+
+        public async Task DeleteLangs(List<LuaUIData> langList)
         {
             using var Db = new LangDbContext();
             Db.RemoveRange(langList);
@@ -137,7 +211,7 @@ namespace ESO_LangEditorLib
         }
 
 
-        public async Task UpdateLangsZH(LangData langList)
+        public async Task UpdateLangsZH(LangText langList)
         {
             using var Db = new LangDbContext();
             Db.Attach(langList);
@@ -149,13 +223,14 @@ namespace ESO_LangEditorLib
             await Db.SaveChangesAsync();
             
         }
-        public async Task<int> UpdateLangsZH(List<LangData> langList)
+
+        public async Task<int> UpdateLangsZH(List<LangText> langList)
         {
             using var Db = new LangDbContext();
 
             foreach(var l in langList)  
             {
-                if (Db.langData.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
+                if (Db.LangData.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
                 {
                     if (l.RowStats == 0)
                     {
@@ -185,13 +260,58 @@ namespace ESO_LangEditorLib
             //Debug.WriteLine(list);
         }
 
-        public async Task<int> UpdateOldTranslateLangsZH(List<LangData> langList)
+        public async Task UpdateLangsZH(LuaUIData langList)
+        {
+            using var Db = new LangDbContext();
+            Db.Attach(langList);
+            Db.Entry(langList).Property("Text_ZH").IsModified = true;
+            Db.Entry(langList).Property("IsTranslated").IsModified = true;
+            Db.Entry(langList).Property("RowStats").IsModified = true;
+
+            //Db.Update(langList);
+            await Db.SaveChangesAsync();
+
+        }
+
+        public async Task<int> UpdateLangsZH(List<LuaUIData> langList)
         {
             using var Db = new LangDbContext();
 
             foreach (var l in langList)
             {
-                if (Db.langData.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
+                if (Db.LuaLang.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
+                {
+                    if (l.RowStats == 0)
+                    {
+                        Db.Attach(l);
+                        Db.Entry(l).Property("Text_ZH").IsModified = true;
+                        Db.Entry(l).Property("IsTranslated").IsModified = true;
+                        //Db.Entry(l).Property("RowStats").IsModified = true;
+                    }
+                    else
+                    {
+                        Db.Attach(l);
+                        Db.Entry(l).Property("Text_ZH").IsModified = true;
+                        Db.Entry(l).Property("IsTranslated").IsModified = true;
+                        Db.Entry(l).Property("RowStats").IsModified = true;
+                    }
+
+                }
+            }
+
+            return await Db.SaveChangesAsync();
+            //Debug.WriteLine(list);
+        }
+
+
+
+        public async Task<int> UpdateOldTranslateLangsZH(List<LangText> langList)
+        {
+            using var Db = new LangDbContext();
+
+            foreach (var l in langList)
+            {
+                if (Db.LangData.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
                 {
                     Db.Attach(l);
                     Db.Entry(l).Property("Text_ZH").IsModified = true;
@@ -234,6 +354,55 @@ namespace ESO_LangEditorLib
                 //return await DbContext.langOldData.ToListAsync();
             }
         }
+
+        public List<LuaUIDataOld> GetSearchLuaOldDataAsync()
+        {
+            List<LuaUIDataOld> oldDB = new List<LuaUIDataOld>();
+            Dictionary<string, LuaUIData> oldDict = new Dictionary<string, LuaUIData>();
+
+            using (var DbContext = new langOldLuaDbContext())
+            {
+                var dbList = DbContext.langOldLuaTable.FromSqlRaw(@"SELECT name FROM sqlite_master WHERE TYPE='table'").ToList();
+
+                foreach (var table in dbList)
+                {
+                    Debug.WriteLine(table.name);
+                    oldDB.AddRange(DbContext.langOldLuaData.FromSqlRaw(@"SELECT * FROM " + table.name + " WHERE RowStats != 30 AND RowStats != 40"));
+                    //oldDB.Add(DbContext.langOldData.ToList());
+
+                }
+
+
+                Debug.WriteLine(oldDB.Count());
+                return oldDB;
+
+                //return dbList;
+                //return await DbContext.langOldData.ToListAsync();
+            }
+        }
+
+        //public List<LuaUIDataOld> GetSearchLuaOldDataAsync(string dbName)
+        //{
+        //    List<LuaUIDataOld> oldDB = new List<LuaUIDataOld>();
+        //    using (var DbContext = new langOldLuaDbContext())
+        //    {
+        //        //var dbList = DbContext.langOldLuaTable.FromSqlRaw(@"SELECT name FROM sqlite_master WHERE TYPE='table'").ToList();
+        //        oldDB.AddRange(DbContext.langOldLuaData.FromSqlRaw(@"SELECT * FROM " + dbName + " WHERE RowStats != 30 AND RowStats != 40"));
+        //        //foreach (var table in dbList)
+        //        //{
+        //        //    Debug.WriteLine(table.name);
+                    
+        //        //    //oldDB.Add(DbContext.langOldData.ToList());
+
+        //        //}
+
+        //        Debug.WriteLine(oldDB.Count());
+        //        return oldDB;
+
+        //        //return dbList;
+        //        //return await DbContext.langOldData.ToListAsync();
+        //    }
+        //}
 
     }
     

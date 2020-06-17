@@ -16,8 +16,8 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class TextEditor : Window
     {
-        private LangData EditData;
-        private List<LangData> SelectedItems;
+        private LangText EditData;
+        private List<LangText> SelectedItems;
         private LangDbController db = new LangDbController();
 
         //private UIstrFile EditStrData;
@@ -29,7 +29,7 @@ namespace ESO_Lang_Editor.View
 
         IDCatalog IDtypeName = new IDCatalog();
 
-        public TextEditor(LangData LangData)
+        public TextEditor(LangText LangData)
         {
 
             InitializeComponent();
@@ -48,7 +48,7 @@ namespace ESO_Lang_Editor.View
             //List_Datagrid_Display(LangData);
 
         }
-        public TextEditor(List<LangData> SelectedItemsList)
+        public TextEditor(List<LangText> SelectedItemsList)
         {
 
             InitializeComponent();
@@ -370,7 +370,7 @@ namespace ESO_Lang_Editor.View
         //            + modifyInfo;
         //}
 
-        private LangData GetEditedData()
+        private LangText GetEditedData()
         {
             int rowStats = EditData.RowStats;
             //int translate = EditData.IsTranslated;
@@ -382,7 +382,7 @@ namespace ESO_Lang_Editor.View
             else
                 rowStats = 4;
 
-            var EditedData = new LangData
+            var EditedData = new LangText
             {
                 UniqueID = EditData.UniqueID,
                 //ID = EditData.ID,

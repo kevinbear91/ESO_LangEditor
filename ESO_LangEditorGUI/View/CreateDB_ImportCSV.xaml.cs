@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using static System.Convert;
@@ -15,8 +16,9 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class CreateDB_ImportCSV : Window
     {
-        private List<LangData> csvData = new List<LangData>();
-        private List<LangData> langData = new List<LangData>();
+        private List<LangText> csvData = new List<LangText>();
+        private List<LangText> langData = new List<LangText>();
+        private List<LuaUIData> luaData = new List<LuaUIData>();
         private int importButtonSwitchInt = 0;
 
         public CreateDB_ImportCSV()
@@ -214,14 +216,14 @@ namespace ESO_Lang_Editor.View
 
         //}
 
-        private void ForEachCsvData(IEnumerable<LangData> _csvData, string updateStats, bool isZH)
+        private void ForEachCsvData(IEnumerable<LangText> _csvData, string updateStats, bool isZH)
         {
 
             if (isZH)
             {
                 foreach (var data in _csvData)
                 {
-                    langData.Add(new LangData
+                    langData.Add(new LangText
                     {
                         UniqueID = data.UniqueID,
                         ID = data.ID,
@@ -239,7 +241,7 @@ namespace ESO_Lang_Editor.View
             {
                 foreach (var data in _csvData)
                 {
-                    langData.Add(new LangData
+                    langData.Add(new LangText
                     {
                         UniqueID = data.UniqueID,
                         ID = data.ID,
@@ -266,7 +268,7 @@ namespace ESO_Lang_Editor.View
         {
             if(isZH)
             {
-                langData.Add(new LangData
+                langData.Add(new LangText
                 {
                     UniqueID = csvData.UniqueID,
                     ID = csvData.Fileid,
@@ -280,7 +282,7 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                langData.Add(new LangData
+                langData.Add(new LangText
                 {
                     UniqueID = csvData.UniqueID,
                     ID = csvData.Fileid,
@@ -301,69 +303,171 @@ namespace ESO_Lang_Editor.View
             DbAction_button.Content = "正在读取";
 
             LangDbController db = new LangDbController();
-            var oldLangdb = db.GetSearchOldDataAsync();
+            //var oldLangdb = db.GetSearchOldDataAsync();
 
             DbAction_button.IsEnabled = true;
             DbAction_button.Content = "读取";
 
-            foreach(var o in oldLangdb)
-            {
-                
-                        if (o.RowStats == 10)
-                        {
-                            langData.Add(new LangData
-                            {
-                                UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
-                                ID = o.ID,
-                                Unknown = o.Unknown,
-                                Lang_Index = o.Index,
-                                Text_EN = o.Text_EN,
-                                Text_ZH = o.Text_SC,
-                                UpdateStats = o.UpdateStats,
-                                IsTranslated = o.isTranslated,
-                                RowStats = 1,
-                            });
-                        }
-                        else if (o.RowStats == 20)
-                        {
-                            langData.Add(new LangData
-                            {
-                                UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
-                                ID = o.ID,
-                                Unknown = o.Unknown,
-                                Lang_Index = o.Index,
-                                Text_EN = o.Text_EN,
-                                Text_ZH = o.Text_SC,
-                                UpdateStats = o.UpdateStats,
-                                IsTranslated = o.isTranslated,
-                                RowStats = 2,
-                            });
-                        }
-                        else
-                        {
-                            langData.Add(new LangData
-                            {
-                                UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
-                                ID = o.ID,
-                                Unknown = o.Unknown,
-                                Lang_Index = o.Index,
-                                Text_EN = o.Text_EN,
-                                Text_ZH = o.Text_SC,
-                                UpdateStats = o.UpdateStats,
-                                IsTranslated = o.isTranslated,
-                                RowStats = o.RowStats,
-                            });
-                        }
-                
-                Debug.WriteLine("lang data: " + langData.Count);
+            //foreach (var o in oldLangdb)
+            //{
 
-            }
+            //    if (o.RowStats == 10)
+            //    {
+            //        langData.Add(new LangText
+            //        {
+            //            UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
+            //            ID = o.ID,
+            //            Unknown = o.Unknown,
+            //            Lang_Index = o.Index,
+            //            Text_EN = o.Text_EN,
+            //            Text_ZH = o.Text_SC,
+            //            UpdateStats = o.UpdateStats,
+            //            IsTranslated = o.isTranslated,
+            //            RowStats = 1,
+            //        });
+            //    }
+            //    else if (o.RowStats == 20)
+            //    {
+            //        langData.Add(new LangText
+            //        {
+            //            UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
+            //            ID = o.ID,
+            //            Unknown = o.Unknown,
+            //            Lang_Index = o.Index,
+            //            Text_EN = o.Text_EN,
+            //            Text_ZH = o.Text_SC,
+            //            UpdateStats = o.UpdateStats,
+            //            IsTranslated = o.isTranslated,
+            //            RowStats = 2,
+            //        });
+            //    }
+            //    else
+            //    {
+            //        langData.Add(new LangText
+            //        {
+            //            UniqueID = o.ID + "-" + o.Unknown + "-" + o.Index,
+            //            ID = o.ID,
+            //            Unknown = o.Unknown,
+            //            Lang_Index = o.Index,
+            //            Text_EN = o.Text_EN,
+            //            Text_ZH = o.Text_SC,
+            //            UpdateStats = o.UpdateStats,
+            //            IsTranslated = o.isTranslated,
+            //            RowStats = o.RowStats,
+            //        });
+            //    }
 
-            db.InsertDataFromCsv(langData);
+            //    Debug.WriteLine("lang data: " + langData.Count);
+
+            //}
+
+            //db.InsertDataFromCsv(langData);
+
+
+            //string table = "Client";
+
+            var luaparser = new ParserLuaStr();
+            
+
+            var clientlua = luaparser.LuaStrParser(@"D:\eso_zh\ESO_LangEditor\u26\esoui\lang\en_client.lua");
+            var pregamelua = luaparser.LuaStrParser(@"D:\eso_zh\ESO_LangEditor\u26\esoui\lang\en_pregame.lua");
+
+
+            var newLua = Parserlua(clientlua, pregamelua);
+
+            var oldLua = db.GetSearchLuaOldDataAsync();
+
+            compreOldNew(oldLua, newLua);
+
+
+            db.InsertDataFromold(luaData);
+
+            Debug.WriteLine("lua data: " + luaData.Count);
 
             MessageBox.Show("完成", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
             //Debug.WriteLine("old data: " + oldDbData.Count);
+        }
+
+        private Dictionary<string, LuaUIData> Parserlua(Dictionary<string, LuaUIData> client, Dictionary<string, LuaUIData> pregame)
+        {
+            Dictionary<string, LuaUIData> parserdlua = new Dictionary<string, LuaUIData>();
+            var cli = client;
+
+            foreach(var p in pregame)
+            {
+                if (client.ContainsKey(p.Value.UniqueID))
+                {
+                    parserdlua.Add(p.Value.UniqueID, new LuaUIData
+                    {
+                        UniqueID = p.Value.UniqueID,
+                        Text_EN = p.Value.Text_EN,
+                        DataEnum = 3,
+                    });
+                    cli.Remove(p.Key);
+                }
+                else
+                {
+                    parserdlua.Add(p.Value.UniqueID, new LuaUIData
+                    {
+                        UniqueID = p.Value.UniqueID,
+                        Text_EN = p.Value.Text_EN,
+                        DataEnum = 1,
+                    });
+                    cli.Remove(p.Key);
+                }
+
+            }
+            Debug.WriteLine("lua count: " + parserdlua.Count);
+
+            foreach(var c in cli)
+            {
+                parserdlua.Add(c.Value.UniqueID, new LuaUIData
+                {
+                    UniqueID = c.Value.UniqueID,
+                    Text_EN = c.Value.Text_EN,
+                    DataEnum = 2,
+                });
+            }
+
+            return parserdlua;
+
+            //foreach(var lua in parserdlua)
+            //{
+            //    Debug.WriteLine("id: {0}, en: {1}, dataEnum: {2}", lua.UniqueID, lua.Text_EN, lua.DataEnum);
+            //}
+
+
+
+        }
+
+        private void compreOldNew(List<LuaUIDataOld> oldlua, Dictionary<string, LuaUIData> newlua)
+        {
+            var templua = new Dictionary<string, LuaUIData>();
+
+            foreach (var n in newlua)
+            {
+                foreach (var o in oldlua)
+                {
+                    if (n.Key.Contains(o.UI_ID) && !templua.ContainsKey(o.UI_ID))
+                    {
+                        templua.Add(n.Key, new LuaUIData
+                        {
+                            UniqueID = n.Value.UniqueID,
+                            Text_EN = n.Value.Text_EN,
+                            Text_ZH = o.UI_ZH,
+                            DataEnum = n.Value.DataEnum,
+                            UpdateStats = o.UpdateStats,
+                            IsTranslated = o.isTranslated,
+                            RowStats = o.RowStats,
+                        });
+                    }
+                }
+                
+            }
+
+            luaData = templua.Values.ToList();
+          
         }
     }
 }
