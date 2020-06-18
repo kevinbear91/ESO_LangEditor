@@ -22,18 +22,18 @@ namespace ESO_Lang_Editor.View
     {
         //private MainWindowOption windowsOptions;
         private List<LangText> SearchData;
-        List<LangText> SelectedDatas;
-        LangText SelectedData;
+        private List<LangText> SelectedDatas;
+        //LangText SelectedData;
 
         //UIstrFile SelectedStrData;
-        //List<UIstrFile> searchStrData;
-        //List<UIstrFile> SelectedStrDatas;
-        private bool isStr;
+        private List<LuaUIData> searchLuaData;
+        private List<LuaUIData> SelectedLuaDatas;
+        private bool isLua;
 
         ObservableCollection<string> searchTextInPosition;
         ObservableCollection<string> searchTextType;
 
-        
+        LangDbController db = new LangDbController();
 
         public MainWindow()
         {
@@ -58,7 +58,7 @@ namespace ESO_Lang_Editor.View
 
             //LangSearch.AutoGeneratingColumn += LangDataGridAutoGenerateColumns;
 
-            GeneratingColumns(false);
+            GeneratingColumns();
 
             //var db = new SqliteController();
             //db.CreateTable();
@@ -77,13 +77,15 @@ namespace ESO_Lang_Editor.View
         }
 
 
-        private void GeneratingColumns(bool isStr)
+        private void GeneratingColumns()
         {
-            if (isStr)
+            LangData.Columns.Clear();
+
+            if (isLua)
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "UI ID";
-                c1.Binding = new Binding("ID");
+                c1.Binding = new Binding("UniqueID");
                 c1.Width = 200;
                 LangData.Columns.Add(c1);
 
@@ -124,16 +126,17 @@ namespace ESO_Lang_Editor.View
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            
 
-            if (SearchStr_checkBox.IsChecked == true)
-            {
-                //SearchStrDB();
-            }
-            else
-            {
-                await SearchDB();
-            }
+            await SearchDB();
+
+            //if (SearchStr_checkBox.IsChecked == true)
+            //{
+            //    await SearchDB();
+            //}
+            //else
+            //{
+            //    await SearchDB();
+            //}
 
         }
 
@@ -153,12 +156,10 @@ namespace ESO_Lang_Editor.View
                 if (target is DataGridRow)
                     if (datagrid.SelectedIndex != -1)
                     {
-                        if (isStr)
+                        if (isLua)
                         {
-                            //SelectedStrData = (UIstrFile)datagrid.SelectedItem;
-                            //TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
-                            //textEditor.Show();
-                            //MessageBox.Show(data.Text_SC);
+                            TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem);
+                            textEditor.Show();
                         }
                         else
                         {
@@ -264,14 +265,17 @@ namespace ESO_Lang_Editor.View
         {
             if (e.Key == Key.Enter && SearchTextBox.IsFocused)
             {
-                if (SearchStr_checkBox.IsChecked == true)
-                {
-                    //SearchStrDB();
-                }
-                else
-                {
-                    await SearchDB();
-                }
+
+                await SearchDB();
+
+                //if (SearchStr_checkBox.IsChecked == true)
+                //{
+                    
+                //}
+                //else
+                //{
+                //    await SearchDB();
+                //}
             }
         }
 
@@ -286,24 +290,24 @@ namespace ESO_Lang_Editor.View
             DataGrid grid = (DataGrid)sender;
             var selectedItems = grid.SelectedItems;
 
-            if (isStr)
+            if (isLua)
             {
-                //if (SelectedStrDatas != null)
-                //    SelectedStrDatas.Clear();
+                if (SelectedLuaDatas != null)
+                    SelectedLuaDatas.Clear();
 
-                //SelectedStrDatas = new List<UIstrFile>();
+                SelectedLuaDatas = new List<LuaUIData>();
 
-                //if (selectedItems.Count > 1)
-                //{
-                //    foreach (var selectedItem in selectedItems)
-                //    {
-                //        if (selectedItem != null)
-                //            SelectedStrDatas.Add((UIstrFile)selectedItem);
-                //    }
+                if (selectedItems.Count > 1)
+                {
+                    foreach (var selectedItem in selectedItems)
+                    {
+                        if (selectedItem != null)
+                            SelectedLuaDatas.Add((LuaUIData)selectedItem);
+                    }
 
-                //    TextEditor textEditor = new TextEditor(SelectedStrData, SelectedStrDatas);
-                //    textEditor.Show();
-                //}
+                    TextEditor textEditor = new TextEditor(SelectedLuaDatas);
+                    textEditor.Show();
+                }
             }
             else
             {
@@ -337,7 +341,7 @@ namespace ESO_Lang_Editor.View
             SearchButton.Content = "正在搜索……";
             SearchTextBox.IsEnabled = false;
 
-            var db = new LangDbController();
+            
 
             MessageBoxResult result = MessageBoxResult.Cancel;
 
@@ -348,33 +352,47 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                SearchData = await Task.Run(() =>
-                {
-                    var query = db.GetLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
-                    return query;
-                });
+                await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
 
             }
 
             switch (result)
             {
                 case MessageBoxResult.OK:
-                    SearchData = await Task.Run(() =>
-                    {
-                        var query = db.GetLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
-                        return query;
-                    });
+                    await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
                     break;
                 case MessageBoxResult.Cancel:
                     break;
             }
 
-            LangData.ItemsSource = SearchData;
+            //LangData.ItemsSource = SearchData;
             SearchButton.IsEnabled = true;
             SearchButton.Content = "搜索";
             SearchTextBox.IsEnabled = true;
 
             textBlock_Info.Text = GetInfoBlockText();
+        }
+
+        private async Task GetLangData(int selectedSearchType, int selectedSearchTextPosition, string searchText)
+        {
+            if(isLua)
+            {
+                searchLuaData = await Task.Run(() =>
+                {
+                    var query = db.GetLuaLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
+                    return query;
+                });
+                LangData.ItemsSource = searchLuaData;
+            }
+            else
+            {
+                SearchData = await Task.Run(() =>
+                {
+                    var query = db.GetLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
+                    return query;
+                });
+                LangData.ItemsSource = SearchData;
+            }
         }
 
         private string GetInfoBlockText()
@@ -693,23 +711,49 @@ namespace ESO_Lang_Editor.View
 
         private void SearchStr_checkBox_Checked(object sender, RoutedEventArgs e)
         {
-            LangData.Columns.Clear();
-            LangData.Items.Clear();
 
-            isStr = true;
+            if(LangData.Items.Count >= 1)
+            {
+                //LangData.Columns.Clear();
+                //LangData.Items.Clear();
 
-            GeneratingColumns(isStr);
+                LangData.ItemsSource = null;
+
+                isLua = true;
+
+                GeneratingColumns();
+            }
+            else
+            {
+                isLua = true;
+
+                GeneratingColumns();
+            }
+
+
+            
 
         }
 
         private void SearchStr_checkBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            LangData.Columns.Clear();
-            LangData.Items.Clear();
+            if (LangData.Items.Count >= 1)
+            {
+                //LangData.Columns.Clear();
+                //LangData.Items.Clear();
 
-            isStr = false;
+                LangData.ItemsSource = null;
 
-            GeneratingColumns(isStr);
+                isLua = false;
+
+                GeneratingColumns();
+            }
+            else
+            {
+                isLua = false;
+
+                GeneratingColumns();
+            }
         }
 
 

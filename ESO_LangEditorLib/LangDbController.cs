@@ -103,6 +103,37 @@ namespace ESO_LangEditorLib
             return data;
         }
 
+        public async Task<List<LuaUIData>> GetLuaLangsListAsync(int field, int searchPos, string searchWord)
+        {
+            List<LuaUIData> data = new List<LuaUIData>();
+
+            string searchPosAndWord = searchPos switch  //设定关键字出现的位置
+            {
+                0 => "%" + searchWord + "%",     //任意位置
+                1 => searchWord + "%",           //仅在开头
+                2 => "%" + searchWord,           //仅在末尾
+                _ => "%" + searchWord + "%",     //默认 - 任意位置
+            };
+
+            using (var Db = new LangDbContext())
+            {
+                data = field switch
+                {
+                    0 => await Db.LuaLang.Where(d => d.UniqueID == searchWord).ToListAsync(),
+                    1 => await Db.LuaLang.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
+                    2 => await Db.LuaLang.Where(d => EF.Functions.Like(d.Text_ZH, searchPosAndWord)).ToListAsync(),
+                    3 => await Db.LuaLang.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
+                    4 => await Db.LuaLang.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
+                    5 => await Db.LuaLang.Where(d => d.IsTranslated == ToInt32(searchWord)).ToListAsync(),
+                    _ => await Db.LuaLang.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
+                };
+                //await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToDictionaryAsync(d => d.UniqueID),
+                //data = await q.ToDictionaryAsync(q => q.UniqueID);
+            }
+
+            return data;
+        }
+
 
         public async Task<Dictionary<string, LangText>> GetAllLangsDictionaryAsync()
         {

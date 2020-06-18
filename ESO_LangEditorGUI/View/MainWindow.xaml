@@ -86,7 +86,7 @@
             </StatusBarItem>
             <Separator Grid.Column="3" />
         </StatusBar>
-        <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Str内容" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" Margin="48,39,652,25" Grid.Row="1" />
+        <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Lua内容" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" Margin="48,40,636,24" Grid.Row="1" />
 
 
 

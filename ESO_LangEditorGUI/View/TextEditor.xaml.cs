@@ -18,6 +18,10 @@ namespace ESO_Lang_Editor.View
     {
         private LangText EditData;
         private List<LangText> SelectedItems;
+
+        private LuaUIData EditLuaData;
+        private List<LuaUIData> SelectedLuaItems;
+
         private LangDbController db = new LangDbController();
 
         //private UIstrFile EditStrData;
@@ -25,7 +29,7 @@ namespace ESO_Lang_Editor.View
 
         private int selectedListIndex;
 
-        private bool isStr;
+        private bool isLua;
 
         IDCatalog IDtypeName = new IDCatalog();
 
@@ -37,9 +41,9 @@ namespace ESO_Lang_Editor.View
 
             EditData = LangData;
 
-            isStr = false;
+            isLua = false;
 
-            GeneratingColumns(isStr);
+            GeneratingColumns();
             GridMover.Visibility = Visibility.Collapsed;
             List_expander.Visibility = Visibility.Collapsed;
 
@@ -48,54 +52,76 @@ namespace ESO_Lang_Editor.View
             //List_Datagrid_Display(LangData);
 
         }
+
+        public TextEditor(LuaUIData LangLuaData)
+        {
+
+            InitializeComponent();
+            this.Height = 400;
+
+            EditLuaData = LangLuaData;
+
+            isLua = true;
+
+            GeneratingColumns();
+            GridMover.Visibility = Visibility.Collapsed;
+            List_expander.Visibility = Visibility.Collapsed;
+
+            textBox_EN.IsReadOnly = true;
+            UpdateUIContent();
+            //List_Datagrid_Display(LangData);
+
+        }
+
         public TextEditor(List<LangText> SelectedItemsList)
         {
 
             InitializeComponent();
             this.Height = 600;
-            isStr = false;
+            isLua = false;
             SelectedItems = SelectedItemsList;
-            GeneratingColumns(isStr);
+            GeneratingColumns();
             textBox_EN.IsReadOnly = true;
 
             List_Datagrid_Display();
 
         }
-        //public TextEditor(UIstrFile LangData, List<UIstrFile> SelectedItemsList)
-        //{
 
-        //    InitializeComponent();
-        //    this.Width = 530;
-
-        //    isStr = true;
-        //    SelectedStrItems = SelectedItemsList;
-        //    GeneratingColumns(isStr);
-        //    textBox_EN.IsReadOnly = false;
-
-        //    List_Datagrid_Display(LangData);
-
-        //}
-
-        private void GeneratingColumns(bool isStr)
+        public TextEditor(List<LuaUIData> SelectedLuaItemsList)
         {
-            if (isStr)
+
+            InitializeComponent();
+            this.Height = 600;
+            isLua = true;
+            SelectedLuaItems = SelectedLuaItemsList;
+            GeneratingColumns();
+            textBox_EN.IsReadOnly = true;
+
+            List_Datagrid_Display();
+
+        }
+
+
+        private void GeneratingColumns()
+        {
+            if (isLua)
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "UI ID";
-                c1.Binding = new Binding("UI_ID");
+                c1.Binding = new Binding("UniqueID");
                 //c1.Width = 100;
                 List_dataGrid.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
                 c2.Header = "英文";
                 //c2.Width = 100;
-                c2.Binding = new Binding("UI_EN");
+                c2.Binding = new Binding("Text_EN");
                 List_dataGrid.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
                 //c3.Width = 100;
-                c3.Binding = new Binding("UI_ZH");
+                c3.Binding = new Binding("Text_ZH");
                 List_dataGrid.Columns.Add(c3);
             }
             else
@@ -136,37 +162,45 @@ namespace ESO_Lang_Editor.View
             //connDB.ConnectTranslateDB();
 
 
-            if(isStr)
+            if(isLua)
             {
-                //var StrDB = new UI_StrController();
-                //var EditedStrData = SetEditedStrData();
+                button_save.IsEnabled = false;
 
-                //var updateResult = StrDB.UpdateStrFromEditor(EditedStrData);
+                var EditLuaData = GetEditedLuaData();
+                await Task.Run(() => db.UpdateLangsZH(EditLuaData));
+
+
+
+                MessageBox.Show("ID: " + EditLuaData.UniqueID +
+                    Environment.NewLine + "ZH: " + EditLuaData.Text_ZH);
 
                 //MessageBox.Show(updateResult);
 
-                //if (List_dataGrid.Items.Count > 1)
-                //{
-                //    int i = List_dataGrid.SelectedIndex;
+                if (List_dataGrid.Items.Count > 1)
+                {
+                    int i = List_dataGrid.SelectedIndex;
 
-                //    List_dataGrid.Items.RemoveAt(i);
-                //    SelectedStrItems.RemoveAt(i);
+                    List_dataGrid.Items.RemoveAt(i);
+                    SelectedLuaItems.RemoveAt(i);
 
-                //    if (i > 0)
-                //    {
-                //        List_dataGrid.SelectedIndex = i - 1;
-                //    }
-                //    else
-                //    {
-                //        List_dataGrid.SelectedIndex = 0;
-                //    }
-                //    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
-                //    SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
-                //}
-                //else
-                //{
-                //    this.Close();
-                //}
+                    if (i > 0)
+                    {
+                        List_dataGrid.SelectedIndex = i - 1;
+                    }
+                    else
+                    {
+                        List_dataGrid.SelectedIndex = 0;
+                    }
+                    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+                    EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
+                    UpdateUIContent();
+                    button_save.IsEnabled = true;
+                }
+                else
+                {
+                    button_save.IsEnabled = true;
+                    this.Close();
+                }
             }
             else
             {
@@ -233,74 +267,67 @@ namespace ESO_Lang_Editor.View
             if (List_dataGrid.Items.Count > 1)
                 List_dataGrid.Items.Clear();
 
-            if (SelectedItems != null && SelectedItems.Count > 1)
+            if (isLua)
             {
-                List_expander.Visibility = Visibility.Visible;
-                List_expander.IsExpanded = true;
+                if (SelectedLuaItems != null && SelectedLuaItems.Count > 1)
+                {
+                    List_expander.Visibility = Visibility.Visible;
+                    List_expander.IsExpanded = true;
 
-                List_dataGrid.ItemsSource = SelectedItems;
+                    List_dataGrid.ItemsSource = SelectedLuaItems;
 
-                //foreach (var item in SelectedItems)
-                //{
-                //    List_dataGrid.Items.Add(item);
-                //}
+                    //foreach (var item in SelectedItems)
+                    //{
+                    //    List_dataGrid.Items.Add(item);
+                    //}
 
-                List_dataGrid.SelectedIndex = 0;
+                    List_dataGrid.SelectedIndex = 0;
 
 
-                EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
-                UpdateUIContent();
+                    EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
+                    UpdateUIContent();
 
+                }
+                else
+                {
+                    List_expander.Visibility = Visibility.Hidden;
+                    List_expander.IsExpanded = false;
+                    //EditData = LangData;
+                    UpdateUIContent();
+                }
             }
             else
             {
-                List_expander.Visibility = Visibility.Hidden;
-                List_expander.IsExpanded = false;
-                //EditData = LangData;
-                UpdateUIContent();
-            }
-            
+                if (SelectedItems != null && SelectedItems.Count > 1)
+                {
+                    List_expander.Visibility = Visibility.Visible;
+                    List_expander.IsExpanded = true;
 
-            //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+                    List_dataGrid.ItemsSource = SelectedItems;
+
+                    //foreach (var item in SelectedItems)
+                    //{
+                    //    List_dataGrid.Items.Add(item);
+                    //}
+
+                    List_dataGrid.SelectedIndex = 0;
+
+
+                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+                    UpdateUIContent();
+
+                }
+                else
+                {
+                    List_expander.Visibility = Visibility.Hidden;
+                    List_expander.IsExpanded = false;
+                    //EditData = LangData;
+                    UpdateUIContent();
+                }
+            }
+
         }
 
-
-        //private void List_Datagrid_Display(UIstrFile LangData)
-        //{
-        //    //var IDtypeName = new IDCatalog();
-
-        //    if (List_dataGrid.Items.Count > 1)
-        //        //SearchData = null;
-        //        List_dataGrid.Items.Clear();
-
-            //SearchData = SearchLang(SearchCheck());
-            //if (SelectedStrItems != null && SelectedStrItems.Count > 1)
-            //{
-            //    List_expander.Visibility = Visibility.Visible;
-            //    List_expander.IsExpanded = true;
-
-            //    foreach (var item in SelectedStrItems)
-            //    {
-            //        List_dataGrid.Items.Add(item);
-            //    }
-            //    List_dataGrid.SelectedIndex = 0;
-
-            //    SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
-
-            //}
-            //else
-            //{
-            //    List_expander.Visibility = Visibility.Hidden;
-            //    List_expander.IsExpanded = false;
-            //    //EditData = LangData;
-            //    SetEditDataTextBlocks(LangData);
-
-
-            //}
-
-
-            //textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
-        //}
 
 
         private void List_datagrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -310,9 +337,10 @@ namespace ESO_Lang_Editor.View
 
             if (datagrid.SelectedIndex != -1)
             {
-                if(isStr)
+                if(isLua)
                 {
-                   // SetEditDataTextBlocks(SelectedStrItems.ElementAt(List_dataGrid.SelectedIndex));
+                    EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
+                    UpdateUIContent();
                 }
                 else
                 {
@@ -329,46 +357,42 @@ namespace ESO_Lang_Editor.View
 
         private void UpdateUIContent()
         {
-            textBox_EN.Text = EditData.Text_EN;
-            textBox_ZH.Text = EditData.Text_ZH;
 
-            string modifyInfo = "，编辑信息：正常.";
+            if(isLua)
+            {
+                textBox_EN.Text = EditLuaData.Text_EN;
+                textBox_ZH.Text = EditLuaData.Text_ZH;
 
-            if (EditData.RowStats == 2 && EditData.IsTranslated == 2)
-                modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
+                string modifyInfo = "，编辑信息：正常.";
 
-            //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
-            //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+                if (EditLuaData.RowStats == 2 && EditLuaData.IsTranslated == 2)
+                    modifyInfo = "，编辑信息：本条内容在 " + EditLuaData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
 
-            textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.ID.ToString())
-                    + modifyInfo;
+                //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
+                //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+
+                textblock_information.Text = "字段：" + EditLuaData.UniqueID + modifyInfo;
+            }
+            else
+            {
+                textBox_EN.Text = EditData.Text_EN;
+                textBox_ZH.Text = EditData.Text_ZH;
+
+                string modifyInfo = "，编辑信息：正常.";
+
+                if (EditData.RowStats == 2 && EditData.IsTranslated == 2)
+                    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
+
+                //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
+                //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+
+                textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.ID.ToString())
+                        + modifyInfo;
+            }
+            
         }
 
-        //private void SetEditDataTextBlocks(UIstrFile Data)
-        //{
-        //    string modifyInfo = "，编辑信息：正常.";
-
-        //    if (Data.isTranslated == 2 && Data.RowStats == 20)
-        //        modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
-
-        //    if (Data.isTranslated == 3 && Data.RowStats == 20)
-        //        modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
-
-        //    if (Data.RowStats == 30)
-        //        modifyInfo = "，编辑信息：本条内容在 " + Data.UpdateStats + " 版本删除，请勿编辑。";
-
-
-        //    EditStrData = Data;
-
-        //    textBox_EN.Text = Data.UI_EN;
-        //    textBox_ZH.Text = Data.UI_ZH;
-        //    textblock_information.Text = "当前表：" + Data.UI_Table
-        //                                 //+ "，数据库索引：" + EditData.IndexDB 
-                      
-        //            //"，未知列：" + Data.ID_Unknown
-        //            //+ "，文本索引：" + Data.ID_Index
-        //            + modifyInfo;
-        //}
+       
 
         private LangText GetEditedData()
         {
@@ -398,19 +422,32 @@ namespace ESO_Lang_Editor.View
             return EditedData;
         }
 
-        //private UIstrFile SetEditedStrData()
-        //{
-        //    var EditedData = new UIstrFile();
+        private LuaUIData GetEditedLuaData()
+        {
+            int rowStats = EditLuaData.RowStats;
+            //int translate = EditData.IsTranslated;
 
-        //    EditedData.UI_Table = EditStrData.UI_Table;
-        //    EditedData.UI_ID = EditStrData.UI_ID;
-        //    EditedData.UI_EN = textBox_EN.Text;
-        //    EditedData.UI_ZH = textBox_ZH.Text;
-        //    EditedData.isTranslated = 1;
+            if (rowStats == 2)
+                rowStats = 4;
+            else if (rowStats != 4)
+                rowStats = 3;
+            else
+                rowStats = 4;
 
-        //    System.Console.WriteLine("UI_Table：{0}, UI_ID：{1}, UI_EN：{2}。", EditedData.UI_Table, EditedData.UI_ID, EditedData.UI_EN);
+            var EditedData = new LuaUIData
+            {
+                UniqueID = EditLuaData.UniqueID,
+                //ID = EditData.ID,
+                //Unknown = EditData.Unknown,
+                //Lang_Index = EditData.Lang_Index,
+                //Text_EN = EditData.Text_EN,
+                Text_ZH = textBox_ZH.Text,
+                //UpdateStats = EditData.UpdateStats,
+                RowStats = rowStats,
+                IsTranslated = 1,
+            };
 
-        //    return EditedData;
-        //}
+            return EditedData;
+        }
     }
 }

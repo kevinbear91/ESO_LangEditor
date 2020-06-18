@@ -17,6 +17,7 @@ namespace ESO_Lang_Editor.View
     public partial class ExportTranslate : Window
     {
         private List<LangText> SearchData;
+        private List<LuaUIData> SearchLuaData;
         //private List<UIstrFile> SearchStrData;
 
         private bool isStr;
@@ -43,28 +44,19 @@ namespace ESO_Lang_Editor.View
 
             if (isStr)
             {
-                //var strDB = new UI_StrController();
+                var db = new LangDbController();
 
                 //if (Translated_DataGrid.Items.Count >= 1)
                 //    SearchData = null;
                 //Translated_DataGrid.Items.Clear();
 
-                //SearchStrData = strDB.SearchData("1", 3, false);
+                SearchLuaData = await Task.Run(() => db.GetLuaLangsListAsync(5, 0, "1"));
 
-                //foreach (var data in SearchStrData)
-                //{
-                //    if (data.isTranslated == 1 && data.RowStats == 20)
-                //    {
-                //        data.isTranslated = 3;
-                //    }
-                //    else
-                //    {
-                //        data.isTranslated = 2;
-                //    }
+                Translated_DataGrid.ItemsSource = SearchData;
 
-                //    Translated_DataGrid.Items.Add(data);
-                //}
-                //Status_textBlock.Text = "总计搜索到" + Translated_DataGrid.Items.Count + "条结果。";
+                textBlock_Info.Text = "总计搜索到 " + SearchData.Count + " 条结果。";
+
+                ExportTranslate_Button.IsEnabled = true;
             }
             else
             {
