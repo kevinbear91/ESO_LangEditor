@@ -87,6 +87,38 @@ namespace ESO_LangEditorLib
 
         }
 
+        public void ExportLangListFullColumnAsText(List<LuaUIData> data, string directory, string fileName)
+        {
+            var outputText = new List<string>();
+
+
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+
+            foreach (var d in data)
+            {
+                //能找到个合适的分隔符真鸡巴难，\v = 匹配垂直制表符，\u000B
+                //备用替代"`"
+                int translate = 2;
+                outputText.Add(d.UniqueID
+                    + "\v" + d.Text_EN
+                    + "\v" + d.Text_ZH
+                    + "\v" + translate
+                    + "\v" + d.RowStats);
+            }
+
+            using (StreamWriter sw = new StreamWriter(directory + "/" + fileName))
+            {
+                foreach (string s in outputText)
+                {
+                    sw.WriteLine(s);
+                }
+                sw.Flush();
+                sw.Close();
+            }
+
+        }
+
         //public void ExportIDArray(int[] ID_Array)
         //{
         //    var outputFile = new List<string>();
@@ -140,6 +172,29 @@ namespace ESO_LangEditorLib
             else
             {
                 ExportLangListFullColumnAsText(SearchData, "Export", "Translate_" + filName + ".LangDB");
+            }
+
+            return dbPath;
+        }
+
+        public string ExportTranslateDB(List<LuaUIData> SearchData)
+        {
+            //var connDB = new SQLiteController();
+            string filName = GetTimeToFileName();
+            List<LuaUIData> data = SearchData;
+
+            if (!Directory.Exists("Export"))
+                Directory.CreateDirectory("Export");
+
+            string dbPath = @"Export\Translate_" + filName + ".LangUI";
+
+            if (File.Exists(dbPath))
+            {
+                ExportTranslateDB(data);
+            }
+            else
+            {
+                ExportLangListFullColumnAsText(SearchData, "Export", "Translate_" + filName + ".LangUI");
             }
 
             return dbPath;

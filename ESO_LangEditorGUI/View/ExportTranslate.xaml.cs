@@ -20,7 +20,9 @@ namespace ESO_Lang_Editor.View
         private List<LuaUIData> SearchLuaData;
         //private List<UIstrFile> SearchStrData;
 
-        private bool isStr;
+        private bool isLua;
+
+        LangDbController db = new LangDbController();
 
         public ExportTranslate()
         {
@@ -29,42 +31,31 @@ namespace ESO_Lang_Editor.View
             textBlock_SelectionInfo.Text = "";
             ExportTranslate_Button.IsEnabled = false;
 
-            GeneratingColumns(false);
-            InitDataGrid(false);
+            GeneratingColumns();
+            InitDataGrid();
 
 
         }
 
 
-        private async Task InitDataGrid(bool isUI_Str)
+        private async Task InitDataGrid()
         {
-            isStr = isUI_Str;
 
             textBlock_Info.Text = "正在查找……";
 
-            if (isStr)
+            if (isLua)
             {
-                var db = new LangDbController();
-
-                //if (Translated_DataGrid.Items.Count >= 1)
-                //    SearchData = null;
-                //Translated_DataGrid.Items.Clear();
 
                 SearchLuaData = await Task.Run(() => db.GetLuaLangsListAsync(5, 0, "1"));
 
-                Translated_DataGrid.ItemsSource = SearchData;
+                Translated_DataGrid.ItemsSource = SearchLuaData;
 
-                textBlock_Info.Text = "总计搜索到 " + SearchData.Count + " 条结果。";
+                textBlock_Info.Text = "总计搜索到 " + SearchLuaData.Count + " 条结果。";
 
                 ExportTranslate_Button.IsEnabled = true;
             }
             else
             {
-                var db = new LangDbController();
-
-                if (Translated_DataGrid.Items.Count >= 1)
-                    SearchData = null;
-                Translated_DataGrid.Items.Clear();
 
                 SearchData = await Task.Run(() => db.GetLangsListAsync(5, 0, "1"));
 
@@ -82,7 +73,7 @@ namespace ESO_Lang_Editor.View
             var exportTranslate = new ExportFromDB();
             string exportPath;
 
-            if (isStr)
+            if (isLua)
             {
                 exportPath = exportTranslate.ExportTranslateDB(SearchData);
             }
@@ -105,26 +96,26 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        private void GeneratingColumns(bool isStr)
+        private void GeneratingColumns()
         {
-            if (isStr)
+            if (isLua)
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "UI ID";
-                c1.Binding = new Binding("UI_ID");
+                c1.Binding = new Binding("UniqueID");
                 c1.Width = 200;
                 Translated_DataGrid.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
                 c2.Header = "英文";
                 c2.Width = 200;
-                c2.Binding = new Binding("UI_EN");
+                c2.Binding = new Binding("Text_EN");
                 Translated_DataGrid.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
                 c3.Width = 200;
-                c3.Binding = new Binding("UI_ZH");
+                c3.Binding = new Binding("Text_ZH");
                 Translated_DataGrid.Columns.Add(c3);
             }
             else
@@ -160,10 +151,10 @@ namespace ESO_Lang_Editor.View
             Translated_DataGrid.Columns.Clear();
             Translated_DataGrid.Items.Clear();
 
-            isStr = true;
+            isLua = true;
 
-            GeneratingColumns(isStr);
-            InitDataGrid(isStr);
+            GeneratingColumns();
+            InitDataGrid();
         }
 
         private void IsStr_checkBox_Unchecked(object sender, RoutedEventArgs e)
@@ -171,10 +162,10 @@ namespace ESO_Lang_Editor.View
             Translated_DataGrid.Columns.Clear();
             Translated_DataGrid.Items.Clear();
 
-            isStr = false;
+            isLua = false;
 
-            GeneratingColumns(isStr);
-            InitDataGrid(isStr);
+            GeneratingColumns();
+            InitDataGrid();
         }
         
     }

@@ -155,6 +155,63 @@ namespace ESO_LangEditorLib
         }
         #endregion
 
+        public async Task<List<LuaUIData>> ExportLuaReaderToListAsync(string path)
+        #region 读取 .LangDB 文件并返回List<LuaUIData>
+        {
+            string result;
+            List<LuaUIData> csvData = new List<LuaUIData>();
+            using (StreamReader reader = new StreamReader(path))
+            {
+                Debug.WriteLine("Opened file.");
+
+                string uniqueID;
+                string en;
+                string zh;
+                string translate;
+                string rowStats;
+
+                //bool passedFirstLine = false;
+
+                while ((result = await reader.ReadLineAsync()) != null)
+                {
+                    string[] words = result.Trim().Split(new char[] { '\v' }, 9);
+                    ParserCsvAddToList(csvData, out uniqueID, out en, out zh, out translate, out rowStats, words);
+
+                }
+                reader.Close();
+                Debug.WriteLine("Total lines: " + csvData.Count);
+                //MessageBox.Show("读取完毕，共 " + csvData.Count + " 行数据。");
+            }
+            return csvData;
+
+            static void ParserCsvAddToList(List<LuaUIData> csvData, out string uniqueID, out string en, out string zh, out string translate, out string rowStats, string[] words)
+            #region 分析.LangDB 文件，并将分析后的文本加入 List<CsvData>
+            {
+
+                uniqueID = words[0];
+                en = words[1];
+                zh = words[2];
+                translate = words[3];
+                rowStats = words[4];
+
+                csvData.Add(new LuaUIData
+                {
+                    UniqueID = uniqueID,
+                    Text_EN = en,
+                    Text_ZH = zh,
+                    IsTranslated = ToInt32(translate),
+                    RowStats = ToInt32(rowStats),
+                }); ;
+
+                Debug.WriteLine("ID: " + uniqueID + ", "
+                    + "zh: " + zh + ", "
+                    + "translate: " + translate + ", "
+                    + "rowStats: " + rowStats);
+            }
+            #endregion
+        }
+        #endregion
+
 
         public async Task<Dictionary<string, LangText>> CsvReaderToDictionaryAsync(string path)
         #region 读取CSV文件并返回Dictionary<string, LangData>

@@ -21,9 +21,10 @@ namespace ESO_Lang_Editor.View
         private List<string> filePath = new List<string>();
         List<string> fileList = new List<string>();
         List<LangText> SearchData = new List<LangText>();
+        List<LuaUIData> SearchLuaData = new List<LuaUIData>();
         //private List<UIstrFile> SearchStrData;
 
-        private bool isStr;
+        private bool isLua;
 
         private ParserCsv importDB = new ParserCsv();
 
@@ -39,20 +40,20 @@ namespace ESO_Lang_Editor.View
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "UI ID";
-                c1.Binding = new Binding("UI_ID");
+                c1.Binding = new Binding("UniqueID");
                 c1.Width = 200;
                 TranslateData_dataGrid.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
                 c2.Header = "英文";
                 c2.Width = 200;
-                c2.Binding = new Binding("UI_EN");
+                c2.Binding = new Binding("Text_EN");
                 TranslateData_dataGrid.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
                 c3.Width = 200;
-                c3.Binding = new Binding("UI_ZH");
+                c3.Binding = new Binding("Text_ZH");
                 TranslateData_dataGrid.Columns.Add(c3);
             }
             else
@@ -87,7 +88,7 @@ namespace ESO_Lang_Editor.View
 
             if (dialog.ShowDialog(this) == true)
             {
-                if (dialog.FileName.EndsWith(".LangDB") || dialog.FileName.EndsWith(".db"))
+                if (dialog.FileName.EndsWith(".LangDB") || dialog.FileName.EndsWith(".LangUI") || dialog.FileName.EndsWith(".db") || dialog.FileName.EndsWith(".dbUI"))
                 {
                     foreach (var file in dialog.FileNames)
                     {
@@ -122,40 +123,44 @@ namespace ESO_Lang_Editor.View
                 DataGridSet(dbPath);
             }
 
-            if (isStr)
+            if (dbPath.EndsWith(".LangUI"))   //Lua Str UI文本
             {
-                //var strDB = new UI_StrController();
-                //SearchStrData = strDB.FullSearchStrDB(dbPath);
+                SearchLuaData = await importDB.ExportLuaReaderToListAsync(dbPath);
+                TranslateData_dataGrid.ItemsSource = SearchLuaData;
 
-                //foreach (var data in SearchStrData)
-                //{
-                //    TranslateData_dataGrid.Items.Add(data);
-                //}
-                ////textBlock_Info.Text = "总计搜索到" + LangSearch.Items.Count + "条结果。";
+                textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+            }
+            else if (dbPath.EndsWith(".db"))
+            {
+                var oldTranslate = new ImportOldTranslateDB();
 
-                //TotalFiles_textBlock.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                SearchData = oldTranslate.FullSearchData(dbPath);
+                TranslateData_dataGrid.ItemsSource = SearchData;
+                textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+            }
+            else if (dbPath.EndsWith(".dbUI"))
+            {
+                var oldTranslate = new ImportOldTranslateDB();
+
+                SearchLuaData = oldTranslate.FullSearchStrDB(dbPath, "Pregame");
+                TranslateData_dataGrid.ItemsSource = SearchLuaData;
+                textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+
+                isLua = true;
             }
             else
             {
-                if(dbPath.EndsWith(".db"))
-                {
-                    var oldTranslate = new ImportOldTranslateDB();
+                SearchData = await importDB.ExportReaderToListAsync(dbPath);
+                TranslateData_dataGrid.ItemsSource = SearchData;
 
-                    SearchData = oldTranslate.FullSearchData(dbPath);
-                    TranslateData_dataGrid.ItemsSource = SearchData;
-                    textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                    textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
-                }
-                else
-                {
-                    SearchData = await importDB.ExportReaderToListAsync(dbPath);
-                    TranslateData_dataGrid.ItemsSource = SearchData;
-
-                    textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                    textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
-                }
-                
+                textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
             }
+                
+
             
 
 
@@ -167,23 +172,16 @@ namespace ESO_Lang_Editor.View
         {
             var db = new LangDbController();
 
-            if (isStr)
+            if (isLua)
             {
-                //var strDB = new UI_StrController();
-                //bool isSuccess;
-                //List<UIstrFile> importData;
+                OpenFile_button.IsEnabled = false;
+                ImportToDB_button.IsEnabled = false;
+                ImportAll_Checkbox.IsEnabled = false;
+                ImportToDB_button.Content = "导入中……";
 
-                //foreach (var s in FileID_listBox.SelectedItems)
-                //{
-                //    //按GUI列表选择的对象数目来读取索引，用索引探测已选定的文件路径来搜索翻译后的数据库文件，然后将所有内容存储到变量中。
-                //    importData = strDB.FullSearchStrDB(filePath.ElementAt(FileID_listBox.Items.IndexOf(s)));
-                //    isSuccess = strDB.UpdateTextScFromImportDB(importData);;
+                int importlines = await db.UpdateLangsZH(SearchLuaData);
 
-                //    if (isSuccess)
-                //        MessageBox.Show("导入成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-                //    else
-                //        MessageBox.Show("导入失败！请检查文件！", "失败", MessageBoxButton.OK, MessageBoxImage.Error);
-                //}
+                MessageBox.Show("导入了 " + importlines + " 条翻译");
             }
             else
             {

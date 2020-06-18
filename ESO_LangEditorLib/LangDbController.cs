@@ -422,7 +422,7 @@ namespace ESO_LangEditorLib
         //        //foreach (var table in dbList)
         //        //{
         //        //    Debug.WriteLine(table.name);
-                    
+
         //        //    //oldDB.Add(DbContext.langOldData.ToList());
 
         //        //}

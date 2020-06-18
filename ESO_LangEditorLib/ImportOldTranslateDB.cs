@@ -149,5 +149,52 @@ namespace ESO_LangEditorLib
             }
 
         }
+        public List<LuaUIData> FullSearchStrDB(string LuaStrpath, string tableName)
+        {
+            var _LangViewData = new List<LuaUIData>();
+
+            //string rowStatsInt = " WHERE RowStats < 30";
+
+            //if (SearchAbandonContent)
+            //    rowStatsInt = "";
+
+            using (SqliteConnection conn = new SqliteConnection("Data Source=" + LuaStrpath))
+            {
+                conn.Open();
+                SqliteCommand cmd = new SqliteCommand();
+                cmd.Connection = conn;
+
+                try
+                {
+                    cmd.CommandText = "SELECT * FROM " + tableName;
+
+                    SqliteDataReader sr = cmd.ExecuteReader();
+
+                    while (sr.Read())
+                    {
+                        _LangViewData.Add(new LuaUIData
+                        {
+
+                            //IndexDB = sr.FieldCount,                   
+                            UniqueID = sr.GetString(0),
+                            Text_EN = sr.GetString(1),
+                            Text_ZH = sr.GetString(2),
+                            RowStats = sr.GetInt32(4),
+                            IsTranslated = sr.GetInt32(5),
+                            UpdateStats = sr.GetString(6),
+
+                        });
+                        //Console.WriteLine("查询了{0}, {1}, {2}", sr.GetInt32(0).ToString(), sr.GetInt32(1), sr.GetString(4));
+                    }
+                    sr.Close();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("查询数据：失败：" + ex.Message);
+                }
+                return _LangViewData;
+            }
+
+        }
     }
 }
