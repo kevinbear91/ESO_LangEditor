@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
 using ESO_LangEditorLib.Models;
+using ESO_Lang_Editor.Model;
 
 namespace ESO_Lang_Editor.View
 {
@@ -34,6 +35,8 @@ namespace ESO_Lang_Editor.View
         ObservableCollection<string> searchTextType;
 
         LangDbController db = new LangDbController();
+
+        IDCatalog IDtypeName = new IDCatalog();
 
         public MainWindow()
         {
@@ -158,13 +161,13 @@ namespace ESO_Lang_Editor.View
                     {
                         if (isLua)
                         {
-                            TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem);
+                            TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem,ref IDtypeName);
                             textEditor.Show();
                         }
                         else
                         {
                             //SelectedData = ;
-                            TextEditor textEditor = new TextEditor((LangText)datagrid.SelectedItem);
+                            TextEditor textEditor = new TextEditor((LangText)datagrid.SelectedItem, ref IDtypeName);
                             textEditor.Show();
                             //MessageBox.Show((LangData)datagrid.SelectedItem);
                         }
@@ -305,7 +308,7 @@ namespace ESO_Lang_Editor.View
                             SelectedLuaDatas.Add((LuaUIData)selectedItem);
                     }
 
-                    TextEditor textEditor = new TextEditor(SelectedLuaDatas);
+                    TextEditor textEditor = new TextEditor(SelectedLuaDatas, ref IDtypeName);
                     textEditor.Show();
                 }
             }
@@ -324,7 +327,7 @@ namespace ESO_Lang_Editor.View
                             SelectedDatas.Add((LangText)selectedItem);
                     }
 
-                    TextEditor textEditor = new TextEditor(SelectedDatas);
+                    TextEditor textEditor = new TextEditor(SelectedDatas, ref IDtypeName);
                     textEditor.Show();
                 }
             }

@@ -156,7 +156,7 @@ namespace ESO_LangEditorLib
         #endregion
 
         public async Task<List<LuaUIData>> ExportLuaReaderToListAsync(string path)
-        #region 读取 .LangDB 文件并返回List<LuaUIData>
+        #region 读取 .LangUI 文件并返回List<LuaUIData>
         {
             string result;
             List<LuaUIData> csvData = new List<LuaUIData>();
@@ -185,7 +185,7 @@ namespace ESO_LangEditorLib
             return csvData;
 
             static void ParserCsvAddToList(List<LuaUIData> csvData, out string uniqueID, out string en, out string zh, out string translate, out string rowStats, string[] words)
-            #region 分析.LangDB 文件，并将分析后的文本加入 List<CsvData>
+            #region 分析.LangUI 文件，并将分析后的文本加入 List<CsvData>
             {
 
                 uniqueID = words[0];

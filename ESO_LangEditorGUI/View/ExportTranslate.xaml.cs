@@ -75,7 +75,7 @@ namespace ESO_Lang_Editor.View
 
             if (isLua)
             {
-                exportPath = exportTranslate.ExportTranslateDB(SearchData);
+                exportPath = exportTranslate.ExportTranslateDB(SearchLuaData);
             }
             else
             {
@@ -98,6 +98,8 @@ namespace ESO_Lang_Editor.View
 
         private void GeneratingColumns()
         {
+            Translated_DataGrid.Columns.Clear();
+
             if (isLua)
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
@@ -148,8 +150,10 @@ namespace ESO_Lang_Editor.View
 
         private void IsStr_checkBox_Checked(object sender, RoutedEventArgs e)
         {
-            Translated_DataGrid.Columns.Clear();
-            Translated_DataGrid.Items.Clear();
+            //Translated_DataGrid.Columns.Clear();
+            //Translated_DataGrid.Items.Clear();
+
+            Translated_DataGrid.ItemsSource = null;
 
             isLua = true;
 
@@ -159,8 +163,10 @@ namespace ESO_Lang_Editor.View
 
         private void IsStr_checkBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            Translated_DataGrid.Columns.Clear();
-            Translated_DataGrid.Items.Clear();
+            //Translated_DataGrid.Columns.Clear();
+            //Translated_DataGrid.Items.Clear();
+
+            Translated_DataGrid.ItemsSource = null;
 
             isLua = false;
 

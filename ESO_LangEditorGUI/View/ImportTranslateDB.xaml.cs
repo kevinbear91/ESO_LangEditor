@@ -17,7 +17,6 @@ namespace ESO_Lang_Editor.View
     /// </summary>
     public partial class ImportTranslateDB : Window
     {
-        private ObservableCollection<string> IDList;
         private List<string> filePath = new List<string>();
         List<string> fileList = new List<string>();
         List<LangText> SearchData = new List<LangText>();
@@ -130,6 +129,8 @@ namespace ESO_Lang_Editor.View
 
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+
+                isLua = true;
             }
             else if (dbPath.EndsWith(".db"))
             {

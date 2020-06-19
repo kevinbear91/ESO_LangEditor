@@ -291,24 +291,24 @@ namespace ESO_LangEditorLib
             //Debug.WriteLine(list);
         }
 
-        public async Task UpdateLangsZH(LuaUIData langList)
+        public async Task UpdateLangsZH(LuaUIData langUIList)
         {
             using var Db = new LangDbContext();
-            Db.Attach(langList);
-            Db.Entry(langList).Property("Text_ZH").IsModified = true;
-            Db.Entry(langList).Property("IsTranslated").IsModified = true;
-            Db.Entry(langList).Property("RowStats").IsModified = true;
+            Db.Attach(langUIList);
+            Db.Entry(langUIList).Property("Text_ZH").IsModified = true;
+            Db.Entry(langUIList).Property("IsTranslated").IsModified = true;
+            Db.Entry(langUIList).Property("RowStats").IsModified = true;
 
             //Db.Update(langList);
             await Db.SaveChangesAsync();
 
         }
 
-        public async Task<int> UpdateLangsZH(List<LuaUIData> langList)
+        public async Task<int> UpdateLangsZH(List<LuaUIData> langUIList)
         {
             using var Db = new LangDbContext();
 
-            foreach (var l in langList)
+            foreach (var l in langUIList)
             {
                 if (Db.LuaLang.Where(d => d.UniqueID == l.UniqueID).Count() == 1)
                 {
@@ -328,6 +328,7 @@ namespace ESO_LangEditorLib
                     }
 
                 }
+                Debug.WriteLine("{0},{1}",l.UniqueID,l.Text_ZH);
             }
 
             return await Db.SaveChangesAsync();

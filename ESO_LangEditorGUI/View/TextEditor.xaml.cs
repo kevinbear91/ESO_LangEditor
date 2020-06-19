@@ -23,21 +23,16 @@ namespace ESO_Lang_Editor.View
         private List<LuaUIData> SelectedLuaItems;
 
         private LangDbController db = new LangDbController();
-
-        //private UIstrFile EditStrData;
-        //private List<UIstrFile> SelectedStrItems;
-
-        private int selectedListIndex;
-
         private bool isLua;
 
-        IDCatalog IDtypeName = new IDCatalog();
+        IDCatalog IDtypeName;
 
-        public TextEditor(LangText LangData)
+        public TextEditor(LangText LangData, ref IDCatalog IDtype)
         {
 
             InitializeComponent();
             this.Height = 400;
+            IDtypeName = IDtype;
 
             EditData = LangData;
 
@@ -53,11 +48,12 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        public TextEditor(LuaUIData LangLuaData)
+        public TextEditor(LuaUIData LangLuaData, ref IDCatalog IDtype)
         {
 
             InitializeComponent();
             this.Height = 400;
+            IDtypeName = IDtype;
 
             EditLuaData = LangLuaData;
 
@@ -73,11 +69,13 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        public TextEditor(List<LangText> SelectedItemsList)
+        public TextEditor(List<LangText> SelectedItemsList, ref IDCatalog IDtype)
         {
 
             InitializeComponent();
             this.Height = 600;
+            IDtypeName = IDtype;
+
             isLua = false;
             SelectedItems = SelectedItemsList;
             GeneratingColumns();
@@ -87,11 +85,13 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        public TextEditor(List<LuaUIData> SelectedLuaItemsList)
+        public TextEditor(List<LuaUIData> SelectedLuaItemsList, ref IDCatalog IDtype)
         {
 
             InitializeComponent();
             this.Height = 600;
+            IDtypeName = IDtype;
+
             isLua = true;
             SelectedLuaItems = SelectedLuaItemsList;
             GeneratingColumns();
@@ -386,7 +386,7 @@ namespace ESO_Lang_Editor.View
                 //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
                 //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
 
-                textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.ID.ToString())
+                textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.ID)
                         + modifyInfo;
             }
             
