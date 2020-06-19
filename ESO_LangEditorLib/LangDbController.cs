@@ -134,6 +134,19 @@ namespace ESO_LangEditorLib
             return data;
         }
 
+        public async Task<List<LangText>> GetAllLangsListAsync()
+        {
+            List<LangText> data = new List<LangText>();
+
+            using (var Db = new LangDbContext())
+            {
+                data = await Db.LangData.ToListAsync();
+
+                //data = q.ToDictionary(q => q.UniqueID);
+            }
+            return data;
+        }
+
 
         public async Task<Dictionary<string, LangText>> GetAllLangsDictionaryAsync()
         {
@@ -142,6 +155,19 @@ namespace ESO_LangEditorLib
             using (var Db = new LangDbContext())
             {
                 data = await Db.LangData.ToDictionaryAsync(d => d.UniqueID);
+
+                //data = q.ToDictionary(q => q.UniqueID);
+            }
+            return data;
+        }
+
+        public async Task<List<LuaUIData>> GetAllLuaLangsListAsync()
+        {
+            List<LuaUIData> data = new List<LuaUIData>();
+
+            using (var Db = new LangDbContext())
+            {
+                data = await Db.LuaLang.ToListAsync();
 
                 //data = q.ToDictionary(q => q.UniqueID);
             }

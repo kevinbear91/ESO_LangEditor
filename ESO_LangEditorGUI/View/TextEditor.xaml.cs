@@ -371,7 +371,7 @@ namespace ESO_Lang_Editor.View
                 //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
                 //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
 
-                textblock_information.Text = "字段：" + EditLuaData.UniqueID + modifyInfo;
+                textblock_information.Text = "字段：" + EditLuaData.UniqueID + "\n"  + modifyInfo;
             }
             else
             {

@@ -4,52 +4,53 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using static System.Convert;
 
 namespace ESO_LangEditorLib
 {
     public class ExportFromDB
     {
-        //public void ExportAsText()
-        //{
+        public async Task ExportAsText()
+        {
 
-        //    var outputIDFile = new List<string>();
-        //    var outputTextFile = new List<string>();
+            var outputIDFile = new List<string>();
+            var outputTextFile = new List<string>();
 
-        //    var connDB = new SQLiteController();
+            var db = new LangDbController();
 
-        //    var dbData = connDB.FullSearchData(false);
+            var dbData = await db.GetAllLangsListAsync();
 
-        //    if (!Directory.Exists("_tmp"))
-        //        Directory.CreateDirectory("_tmp");
+            if (!Directory.Exists("_tmp"))
+                Directory.CreateDirectory("_tmp");
 
-        //    foreach (var item in dbData)
-        //    {
-        //        outputIDFile.Add(item.ID_Type + "-" + item.ID_Unknown + "-" + item.ID_Index);
-        //        outputTextFile.Add(item.Text_SC);
-        //    }
+            foreach (var d in dbData)
+            {
+                outputIDFile.Add(d.UniqueID);
+                outputTextFile.Add(d.Text_ZH);
+            }
 
-        //    using (StreamWriter sw = new StreamWriter("_tmp/ID.txt"))
-        //    {
-        //        foreach (string s in outputIDFile)
-        //        {
-        //            sw.WriteLine(s);
-        //        }
-        //        sw.Flush();
-        //        sw.Close();
-        //    }
+            using (StreamWriter sw = new StreamWriter("_tmp/ID.txt"))
+            {
+                foreach (string s in outputIDFile)
+                {
+                    sw.WriteLine(s);
+                }
+                sw.Flush();
+                sw.Close();
+            }
 
-        //    using (StreamWriter sw = new StreamWriter("_tmp/Text.txt"))
-        //    {
-        //        foreach (string s in outputTextFile)
-        //        {
-        //            sw.WriteLine(s);
-        //        }
-        //        sw.Flush();
-        //        sw.Close();
-        //    }
+            using (StreamWriter sw = new StreamWriter("_tmp/Text.txt"))
+            {
+                foreach (string s in outputTextFile)
+                {
+                    sw.WriteLine(s);
+                }
+                sw.Flush();
+                sw.Close();
+            }
 
-        //}
+        }
 
         public void ExportLangListFullColumnAsText(List<LangText> data, string directory, string fileName)
         {
@@ -223,46 +224,89 @@ namespace ESO_LangEditorLib
         //    return dbPath;
         //}
 
-        public void ExportStrDB(string TableName)
+        public async Task ExportStrDB()
         {
-            //List<string> exportData = new List<string>();
-            //var db = new LangDbController();
-            //string line;
+            List<string> luaClientData = new List<string>();
+            List<string> luaPregameData = new List<string>();
 
-            //var data = ;
+            var db = new LangDbController();
+            string line;
 
-            //StreamReader file = new StreamReader("Data/FontLib.txt");
+            var data = await db.GetAllLuaLangsListAsync() ;
 
-            //while ((line = file.ReadLine()) != null)
-            //{
-            //    exportData.Add(line);
-            //}
-            //file.Close();
+            StreamReader file = new StreamReader(@"Data\FontLib.txt");
 
-            //foreach (var d in data)
-            //{
-            //    if (TableName.Contains(d.UI_Table))
-            //    {
-            //        exportData.Add("[" + d.UI_ID + "]"
-            //            + " = "
-            //            + "\"" + d.UI_ZH + "\"");
-            //    }
-            //}
+            while ((line = file.ReadLine()) != null)
+            {
+                luaClientData.Add(line);
+                luaPregameData.Add(line);
+            }
+            file.Close();
 
-            //if (!Directory.Exists("Export"))
-            //    Directory.CreateDirectory("Export");
+            foreach (var d in data)
+            {
+                //if(d.DataEnum == 3)
 
-            //using (StreamWriter sw = new StreamWriter("Export/zh_" + TableName + ".str"))
-            //{
+                switch(d.DataEnum)
+                {
+                    case 1:
+                        luaPregameData.Add("[" + d.UniqueID + "]"
+                        + " = "
+                        + "\"" + d.Text_ZH + "\"");
+                        break;
+                    case 2:
+                        luaClientData.Add("[" + d.UniqueID + "]"
+                        + " = "
+                        + "\"" + d.Text_ZH + "\"");
+                        break;
+                    case 3:
+                        luaPregameData.Add("[" + d.UniqueID + "]"
+                        + " = "
+                        + "\"" + d.Text_ZH + "\"");
+                        luaClientData.Add("[" + d.UniqueID + "]"
+                        + " = "
+                        + "\"" + d.Text_ZH + "\"");
+                        break;
+                }
+                     
 
-            //    foreach (string s in exportData)
-            //    {
-            //        sw.WriteLine(s);
-            //    }
 
-            //    sw.Flush();
-            //    sw.Close();
-            //}
+
+
+
+                //if (TableName.Contains(d.UI_Table))
+                //{
+                //    exportData.Add("[" + d.UI_ID + "]"
+                //        + " = "
+                //        + "\"" + d.UI_ZH + "\"");
+                //}
+            }
+
+            if (!Directory.Exists("Export"))
+                Directory.CreateDirectory("Export");
+
+            using (StreamWriter sw = new StreamWriter(@"Export\zh_client.str"))
+            {
+
+                foreach (string s in luaClientData)
+                {
+                    sw.WriteLine(s);
+                }
+
+                sw.Flush();
+                sw.Close();
+            }
+            using (StreamWriter sw = new StreamWriter(@"Export\zh_pregame.str"))
+            {
+
+                foreach (string s in luaPregameData)
+                {
+                    sw.WriteLine(s);
+                }
+
+                sw.Flush();
+                sw.Close();
+            }
 
 
         }

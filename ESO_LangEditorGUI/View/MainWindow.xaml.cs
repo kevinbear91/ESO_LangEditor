@@ -94,13 +94,13 @@ namespace ESO_Lang_Editor.View
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
                 c2.Header = "英文";
-                c2.Width = 200;
+                //c2.Width = 150;
                 c2.Binding = new Binding("Text_EN");
                 LangData.Columns.Add(c2);
 
                 DataGridTextColumn c3 = new DataGridTextColumn();
                 c3.Header = "汉化";
-                c3.Width = 200;
+                //c3.Width = 200;
                 c3.Binding = new Binding("Text_ZH");
                 LangData.Columns.Add(c3);
             }
@@ -109,7 +109,7 @@ namespace ESO_Lang_Editor.View
                 DataGridTextColumn c1 = new DataGridTextColumn();
                 c1.Header = "文本ID";
                 c1.Binding = new Binding("UniqueID");
-                //c1.Width = 110;
+                c1.Width = 150;
                 LangData.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
@@ -205,26 +205,6 @@ namespace ESO_Lang_Editor.View
             exportTranslateWindow.Show();
         }
 
-
-        private void ExportToText_Click(object sender, RoutedEventArgs e)
-        {
-            //var export = new ExportFromDB();
-            //MessageBoxResult result = MessageBox.Show("输出数据库的文本内容至Text,文件名分别为ID.txt 与Text. txt"
-            //    + Environment.NewLine
-            //    + "其中ID文件为合并ID, Text为内容。"
-            //    + "点击确定开始输出，不导出请点取消。"
-            //    + Environment.NewLine
-            //    + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-            //switch (result)
-            //{
-            //    case MessageBoxResult.OK:
-            //        export.ExportAsText();
-            //        MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
-            //        break;
-            //    case MessageBoxResult.Cancel:
-            //        break;
-            //}
-        }
 
         private void SearchTextInPositionInit()
         {
@@ -477,10 +457,27 @@ namespace ESO_Lang_Editor.View
 
         private void ToLang()
         {
+            var export = new ExportFromDB();
+            MessageBoxResult resultExport = MessageBox.Show("输出数据库的文本内容至Text,文件名分别为ID.txt 与Text.txt"
+                + Environment.NewLine
+                + "其中ID文件为合并ID, Text为内容。"
+                + "点击确定开始输出，不导出请点取消。"
+                + Environment.NewLine
+                + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            switch (resultExport)
+            {
+                case MessageBoxResult.OK:
+                    export.ExportAsText();
+                    MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
+                    break;
+                case MessageBoxResult.Cancel:
+                    break;
+            }
+
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"EsoExtractData\EsoExtractData.exe";
 
-            MessageBoxResult result = MessageBox.Show("将导出的Text文件直接转换为.lang文件，是否导出简体？"
+            MessageBoxResult resultToLang = MessageBox.Show("将导出的Text文件直接转换为.lang文件，是否导出简体？"
                 + Environment.NewLine
                 + "点击“是”导出简体，点击“否”导出繁体（需要先转换至繁体中文）"
                 + Environment.NewLine
@@ -488,7 +485,7 @@ namespace ESO_Lang_Editor.View
                 + Environment.NewLine
                 + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
 
-            switch (result)
+            switch (resultToLang)
             {
                 case MessageBoxResult.Yes:
                     startInfo.Arguments = @" -x _tmp\Text.txt -i _tmp\ID.txt -t -o zh.lang";
@@ -500,10 +497,12 @@ namespace ESO_Lang_Editor.View
                     break;
             }
 
-            if (result != MessageBoxResult.Cancel)
+            if (resultToLang != MessageBoxResult.Cancel)
             {
-                Process proc = new Process();
-                proc.StartInfo = startInfo;
+                Process proc = new Process
+                {
+                    StartInfo = startInfo
+                };
                 proc.Start();
                 proc.WaitForExit();
 
@@ -762,27 +761,23 @@ namespace ESO_Lang_Editor.View
 
         private void ExportToStr_Click(object sender, RoutedEventArgs e)
         {
-        //    MessageBoxResult result = MessageBox.Show("导出UI STR内容，请选择导出数据库"
-        //        + Environment.NewLine
-        //        + "点击“是”导出Pregame，点击“否”导出Client。"
-        //        + Environment.NewLine
-        //        + "什么都不做请点取消。"
-        //        + Environment.NewLine
-        //        + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNoCancel, MessageBoxImage.Information);
+            MessageBoxResult result = MessageBox.Show("导出UI STR内容，请选择导出数据库"
+                + Environment.NewLine
+                + "点击“是”导出，点击“否”什么都不做。"
+                + Environment.NewLine
+                + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
-        //    var strExport = new ExportFromDB();
+            var strExport = new ExportFromDB();
 
-        //    switch (result)
-        //    {
-        //        case MessageBoxResult.Yes:
-        //            strExport.ExportStrDB("Pregame");
-        //            break;
-        //        case MessageBoxResult.No:
-        //            strExport.ExportStrDB("Client");
-        //            break;
-        //        case MessageBoxResult.Cancel:
-        //            break;
-        //    }
+            switch (result)
+            {
+                case MessageBoxResult.Yes:
+                    strExport.ExportStrDB();
+                    break;
+                case MessageBoxResult.No:
+                    break;
+
+            }
         }
 
 
