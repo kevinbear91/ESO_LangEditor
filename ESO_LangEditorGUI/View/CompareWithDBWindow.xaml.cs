@@ -194,11 +194,6 @@ namespace ESO_Lang_Editor.View
 
             removedList = removed.Values.ToList();
 
-            //Debug.WriteLine("移除：" + removed.Count());
-            //Debug.WriteLine("无更改：" + nonChanged.Count());
-            //Debug.WriteLine("更改：" + changed.Count());
-            //Debug.WriteLine("添加：" + added.Count());
-
             SetCompareUI(false);
 
         }
@@ -253,13 +248,7 @@ namespace ESO_Lang_Editor.View
 
             luaRemovedList = luaRemoved.Values.ToList();
 
-            //Debug.WriteLine("移除：" + removed.Count());
-            //Debug.WriteLine("无更改：" + nonChanged.Count());
-            //Debug.WriteLine("更改：" + changed.Count());
-            //Debug.WriteLine("添加：" + added.Count());
-
             SetCompareUI(true);
-
         }
 
         private void SetCompareUI(bool isLua)
@@ -423,8 +412,6 @@ namespace ESO_Lang_Editor.View
 
             SaveToDB_Button.IsEnabled = true;
             SaveToDB_Button.Content = "保存";
-
-
         }
 
         private void VersionInput_GetFocus(object sender, RoutedEventArgs e)
@@ -457,8 +444,6 @@ namespace ESO_Lang_Editor.View
                 SaveToDB_Button.IsEnabled = false;
                 return false;
             }
-
-
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)

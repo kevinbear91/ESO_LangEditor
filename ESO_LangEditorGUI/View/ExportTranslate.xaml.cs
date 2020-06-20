@@ -150,9 +150,6 @@ namespace ESO_Lang_Editor.View
 
         private void IsStr_checkBox_Checked(object sender, RoutedEventArgs e)
         {
-            //Translated_DataGrid.Columns.Clear();
-            //Translated_DataGrid.Items.Clear();
-
             Translated_DataGrid.ItemsSource = null;
 
             isLua = true;
@@ -163,9 +160,6 @@ namespace ESO_Lang_Editor.View
 
         private void IsStr_checkBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            //Translated_DataGrid.Columns.Clear();
-            //Translated_DataGrid.Items.Clear();
-
             Translated_DataGrid.ItemsSource = null;
 
             isLua = false;

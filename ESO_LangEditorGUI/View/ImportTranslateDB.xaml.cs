@@ -114,12 +114,12 @@ namespace ESO_Lang_Editor.View
             if (filePath.Count >= 0 && seletedIndex == -1)
             {
                 dbPath = filePath.ElementAt(0);
-                DataGridSet(dbPath);
+                //DataGridSet(dbPath);
             }
             else
             {
                 dbPath = filePath.ElementAt(seletedIndex);
-                DataGridSet(dbPath);
+                //DataGridSet(dbPath);
             }
 
             if (dbPath.EndsWith(".LangUI"))   //Lua Str UI文本
@@ -160,13 +160,6 @@ namespace ESO_Lang_Editor.View
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
             }
-                
-
-            
-
-
-            
-
         }
 
         private async void ImportToDB_button_Click(object sender, RoutedEventArgs e)
@@ -229,67 +222,6 @@ namespace ESO_Lang_Editor.View
                 ImportToDB_button.Content = "导入";
 
             }
-
-            
-
         }
-
-        public void DataGridSet(string DBPath)
-        {
-            //TranslateData_dataGrid.Columns.Clear();
-            //TranslateData_dataGrid.Items.Clear();
-
-            //if (CheckTableIfExist("Pregame", DBPath) || CheckTableIfExist("Client", DBPath))
-            //{
-            //    isStr = true;
-            //    GeneratingColumns(true);
-            //}
-            //else
-            //{
-            //    isStr = false;
-            //    GeneratingColumns(false);
-            //}
-
-
-        }
-
-        private void CheckIfExist()
-        {
-
-
-
-
-        }
-
-        #region  检查表是否存在
-
-        //public bool CheckTableIfExist(string tableName, string DBPath)
-        //{
-        //    using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + DBPath + ";Version=3;"))
-        //    {
-        //        conn.Open();
-        //        SQLiteCommand cmd = new SQLiteCommand();
-        //        cmd.Connection = conn;
-
-        //        try
-        //        {
-        //            cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table' AND name='" + tableName + "';";
-        //            var table = cmd.ExecuteScalar();
-
-        //            if (table != null && table.ToString() == tableName)
-        //                return true;
-        //            else
-        //                return false;
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            throw new Exception("查询数据表" + tableName + "失败：" + ex.Message);
-        //        }
-
-
-        //    }
-        //}
-
-        #endregion
     }
 }
