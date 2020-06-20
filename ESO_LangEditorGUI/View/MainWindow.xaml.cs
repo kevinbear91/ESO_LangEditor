@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Collections.Immutable;
 using ESO_LangEditorLib.Models;
 using ESO_Lang_Editor.Model;
+using ESO_LangEditorGUI.Controller;
 
 namespace ESO_Lang_Editor.View
 {
@@ -51,7 +52,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v2.2.0";
+            string version = " v2.2.1";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -71,7 +72,9 @@ namespace ESO_Lang_Editor.View
             //    db.Database.EnsureCreated();
             //}
 
-            UpdatedDB_Check();
+            new CheckDBFile().CheckDBUpdateFile(this);
+
+            //UpdatedDB_Check();
 
         }
 
@@ -125,18 +128,7 @@ namespace ESO_Lang_Editor.View
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-
             await SearchDB();
-
-            //if (SearchStr_checkBox.IsChecked == true)
-            //{
-            //    await SearchDB();
-            //}
-            //else
-            //{
-            //    await SearchDB();
-            //}
-
         }
 
 
@@ -244,17 +236,7 @@ namespace ESO_Lang_Editor.View
         {
             if (e.Key == Key.Enter && SearchTextBox.IsFocused)
             {
-
                 await SearchDB();
-
-                //if (SearchStr_checkBox.IsChecked == true)
-                //{
-                    
-                //}
-                //else
-                //{
-                //    await SearchDB();
-                //}
             }
         }
 
@@ -416,171 +398,36 @@ namespace ESO_Lang_Editor.View
         private void ToLang()
         {
             var export = new ExportFromDB();
-            MessageBoxResult resultExport = MessageBox.Show("输出数据库的文本内容至Text,文件名分别为ID.txt 与Text.txt"
-                + Environment.NewLine
-                + "其中ID文件为合并ID, Text为内容。"
-                + "点击确定开始输出，不导出请点取消。"
+            var tolang = new ThirdPartController();
+
+            MessageBoxResult resultExport = MessageBox.Show("一键导出文本到.lang文件，点击确定开始，不导出请点取消。"
                 + Environment.NewLine
                 + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             switch (resultExport)
             {
                 case MessageBoxResult.OK:
                     export.ExportAsText();
+                    tolang.ConvertTxTtoLang(false);
                     MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
                     break;
                 case MessageBoxResult.Cancel:
                     break;
-            }
-
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = @"EsoExtractData\EsoExtractData.exe";
-
-            MessageBoxResult resultToLang = MessageBox.Show("将导出的Text文件直接转换为.lang文件，是否导出简体？"
-                + Environment.NewLine
-                + "点击“是”导出简体，点击“否”导出繁体（需要先转换至繁体中文）"
-                + Environment.NewLine
-                + "什么都不做请点取消。"
-                + Environment.NewLine
-                + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-            switch (resultToLang)
-            {
-                case MessageBoxResult.Yes:
-                    startInfo.Arguments = @" -x _tmp\Text.txt -i _tmp\ID.txt -t -o zh.lang";
-                    break;
-                case MessageBoxResult.No:
-                    startInfo.Arguments = @" -x _tmp\Text_cht.txt -i _tmp\ID.txt -t -o zh.lang";
-                    break;
-            }
-
-            if (resultToLang != MessageBoxResult.Cancel)
-            {
-                Process proc = new Process
-                {
-                    StartInfo = startInfo
-                };
-                proc.Start();
-                proc.WaitForExit();
-
-                MessageBox.Show("完成！");
-
-                //System.IO.Directory.Delete("_tmp", true);
             }
         }
 
         private void ToCHT()
         {
             var export = new ExportFromDB();
+            var tolang = new ThirdPartController();
 
             export.ExportAsText();
 
-
-            ProcessStartInfo startOpenCCInfo = new ProcessStartInfo();
-            startOpenCCInfo.FileName = @"opencc\opencc.exe";
-            startOpenCCInfo.Arguments = @" -i _tmp\Text.txt -o _tmp\Text_cht.txt -c opencc\s2twp.json";
-
-            Process opencc = new Process();
-            opencc.StartInfo = startOpenCCInfo;
-            opencc.Start();
-            opencc.WaitForExit();
-
-
-
-            ProcessStartInfo startEEDInfo = new ProcessStartInfo();
-            startEEDInfo.FileName = @"EsoExtractData\EsoExtractData.exe";
-            startEEDInfo.Arguments = @" -x _tmp\Text_cht.txt -i _tmp\ID.txt -t -o zht.lang";
-
-            Process eed = new Process();
-            eed.StartInfo = startEEDInfo;
-            eed.Start();
-            eed.WaitForExit();
-
+            tolang.OpenCCtoCHT();
+            tolang.ConvertTxTtoLang(true);
 
             MessageBox.Show("完成！");
         }
 
-
-        private async Task UpdatedDB_Check()
-        {
-            string csvDataUpdatePath = @"Data\LangData.update";
-
-
-            #region  检查CSV数据库更新
-            if (File.Exists(@"Data\LangData.db") && File.Exists(csvDataUpdatePath))
-            {
-                var db = new LangDbController();
-                SearchData = await db.GetLangsListAsync(5, 0, "1");
-                searchLuaData = await db.GetLuaLangsListAsync(5, 0, "1");
-
-                if (SearchData.Count >= 1)
-                {
-                    var exportTranslate = new ExportFromDB();
-                    string exportPath = exportTranslate.ExportTranslateDB(SearchData);
-
-                    if (File.Exists(exportPath))
-                    {
-                        MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
-                            + Environment.NewLine
-                            + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！",
-                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                if (searchLuaData.Count >= 1)
-                {
-                    var exportTranslate = new ExportFromDB();
-                    string exportPath = exportTranslate.ExportTranslateDB(searchLuaData);
-
-                    if (File.Exists(exportPath))
-                    {
-                        MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
-                            + Environment.NewLine
-                            + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！",
-                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    }
-                    else
-                    {
-                        MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                File.Delete(@"Data\LangData.db");
-                File.Move(csvDataUpdatePath, @"Data\LangData.db");
-                File.Delete(csvDataUpdatePath);
-
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-
-            }
-            else if (File.Exists(@"Data\LangData.db"))
-            {
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-            }
-            else if (File.Exists(csvDataUpdatePath))
-            {
-                File.Move(csvDataUpdatePath, @"Data\LangData.db");
-                File.Delete(csvDataUpdatePath);
-
-                SearchTextBox.IsEnabled = true;
-                SearchButton.IsEnabled = true;
-            }
-            else
-            {
-                MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                SearchTextBox.IsEnabled = false;
-                SearchButton.IsEnabled = false;
-            }
-            #endregion
-
-        }
 
         //private void str_Click(object sender, RoutedEventArgs e)
         //{

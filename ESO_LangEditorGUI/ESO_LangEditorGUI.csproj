@@ -25,8 +25,4 @@
     <ProjectReference Include="..\ESO_LangEditorLib\ESO_LangEditorLib.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controller\" />
-  </ItemGroup>
-
 </Project>

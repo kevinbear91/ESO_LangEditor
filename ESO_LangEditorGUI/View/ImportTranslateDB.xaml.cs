@@ -128,7 +128,7 @@ namespace ESO_Lang_Editor.View
                 TranslateData_dataGrid.ItemsSource = SearchLuaData;
 
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+                textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
 
                 isLua = true;
             }
@@ -148,7 +148,7 @@ namespace ESO_Lang_Editor.View
                 SearchLuaData = oldTranslate.FullSearchStrDB(dbPath, "Pregame");
                 TranslateData_dataGrid.ItemsSource = SearchLuaData;
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+                textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
 
                 isLua = true;
             }
