@@ -52,12 +52,13 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v2.2.1";
+            string version = " v2.2.2";
 
             Title = "ESO文本查询编辑器" + version;
 
             textBlock_Info.Text = "暂无查询";
             textBlock_SelectionInfo.Text = "无选择条目";
+            textBlock_saveStats.Text = "";
 
 
             //LangSearch.AutoGeneratingColumn += LangDataGridAutoGenerateColumns;
@@ -149,13 +150,13 @@ namespace ESO_Lang_Editor.View
                     {
                         if (isLua)
                         {
-                            TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem,ref IDtypeName);
+                            TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem,ref IDtypeName, this);
                             textEditor.Show();
                         }
                         else
                         {
                             //SelectedData = ;
-                            TextEditor textEditor = new TextEditor((LangText)datagrid.SelectedItem, ref IDtypeName);
+                            TextEditor textEditor = new TextEditor((LangText)datagrid.SelectedItem, ref IDtypeName, this);
                             textEditor.Show();
                             //MessageBox.Show((LangData)datagrid.SelectedItem);
                         }
@@ -266,7 +267,7 @@ namespace ESO_Lang_Editor.View
                             SelectedLuaDatas.Add((LuaUIData)selectedItem);
                     }
 
-                    TextEditor textEditor = new TextEditor(SelectedLuaDatas, ref IDtypeName);
+                    TextEditor textEditor = new TextEditor(SelectedLuaDatas, ref IDtypeName, this);
                     textEditor.Show();
                 }
             }
@@ -285,7 +286,7 @@ namespace ESO_Lang_Editor.View
                             SelectedDatas.Add((LangText)selectedItem);
                     }
 
-                    TextEditor textEditor = new TextEditor(SelectedDatas, ref IDtypeName);
+                    TextEditor textEditor = new TextEditor(SelectedDatas, ref IDtypeName, this);
                     textEditor.Show();
                 }
             }
@@ -359,6 +360,28 @@ namespace ESO_Lang_Editor.View
         private string GetInfoBlockText()
         {
             return "总计搜索到" + LangData.Items.Count + "条结果。";
+        }
+
+        public async Task SetSaveStats(bool saved)
+        {
+            if (saved)
+            {
+                textBlock_saveStats.Foreground = Brushes.Green;
+                textBlock_saveStats.Text = "保存成功！";
+                await Task.Delay(3000);
+
+                textBlock_saveStats.Text = "";
+            }
+            else
+            {
+                textBlock_saveStats.Foreground = Brushes.Red;
+                textBlock_saveStats.Text = "保存失败！";
+                await Task.Delay(3000);
+
+                textBlock_saveStats.Text = "";
+            }
+            
+            
         }
 
 

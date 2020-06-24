@@ -3,11 +3,13 @@ using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace ESO_Lang_Editor.View
 {
@@ -26,11 +28,16 @@ namespace ESO_Lang_Editor.View
         private bool isLua;
 
         IDCatalog IDtypeName;
+        MainWindow Mainwindow;
 
-        public TextEditor(LangText LangData, ref IDCatalog IDtype)
+        public TextEditor(LangText LangData, ref IDCatalog IDtype, MainWindow window)
         {
 
             InitializeComponent();
+            Mainwindow = window;
+
+            save_stats.Text = "";
+
             this.Height = 400;
             IDtypeName = IDtype;
 
@@ -48,10 +55,13 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        public TextEditor(LuaUIData LangLuaData, ref IDCatalog IDtype)
+        public TextEditor(LuaUIData LangLuaData, ref IDCatalog IDtype, MainWindow window)
         {
 
             InitializeComponent();
+            Mainwindow = window;
+            save_stats.Text = "";
+
             this.Height = 400;
             IDtypeName = IDtype;
 
@@ -69,10 +79,13 @@ namespace ESO_Lang_Editor.View
 
         }
 
-        public TextEditor(List<LangText> SelectedItemsList, ref IDCatalog IDtype)
+        public TextEditor(List<LangText> SelectedItemsList, ref IDCatalog IDtype, MainWindow window)
         {
 
             InitializeComponent();
+            Mainwindow = window;
+            save_stats.Text = "";
+
             this.Height = 600;
             IDtypeName = IDtype;
 
@@ -83,12 +96,16 @@ namespace ESO_Lang_Editor.View
 
             List_Datagrid_Display();
 
+
         }
 
-        public TextEditor(List<LuaUIData> SelectedLuaItemsList, ref IDCatalog IDtype)
+        public TextEditor(List<LuaUIData> SelectedLuaItemsList, ref IDCatalog IDtype, MainWindow window)
         {
 
             InitializeComponent();
+            Mainwindow = window;
+            save_stats.Text = "";
+
             this.Height = 600;
             IDtypeName = IDtype;
 
@@ -207,40 +224,58 @@ namespace ESO_Lang_Editor.View
                 button_save.IsEnabled = false;
 
                 var EditedData = GetEditedData();
-                await Task.Run(() => db.UpdateLangsZH(EditedData));
+                int result = await db.UpdateLangsZH(EditedData);
 
-
-
-                MessageBox.Show("ID: " + EditedData.UniqueID +
-                    Environment.NewLine + "ZH: " + EditedData.Text_ZH);
-
-                //MessageBox.Show(updateResult);
-
-                if (List_dataGrid.Items.Count > 1)
+                if(result != 0)
                 {
-                    int i = List_dataGrid.SelectedIndex;
+                    Mainwindow.SetSaveStats(true);
 
-                    List_dataGrid.Items.RemoveAt(i);
-                    SelectedItems.RemoveAt(i);
-
-                    if (i > 0)
+                    save_stats.Foreground = Brushes.Green;
+                    save_stats.Text = "保存成功！";
+                    if (List_dataGrid.Items.Count > 1)
                     {
-                        List_dataGrid.SelectedIndex = i - 1;
+                        int i = List_dataGrid.SelectedIndex;
+
+                        //List_dataGrid.Items.RemoveAt(i);   //当 ItemsSource 正在使用时操作无效。改用 ItemsControl.ItemsSource 访问和修改元素。
+                        SelectedItems.RemoveAt(i);
+
+                        List_dataGrid.ItemsSource = null;
+
+                        List_dataGrid.ItemsSource = SelectedItems;
+
+
+
+                        if (i > 0)
+                        {
+                            List_dataGrid.SelectedIndex = i - 1;
+                        }
+                        else
+                        {
+                            List_dataGrid.SelectedIndex = 0;
+                        }
+                        //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+                        EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+                        UpdateUIContent();
+                        button_save.IsEnabled = true;
                     }
                     else
                     {
-                        List_dataGrid.SelectedIndex = 0;
+                        button_save.IsEnabled = true;
+                        this.Close();
                     }
-                    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
-                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
-                    UpdateUIContent();
-                    button_save.IsEnabled = true;
+
+                    await Task.Delay(2000);
+                    save_stats.Text = "";
                 }
                 else
                 {
-                    button_save.IsEnabled = true;
-                    this.Close();
+                    save_stats.Foreground = Brushes.Red;
+                    save_stats.Text = "保存失败！";
                 }
+
+                //MessageBox.Show(updateResult);
+
+                
             }
 
 
@@ -304,11 +339,6 @@ namespace ESO_Lang_Editor.View
                     List_expander.IsExpanded = true;
 
                     List_dataGrid.ItemsSource = SelectedItems;
-
-                    //foreach (var item in SelectedItems)
-                    //{
-                    //    List_dataGrid.Items.Add(item);
-                    //}
 
                     List_dataGrid.SelectedIndex = 0;
 

@@ -80,6 +80,10 @@
                 <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
             </StatusBarItem>
             <Separator Grid.Column="3" />
+            <StatusBarItem Grid.Column="4">
+                    <TextBlock x:Name="textBlock_saveStats" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+                </StatusBarItem>
+
         </StatusBar>
         <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Lua内容" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" Margin="48,40,542,24" Grid.Row="1" />
 

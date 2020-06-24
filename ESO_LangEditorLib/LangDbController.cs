@@ -268,7 +268,7 @@ namespace ESO_LangEditorLib
         }
 
 
-        public async Task UpdateLangsZH(LangText langList)
+        public async Task<int> UpdateLangsZH(LangText langList)
         {
             using var Db = new LangDbContext();
             Db.Attach(langList);
@@ -277,7 +277,7 @@ namespace ESO_LangEditorLib
             Db.Entry(langList).Property("RowStats").IsModified = true;
 
             //Db.Update(langList);
-            await Db.SaveChangesAsync();
+            return await Db.SaveChangesAsync();
             
         }
 
