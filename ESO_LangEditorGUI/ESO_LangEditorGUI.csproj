@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Resources\NotoSansCJK\**" />
+    <EmbeddedResource Remove="Resources\NotoSansCJK\**" />
+    <None Remove="Resources\NotoSansCJK\**" />
+    <Page Remove="Resources\NotoSansCJK\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Compile Remove="View\CompareCsvWindow.xaml.cs" />
     <Compile Remove="View\CompareLuaWithDBWindow.xaml.cs" />
     <Compile Remove="View\CreateDB_ImportLua.xaml.cs" />
@@ -23,6 +31,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ESO_LangEditorLib\ESO_LangEditorLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="3.1.3" />
   </ItemGroup>
 
 </Project>

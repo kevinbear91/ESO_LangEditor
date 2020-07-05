@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ESO_Lang_Editor.View"
+        xmlns:local="clr-namespace:ESO_Lang_Editor.View" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="文本编辑" Height="400" Width="640" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="400">
     <Grid x:Name="GridContent" Background="#FFEEEEEE">
@@ -12,62 +13,55 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="30*" MaxHeight="350"/>
+            <RowDefinition Height="50*" MaxHeight="350"/>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
 
 
+        <GroupBox Header="英文" Grid.Column="0">
+            <ScrollViewer Name="sv_textBox_EN" Margin="20,0,0,8" 
+                      CanContentScroll="True" >
+                <TextBox x:Name="textBox_EN" TextWrapping="Wrap" />
+            </ScrollViewer>
+        </GroupBox>
 
-        <Canvas Grid.Row="0" Grid.Column="0" Margin="0,0,0,3" >
-            <TextBlock x:Name="textBlock_en" HorizontalAlignment="Left" Margin="20,10,0,0" TextWrapping="Wrap" Text="原文：" VerticalAlignment="Top" Height="15" Width="55"/>
-        </Canvas>
-        <Canvas Grid.Row="0" Grid.Column="1" Margin="0,0,0,3">
-            <TextBlock x:Name="textBlock_zh" TextWrapping="Wrap" Text="译文：" Height="15" Width="55" Margin="20,10,0,0" />
-        </Canvas>
 
-        <ScrollViewer Name="sv_textBox_EN" Margin="20,0,0,8" 
-                      CanContentScroll="True" 
-                      Grid.Row="1" 
-                      Grid.ColumnSpan="1">
-            <TextBox x:Name="textBox_EN" TextWrapping="Wrap" />
-        </ScrollViewer>
+        <GroupBox Header="中文" Grid.Column="1" >
+            <ScrollViewer Name="sv_textBox_ZH" 
+                      Margin="20,0,0,8">
+                <TextBox x:Name="textBox_ZH"  TextWrapping="Wrap" BorderBrush="#FFABADB3"/>
+            </ScrollViewer>
+        </GroupBox>
 
-        <ScrollViewer Name="sv_textBox_ZH" 
-                      Grid.Row="1" 
-                      Grid.Column="1" 
-                      Margin="20,0,0,8" >
-            <TextBox x:Name="textBox_ZH"  TextWrapping="Wrap"  AllowDrop="False" BorderBrush="#FFABADB3"/>
-        </ScrollViewer>
-
-        <Canvas  Grid.Row="2" Grid.Column="1" Margin="0,15,0,2">
-            <Button x:Name="button_save" Content="保存" Margin="20,0,0,0" Width="75" Height="19" Click="button_save_Click" />
-            <Button x:Name="button_cancel" Content="取消" Margin="127,0,0,0" Width="75" Height="19" Click="button_cancel_Click" />
-            <TextBlock x:Name="save_stats" Canvas.Left="226" Text="TextBlock" TextWrapping="Wrap" Canvas.Top="2" Width="75" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+        <Canvas Grid.Row="1" Grid.Column="1" Margin="10,10,15,2" >
+            <Button x:Name="button_save" Content="保存" Margin="20,0,0,0"  Click="button_save_Click"  />
+            <Button x:Name="button_cancel" Content="取消" Margin="120,0,0,0"  Click="button_cancel_Click" />
         </Canvas>
 
-        <Canvas  Grid.Row="2" Grid.Column="0" Margin="20,15,15,2">
-            <TextBlock x:Name="textblock_information" TextWrapping="Wrap" HorizontalAlignment="Left" Grid.Column="0" />
+        <Canvas  Grid.Row="1" Grid.Column="0" Margin="20,10,15,2">
+            <Button x:Name="button_modifyList" Content="批量修改" IsEnabled="False"  />
         </Canvas>
 
-        <GridSplitter Grid.Row="2" Grid.ColumnSpan="2"
+        <Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">
+            <TextBlock x:Name="textblock_information" TextWrapping="Wrap" />
+        </Canvas>
+
+        <GridSplitter Grid.Row="1" Grid.ColumnSpan="2"
                       x:Name="GridMover"
                       Height="2" HorizontalAlignment="Stretch" 
                       ResizeDirection="Rows" 
                       Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />
 
-
-
         <Expander x:Name="List_expander" Header="展开列表" 
                   VerticalAlignment="Top"
                       ExpandDirection="Down" 
-                      Margin="20,10,0,0"
+                      Margin="20,50,20,0"
                       MinWidth="500" Width="auto"
                       MinHeight="50" Height="auto"
                       UseLayoutRounding="False" Expanded="List_expander_Expanded" 
                       Collapsed="List_expander_Collapsed"
-                      Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" >
+                      Grid.Row="2" Grid.ColumnSpan="2" >
             <DataGrid x:Name="List_dataGrid" VerticalAlignment="Top"
                               IsReadOnly="True"
                               SelectionMode="Single" 
@@ -77,6 +71,12 @@
                               AutoGenerateColumns="False" Margin="0,10,20,0" />
 
         </Expander>
+        <materialDesign:Snackbar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                 MessageQueue="{materialDesign:MessageQueue}"
+                                 x:Name="Snackbar_SaveInfo">
+            <materialDesign:SnackbarMessage Content="Default - accent"
+                                            ActionContent="ACCENT" />
+        </materialDesign:Snackbar>
 
     </Grid>
 </Window>

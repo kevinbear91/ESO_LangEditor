@@ -3,91 +3,192 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="ESO文本查询编辑器" Height="469" Width="800" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="800" MinHeight="470">
-    <Grid Background="#FFEEEEEE">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="32*"/>
-            <RowDefinition Height="79"/>
-            <RowDefinition Height="310*"/>
-            <RowDefinition Height="33*"/>
-        </Grid.RowDefinitions>
+        Title="ESO文本查询编辑器" Height="500" Width="820" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500">
 
-        <Canvas Grid.Row="0" Margin="0,0,0,15">
-            <Menu x:Name="menu" Canvas.Top="7" Canvas.Left="3">
-                <MenuItem Header="导入">
-                    <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"/>
-                    <MenuItem Header="CSV和Lua与数据库对比" Click="CsvCompareWithDB_Click"/>
-                </MenuItem>
-                <MenuItem Header="导出">
-                    <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
-                    <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
-                </MenuItem>
-                <MenuItem Header="高级">
-                    <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
-                    <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
-                    <MenuItem Header="导出繁体至.lang" Click="ExportToCHT_Click"/>
-                </MenuItem>
-                <MenuItem Header="帮助">
-                    <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
-                </MenuItem>
-            </Menu>
-            <Border BorderBrush="#FF898989" BorderThickness="0,0,0,1" Height="26" Canvas.Top="5"/>
+    <materialDesign:DrawerHost LeftDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHost">
+        <materialDesign:DrawerHost.TopDrawerContent>
+            <StackPanel Margin="20" HorizontalAlignment="Left" Orientation="Horizontal" >
+                <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}" 
+                              IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}"
+                              HorizontalAlignment="Left" Background="{x:Null}">
+                    <materialDesign:PackIcon Kind="ArrowUpBold" Height="35" Width="35" />
+                </ToggleButton>
 
-        </Canvas>
+                <Menu x:Name="menu" Padding="30,0,0,0" FontFamily="Microsoft YaHei UI" >
+                    <MenuItem Header="导入" VerticalContentAlignment="Center" >
+                        <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"  />
+                        <MenuItem Header="CSV和Lua与数据库对比" Click="CsvCompareWithDB_Click" />
+                    </MenuItem>
+                    <MenuItem Header="导出">
+                        <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
+                        <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="高级">
+                        <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
+                        <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
+                        <MenuItem Header="导出繁体至.lang" Click="ExportToCHT_Click"/>
+                    </MenuItem>
+                    <MenuItem Header="帮助">
+                        <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
+                    </MenuItem>
+                </Menu>
+                <!--<TextBlock Text="Left drawer content" TextWrapping="Wrap" Margin="0,20"/>
+                <CheckBox IsChecked="{Binding LockDrawer}" Content="Lock Drawer" />-->
+            </StackPanel>
+            <!--<StackPanel Width="150" Margin="5">
+                
+                
+            </StackPanel>-->
+        </materialDesign:DrawerHost.TopDrawerContent>
 
-        <Canvas  Grid.Row="1" Height="50" VerticalAlignment="Top">
-            <Label x:Name="label" Content="文本：" Margin="10,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>
-            <TextBox x:Name="SearchTextBox"  Height="21" Margin="48,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="413" AllowDrop="True" VerticalContentAlignment="Center" HorizontalScrollBarVisibility="Auto" KeyDown="SearchTextBlock_EnterPress"/>
-            <Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Height="21" Click="SearchButton_Click"/>
-            <ComboBox x:Name="SearchTextPositionComboBox" HorizontalAlignment="Left" Margin="483,10,0,0" VerticalAlignment="Top" Width="90" />
-            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Margin="587,10,0,0" VerticalAlignment="Top" Width="90"/>
-        </Canvas>
+        <Grid Background="#FFEEEEEE">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
 
-
-
-        <DataGrid Grid.Row="2" x:Name="LangData" Canvas.Left="10" AllowDrop="True"
-                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" MinRowHeight="20" RowHeight="16" 
-                      SelectionChanged="LangSearchDataGrid_SelectionChanged" 
-                      MouseRightButtonUp="LangSearch_MouseRightUp"
-                      AutoGenerateColumns="False" VerticalAlignment="Top" Margin="10,0,10,10"
-                      ColumnWidth="200*" />
-
-
-
-
-        <StatusBar Height="23" Grid.Row="3" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
-            <StatusBar.ItemsPanel>
-                <ItemsPanelTemplate>
+            <materialDesign:ColorZone Mode="PrimaryMid" Padding="16">
+                <DockPanel MinWidth="780">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="230*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="230*"/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="40" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="50" />
                         </Grid.ColumnDefinitions>
+                    
+                    
+                    <ToggleButton Grid.Column="0" Style="{StaticResource MaterialDesignFlatToggleButton}"
+                              IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}" >
+                        <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" />
+                    </ToggleButton>
+
+                    <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4"
+                                              Height="30"
+                                              Grid.Column="1"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10 5 0 0"
+                                                  HorizontalAlignment="Stretch"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="80" />
+                                </Grid.ColumnDefinitions>
+                            
+                            
+                                <TextBox x:Name="SearchTextBox" 
+                                         Grid.Column="0"
+                                    materialDesign:HintAssist.Hint="输入搜索文本"
+                                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                    BorderThickness="0"
+                                    TextWrapping="Wrap"
+                                    VerticalAlignment="Stretch"
+                                    KeyDown="SearchTextBlock_EnterPress" HorizontalAlignment="Stretch" />
+
+                                <CheckBox x:Name="SearchStr_checkBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
+                                          Grid.Column="1"
+                                          Content="UI模式" 
+                                          Checked="SearchStr_checkBox_Checked" 
+                                          Unchecked="SearchStr_checkBox_Unchecked" 
+                                          Margin="0,0,5,0" HorizontalAlignment="Right" />
+                            
+                            </Grid>
+                        </materialDesign:ColorZone>
+
+                    <!--<Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left"  VerticalAlignment="Top" />-->
+
+                    <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                                              Grid.Column="2"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10 5 0 0"
+                                                  HorizontalAlignment="Left"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" />
+                    </materialDesign:ColorZone>
+
+                    <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                                              Grid.Column="3"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10 5 0 0"
+                                                  HorizontalAlignment="Left"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                        <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"/>
+                    </materialDesign:ColorZone>
+
+
+                    
+
+                    <Button x:Name="SearchButton" Style="{DynamicResource MaterialDesignToolForegroundButton}" 
+                            Grid.Column="5"
+                            Click="SearchButton_Click" 
+                            Margin="10 0 0 0"
+                            Width="30" Height="30" HorizontalAlignment="Left" Cursor="Hand" >
+                        <materialDesign:PackIcon Kind="Magnify" Width="30" Height="30" />
+                    </Button>
+
+
+
+                    <!--<Label x:Name="label" Content="文本：" Margin="40,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>-->
                     </Grid>
-                </ItemsPanelTemplate>
-            </StatusBar.ItemsPanel>
+                </DockPanel>
+            </materialDesign:ColorZone>
 
-            <StatusBarItem Grid.Column="0">
-                <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
-            </StatusBarItem>
-            <Separator Grid.Column="1" />
-            <StatusBarItem Grid.Column="2">
-                <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
-            </StatusBarItem>
-            <Separator Grid.Column="3" />
-            <StatusBarItem Grid.Column="4">
-                    <TextBlock x:Name="textBlock_saveStats" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+
+
+            <DataGrid Grid.Row="1" x:Name="LangData"
+                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
+                      SelectionChanged="LangSearchDataGrid_SelectionChanged" 
+                      MouseRightButtonUp="LangSearch_MouseRightUp"
+                      AutoGenerateColumns="False" Margin="10,20,10,10"
+                      ColumnWidth="200*" 
+                    MinRowHeight="20">
+                
+            </DataGrid>
+            
+
+
+
+
+            <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
+                <StatusBar.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="230*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="230*"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="230*"/>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </ItemsPanelTemplate>
+                </StatusBar.ItemsPanel>
+
+                <StatusBarItem Grid.Column="0">
+                    <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
                 </StatusBarItem>
+                <Separator Grid.Column="1" />
+                <StatusBarItem Grid.Column="2">
+                    <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+                </StatusBarItem>
+                <Separator Grid.Column="3" />
 
-        </StatusBar>
-        <CheckBox x:Name="SearchStr_checkBox" Content="搜索UI Lua内容" Checked="SearchStr_checkBox_Checked" Unchecked="SearchStr_checkBox_Unchecked" Margin="48,40,542,24" Grid.Row="1" />
+                
 
+            </StatusBar>
+            <materialDesign:Snackbar Grid.Row="1" MessageQueue="{materialDesign:MessageQueue}"
+                                 x:Name="Snackbar_SaveInfo">
+                <!--<materialDesign:SnackbarMessage Content="Default - accent"
+                                            ActionContent="ACCENT" />-->
+            </materialDesign:Snackbar>
 
+        </Grid>
+    </materialDesign:DrawerHost>
 
-    </Grid>
 </Window>

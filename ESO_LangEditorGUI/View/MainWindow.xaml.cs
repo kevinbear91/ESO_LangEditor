@@ -58,7 +58,6 @@ namespace ESO_Lang_Editor.View
 
             textBlock_Info.Text = "暂无查询";
             textBlock_SelectionInfo.Text = "无选择条目";
-            textBlock_saveStats.Text = "";
 
 
             //LangSearch.AutoGeneratingColumn += LangDataGridAutoGenerateColumns;
@@ -110,6 +109,7 @@ namespace ESO_Lang_Editor.View
                 c1.Header = "文本ID";
                 c1.Binding = new Binding("UniqueID");
                 c1.Width = 150;
+                //c1.ElementStyle = "{StaticResource MaterialDesignDataGridTextColumnStyle}";
                 LangData.Columns.Add(c1);
 
                 DataGridTextColumn c2 = new DataGridTextColumn();
@@ -300,7 +300,7 @@ namespace ESO_Lang_Editor.View
             string searchText = SearchTextBox.Text;
 
             SearchButton.IsEnabled = false;
-            SearchButton.Content = "正在搜索……";
+            //SearchButton.Content = "正在搜索……";
             SearchTextBox.IsEnabled = false;
 
             
@@ -329,7 +329,7 @@ namespace ESO_Lang_Editor.View
 
             //LangData.ItemsSource = SearchData;
             SearchButton.IsEnabled = true;
-            SearchButton.Content = "搜索";
+            //SearchButton.Content = "搜索";
             SearchTextBox.IsEnabled = true;
 
             textBlock_Info.Text = GetInfoBlockText();
@@ -366,19 +366,17 @@ namespace ESO_Lang_Editor.View
         {
             if (saved)
             {
-                textBlock_saveStats.Foreground = Brushes.Green;
-                textBlock_saveStats.Text = "保存成功！";
-                await Task.Delay(3000);
+                var messageQueue = Snackbar_SaveInfo.MessageQueue;
+                var message = "保存成功！";
+                messageQueue.Enqueue(message);
 
-                textBlock_saveStats.Text = "";
             }
             else
             {
-                textBlock_saveStats.Foreground = Brushes.Red;
-                textBlock_saveStats.Text = "保存失败！";
-                await Task.Delay(3000);
+                var messageQueue = Snackbar_SaveInfo.MessageQueue;
+                var message = "保存失败！";
+                messageQueue.Enqueue(message);
 
-                textBlock_saveStats.Text = "";
             }
             
             

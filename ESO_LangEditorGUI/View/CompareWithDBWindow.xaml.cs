@@ -56,6 +56,8 @@ namespace ESO_Lang_Editor.View
             InitializeComponent();
 
             CheckSaveToDBButtonCanEnable();
+
+            NewFileURLtextBox.Text = "";
         }
 
         private void BrowseNewFileButton_Click(object sender, RoutedEventArgs e)
@@ -416,14 +418,14 @@ namespace ESO_Lang_Editor.View
 
         private void VersionInput_GetFocus(object sender, RoutedEventArgs e)
         {
-            if (VersionInput_textBox.Text == "更新版本号(必填)")
-                VersionInput_textBox.Text = "";
+            //if (VersionInput_textBox.Text == "更新版本号(必填)")
+            //    VersionInput_textBox.Text = "";
         }
 
         private void VersionInput_Lostfocus(object sender, RoutedEventArgs e)
         {
-            if (VersionInput_textBox.Text == "")
-                VersionInput_textBox.Text = "更新版本号(必填)";
+            //if (VersionInput_textBox.Text == "")
+            //    VersionInput_textBox.Text = "更新版本号(必填)";
             CheckSaveToDBButtonCanEnable();
 
         }

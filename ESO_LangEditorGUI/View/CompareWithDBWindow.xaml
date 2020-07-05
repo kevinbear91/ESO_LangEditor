@@ -3,45 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ESO_Lang_Editor.View"
         mc:Ignorable="d"
-        Title="对比文本" Height="460" Width="530" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
+        Title="对比文本" Height="500" Width="530" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
     <Grid Background="#FFEEEEEE" Margin="0,-1,0,1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="90"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="65"/>
             <RowDefinition/>
-            <RowDefinition Height="30.76"/>
+            <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Header="新文件" Margin="20,0,0,0" BorderBrush="#FF959595" Height="60" HorizontalAlignment="Left" VerticalAlignment="Center" Width="481">
-            <Canvas>
-                <TextBox x:Name="NewFileURLtextBox" Height="19" Canvas.Left="10" Canvas.Top="10" Text="" Width="224" Grid.Row="1" Grid.Column="1" />
-                <Button x:Name="BrowseNewFileButton" Content="浏览……" Canvas.Left="272" Canvas.Top="10" Width="74" Grid.Row="1" Grid.Column="1" Height="19" Click="BrowseNewFileButton_Click"/>
-                <Button x:Name="LoadCsv_Buton" Content="开始读取" Width="75" Height="19" Click="LoadCsv_Buton_Click" Canvas.Left="372" Canvas.Top="10"/>
+        <Canvas>
+            <TextBox x:Name="NewFileURLtextBox" Canvas.Left="20" Canvas.Top="18" Text="File Path" Width="230" HorizontalAlignment="Left" FontSize="14" />
+            <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新版本号(必填)" 
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     TextWrapping="Wrap" Width="130" 
+                     GotFocus="VersionInput_GetFocus" LostFocus="VersionInput_Lostfocus" 
+                     Margin="0,0,20,0" Canvas.Left="281" FontSize="14" />
+        </Canvas>
 
-            </Canvas>
-        </GroupBox>
 
-        <GroupBox Header="变更文本内容" Grid.Row="1" Margin="20,0,0,0" BorderBrush="#FF959595"  Width="481" Height="296" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Canvas Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" >
+            <Button x:Name="BrowseNewFileButton" Content="浏览……" Canvas.Left="20" Canvas.Top="10"   Click="BrowseNewFileButton_Click" Cursor="Hand"/>
+            <Button x:Name="LoadCsv_Buton" Content="开始读取"  Click="LoadCsv_Buton_Click" Canvas.Left="130" Canvas.Top="10"/>
+
+        </Canvas>
+
+
+        <GroupBox Header="变更文本内容" Grid.Row="2" Margin="20,0,0,0" BorderBrush="#FF959595"  Width="480" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top">
             <Canvas>
-                <TabControl x:Name="text_Tabs" Height="273" Width="469">
+                <TabControl x:Name="text_Tabs" Width="460">
                     <TabItem x:Name="Added_tabitem" Header="新增" Visibility="Visible">
                         <Grid Background="#FFE5E5E5">
-                            <DataGrid x:Name="Added_DataGrid" Height="234" Width="449" 
+                            <DataGrid x:Name="Added_DataGrid" Height="220"
                           Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
                           IsReadOnly="True" AutoGenerateColumns="False" />
                         </Grid>
                     </TabItem>
                     <TabItem x:Name="Changed_tabitem" Header="变更">
                         <Grid Background="#FFE5E5E5">
-                            <DataGrid x:Name="Changed_DataGrid" Height="234" Width="449" 
+                            <DataGrid x:Name="Changed_DataGrid"  
                           Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
                           IsReadOnly="True" AutoGenerateColumns="False" />
                         </Grid>
                     </TabItem>
                     <TabItem x:Name="Removed_tabitem" Header="移除" Visibility="Visible">
                         <Grid Background="#FFE5E5E5" Visibility="Visible">
-                            <DataGrid x:Name="Removed_DataGrid" Height="234" Width="449" 
+                            <DataGrid x:Name="Removed_DataGrid"  
                           Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
                           IsReadOnly="True" AutoGenerateColumns="False" />
                         </Grid>
@@ -50,10 +60,10 @@
             </Canvas>
         </GroupBox>
 
-        <Canvas Margin="20,5,0,0" Grid.Row="2">
-            <Button x:Name="SaveToDB_Button" Content="保存" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="19" Click="SaveToDB_Button_Click" Canvas.Left="311"/>
-            <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="19" Canvas.Left="406" Click="Cancel_Button_Click"/>
-            <TextBox x:Name="VersionInput_textBox" Height="19" Canvas.Left="153" TextWrapping="Wrap" Text="更新版本号(必填)" Width="120" Background="White" SelectionTextBrush="White" OpacityMask="Black" Foreground="Black" GotFocus="VersionInput_GetFocus" LostFocus="VersionInput_Lostfocus"/>
+        <Canvas Margin="20,5,0,0" Grid.Row="3">
+            <Button x:Name="SaveToDB_Button" Content="保存" Click="SaveToDB_Button_Click" Canvas.Left="311"/>
+            <Button x:Name="Cancel_Button" Content="取消" Canvas.Left="406" Click="Cancel_Button_Click"/>
+
 
         </Canvas>
 

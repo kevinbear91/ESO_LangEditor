@@ -22,8 +22,8 @@
         </Canvas>
 
         <Canvas Grid.Row="1">
-            <Button x:Name="ExportTranslate_Button" Content="导出" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="19" Click="ExportTranslate_Button_Click" Margin="10,0,0,0"/>
-            <Button x:Name="Cancel_Button" Content="取消" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Height="19" Click="Cancel_Button_Click" Margin="100,0,0,0"/>
+            <Button x:Name="ExportTranslate_Button" Content="导出" Click="ExportTranslate_Button_Click" Margin="10,0,0,0"/>
+            <Button x:Name="Cancel_Button" Content="取消" Click="Cancel_Button_Click" Margin="100,0,0,0" Cursor="Hand"/>
             <CheckBox x:Name="IsStr_checkBox" Content="导出UI STR文本" Checked="IsStr_checkBox_Checked" Unchecked="IsStr_checkBox_Unchecked" Margin="200,0,0,0"/>
         </Canvas>
 
