@@ -1,4 +1,5 @@
 ﻿using ESO_Lang_Editor.Model;
+using ESO_LangEditorGUI.View;
 using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using System;
@@ -465,5 +466,11 @@ namespace ESO_Lang_Editor.View
             return EditedData;
         }
 
+        private void button_modifyList_Click(object sender, RoutedEventArgs e)
+        {
+            var modifyListWindow = new TextEditor_SearchReplace(SelectedItems);
+
+            modifyListWindow.Show();
+        }
     }
 }

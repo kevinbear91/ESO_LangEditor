@@ -8,10 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\NotoSansCJK\**" />
-    <EmbeddedResource Remove="Resources\NotoSansCJK\**" />
-    <None Remove="Resources\NotoSansCJK\**" />
-    <Page Remove="Resources\NotoSansCJK\**" />
+    <Compile Remove="Resources\**" />
+    <EmbeddedResource Remove="Resources\**" />
+    <None Remove="Resources\**" />
+    <Page Remove="Resources\**" />
   </ItemGroup>
 
 
@@ -31,10 +31,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ESO_LangEditorLib\ESO_LangEditorLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,45 @@
+﻿<Window x:Class="ESO_LangEditorGUI.View.TextEditor_SearchReplace"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:ESO_LangEditorGUI.View"
+        mc:Ignorable="d"
+        Title="搜索与替换" Height="250" Width="350" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FFEEEEEE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="121*"/>
+            <RowDefinition Height="114*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="5*"/>
+        </Grid.ColumnDefinitions>
+
+        <Canvas Grid.Row="0" Margin="0,0,0,9">
+            <TextBox x:Name="searchKeyWord" Canvas.Left="10" Canvas.Top="10" TextWrapping="Wrap" Width="186"
+                     materialDesign:HintAssist.Hint="查找内容" 
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="14" />
+            <TextBox x:Name="replaceKeyWord"  Canvas.Left="10" Canvas.Top="60" TextWrapping="Wrap" Width="186"
+                     materialDesign:HintAssist.Hint="替换内容" 
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="14"/>
+
+        </Canvas>
+
+        <Canvas Grid.Row="1">
+            <CheckBox Content="大小写敏感" Style="{StaticResource MaterialDesignCheckBox}" Margin="10,10,0,0" FontSize="14" />
+        </Canvas>
+
+        <Canvas Margin="0,0,0,114" Grid.Column="1" Grid.RowSpan="2" Width="114">
+            <Button x:Name="Button_Replace" Content="替换" Width="112" Canvas.Top="10" Click="Button_Replace_Click" />
+            
+            <Button x:Name="Button_findMatch" Content="查询匹配数" Canvas.Top="60" Width="112" Click="Button_findMatch_Click" />
+
+
+        </Canvas>
+        
+
+
+    </Grid>
+</Window>
