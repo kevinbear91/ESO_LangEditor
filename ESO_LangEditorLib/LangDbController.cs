@@ -92,8 +92,9 @@ namespace ESO_LangEditorLib
                     1 => await Db.LangData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
                     2 => await Db.LangData.Where(d => EF.Functions.Like(d.Text_ZH, searchPosAndWord)).ToListAsync(),
                     3 => await Db.LangData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
-                    4 => await Db.LangData.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
-                    5 => await Db.LangData.Where(d => d.IsTranslated == ToInt32(searchWord)).ToListAsync(),
+                    4 => await Db.LangData.Where(d => d.UniqueID == searchWord).ToListAsync(),
+                    5 => await Db.LangData.Where(d => d.RowStats == ToInt32(searchWord)).ToListAsync(),
+                    6 => await Db.LangData.Where(d => d.IsTranslated == ToInt32(searchWord)).ToListAsync(),
                     _ => await Db.LangData.Where(d => EF.Functions.Like(d.Text_EN, searchPosAndWord)).ToListAsync(),
                 };
                 //await Db.langData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToDictionaryAsync(d => d.UniqueID),

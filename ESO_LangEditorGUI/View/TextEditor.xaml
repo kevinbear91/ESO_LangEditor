@@ -41,6 +41,7 @@
 
         <Canvas  Grid.Row="1" Grid.Column="0" Margin="20,10,15,2">
             <Button x:Name="button_modifyList" Content="批量修改" Click="button_modifyList_Click"  />
+            <Button x:Name="button_saveModifyList" Content="批量保存" Click="button_saveModifyList_Click" Margin="120,0,0,0" Cursor="Hand" />
         </Canvas>
 
         <Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">

@@ -76,11 +76,34 @@ namespace ESO_Lang_Editor.View
             InitWindowVariables(true, ref IDtype, window);
         }
 
+        public void ApplyReplacedList(List<LangText> replacedList)
+        {
+            //SelectedItems = replacedList;
+
+
+            foreach(var replaced in replacedList)
+            {
+                foreach(var item in SelectedItems)
+                {
+                    if (item.UniqueID == replaced.UniqueID)
+                    {
+                        item.Text_ZH = replaced.Text_ZH;
+                    }
+                }
+            }
+
+            SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！");
+
+            InitWindowVariables(true);
+        }
+
+
         private void InitWindowVariables(bool isList, ref IDCatalog IDtype, MainWindow window)
         {
             Mainwindow = window;
             IDtypeName = IDtype;
             textBox_EN.IsReadOnly = true;
+            button_saveModifyList.IsEnabled = false;
 
             GeneratingColumns();
 
@@ -101,10 +124,24 @@ namespace ESO_Lang_Editor.View
                 UpdateUIContent();
             }
         }
+        private void InitWindowVariables(bool isEnableButton)
+        {
+            textBox_EN.IsReadOnly = true;
+            button_saveModifyList.IsEnabled = isEnableButton;
+
+            GeneratingColumns();
+
+            GridMover.Visibility = Visibility.Visible;
+            List_expander.Visibility = Visibility.Visible;
+
+            List_Datagrid_Display();
+        }
 
 
         private void GeneratingColumns()
         {
+            List_dataGrid.Columns.Clear();
+
             if (isLua)
             {
                 DataGridTextColumn c1 = new DataGridTextColumn();
@@ -271,6 +308,13 @@ namespace ESO_Lang_Editor.View
 
             messageQueue.Enqueue(message);
         }
+        private void SaveMessagePopup(string reslut)
+        {
+            var messageQueue = Snackbar_SaveInfo.MessageQueue;
+            //string message;
+
+            messageQueue.Enqueue(reslut);
+        }
 
         private void List_expander_Expanded(object sender, RoutedEventArgs e)
         {
@@ -290,7 +334,7 @@ namespace ESO_Lang_Editor.View
             //var IDtypeName = new IDCatalog();
 
             if (List_dataGrid.Items.Count > 1)
-                List_dataGrid.Items.Clear();
+                List_dataGrid.ItemsSource = null;
 
             if (isLua)
             {
@@ -468,9 +512,16 @@ namespace ESO_Lang_Editor.View
 
         private void button_modifyList_Click(object sender, RoutedEventArgs e)
         {
-            var modifyListWindow = new TextEditor_SearchReplace(SelectedItems);
+            var modifyListWindow = new TextEditor_SearchReplace(SelectedItems, this);
 
             modifyListWindow.Show();
+        }
+
+        private void button_saveModifyList_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO
+
+            button_saveModifyList.IsEnabled = false;
         }
     }
 }

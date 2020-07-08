@@ -197,11 +197,12 @@ namespace ESO_Lang_Editor.View
 
         private void SearchTextInPositionInit()
         {
-            searchTextInPosition = new ObservableCollection<string>();
-
-            searchTextInPosition.Add("包含全文");
-            searchTextInPosition.Add("仅包含开头");
-            searchTextInPosition.Add("仅包含结尾");
+            searchTextInPosition = new ObservableCollection<string>
+            {
+                "包含全文",
+                "仅包含开头",
+                "仅包含结尾"
+            };
 
             SearchTextPositionComboBox.ItemsSource = searchTextInPosition;
             SearchTextPositionComboBox.SelectedIndex = 0;
@@ -209,11 +210,14 @@ namespace ESO_Lang_Editor.View
 
         private void SearchTextTypeInit()
         {
-            searchTextType = new ObservableCollection<string>();
-
-            searchTextType.Add("搜编号");
-            searchTextType.Add("搜英文");
-            searchTextType.Add("搜译文");
+            searchTextType = new ObservableCollection<string>
+            {
+                "搜类型",   //0
+                "搜英文",   //1
+                "搜译文",   //2
+                "搜版本号",
+                "搜唯一ID"
+            };
 
             SearchTypeComboBox.ItemsSource = searchTextType;
             SearchTypeComboBox.SelectedIndex = 1;

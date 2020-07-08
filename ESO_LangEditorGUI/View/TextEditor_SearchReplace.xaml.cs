@@ -1,4 +1,5 @@
-﻿using ESO_LangEditorGUI.Controller;
+﻿using ESO_Lang_Editor.View;
+using ESO_LangEditorGUI.Controller;
 using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,13 @@ namespace ESO_LangEditorGUI.View
     {
         List<LangText> LangList;
         ListSearchReplace searchReplace = new ListSearchReplace();
+        TextEditor textWindow;
 
-        public TextEditor_SearchReplace(List<LangText> list)
+        public TextEditor_SearchReplace(List<LangText> list, TextEditor window)
         {
             InitializeComponent();
             LangList = list;
+            textWindow = window;
         }
 
         private void Button_findMatch_Click(object sender, RoutedEventArgs e)
@@ -41,7 +44,10 @@ namespace ESO_LangEditorGUI.View
         {
             var result = searchReplace.SearchReplace(LangList, searchKeyWord.Text, replaceKeyWord.Text);
 
-            MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + result.Count);
+            textWindow.ApplyReplacedList(result);
+            this.Close();
+
+            //MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + result.Count);
         }
     }
 }
