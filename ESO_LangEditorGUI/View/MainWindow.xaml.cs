@@ -52,7 +52,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v2.2.2";
+            string version = " v2.3.3";
 
             Title = "ESO文本查询编辑器" + version;
 

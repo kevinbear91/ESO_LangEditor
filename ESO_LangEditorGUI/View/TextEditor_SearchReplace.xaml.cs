@@ -4,6 +4,7 @@ using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -29,20 +30,34 @@ namespace ESO_LangEditorGUI.View
             InitializeComponent();
             LangList = list;
             textWindow = window;
+            CheckBox_OnlyMatchWord.IsChecked = true;
         }
 
         private void Button_findMatch_Click(object sender, RoutedEventArgs e)
         {
+            bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
+            bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
+            int findNumber;
 
-            int findNumber = searchReplace.FindMatch(LangList, searchKeyWord.Text);
+            if (isingoreCase)
+                findNumber = searchReplace.FindMatch(LangList, searchKeyWord.Text, onlyMatchword);
+            else
+                findNumber = searchReplace.FindMatch(LangList, searchKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
 
-            MessageBox.Show("列表内"+ LangList.Count + ". 匹配到 " + findNumber);
+            MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + findNumber);
 
         }
 
         private void Button_Replace_Click(object sender, RoutedEventArgs e)
         {
-            var result = searchReplace.SearchReplace(LangList, searchKeyWord.Text, replaceKeyWord.Text);
+            bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
+            bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
+            List<LangText> result;
+
+            if (isingoreCase)
+                result = searchReplace.SearchReplace(LangList, searchKeyWord.Text, replaceKeyWord.Text, onlyMatchword);
+            else
+                result = searchReplace.SearchReplace(LangList, searchKeyWord.Text, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
 
             textWindow.ApplyReplacedList(result);
             this.Close();

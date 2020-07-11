@@ -21,6 +21,7 @@ namespace ESO_Lang_Editor.View
     {
         private LangText EditData;
         private List<LangText> SelectedItems;
+        private List<LangText> ReplacedItems;
 
         private LuaUIData EditLuaData;
         private List<LuaUIData> SelectedLuaItems;
@@ -79,7 +80,7 @@ namespace ESO_Lang_Editor.View
         public void ApplyReplacedList(List<LangText> replacedList)
         {
             //SelectedItems = replacedList;
-
+            ReplacedItems = replacedList;
 
             foreach(var replaced in replacedList)
             {
@@ -517,11 +518,40 @@ namespace ESO_Lang_Editor.View
             modifyListWindow.Show();
         }
 
-        private void button_saveModifyList_Click(object sender, RoutedEventArgs e)
+        private async void button_saveModifyList_Click(object sender, RoutedEventArgs e)
         {
-            //TODO
+            int result = await db.UpdateLangsZH(ReplacedItems);
 
-            button_saveModifyList.IsEnabled = false;
+            if (result >= 1)
+            {
+                CompareReplacedItemInList();
+
+                Debug.WriteLine(SelectedItems.Count);
+
+                SaveMessagePopup(result);
+                InitWindowVariables(false);
+
+                button_saveModifyList.IsEnabled = false;
+            }
+
+
+        }
+
+        private void CompareReplacedItemInList()
+        {
+            Dictionary<string, LangText> selectedItem = new Dictionary<string, LangText>();
+            Dictionary<string, LangText> replacedItem = new Dictionary<string, LangText>();
+
+            selectedItem = SelectedItems.ToDictionary(s => s.UniqueID);
+            replacedItem = ReplacedItems.ToDictionary(r => r.UniqueID);
+
+            foreach (var item in replacedItem)
+            {
+                if (selectedItem.Keys.Contains(item.Key))
+                    selectedItem.Remove(item.Key);
+            }
+
+            SelectedItems = selectedItem.Values.ToList();
         }
     }
 }

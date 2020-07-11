@@ -28,13 +28,14 @@
         </Canvas>
 
         <Canvas Grid.Row="1">
-            <CheckBox Content="大小写敏感" Style="{StaticResource MaterialDesignCheckBox}" Margin="10,10,0,0" FontSize="14" />
+            <CheckBox x:Name="CheckBox_OnlyMatchWord" Content="仅匹配单词" Style="{StaticResource MaterialDesignCheckBox}" Margin="10,10,0,0" FontSize="14" />
+            <CheckBox x:Name="CheckBox_IgnoreCase" Content="大小写敏感" Style="{StaticResource MaterialDesignCheckBox}" Margin="10,35,0,0" FontSize="14" />
         </Canvas>
 
         <Canvas Margin="0,0,0,114" Grid.Column="1" Grid.RowSpan="2" Width="114">
-            <Button x:Name="Button_Replace" Content="替换" Width="112" Canvas.Top="10" Click="Button_Replace_Click" />
+            <Button x:Name="Button_Replace" Content="替换" Width="112" Canvas.Top="25" Click="Button_Replace_Click" />
             
-            <Button x:Name="Button_findMatch" Content="查询匹配数" Canvas.Top="60" Width="112" Click="Button_findMatch_Click" />
+            <Button x:Name="Button_findMatch" Content="查询匹配数" Canvas.Top="75" Width="112" Click="Button_findMatch_Click" />
 
 
         </Canvas>
