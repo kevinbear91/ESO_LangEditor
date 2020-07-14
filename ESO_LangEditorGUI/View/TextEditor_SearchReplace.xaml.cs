@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Globalization;
 
 namespace ESO_LangEditorGUI.View
 {
@@ -53,16 +54,39 @@ namespace ESO_LangEditorGUI.View
             bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
             bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
             List<LangText> result;
+            string keyWord;
+            
+            if (!string.IsNullOrEmpty(searchKeyWord.Text) && !string.IsNullOrEmpty(replaceKeyWord.Text))
+            {
+                if (searchKeyWord.Text.Contains('?'))
+                    keyWord = searchKeyWord.Text.Replace("?", @"\?");
+                else
+                    keyWord = searchKeyWord.Text;
 
-            if (isingoreCase)
-                result = searchReplace.SearchReplace(LangList, searchKeyWord.Text, replaceKeyWord.Text, onlyMatchword);
+                if (isingoreCase)
+                    result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword);
+                else
+                    result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
+
+                textWindow.ApplyReplacedList(result);
+                this.Close();
+            }
             else
-                result = searchReplace.SearchReplace(LangList, searchKeyWord.Text, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
-
-            textWindow.ApplyReplacedList(result);
-            this.Close();
+            {
+                MessageBox.Show("查找内容与替换内容均不许为空，空格请谨慎匹配！");
+            }
 
             //MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + result.Count);
         }
+        
     }
+    //public class NotEmptyValidationRule : ValidationRule
+    //{
+    //    public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+    //    {
+    //        return string.IsNullOrWhiteSpace((value ?? "").ToString())
+    //            ? new ValidationResult(false, "字段不可为空。")
+    //            : ValidationResult.ValidResult;
+    //    }
+    //}
 }

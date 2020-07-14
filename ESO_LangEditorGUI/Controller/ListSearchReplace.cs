@@ -14,6 +14,11 @@ namespace ESO_LangEditorGUI.Controller
         {
             string pattern;
 
+            //if (keyword.Contains("?"))
+            //{
+            //    keyword.Replace("?", @"\?");
+            //}
+
             if (isOnlyMatchWord)
                 pattern = @"\b" + keyword + @"\b";
             else

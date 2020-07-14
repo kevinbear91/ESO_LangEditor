@@ -20,7 +20,17 @@
         <Canvas Grid.Row="0" Margin="0,0,0,9">
             <TextBox x:Name="searchKeyWord" Canvas.Left="10" Canvas.Top="10" TextWrapping="Wrap" Width="186"
                      materialDesign:HintAssist.Hint="查找内容" 
-                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="14" />
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="14">
+                <!--<TextBox.Text>
+                    <Binding Path="查找内容" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <local:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>-->
+
+            </TextBox>
+            
             <TextBox x:Name="replaceKeyWord"  Canvas.Left="10" Canvas.Top="60" TextWrapping="Wrap" Width="186"
                      materialDesign:HintAssist.Hint="替换内容" 
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontSize="14"/>

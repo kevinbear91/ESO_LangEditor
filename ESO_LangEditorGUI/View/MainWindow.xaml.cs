@@ -307,11 +307,19 @@ namespace ESO_Lang_Editor.View
             //SearchButton.Content = "正在搜索……";
             SearchTextBox.IsEnabled = false;
 
-            
+            //if (SearchTypeComboBox.SelectedIndex == 0)
+            //{
+            //    if (System.Text.RegularExpressions.Regex.IsMatch(SearchTextBox.Text, "[^0-9]"))
+            //    {
+            //        MessageBox.Show("Please enter only numbers.");
+            //    }
+            //}
+
+
 
             MessageBoxResult result = MessageBoxResult.Cancel;
 
-            if (SearchTextBox.Text == "" || SearchTextBox.Text == " ")
+            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
                 result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
                     MessageBoxButton.OKCancel, MessageBoxImage.Warning);
@@ -319,7 +327,6 @@ namespace ESO_Lang_Editor.View
             else
             {
                 await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
-
             }
 
             switch (result)

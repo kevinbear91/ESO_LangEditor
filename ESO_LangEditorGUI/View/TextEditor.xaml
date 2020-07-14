@@ -35,13 +35,13 @@
         </GroupBox>
 
         <Canvas Grid.Row="1" Grid.Column="1" Margin="10,10,15,2" >
-            <Button x:Name="button_save" Content="保存" Margin="20,0,0,0"  Click="button_save_Click" Cursor="Hand"  />
-            <Button x:Name="button_cancel" Content="取消" Margin="120,0,0,0"  Click="button_cancel_Click" />
+            <Button x:Name="button_save" Content="保存" Margin="20,0,0,0"  Click="Button_save_Click" Cursor="Hand"  />
+            <Button x:Name="button_cancel" Content="取消" Margin="120,0,0,0"  Click="Button_cancel_Click" />
         </Canvas>
 
         <Canvas  Grid.Row="1" Grid.Column="0" Margin="20,10,15,2">
-            <Button x:Name="button_modifyList" Content="批量修改" Click="button_modifyList_Click"  />
-            <Button x:Name="button_saveModifyList" Content="批量保存" Click="button_saveModifyList_Click" Margin="120,0,0,0" />
+            <Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
+            <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" />
         </Canvas>
 
         <Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">

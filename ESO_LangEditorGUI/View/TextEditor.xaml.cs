@@ -80,22 +80,27 @@ namespace ESO_Lang_Editor.View
         public void ApplyReplacedList(List<LangText> replacedList)
         {
             //SelectedItems = replacedList;
-            ReplacedItems = replacedList;
-
-            foreach(var replaced in replacedList)
+            
+            if (replacedList.Count >= 1)
             {
-                foreach(var item in SelectedItems)
+                ReplacedItems = replacedList;
+
+                foreach (var replaced in replacedList)
                 {
-                    if (item.UniqueID == replaced.UniqueID)
+                    foreach (var item in SelectedItems)
                     {
-                        item.Text_ZH = replaced.Text_ZH;
+                        if (item.UniqueID == replaced.UniqueID)
+                        {
+                            item.Text_ZH = replaced.Text_ZH;
+                        }
                     }
                 }
+
+                SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！");
+                InitWindowVariables(true);
             }
-
-            SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！");
-
-            InitWindowVariables(true);
+            else
+                SaveMessagePopup("没有匹配到任何文本，请检查！");
         }
 
 
@@ -115,6 +120,7 @@ namespace ESO_Lang_Editor.View
                 List_expander.Visibility = Visibility.Visible;
 
                 List_Datagrid_Display();
+                button_modifyList.IsEnabled = true;
             }
             else
             {
@@ -123,6 +129,7 @@ namespace ESO_Lang_Editor.View
                 List_expander.Visibility = Visibility.Collapsed;
 
                 UpdateUIContent();
+                button_modifyList.IsEnabled = false;
             }
         }
         private void InitWindowVariables(bool isEnableButton)
@@ -189,12 +196,12 @@ namespace ESO_Lang_Editor.View
 
 
 
-        private void button_cancel_Click(object sender, RoutedEventArgs e)
+        private void Button_cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private async void button_save_Click(object sender, RoutedEventArgs e)
+        private async void Button_save_Click(object sender, RoutedEventArgs e)
         {
             //var EditedData = new LangSearchModel();
             
@@ -511,14 +518,14 @@ namespace ESO_Lang_Editor.View
             return EditedData;
         }
 
-        private void button_modifyList_Click(object sender, RoutedEventArgs e)
+        private void Button_modifyList_Click(object sender, RoutedEventArgs e)
         {
             var modifyListWindow = new TextEditor_SearchReplace(SelectedItems, this);
 
             modifyListWindow.Show();
         }
 
-        private async void button_saveModifyList_Click(object sender, RoutedEventArgs e)
+        private async void Button_saveModifyList_Click(object sender, RoutedEventArgs e)
         {
             int result = await db.UpdateLangsZH(ReplacedItems);
 
