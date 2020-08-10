@@ -39,7 +39,7 @@
             <Button x:Name="button_cancel" Content="取消" Margin="120,0,0,0"  Click="Button_cancel_Click" />
         </Canvas>
 
-        <Canvas  Grid.Row="1" Grid.Column="0" Margin="20,10,15,2">
+        <Canvas  Grid.Row="1" Grid.Column="0" Margin="20,10,15,2" Cursor="Hand">
             <Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
             <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" />
         </Canvas>

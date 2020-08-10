@@ -57,7 +57,7 @@ namespace ESO_Lang_Editor.View
             else
             {
 
-                SearchData = await Task.Run(() => db.GetLangsListAsync(5, 0, "1"));
+                SearchData = await Task.Run(() => db.GetLangsListAsync(6, 0, "1"));
 
                 Translated_DataGrid.ItemsSource = SearchData;
 

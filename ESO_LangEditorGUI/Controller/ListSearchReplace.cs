@@ -86,7 +86,7 @@ namespace ESO_LangEditorGUI.Controller
                         Lang_Index = text.Lang_Index,
                         Text_EN = text.Text_EN,
                         Text_ZH = replacedWord,
-                        IsTranslated = text.IsTranslated,
+                        IsTranslated = 1,
                         RowStats = text.RowStats,
                         UpdateStats = text.UpdateStats,
 
@@ -121,7 +121,7 @@ namespace ESO_LangEditorGUI.Controller
                         Lang_Index = text.Lang_Index,
                         Text_EN = text.Text_EN,
                         Text_ZH = replacedWord,
-                        IsTranslated = text.IsTranslated,
+                        IsTranslated = 1,
                         RowStats = text.RowStats,
                         UpdateStats = text.UpdateStats,
 

@@ -5,7 +5,9 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,11 +28,17 @@ namespace ESO_Lang_Editor.View
         private bool isLua;
 
         private ParserCsv importDB = new ParserCsv();
+        private LangDbController db = new LangDbController();
 
         public ImportTranslateDB()
         {
             InitializeComponent();
             GeneratingColumns(false);
+            textBlock_Info.Text = "";
+            textBlock_SelectionInfo.Text = "";
+            textBlock_Total.Text = "";
+            ImportToDB_button.IsEnabled = false;
+            ImportAll_Checkbox.IsEnabled = false;
         }
 
         private void GeneratingColumns(bool isStr)
@@ -89,20 +97,34 @@ namespace ESO_Lang_Editor.View
             {
                 if (dialog.FileName.EndsWith(".LangDB") || dialog.FileName.EndsWith(".LangUI") || dialog.FileName.EndsWith(".db") || dialog.FileName.EndsWith(".dbUI"))
                 {
+                    if (fileList.Count >= 1 || filePath.Count >= 1)
+                    {
+                        fileList.Clear();
+                        filePath.Clear();
+                        FileID_listBox.ItemsSource = null;
+                    }
+
                     foreach (var file in dialog.FileNames)
                     {
                         fileList.Add(System.IO.Path.GetFileName(file));
                         filePath.Add(file);
                     }
+
                     FileID_listBox.ItemsSource = fileList;
+                    FileID_listBox.SelectedIndex = 0;
+
+                    textBlock_Info.Text = "共 " + filePath.Count + " 个文件";
+                    ImportToDB_button.IsEnabled = true;
                 }
                 else
                 {
-                    MessageBox.Show("仅支持读取 .db 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("仅支持读取 .LangDB、 .LangUI、.db、.dbUI 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
                     FileID_listBox.ItemsSource = "";
                 }
                 //TotalFiles_textBlock.Text = "共 " + fileList.Count().ToString() + " 个文件，已选择 0 个。";
             }
+            if (fileList.Count > 1 && filePath.Count > 1)
+                ImportAll_Checkbox.IsEnabled = true;
         }
 
 
@@ -111,16 +133,31 @@ namespace ESO_Lang_Editor.View
             int seletedIndex = FileID_listBox.SelectedIndex;
             string dbPath;
 
-            if (filePath.Count >= 0 && seletedIndex == -1)
-            {
-                dbPath = filePath.ElementAt(0);
-                //DataGridSet(dbPath);
-            }
-            else
+            if (fileList.Count != 0)
             {
                 dbPath = filePath.ElementAt(seletedIndex);
-                //DataGridSet(dbPath);
+                await ReadFileByName(dbPath, false);
+                
             }
+                
+
+            //if (filePath.Count >= 0 && seletedIndex == -1)
+            //{
+            //    dbPath = filePath.ElementAt(0);
+            //    //DataGridSet(dbPath);
+            //}
+            //else
+            //{
+            //    dbPath = filePath.ElementAt(seletedIndex);
+            //    //DataGridSet(dbPath);
+            //}
+
+
+        }
+
+        private async Task ReadFileByName(string dbPath, bool isSaveToDb)
+        {
+            ImportToDB_button.IsEnabled = false;
 
             if (dbPath.EndsWith(".LangUI"))   //Lua Str UI文本
             {
@@ -131,6 +168,11 @@ namespace ESO_Lang_Editor.View
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
 
                 isLua = true;
+                
+                if(isSaveToDb)
+                    await db.UpdateLangsZH(SearchLuaData);
+
+                ImportToDB_button.IsEnabled = true;
             }
             else if (dbPath.EndsWith(".db"))
             {
@@ -140,6 +182,12 @@ namespace ESO_Lang_Editor.View
                 TranslateData_dataGrid.ItemsSource = SearchData;
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+
+                if (isSaveToDb)
+                    await db.UpdateLangsZH(SearchData);
+
+                ImportToDB_button.IsEnabled = true;
+
             }
             else if (dbPath.EndsWith(".dbUI"))
             {
@@ -151,6 +199,11 @@ namespace ESO_Lang_Editor.View
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
 
                 isLua = true;
+
+                if (isSaveToDb)
+                    await db.UpdateLangsZH(SearchLuaData);
+
+                ImportToDB_button.IsEnabled = true;
             }
             else
             {
@@ -159,69 +212,56 @@ namespace ESO_Lang_Editor.View
 
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
+
+                if (isSaveToDb)
+                    await db.UpdateLangsZH(SearchData);
+                //await db.UpdateLangsZH(SearchData);
+                ImportToDB_button.IsEnabled = true;
             }
         }
 
         private async void ImportToDB_button_Click(object sender, RoutedEventArgs e)
         {
-            var db = new LangDbController();
 
-            if (isLua)
+            if (filePath.Count > 1 && ImportAll_Checkbox.IsChecked == true)
+            {
+                foreach (var f in filePath)
+                {
+                    //Debug.WriteLine(f);
+
+                    await ReadFileByName(f,true);
+                    //SearchData = await importDB.ExportReaderToListAsync(f);
+                    //TranslateData_dataGrid.ItemsSource = SearchData;
+
+                    textBlock_Total.Text = "正在导入第 " + (filePath.IndexOf(f) + 1) + " 项，共" + filePath.Count + " 项";
+
+                    OpenFile_button.IsEnabled = false;
+                    ImportToDB_button.IsEnabled = false;
+                    ImportAll_Checkbox.IsEnabled = false;
+                    ImportToDB_button.Content = "导入中……";
+
+                    //await db.UpdateLangsZH(SearchData);
+
+
+                }
+                ImportToDB_button.Content = "导入";
+                OpenFile_button.IsEnabled = true;
+                textBlock_Total.Text = "导入完毕！";
+            }
+            else
             {
                 OpenFile_button.IsEnabled = false;
                 ImportToDB_button.IsEnabled = false;
                 ImportAll_Checkbox.IsEnabled = false;
                 ImportToDB_button.Content = "导入中……";
 
-                int importlines = await db.UpdateLangsZH(SearchLuaData);
-
-                MessageBox.Show("导入了 " + importlines + " 条翻译");
-            }
-            else
-            {
-                if (filePath.Count >=1)
-                {
-                    if (ImportAll_Checkbox.IsChecked == true)
-                    {
-                        foreach (var f in filePath)
-                        {
-                            SearchData = await importDB.ExportReaderToListAsync(f);
-                            TranslateData_dataGrid.ItemsSource = SearchData;
-
-                            textBlock_Total.Text = "正在导入第 " + (filePath.IndexOf(f) + 1) + " 项";
-
-                            OpenFile_button.IsEnabled = false;
-                            ImportToDB_button.IsEnabled = false;
-                            ImportAll_Checkbox.IsEnabled = false;
-                            ImportToDB_button.Content = "导入中……";
-
-                            await db.UpdateLangsZH(SearchData);
-
-                           
-                        }
-                        textBlock_Total.Text = "导入完毕！";
-                    }
-                    else
-                    {
-                        OpenFile_button.IsEnabled = false;
-                        ImportToDB_button.IsEnabled = false;
-                        ImportAll_Checkbox.IsEnabled = false;
-                        ImportToDB_button.Content = "导入中……";
-
-                        int importlines = await db.UpdateLangsZH(SearchData);
-
-                        MessageBox.Show("导入了 " + importlines + " 条翻译");
-
-                    }
-                }
-
+                await ReadFileByName(filePath.ElementAt(FileID_listBox.SelectedIndex), true);
 
                 OpenFile_button.IsEnabled = true;
-                ImportToDB_button.IsEnabled = true;
-                ImportAll_Checkbox.IsEnabled = true;
                 ImportToDB_button.Content = "导入";
 
             }
+
         }
     }
 }

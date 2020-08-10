@@ -52,7 +52,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v2.3.3";
+            string version = " v2.3.8";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -216,7 +216,8 @@ namespace ESO_Lang_Editor.View
                 "搜英文",   //1
                 "搜译文",   //2
                 "搜版本号",
-                "搜唯一ID"
+                "搜唯一ID",
+                "搜已翻译条目"
             };
 
             SearchTypeComboBox.ItemsSource = searchTextType;
@@ -348,11 +349,17 @@ namespace ESO_Lang_Editor.View
 
         private async Task GetLangData(int selectedSearchType, int selectedSearchTextPosition, string searchText)
         {
-            if(isLua)
+            int searchType = selectedSearchType;
+
+            if (searchType == 5 && isLua == false)
+                searchType = 6;
+
+
+            if (isLua)
             {
                 searchLuaData = await Task.Run(() =>
                 {
-                    var query = db.GetLuaLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
+                    var query = db.GetLuaLangsListAsync(searchType, selectedSearchTextPosition, searchText);
                     return query;
                 });
                 LangData.ItemsSource = searchLuaData;
@@ -361,7 +368,7 @@ namespace ESO_Lang_Editor.View
             {
                 SearchData = await Task.Run(() =>
                 {
-                    var query = db.GetLangsListAsync(selectedSearchType, selectedSearchTextPosition, searchText);
+                    var query = db.GetLangsListAsync(searchType, selectedSearchTextPosition, searchText);
                     return query;
                 });
                 LangData.ItemsSource = SearchData;

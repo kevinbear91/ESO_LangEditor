@@ -24,7 +24,7 @@ namespace ESO_LangEditorGUI.Controller
             if (File.Exists(DBPath) && File.Exists(csvDataUpdatePath))
             {
                 var db = new LangDbController();
-                SearchData = await db.GetLangsListAsync(5, 0, "1");
+                SearchData = await db.GetLangsListAsync(6, 0, "1");
                 searchLuaData = await db.GetLuaLangsListAsync(5, 0, "1");
 
                 if (SearchData.Count >= 1)
