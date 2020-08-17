@@ -14,6 +14,8 @@ using System.Collections.Immutable;
 using ESO_LangEditorLib.Models;
 using ESO_Lang_Editor.Model;
 using ESO_LangEditorGUI.Controller;
+using MaterialDesignThemes.Wpf;
+using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
 
 namespace ESO_Lang_Editor.View
 {
@@ -38,6 +40,7 @@ namespace ESO_Lang_Editor.View
         LangDbController db = new LangDbController();
 
         IDCatalog IDtypeName = new IDCatalog();
+        WindowController windowControll = new WindowController();
 
         public MainWindow()
         {
@@ -63,6 +66,7 @@ namespace ESO_Lang_Editor.View
             //LangSearch.AutoGeneratingColumn += LangDataGridAutoGenerateColumns;
 
             GeneratingColumns();
+            GeneratingChips();
 
             //var db = new SqliteController();
             //db.CreateTable();
@@ -197,30 +201,30 @@ namespace ESO_Lang_Editor.View
 
         private void SearchTextInPositionInit()
         {
-            searchTextInPosition = new ObservableCollection<string>
-            {
-                "包含全文",
-                "仅包含开头",
-                "仅包含结尾"
-            };
+            //searchTextInPosition = new ObservableCollection<string>
+            //{
+            //    "包含全文",
+            //    "仅包含开头",
+            //    "仅包含结尾"
+            //};
 
-            SearchTextPositionComboBox.ItemsSource = searchTextInPosition;
+            SearchTextPositionComboBox.ItemsSource = windowControll.GetSearchPostion();
             SearchTextPositionComboBox.SelectedIndex = 0;
         }
 
         private void SearchTextTypeInit()
         {
-            searchTextType = new ObservableCollection<string>
-            {
-                "搜类型",   //0
-                "搜英文",   //1
-                "搜译文",   //2
-                "搜版本号",
-                "搜唯一ID",
-                "搜已翻译条目"
-            };
+            //searchTextType = new ObservableCollection<string>
+            //{
+            //    "搜类型",   //0
+            //    "搜英文",   //1
+            //    "搜译文",   //2
+            //    "搜版本号",
+            //    "搜唯一ID",
+            //    "搜已翻译条目"
+            //};
 
-            SearchTypeComboBox.ItemsSource = searchTextType;
+            SearchTypeComboBox.ItemsSource = windowControll.GetSearchTextType();
             SearchTypeComboBox.SelectedIndex = 1;
         }
 
@@ -351,28 +355,36 @@ namespace ESO_Lang_Editor.View
         {
             int searchType = selectedSearchType;
 
-            if (searchType == 5 && isLua == false)
-                searchType = 6;
-
-
-            if (isLua)
+            if (windowControll.InputCheck(searchType, searchText))
             {
-                searchLuaData = await Task.Run(() =>
+                if (searchType == 5 && isLua == false)
+                    searchType = 6;
+
+                if (isLua)
                 {
-                    var query = db.GetLuaLangsListAsync(searchType, selectedSearchTextPosition, searchText);
-                    return query;
-                });
-                LangData.ItemsSource = searchLuaData;
+                    searchLuaData = await Task.Run(() =>
+                    {
+                        var query = db.GetLuaLangsListAsync(searchType, selectedSearchTextPosition, searchText);
+                        return query;
+                    });
+                    LangData.ItemsSource = searchLuaData;
+                }
+                else
+                {
+                    SearchData = await Task.Run(() =>
+                    {
+                        var query = db.GetLangsListAsync(searchType, selectedSearchTextPosition, searchText);
+                        return query;
+                    });
+                    LangData.ItemsSource = SearchData;
+                }
             }
             else
             {
-                SearchData = await Task.Run(() =>
-                {
-                    var query = db.GetLangsListAsync(searchType, selectedSearchTextPosition, searchText);
-                    return query;
-                });
-                LangData.ItemsSource = SearchData;
+                MessageBox.Show("当前搜索条件仅支持数字！", "提示",
+                      MessageBoxButton.OK, MessageBoxImage.Information);
             }
+
         }
 
         private string GetInfoBlockText()
@@ -529,6 +541,16 @@ namespace ESO_Lang_Editor.View
                     break;
 
             }
+        }
+
+        private void GeneratingChips()
+        {
+            Chip c1 = new Chip();
+            c1.Content = "112edd";
+            c1.IsDeletable = true;
+
+
+            Chips.Children.Add(c1);
         }
     }
 }

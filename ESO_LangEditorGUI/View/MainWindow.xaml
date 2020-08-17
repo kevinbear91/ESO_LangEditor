@@ -46,7 +46,7 @@
 
         <Grid Background="#FFEEEEEE">
             <Grid.RowDefinitions>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="70"/>
                 <RowDefinition/>
                 <RowDefinition Height="30"/>
             </Grid.RowDefinitions>
@@ -59,16 +59,17 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="50" />
                         </Grid.ColumnDefinitions>
-                    
-                    
-                    <ToggleButton Grid.Column="0" Style="{StaticResource MaterialDesignFlatToggleButton}"
-                              IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}" >
-                        <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" />
-                    </ToggleButton>
 
-                    <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4"
+
+                        <ToggleButton Grid.Column="0" Style="{StaticResource MaterialDesignFlatToggleButton}"
+                              IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}" >
+                            <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" />
+                        </ToggleButton>
+
+                        <materialDesign:ColorZone Mode="Standard" Padding="8 4 8 4"
                                               Height="30"
                                               Grid.Column="1"
                                                   Panel.ZIndex="1"
@@ -80,8 +81,8 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
-                            
-                            
+
+
                                 <TextBox x:Name="SearchTextBox" 
                                          Grid.Column="0"
                                     materialDesign:HintAssist.Hint="输入搜索文本"
@@ -97,60 +98,73 @@
                                           Checked="SearchStr_checkBox_Checked" 
                                           Unchecked="SearchStr_checkBox_Unchecked" 
                                           Margin="0,0,5,0" HorizontalAlignment="Right" />
-                            
+
                             </Grid>
                         </materialDesign:ColorZone>
 
-                    <!--<Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left"  VerticalAlignment="Top" />-->
+                        <!--<Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left"  VerticalAlignment="Top" />-->
 
-                    <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
                                               Grid.Column="2"
                                                   Panel.ZIndex="1"
                                                   Margin="10 5 0 0"
                                                   HorizontalAlignment="Left"
                                                   materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                        <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" />
-                    </materialDesign:ColorZone>
+                            <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" />
+                        </materialDesign:ColorZone>
 
-                    <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
                                               Grid.Column="3"
                                                   Panel.ZIndex="1"
                                                   Margin="10 5 0 0"
                                                   HorizontalAlignment="Left"
                                                   materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                        <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"/>
-                    </materialDesign:ColorZone>
+                            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"/>
+                        </materialDesign:ColorZone>
 
+                        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                                              Grid.Column="4"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10 5 0 0"
+                                                  HorizontalAlignment="Left"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
+                            <ComboBox x:Name="SearchIdListComboBox" HorizontalAlignment="Left" Width="90">
+                                <CheckBox Content="ddaaa测试"/>
+                            </ComboBox>
+                        </materialDesign:ColorZone>
 
-                    
-
-                    <Button x:Name="SearchButton" Style="{DynamicResource MaterialDesignToolForegroundButton}" 
+                        <Button x:Name="SearchButton" Style="{DynamicResource MaterialDesignToolForegroundButton}" 
                             Grid.Column="5"
                             Click="SearchButton_Click" 
                             Margin="10 0 0 0"
                             Width="30" Height="30" HorizontalAlignment="Left" Cursor="Hand" >
-                        <materialDesign:PackIcon Kind="Magnify" Width="30" Height="30" />
-                    </Button>
+                            <materialDesign:PackIcon Kind="Magnify" Width="30" Height="30" />
+                        </Button>
 
 
 
-                    <!--<Label x:Name="label" Content="文本：" Margin="40,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>-->
+                        <!--<Label x:Name="label" Content="文本：" Margin="40,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>-->
                     </Grid>
                 </DockPanel>
             </materialDesign:ColorZone>
+            <DockPanel Grid.Row="1" >
+                <WrapPanel DockPanel.Dock="Top" x:Name="Chips">
+                    <materialDesign:Chip x:Name="Chip1" Content="Example Chip"
+                                     IsDeletable="True"
+                                     ToolTip="This is an example chip"  HorizontalAlignment="Left" Margin="10,8,4,4" Cursor="Hand" />
+                    <materialDesign:Chip x:Name="Chip2" Content="Example Chipaaaaa123"
+                                     IsDeletable="True"
+                                     ToolTip="This is an example chip"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" Margin="10,8,4,4" Cursor="Hand" />
+                </WrapPanel>
 
-
-
-            <DataGrid Grid.Row="1" x:Name="LangData"
+                <DataGrid  x:Name="LangData"
                       MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
                       SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                       MouseRightButtonUp="LangSearch_MouseRightUp"
-                      AutoGenerateColumns="False" Margin="10,20,10,10"
+                      AutoGenerateColumns="False" Margin="10,10,10,10"
                       ColumnWidth="200*" 
-                    MinRowHeight="20">
-                
-            </DataGrid>
-            
+                    MinRowHeight="20" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" />
+            </DockPanel>
 
 
 
@@ -179,7 +193,7 @@
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
 
-                
+
 
             </StatusBar>
             <materialDesign:Snackbar Grid.Row="1" MessageQueue="{materialDesign:MessageQueue}"
