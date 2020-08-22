@@ -96,7 +96,8 @@ namespace ESO_Lang_Editor.View
                     }
                 }
 
-                SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！");
+                SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！点击 批量保存 按钮来保存。");
+                button_save.IsEnabled = false;
                 InitWindowVariables(true);
             }
             else
@@ -120,7 +121,10 @@ namespace ESO_Lang_Editor.View
                 List_expander.Visibility = Visibility.Visible;
 
                 List_Datagrid_Display();
-                button_modifyList.IsEnabled = true;
+                if(isLua)
+                    button_modifyList.IsEnabled = false;
+                else
+                    button_modifyList.IsEnabled = true;
             }
             else
             {
@@ -213,12 +217,12 @@ namespace ESO_Lang_Editor.View
                 button_save.IsEnabled = false;
 
                 var EditLuaData = GetEditedLuaData();
-                await Task.Run(() => db.UpdateLangsZH(EditLuaData));
+                //await Task.Run(() => db.UpdateLangsZH(EditLuaData));
+                int result = await db.UpdateLangsZH(EditLuaData);
+                SaveMessagePopup(result);
 
-
-
-                MessageBox.Show("ID: " + EditLuaData.UniqueID +
-                    Environment.NewLine + "ZH: " + EditLuaData.Text_ZH);
+                //MessageBox.Show("ID: " + EditLuaData.UniqueID +
+                //    Environment.NewLine + "ZH: " + EditLuaData.Text_ZH);
 
                 //MessageBox.Show(updateResult);
 
@@ -226,8 +230,11 @@ namespace ESO_Lang_Editor.View
                 {
                     int i = List_dataGrid.SelectedIndex;
 
-                    List_dataGrid.Items.RemoveAt(i);
+                    //List_dataGrid.Items.RemoveAt(i);
                     SelectedLuaItems.RemoveAt(i);
+
+                    List_dataGrid.ItemsSource = null;
+                    List_dataGrid.ItemsSource = SelectedLuaItems;
 
                     if (i > 0)
                     {
@@ -268,10 +275,7 @@ namespace ESO_Lang_Editor.View
                     SelectedItems.RemoveAt(i);
 
                     List_dataGrid.ItemsSource = null;
-
                     List_dataGrid.ItemsSource = SelectedItems;
-
-
 
                     if (i > 0)
                     {
@@ -303,7 +307,10 @@ namespace ESO_Lang_Editor.View
 
             if (result == 1)
             {
-                message = "文本ID：" + GetEditedData().UniqueID + " 保存成功！";
+                if (isLua)
+                    message = "文本ID：" + GetEditedLuaData().UniqueID + " 保存成功！";
+                else
+                    message = "文本ID：" + GetEditedData().UniqueID + " 保存成功！";
             }
             else if (result > 1)
             {
@@ -541,7 +548,7 @@ namespace ESO_Lang_Editor.View
                 button_saveModifyList.IsEnabled = false;
             }
 
-
+            button_save.IsEnabled = true;
         }
 
         private void CompareReplacedItemInList()

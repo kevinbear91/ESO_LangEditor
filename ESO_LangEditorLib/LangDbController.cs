@@ -318,7 +318,7 @@ namespace ESO_LangEditorLib
             //Debug.WriteLine(list);
         }
 
-        public async Task UpdateLangsZH(LuaUIData langUIList)
+        public async Task<int> UpdateLangsZH(LuaUIData langUIList)
         {
             using var Db = new LangDbContext();
             Db.Attach(langUIList);
@@ -327,7 +327,7 @@ namespace ESO_LangEditorLib
             Db.Entry(langUIList).Property("RowStats").IsModified = true;
 
             //Db.Update(langList);
-            await Db.SaveChangesAsync();
+            return await Db.SaveChangesAsync();
 
         }
 

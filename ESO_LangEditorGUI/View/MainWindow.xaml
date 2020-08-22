@@ -59,7 +59,7 @@
                             <ColumnDefinition />
                             <ColumnDefinition Width="100" />
                             <ColumnDefinition Width="100" />
-                            <ColumnDefinition Width="100" />
+                            <!--<ColumnDefinition Width="100" />-->
                             <ColumnDefinition Width="50" />
                         </Grid.ColumnDefinitions>
 
@@ -122,7 +122,7 @@
                             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"/>
                         </materialDesign:ColorZone>
 
-                        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                        <!--<materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
                                               Grid.Column="4"
                                                   Panel.ZIndex="1"
                                                   Margin="10 5 0 0"
@@ -131,7 +131,7 @@
                             <ComboBox x:Name="SearchIdListComboBox" HorizontalAlignment="Left" Width="90">
                                 <CheckBox Content="ddaaa测试"/>
                             </ComboBox>
-                        </materialDesign:ColorZone>
+                        </materialDesign:ColorZone>-->
 
                         <Button x:Name="SearchButton" Style="{DynamicResource MaterialDesignToolForegroundButton}" 
                             Grid.Column="5"
@@ -148,14 +148,14 @@
                 </DockPanel>
             </materialDesign:ColorZone>
             <DockPanel Grid.Row="1" >
-                <WrapPanel DockPanel.Dock="Top" x:Name="Chips">
+                <!--<WrapPanel DockPanel.Dock="Top" x:Name="Chips">
                     <materialDesign:Chip x:Name="Chip1" Content="Example Chip"
                                      IsDeletable="True"
                                      ToolTip="This is an example chip"  HorizontalAlignment="Left" Margin="10,8,4,4" Cursor="Hand" />
                     <materialDesign:Chip x:Name="Chip2" Content="Example Chipaaaaa123"
                                      IsDeletable="True"
                                      ToolTip="This is an example chip"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" Margin="10,8,4,4" Cursor="Hand" />
-                </WrapPanel>
+                </WrapPanel>-->
 
                 <DataGrid  x:Name="LangData"
                       MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 

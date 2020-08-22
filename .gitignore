@@ -342,3 +342,4 @@ ASALocalRun/
 healthchecksdb
 *.db
 *.db*
+/ESO_LangEditorServer

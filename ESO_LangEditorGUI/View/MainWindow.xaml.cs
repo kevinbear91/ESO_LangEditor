@@ -55,7 +55,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v2.3.8";
+            string version = " v2.3.10";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -89,43 +89,55 @@ namespace ESO_Lang_Editor.View
 
             if (isLua)
             {
-                DataGridTextColumn c1 = new DataGridTextColumn();
-                c1.Header = "UI ID";
-                c1.Binding = new Binding("UniqueID");
-                c1.Width = 200;
+                DataGridTextColumn c1 = new DataGridTextColumn
+                {
+                    Header = "UI ID",
+                    Binding = new Binding("UniqueID"),
+                    Width = 200
+                };
                 LangData.Columns.Add(c1);
 
-                DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "英文";
-                //c2.Width = 150;
-                c2.Binding = new Binding("Text_EN");
+                DataGridTextColumn c2 = new DataGridTextColumn
+                {
+                    Header = "英文",
+                    //c2.Width = 150;
+                    Binding = new Binding("Text_EN")
+                };
                 LangData.Columns.Add(c2);
 
-                DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "汉化";
-                //c3.Width = 200;
-                c3.Binding = new Binding("Text_ZH");
+                DataGridTextColumn c3 = new DataGridTextColumn
+                {
+                    Header = "汉化",
+                    //c3.Width = 200;
+                    Binding = new Binding("Text_ZH")
+                };
                 LangData.Columns.Add(c3);
             }
             else
             {
-                DataGridTextColumn c1 = new DataGridTextColumn();
-                c1.Header = "文本ID";
-                c1.Binding = new Binding("UniqueID");
-                c1.Width = 150;
+                DataGridTextColumn c1 = new DataGridTextColumn
+                {
+                    Header = "文本ID",
+                    Binding = new Binding("UniqueID"),
+                    Width = 150
+                };
                 //c1.ElementStyle = "{StaticResource MaterialDesignDataGridTextColumnStyle}";
                 LangData.Columns.Add(c1);
 
-                DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "英文";
-                //c2.Width = 200;
-                c2.Binding = new Binding("Text_EN");
+                DataGridTextColumn c2 = new DataGridTextColumn
+                {
+                    Header = "英文",
+                    //c2.Width = 200;
+                    Binding = new Binding("Text_EN")
+                };
                 LangData.Columns.Add(c2);
 
-                DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "汉化";
-                //c3.Width = 200;
-                c3.Binding = new Binding("Text_ZH");
+                DataGridTextColumn c3 = new DataGridTextColumn
+                {
+                    Header = "汉化",
+                    //c3.Width = 200;
+                    Binding = new Binding("Text_ZH")
+                };
                 LangData.Columns.Add(c3);
             }
 
@@ -134,6 +146,7 @@ namespace ESO_Lang_Editor.View
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             await SearchDB();
+            
         }
 
 
