@@ -20,6 +20,35 @@ namespace ESO_LangEditorGUI.Controller
             opencc.Start();
             opencc.WaitForExit();
         }
+        public void LuaStrToCHT()
+        {
+            ProcessStartInfo startOpenCCInfo = new ProcessStartInfo
+            {
+                FileName = @"opencc\opencc.exe",
+                Arguments = @" -i Export\zh_client.str -o Export\zht_client.str -c opencc\s2twp.json"
+            };
+
+            ProcessStartInfo startOpenCCInfo2 = new ProcessStartInfo
+            {
+                FileName = @"opencc\opencc.exe",
+                Arguments = @" -i Export\zh_pregame.str -o Export\zht_pregame.str -c opencc\s2twp.json"
+            };
+
+            Process opencc = new Process
+            {
+                StartInfo = startOpenCCInfo
+            };
+            opencc.Start();
+            opencc.WaitForExit();
+
+            Process opencc2 = new Process
+            {
+                StartInfo = startOpenCCInfo2
+            };
+            opencc2.Start();
+            opencc2.WaitForExit();
+
+        }
 
         public void ConvertTxTtoLang(bool isCHT)
         {
@@ -29,12 +58,12 @@ namespace ESO_LangEditorGUI.Controller
             if(isCHT)
             {
                 textFileName = "Text_cht.txt";
-                langName = "zht.lang";
+                langName = @"Export\zht.lang";
             }
             else
             {
                 textFileName = "Text.txt";
-                langName = "zh.lang";
+                langName = @"Export\zh.lang";
             }
 
             ProcessStartInfo startEEDInfo = new ProcessStartInfo

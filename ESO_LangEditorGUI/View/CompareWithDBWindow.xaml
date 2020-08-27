@@ -44,14 +44,14 @@
                     </TabItem>
                     <TabItem x:Name="Changed_tabitem" Header="变更">
                         <Grid Background="#FFE5E5E5">
-                            <DataGrid x:Name="Changed_DataGrid"  
+                            <DataGrid x:Name="Changed_DataGrid" Height="220" 
                           Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
                           IsReadOnly="True" AutoGenerateColumns="False" />
                         </Grid>
                     </TabItem>
                     <TabItem x:Name="Removed_tabitem" Header="移除" Visibility="Visible">
                         <Grid Background="#FFE5E5E5" Visibility="Visible">
-                            <DataGrid x:Name="Removed_DataGrid"  
+                            <DataGrid x:Name="Removed_DataGrid" Height="220"
                           Grid.Row="1" Canvas.Left="10" Canvas.Top="10" 
                           IsReadOnly="True" AutoGenerateColumns="False" />
                         </Grid>

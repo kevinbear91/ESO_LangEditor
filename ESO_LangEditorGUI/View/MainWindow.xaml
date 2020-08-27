@@ -30,6 +30,7 @@
                         <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
                         <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
                         <MenuItem Header="导出繁体至.lang" Click="ExportToCHT_Click"/>
+                        <MenuItem Header="一键发布" Click="PackToRlease_Click"/>
                     </MenuItem>
                     <MenuItem Header="帮助">
                         <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
