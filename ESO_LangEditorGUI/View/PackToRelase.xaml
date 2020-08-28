@@ -1,0 +1,26 @@
+﻿<Window x:Class="ESO_LangEditorGUI.View.PackToRelase"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:ESO_LangEditorGUI.View"
+        mc:Ignorable="d"
+        Title="一键打包" Height="318" Width="214" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="">
+    <Grid Background="#FFEEEEEE">
+        <TextBox x:Name="EsoZhVersion" materialDesign:HintAssist.Hint="汉化版本号" 
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 HorizontalAlignment="Left" Margin="39,40,0,0" 
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="APIversion_textBox" materialDesign:HintAssist.Hint="API版本" 
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 HorizontalAlignment="Left" Margin="39,85,0,0" 
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="CHSorCHT_comboBox" HorizontalAlignment="Left" Margin="39,144,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="Pack_button" Content="一键导出" Style="{StaticResource MaterialDesignRaisedButton}"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="False"
+                HorizontalAlignment="Left" Margin="55,242,0,0" VerticalAlignment="Top" Click="Pack_button_Click" Cursor="Hand"/>
+    </Grid>
+</Window>

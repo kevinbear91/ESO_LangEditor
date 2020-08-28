@@ -16,6 +16,7 @@ using ESO_Lang_Editor.Model;
 using ESO_LangEditorGUI.Controller;
 using MaterialDesignThemes.Wpf;
 using DataGridTextColumn = MaterialDesignThemes.Wpf.DataGridTextColumn;
+using ESO_LangEditorGUI.View;
 
 namespace ESO_Lang_Editor.View
 {
@@ -55,7 +56,7 @@ namespace ESO_Lang_Editor.View
             SearchTextTypeInit();
             
 
-            string version = " v2.3.10";
+            string version = " v2.4.0";
 
             Title = "ESO文本查询编辑器" + version;
 
@@ -558,12 +559,19 @@ namespace ESO_Lang_Editor.View
 
         private void GeneratingChips()
         {
-            Chip c1 = new Chip();
-            c1.Content = "112edd";
-            c1.IsDeletable = true;
+            //Chip c1 = new Chip();
+            //c1.Content = "112edd";
+            //c1.IsDeletable = true;
 
 
-            Chips.Children.Add(c1);
+            //Chips.Children.Add(c1);
+        }
+
+        private void PackToRlease_Click(object sender, RoutedEventArgs e)
+        {
+            var PackWindow = new PackToRelase();
+
+            PackWindow.Show();
         }
     }
 }
