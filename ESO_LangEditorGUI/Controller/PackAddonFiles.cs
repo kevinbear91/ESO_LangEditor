@@ -229,9 +229,9 @@ namespace ESO_LangEditorGUI.Controller
             string dirPath = @"_tmp\pack\" + chsOrCht;
 
             if (chsOrCht == "chs")
-                zipPath = @"Export\微攻略汉化" + esoZhVersion + "简体_.zip";
+                zipPath = @"Export\微攻略汉化" + esoZhVersion + "_简体.zip";
             else
-                zipPath = @"Export\微攻略汉化" + esoZhVersion + "繁体_.zip";
+                zipPath = @"Export\微攻略汉化" + esoZhVersion + "_繁体.zip";
 
             ZipFile.CreateFromDirectory(dirPath, zipPath);
 

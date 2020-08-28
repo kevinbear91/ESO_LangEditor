@@ -17,8 +17,7 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class PackToRelase : Window
     {
-        List<string> modifyList = new List<string>();
-        PackAddonFiles packFiles;
+        readonly PackAddonFiles packFiles;
 
         public PackToRelase()
         {
@@ -43,12 +42,19 @@ namespace ESO_LangEditorGUI.View
         {
             string esoZhVersion = EsoZhVersion.Text;
             string apiVersion = APIversion_textBox.Text;
-            int chsORcht = CHSorCHT_comboBox.SelectedIndex;
 
-            if (CheckField())
-                packFiles.ProcessFiles(esoZhVersion, apiVersion);
+            if (CheckResFolder())
+            {
+                if (CheckField())
+                    packFiles.ProcessFiles(esoZhVersion, apiVersion);
+                else
+                    MessageBox.Show("汉化版本号与API版本号不得为空！");
+            }
             else
-                MessageBox.Show("汉化版本号与API版本号不得为空！");
+            {
+                MessageBox.Show("无法找到必要文件夹，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+                
 
 
             //ModifyFiles();
