@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ESO_LangEditorServer.Services
 {
-    public class UserMockRepository
+    public class UserMockRepository : IUserRepository
     {
         public UserDto GetUser(Guid userID)
         {
@@ -20,7 +20,7 @@ namespace ESO_LangEditorServer.Services
             return LangServerMockData.Current.Users;
         }
 
-        public bool IsAuthorExists(Guid userID)
+        public bool IsUserExists(Guid userID)
         {
             return LangServerMockData.Current.Users.Any(ur => ur.Id == userID);
         }

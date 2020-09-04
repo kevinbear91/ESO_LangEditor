@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ESO_LangEditorServer.Services
 {
-    public class LangTextMockRepository
+    public class LangTextMockRepository : ILangTextRepository
     {
         public LangTextDto GetLangTextForUser(Guid userID, Guid langTextID)
         {
