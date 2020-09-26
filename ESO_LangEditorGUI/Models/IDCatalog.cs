@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using static System.Convert;
 
-namespace ESO_Lang_Editor.Model
+namespace ESO_LangEditorGUI.Model
 {
     public class IDCatalog
     {

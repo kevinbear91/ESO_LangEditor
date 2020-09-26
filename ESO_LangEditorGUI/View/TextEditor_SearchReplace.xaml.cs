@@ -1,4 +1,4 @@
-﻿using ESO_Lang_Editor.View;
+﻿using ESO_LangEditorGUI.View;
 using ESO_LangEditorGUI.Controller;
 using ESO_LangEditorLib.Models;
 using System;
@@ -90,7 +90,7 @@ namespace ESO_LangEditorGUI.View
                     else
                         result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
 
-                    textWindow.ApplyReplacedList(result);
+                    //textWindow.ApplyReplacedList(result);
                     this.Close();
                 }
                 else

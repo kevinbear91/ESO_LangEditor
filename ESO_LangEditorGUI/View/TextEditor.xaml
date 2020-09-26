@@ -1,9 +1,9 @@
-﻿<Window x:Class="ESO_Lang_Editor.View.TextEditor"
+﻿<Window x:Class="ESO_LangEditorGUI.View.TextEditor"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ESO_Lang_Editor.View" 
+        xmlns:local="clr-namespace:ESO_LangEditorGUI.View" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="文本编辑" Height="400" Width="640" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="400">

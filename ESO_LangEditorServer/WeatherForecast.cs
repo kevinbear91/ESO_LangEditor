@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ESO_LangEditorServer
 {
     public class WeatherForecast
     {
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{yyyy-MM-DD HH:MM}")]
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }

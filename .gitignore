@@ -344,3 +344,4 @@ healthchecksdb
 *.db*
 /ESO_LangEditorServer
 /Visio
+/ESO_LangEditorGUI_old

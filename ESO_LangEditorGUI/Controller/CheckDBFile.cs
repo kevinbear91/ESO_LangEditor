@@ -1,4 +1,4 @@
-﻿using ESO_Lang_Editor.View;
+﻿using ESO_LangEditorGUI.View;
 using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using System;

@@ -1,4 +1,4 @@
-﻿using ESO_Lang_Editor.Model;
+﻿using ESO_LangEditorGUI.Model;
 using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using Microsoft.Win32;
@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace ESO_Lang_Editor.View
+namespace ESO_LangEditorGUI.View
 {
     /// <summary>
     /// ImportTranslateDB.xaml 的交互逻辑

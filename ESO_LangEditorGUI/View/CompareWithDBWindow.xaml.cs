@@ -1,5 +1,4 @@
-﻿using ESO_Lang_Editor.Model;
-using ESO_LangEditorLib;
+﻿using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using Microsoft.Win32;
 using System.Collections.Generic;
@@ -14,7 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using static System.Convert;
 
-namespace ESO_Lang_Editor.View
+namespace ESO_LangEditorGUI.View
 {
     /// <summary>
     /// CompareWindow.xaml 的交互逻辑

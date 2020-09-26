@@ -1,7 +1,8 @@
-﻿using ESO_Lang_Editor.Model;
+﻿using ESO_LangEditorGUI.Model;
 using ESO_LangEditorGUI.View;
 using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
+using ESO_LangEditorLib.Models.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,16 +13,16 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace ESO_Lang_Editor.View
+namespace ESO_LangEditorGUI.View
 {
     /// <summary>
     /// TextEditor.xaml 的交互逻辑
     /// </summary>
     public partial class TextEditor : Window
     {
-        private LangText EditData;
-        private List<LangText> SelectedItems;
-        private List<LangText> ReplacedItems;
+        private LangTextDto EditData;
+        private List<LangTextDto> SelectedItems;
+        private List<LangTextDto> ReplacedItems;
 
         private LuaUIData EditLuaData;
         private List<LuaUIData> SelectedLuaItems;
@@ -32,7 +33,7 @@ namespace ESO_Lang_Editor.View
         IDCatalog IDtypeName;
         MainWindow Mainwindow;
 
-        public TextEditor(LangText LangData, ref IDCatalog IDtype, MainWindow window)
+        public TextEditor(LangTextDto LangData, ref IDCatalog IDtype, MainWindow window)
         {
 
             InitializeComponent();
@@ -57,7 +58,7 @@ namespace ESO_Lang_Editor.View
 
         
 
-        public TextEditor(List<LangText> SelectedItemsList, ref IDCatalog IDtype, MainWindow window)
+        public TextEditor(List<LangTextDto> SelectedItemsList, ref IDCatalog IDtype, MainWindow window)
         {
 
             InitializeComponent();
@@ -77,31 +78,31 @@ namespace ESO_Lang_Editor.View
             InitWindowVariables(true, ref IDtype, window);
         }
 
-        public void ApplyReplacedList(List<LangText> replacedList)
+        public void ApplyReplacedList(List<LangTextDto> replacedList)
         {
             //SelectedItems = replacedList;
             
-            if (replacedList.Count >= 1)
-            {
-                ReplacedItems = replacedList;
+            //if (replacedList.Count >= 1)
+            //{
+            //    ReplacedItems = replacedList;
 
-                foreach (var replaced in replacedList)
-                {
-                    foreach (var item in SelectedItems)
-                    {
-                        if (item.UniqueID == replaced.UniqueID)
-                        {
-                            item.Text_ZH = replaced.Text_ZH;
-                        }
-                    }
-                }
+            //    foreach (var replaced in replacedList)
+            //    {
+            //        foreach (var item in SelectedItems)
+            //        {
+            //            if (item.UniqueID == replaced.UniqueID)
+            //            {
+            //                item.Text_ZH = replaced.Text_ZH;
+            //            }
+            //        }
+            //    }
 
-                SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！点击 批量保存 按钮来保存。");
-                button_save.IsEnabled = false;
-                InitWindowVariables(true);
-            }
-            else
-                SaveMessagePopup("没有匹配到任何文本，请检查！");
+            //    SaveMessagePopup("总共替换了 " + replacedList.Count + " 条文本，请查看列表确认！点击 批量保存 按钮来保存。");
+            //    button_save.IsEnabled = false;
+            //    InitWindowVariables(true);
+            //}
+            //else
+            //    SaveMessagePopup("没有匹配到任何文本，请检查！");
         }
 
 
@@ -259,8 +260,11 @@ namespace ESO_Lang_Editor.View
             {
                 button_save.IsEnabled = false;
 
-                var EditedData = GetEditedData();
-                int result = await db.UpdateLangsZH(EditedData);
+                EditData.TextZh = textBox_ZH.Text;
+
+
+                //var EditedData = GetEditedData();
+                int result = 1;// await db.UpdateLangsZH(EditedData);
 
                 //Mainwindow.SetSaveStats(true);
                 SaveMessagePopup(result);
@@ -310,7 +314,7 @@ namespace ESO_Lang_Editor.View
                 if (isLua)
                     message = "文本ID：" + GetEditedLuaData().UniqueID + " 保存成功！";
                 else
-                    message = "文本ID：" + GetEditedData().UniqueID + " 保存成功！";
+                    message = "文本ID：" + GetEditedData().Id + " 保存成功！";
             }
             else if (result > 1)
             {
@@ -450,18 +454,18 @@ namespace ESO_Lang_Editor.View
             }
             else
             {
-                textBox_EN.Text = EditData.Text_EN;
-                textBox_ZH.Text = EditData.Text_ZH;
+                textBox_EN.Text = EditData.TextEn;
+                textBox_ZH.Text = EditData.TextZh;
 
                 string modifyInfo = "，编辑信息：正常.";
 
-                if (EditData.RowStats == 2 && EditData.IsTranslated == 2)
+                if (/*EditData.RowStats == 2 &&*/ EditData.IsTranslated == 2)
                     modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
 
                 //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
                 //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
 
-                textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.ID)
+                textblock_information.Text = "类型：" + IDtypeName.GetCategory(EditData.IdType)
                         + modifyInfo;
             }
             
@@ -469,28 +473,28 @@ namespace ESO_Lang_Editor.View
 
        
 
-        private LangText GetEditedData()
+        private LangTextDto GetEditedData()
         {
-            int rowStats = EditData.RowStats;
+            //int rowStats = EditData.RowStats;
             //int translate = EditData.IsTranslated;
 
-            if (rowStats == 2)
-                rowStats = 4;
-            else if (rowStats != 4)
-                rowStats = 3;
-            else
-                rowStats = 4;
+            //if (rowStats == 2)
+            //    rowStats = 4;
+            //else if (rowStats != 4)
+            //    rowStats = 3;
+            //else
+            //    rowStats = 4;
 
-            var EditedData = new LangText
+            var EditedData = new LangTextDto
             {
-                UniqueID = EditData.UniqueID,
+                Id = EditData.Id,
                 //ID = EditData.ID,
                 //Unknown = EditData.Unknown,
                 //Lang_Index = EditData.Lang_Index,
                 //Text_EN = EditData.Text_EN,
-                Text_ZH = textBox_ZH.Text,
+                TextZh = textBox_ZH.Text,
                 //UpdateStats = EditData.UpdateStats,
-                RowStats = rowStats,
+                //RowStats = rowStats,
                 IsTranslated = 1,
             };
 
@@ -527,45 +531,45 @@ namespace ESO_Lang_Editor.View
 
         private void Button_modifyList_Click(object sender, RoutedEventArgs e)
         {
-            var modifyListWindow = new TextEditor_SearchReplace(SelectedItems, this);
+            //var modifyListWindow = new TextEditor_SearchReplace(SelectedItems, this);
 
-            modifyListWindow.Show();
+            //modifyListWindow.Show();
         }
 
         private async void Button_saveModifyList_Click(object sender, RoutedEventArgs e)
         {
-            int result = await db.UpdateLangsZH(ReplacedItems);
+            //int result = await db.UpdateLangsZH(ReplacedItems);
 
-            if (result >= 1)
-            {
-                CompareReplacedItemInList();
+            //if (result >= 1)
+            //{
+            //    CompareReplacedItemInList();
 
-                Debug.WriteLine(SelectedItems.Count);
+            //    Debug.WriteLine(SelectedItems.Count);
 
-                SaveMessagePopup(result);
-                InitWindowVariables(false);
+            //    SaveMessagePopup(result);
+            //    InitWindowVariables(false);
 
-                button_saveModifyList.IsEnabled = false;
-            }
+            //    button_saveModifyList.IsEnabled = false;
+            //}
 
-            button_save.IsEnabled = true;
+            //button_save.IsEnabled = true;
         }
 
         private void CompareReplacedItemInList()
         {
-            Dictionary<string, LangText> selectedItem = new Dictionary<string, LangText>();
-            Dictionary<string, LangText> replacedItem = new Dictionary<string, LangText>();
+            //Dictionary<string, LangText> selectedItem = new Dictionary<string, LangText>();
+            //Dictionary<string, LangText> replacedItem = new Dictionary<string, LangText>();
 
-            selectedItem = SelectedItems.ToDictionary(s => s.UniqueID);
-            replacedItem = ReplacedItems.ToDictionary(r => r.UniqueID);
+            //selectedItem = SelectedItems.ToDictionary(s => s.UniqueID);
+            //replacedItem = ReplacedItems.ToDictionary(r => r.UniqueID);
 
-            foreach (var item in replacedItem)
-            {
-                if (selectedItem.Keys.Contains(item.Key))
-                    selectedItem.Remove(item.Key);
-            }
+            //foreach (var item in replacedItem)
+            //{
+            //    if (selectedItem.Keys.Contains(item.Key))
+            //        selectedItem.Remove(item.Key);
+            //}
 
-            SelectedItems = selectedItem.Values.ToList();
+            //SelectedItems = selectedItem.Values.ToList();
         }
     }
 }

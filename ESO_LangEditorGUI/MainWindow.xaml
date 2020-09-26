@@ -1,12 +1,13 @@
-﻿<Window x:Class="ESO_Lang_Editor.View.MainWindow"
+﻿<Window x:Class="ESO_LangEditorGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:ESO_Lang_Editor.View"
+        xmlns:ucd="clr-namespace:ESO_LangEditorGUI.View"
+        xmlns:local="clr-namespace:ESO_LangEditorGUI" xmlns:local1="clr-namespace:ESO_LangEditorGUI.Converter"
         mc:Ignorable="d"
-        Title="ESO文本查询编辑器" Height="500" Width="820" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500">
+        Title="{Binding WindowTitle}" Height="500" Width="820" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500">
 
     <materialDesign:DrawerHost LeftDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHost">
         <materialDesign:DrawerHost.TopDrawerContent>
@@ -91,6 +92,7 @@
                                     BorderThickness="0"
                                     TextWrapping="Wrap"
                                     VerticalAlignment="Stretch"
+                                    Text="{Binding Keyword, UpdateSourceTrigger=PropertyChanged}"
                                     KeyDown="SearchTextBlock_EnterPress" HorizontalAlignment="Stretch" />
 
                                 <CheckBox x:Name="SearchStr_checkBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
@@ -111,7 +113,17 @@
                                                   Margin="10 5 0 0"
                                                   HorizontalAlignment="Left"
                                                   materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                            <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" />
+                            <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" 
+                                      ItemsSource="{Binding SearchPostion}" SelectedItem="{Binding SelectedSearchPostion, Mode=TwoWay}" SelectedIndex="0">
+                                <ComboBox.Resources>
+                                    <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+                                </ComboBox.Resources>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </materialDesign:ColorZone>
 
                         <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
@@ -120,7 +132,17 @@
                                                   Margin="10 5 0 0"
                                                   HorizontalAlignment="Left"
                                                   materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"/>
+                            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"
+                                      ItemsSource="{Binding SearchTextType}" SelectedItem="{Binding SelectedSearchTextType, Mode=TwoWay}" SelectedIndex="1">
+                                <ComboBox.Resources>
+                                    <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+                                </ComboBox.Resources>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                         </materialDesign:ColorZone>
 
                         <!--<materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
@@ -136,7 +158,8 @@
 
                         <Button x:Name="SearchButton" Style="{DynamicResource MaterialDesignToolForegroundButton}" 
                             Grid.Column="5"
-                            Click="SearchButton_Click" 
+                            Command="{Binding SearchLangCommand}"
+                            IsDefault="True"
                             Margin="10 0 0 0"
                             Width="30" Height="30" HorizontalAlignment="Left" Cursor="Hand" >
                             <materialDesign:PackIcon Kind="Magnify" Width="30" Height="30" />
@@ -158,13 +181,18 @@
                                      ToolTip="This is an example chip"  VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" Margin="10,8,4,4" Cursor="Hand" />
                 </WrapPanel>-->
 
-                <DataGrid  x:Name="LangData"
+                <!--<DataGrid x:Name="LangData"
                       MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
                       SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                       MouseRightButtonUp="LangSearch_MouseRightUp"
                       AutoGenerateColumns="False" Margin="10,10,10,10"
-                      ColumnWidth="200*" 
-                    MinRowHeight="20" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top" />
+                      ColumnWidth="200*"
+                      
+                    MinRowHeight="20" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+
+                </DataGrid>-->
+                <ucd:UC_LangDataGrid x:Name="LangDataGrid" DataContext="{Binding LangDataGridView}" />
+
             </DockPanel>
 
 
@@ -186,11 +214,12 @@
                 </StatusBar.ItemsPanel>
 
                 <StatusBarItem Grid.Column="0">
-                    <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
+                    <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="{Binding SearchInfo}" Width="230"/>
                 </StatusBarItem>
                 <Separator Grid.Column="1" />
                 <StatusBarItem Grid.Column="2">
-                    <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+                    <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" 
+                               Text="{Binding SelectedInfo}" Width="230" />
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
 
@@ -205,5 +234,4 @@
 
         </Grid>
     </materialDesign:DrawerHost>
-
 </Window>

@@ -8,25 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <EmbeddedResource Remove="Resources\**" />
-    <None Remove="Resources\**" />
-    <Page Remove="Resources\**" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <Compile Remove="View\CompareCsvWindow.xaml.cs" />
-    <Compile Remove="View\CompareLuaWithDBWindow.xaml.cs" />
-    <Compile Remove="View\CreateDB_ImportLua.xaml.cs" />
-    <Compile Remove="View\DatabaseModifyWindow.xaml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Remove="View\CompareCsvWindow.xaml" />
-    <Page Remove="View\CompareLuaWithDBWindow.xaml" />
-    <Page Remove="View\CreateDB_ImportLua.xaml" />
-    <Page Remove="View\DatabaseModifyWindow.xaml" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.1.3" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +16,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MaterialDesignThemes" Version="3.1.3" />
+    <Compile Update="View\PackToRelase.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="View\ExportTranslate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ImportTranslateDB.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\PackToRelase.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
 </Project>

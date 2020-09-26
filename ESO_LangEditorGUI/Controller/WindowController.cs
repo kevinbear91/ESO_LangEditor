@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ESO_LangEditorLib.Models.Client;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ESO_LangEditorGUI.Controller
 {
@@ -10,32 +13,32 @@ namespace ESO_LangEditorGUI.Controller
     {
 
 
-        public ObservableCollection<string> GetSearchPostion()
-        {
-            ObservableCollection<string> searchTextInPosition = new ObservableCollection<string>
-            {
-                "包含全文",
-                "仅包含开头",
-                "仅包含结尾"
-            };
+        //public ObservableCollection<string> GetSearchPostion()
+        //{
+        //    ObservableCollection<string> searchTextInPosition = new ObservableCollection<string>
+        //    {
+        //        "包含全文",
+        //        "仅包含开头",
+        //        "仅包含结尾"
+        //    };
 
-            return searchTextInPosition;
-        }
+        //    return searchTextInPosition;
+        //}
 
-        public ObservableCollection<string> GetSearchTextType()
-        {
-            ObservableCollection<string> searchTextType = new ObservableCollection<string>
-            {
-                "搜类型",   //0
-                "搜英文",   //1
-                "搜译文",   //2
-                "搜版本号",
-                "搜唯一ID",
-                "搜已翻译条目"
-            };
+        //public ObservableCollection<string> GetSearchTextType()
+        //{
+        //    ObservableCollection<string> searchTextType = new ObservableCollection<string>
+        //    {
+        //        "搜类型",   //0
+        //        "搜英文",   //1
+        //        "搜译文",   //2
+        //        "搜版本号",
+        //        "搜唯一ID",
+        //        "搜已翻译条目"
+        //    };
 
-            return searchTextType;
-        }
+        //    return searchTextType;
+        //}
 
         
 
@@ -62,6 +65,18 @@ namespace ESO_LangEditorGUI.Controller
                     result = true;
             }
             return result;
+        }
+
+        public async Task<List<LangTextDto>> GetLangTexts()
+        {
+            var net = new ServerConnectController();
+            List<LangTextDto> langtexts = await Task.Run(() => net.GetLangTexts());
+
+            //ObservableCollection<LangTextDto> langs = new ObservableCollection<LangTextDto>(langtexts);
+
+            //Debug.WriteLine(langs.Count);
+
+            return langtexts;
         }
 
     }
