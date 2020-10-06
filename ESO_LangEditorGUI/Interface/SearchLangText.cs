@@ -1,5 +1,5 @@
-﻿using ESO_LangEditorGUI.Models.Enum;
-using ESO_LangEditorLib.Models.Client;
+﻿using ESO_LangEditorLib.Models.Client;
+using ESO_LangEditorLib.Models.Client.Enum;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +18,7 @@ namespace ESO_LangEditorGUI.Interface
 
         public HttpClient ApiClient { get; private set; }
 
-        public async Task<List<LangTextDto>> GetLangText(SearchPostion searchPostion, SearchTextType searchType, string keyWord)
+        public async Task<List<LangTextDto>> GetLangTexts(SearchPostion searchPostion, SearchTextType searchType, string keyWord)
         {
             GetKeywordWithPostion(searchPostion, keyWord);
 
@@ -60,7 +60,7 @@ namespace ESO_LangEditorGUI.Interface
             return langText;
         }
 
-        
+
 
         public LangTextDto GetLangText(SearchPostion searchPostion, SearchTextType searchType, int keyWord)
         {
@@ -87,7 +87,7 @@ namespace ESO_LangEditorGUI.Interface
                 SearchTextType.ByUser => "api/users/"+ keyWord + "/langtexts",  //用户ID
                 //SearchTextType.Guid => "api/users/" + keyWord + "/langtexts",  //用户ID
 
-                _ => "api/users/" + keyWord + "/langtexts",  //默认 - 用户ID
+                //_ => "api/users/" + keyWord + "/langtexts",  //默认 - 用户ID
 
             };
 

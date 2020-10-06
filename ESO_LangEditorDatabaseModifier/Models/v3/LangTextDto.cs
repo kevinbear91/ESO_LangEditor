@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace ESO_LangEditorLib.Models.Client
+namespace ESO_LangEditorDatabaseModifier.Model.v3
 {
-    public class LangTextDto : BaseDataModelClient
+    [Table("lang_texts")]
+    public class LangTextDto_v3 : BaseDataModelClient
     {
         private Guid _id;
         private string _textId;
         private int _idType;
         private string _textEn;
         private string _textZh;
+        private LangType _langType;
         private int _isTranslated;
         private string _updateStats;
         private DateTime _enLastModifyTimestamp;
         private DateTime _zhLastModifyTimestamp;
         private Guid _userId;
 
-        public Guid Id 
-        { 
-            get { return _id; } 
-            set { _id = value; NotifyPropertyChanged(); } 
+        [Key]
+        public Guid Id
+        {
+            get { return _id; }
+            set { _id = value; NotifyPropertyChanged(); }
         }
 
         public string TextId
@@ -46,6 +50,12 @@ namespace ESO_LangEditorLib.Models.Client
         {
             get { return _textZh; }
             set { _textZh = value; NotifyPropertyChanged(); }
+        }
+
+        public LangType LangType
+        {
+            get { return _langType; }
+            set { _langType = value; NotifyPropertyChanged(); }
         }
 
         public int IsTranslated
@@ -78,10 +88,5 @@ namespace ESO_LangEditorLib.Models.Client
             get { return _userId; }
             set { _userId = value; NotifyPropertyChanged(); }
         }
-
-        //public override string ToString()
-        //{
-        //    //return ;
-        //}
     }
 }

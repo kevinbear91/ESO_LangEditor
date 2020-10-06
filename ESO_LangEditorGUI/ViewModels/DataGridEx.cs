@@ -22,6 +22,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private void HeaderClick(object sender, MouseButtonEventArgs e)
         {
+
             ContextMenu menu = new ContextMenu();
             // Fill context menu with column names and checkboxes
             var visibleColumns = this.Columns.Where(c => c.Visibility == Visibility.Visible).Count();

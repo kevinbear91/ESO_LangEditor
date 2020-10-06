@@ -1,7 +1,8 @@
 ﻿using ESO_LangEditorGUI.Interface;
-using ESO_LangEditorGUI.Models.Enum;
 using ESO_LangEditorGUI.View;
 using ESO_LangEditorGUI.ViewModels;
+using ESO_LangEditorLib.Models.Client.Enum;
+using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +20,10 @@ namespace ESO_LangEditorGUI.Command
         private readonly bool _isLua;
         private readonly DataGridViewModel _langDataGrid;
         private readonly SearchLangText search = new SearchLangText();
+        private readonly LangTextRepository _localSearch = new LangTextRepository();
         private readonly MainWindowViewModel _mainView;
+
+        private readonly UC_LangDataGrid _langDataGriduc;
 
         //public SearchLangCommand(SearchPostion searchPostion, SearchTextType searchType, string keyWord, bool isLua, DataGridViewModel langDataGrid)
         //{
@@ -30,13 +34,19 @@ namespace ESO_LangEditorGUI.Command
         //    _langDataGrid = langDataGrid;
         //}
 
-        public SearchLangCommand(MainWindowViewModel mainView, DataGridViewModel langDataGrid)
+        //public SearchLangCommand(MainWindowViewModel mainView, DataGridViewModel langDataGrid)
+        //{
+        //    _mainView = mainView;
+        //    _langDataGrid = langDataGrid;
+
+        //    //Debug.WriteLine(_mainView.ToString());
+
+        //}
+
+        public SearchLangCommand(MainWindowViewModel mainView)
         {
             _mainView = mainView;
-            _langDataGrid = langDataGrid;
-            //IsExecuting = false;
-
-            //IsExecuting = false;
+            //_langDataGriduc = langDataGrid;
 
             //Debug.WriteLine(_mainView.ToString());
 
@@ -44,7 +54,19 @@ namespace ESO_LangEditorGUI.Command
 
         public override async Task ExecuteAsync(object parameter)
         {
-            _langDataGrid.GridData = await search.GetLangText(_mainView.SelectedSearchPostion, _mainView.SelectedSearchTextType, _mainView.Keyword);
+            UC_LangDataGrid _langDatagrid = parameter as UC_LangDataGrid;
+
+            if (App.OnlineMode)
+            {
+                _langDatagrid.LangDataGrid.ItemsSource = await search.GetLangTexts(_mainView.SelectedSearchPostion, _mainView.SelectedSearchTextType, _mainView.Keyword);
+            }
+            else
+            {
+                _langDatagrid.LangDataGrid.ItemsSource = _localSearch.GetLangTexts(_mainView.Keyword, _mainView.SelectedSearchTextType);
+            }
+            
+            //_langDataGrid.GridData = 
+            
         }
 
     }

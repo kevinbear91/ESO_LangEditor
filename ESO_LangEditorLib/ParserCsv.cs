@@ -13,11 +13,11 @@ namespace ESO_LangEditorLib
     public class ParserCsv
     {
 
-        public async Task<List<LangText>> CsvReaderToListAsync(string path)
+        public async Task<List<LangTextDto>> CsvReaderToListAsync(string path)
         #region 读取CSV文件并返回List<LangData>
         {
             string result;
-            List<LangText> csvData = new List<LangText>();
+            List<LangTextDto> csvData = new List<LangTextDto>();
             using (StreamReader reader = new StreamReader(path))
             {
                 Debug.WriteLine("Opened file.");
@@ -57,7 +57,7 @@ namespace ESO_LangEditorLib
             }
             return csvData;
 
-            static void ParserCsvAddToList(List<LangText> csvData, out string id, out string unknown, out string index, out string text, string[] words)
+            static void ParserCsvAddToList(List<LangTextDto> csvData, out string id, out string unknown, out string index, out string text, string[] words)
             #region 分析CSV文件，并将分析后的文本加入 List<CsvData>
             {
 
@@ -67,7 +67,7 @@ namespace ESO_LangEditorLib
                 index = words[2].Trim('"');
                 text = words[4].Substring(1, words[4].Length - 2);
 
-                csvData.Add(new LangText
+                csvData.Add(new LangTextDto
                 {
                     UniqueID = id + "-" + unknown + "-" + index,
                     ID = ToInt32(id),
@@ -85,11 +85,11 @@ namespace ESO_LangEditorLib
         }
         #endregion
 
-        public async Task<List<LangText>> ExportReaderToListAsync(string path)
+        public async Task<List<LangTextDto>> ExportReaderToListAsync(string path)
         #region 读取 .LangDB 文件并返回List<LangData>
         {
             string result;
-            List<LangText> csvData = new List<LangText>();
+            List<LangTextDto> csvData = new List<LangTextDto>();
             using (StreamReader reader = new StreamReader(path))
             {
                 Debug.WriteLine("Opened file.");
@@ -118,7 +118,7 @@ namespace ESO_LangEditorLib
             }
             return csvData;
 
-            static void ParserCsvAddToList(List<LangText> csvData, out string uniqueID, out string id, out string unknown, out string index, out string text, out string zh, out string translate, out string rowStats,  string[] words)
+            static void ParserCsvAddToList(List<LangTextDto> csvData, out string uniqueID, out string id, out string unknown, out string index, out string text, out string zh, out string translate, out string rowStats,  string[] words)
             #region 分析.LangDB 文件，并将分析后的文本加入 List<CsvData>
             {
 
@@ -131,7 +131,7 @@ namespace ESO_LangEditorLib
                 translate = words[7];
                 rowStats = words[8];
 
-                csvData.Add(new LangText
+                csvData.Add(new LangTextDto
                 {
                     UniqueID = uniqueID,
                     ID = ToInt32(id),
@@ -213,11 +213,11 @@ namespace ESO_LangEditorLib
         #endregion
 
 
-        public async Task<Dictionary<string, LangText>> CsvReaderToDictionaryAsync(string path)
+        public async Task<Dictionary<string, LangTextDto>> CsvReaderToDictionaryAsync(string path)
         #region 读取CSV文件并返回Dictionary<string, LangData>
         {
             string result;
-            Dictionary<string, LangText> csvData = new Dictionary<string, LangText>();
+            Dictionary<string, LangTextDto> csvData = new Dictionary<string, LangTextDto>();
             using (StreamReader reader = new StreamReader(path))
             {
                 Debug.WriteLine("Opened file.");
@@ -257,7 +257,7 @@ namespace ESO_LangEditorLib
             }
             return csvData;
 
-            static void ParserCsvAddToDict(Dictionary<string, LangText> csvData, out string id, out string unknown, out string index, out string text, string[] words)
+            static void ParserCsvAddToDict(Dictionary<string, LangTextDto> csvData, out string id, out string unknown, out string index, out string text, string[] words)
             #region 分析CSV文件，并将分析后的文本加入 Dictionary<string, LangData>
             {
 
@@ -268,7 +268,7 @@ namespace ESO_LangEditorLib
                 text = words[4].Substring(1, words[4].Length - 2).Replace("\"\"","\"");
                 string key = id + "-" + unknown + "-" + index;
 
-                csvData.Add(key, new LangText
+                csvData.Add(key, new LangTextDto
                 {
                     UniqueID = key,
                     ID = ToInt32(id),

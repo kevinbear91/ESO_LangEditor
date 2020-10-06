@@ -9,8 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <DataGrid x:Name="LangDataGrid" ItemsSource="{Binding GridData}" AutoGenerateColumns="False" 
-                  MouseRightButtonDown="HeaderClick"
+        <DataGrid x:Name="LangDataGrid" ItemsSource="{Binding GridData}"
+                  AutoGenerateColumns="False" 
+                  MouseRightButtonDown="LangDataGridRightClick"
                   MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
                   SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                   ColumnWidth="200*">

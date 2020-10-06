@@ -33,4 +33,8 @@
     </Page>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\LangException\" />
+  </ItemGroup>
+
 </Project>

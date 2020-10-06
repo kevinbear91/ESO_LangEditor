@@ -22,7 +22,6 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorGUI.Interface;
-using ESO_LangEditorGUI.Models.Enum;
 
 namespace ESO_LangEditorGUI
 {
@@ -32,22 +31,24 @@ namespace ESO_LangEditorGUI
     public partial class MainWindow : Window
     {
         //private MainWindowOption windowsOptions;
-        private List<LangTextDto> SearchData;
-        private List<LangTextDto> SelectedDatas;
+        //private List<ESO_LangEditorLib.Models.Client.LangTextDto> SearchData;
+        //private List<ESO_LangEditorLib.Models.Client.LangTextDto> SelectedDatas;
         //LangText SelectedData;
 
         //UIstrFile SelectedStrData;
-        private List<LuaUIData> searchLuaData;
-        private List<LuaUIData> SelectedLuaDatas;
-        private bool isLua;
+        //private List<LuaUIData> searchLuaData;
+        //private List<LuaUIData> SelectedLuaDatas;
+        //private bool isLua;
 
-        ObservableCollection<string> searchTextInPosition;
-        ObservableCollection<string> searchTextType;
+        //ObservableCollection<string> searchTextInPosition;
+        //ObservableCollection<string> searchTextType;
 
         LangDbController db = new LangDbController();
 
         IDCatalog IDtypeName = new IDCatalog();
-        WindowController windowControll = new WindowController();
+        //WindowController windowControll = new WindowController();
+
+
 
         public MainWindow()
         {
@@ -55,11 +56,11 @@ namespace ESO_LangEditorGUI
             //DataContext = windowsOptions;
             
             InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
+            this.DataContext = new MainWindowViewModel(LangDataGrid);
 
 
-            SearchTextBox.IsEnabled = false;
-            SearchButton.IsEnabled = false;
+            //SearchTextBox.IsEnabled = false;
+            //SearchButton.IsEnabled = false;
 
 
             //SearchTextInPositionInit();
@@ -78,6 +79,7 @@ namespace ESO_LangEditorGUI
 
             //GeneratingColumns();
             GeneratingChips();
+            
 
             //var db = new SqliteController();
             //db.CreateTable();
@@ -87,7 +89,7 @@ namespace ESO_LangEditorGUI
             //    db.Database.EnsureCreated();
             //}
 
-            new CheckDBFile().CheckDBUpdateFile(this);
+            //new CheckDBFile().CheckDBUpdateFile(this);
 
             //UpdatedDB_Check();
 
@@ -113,40 +115,40 @@ namespace ESO_LangEditorGUI
         }
 
 
-        private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            DataGrid datagrid = sender as DataGrid;
-            Point aP = e.GetPosition(datagrid);
-            IInputElement obj = datagrid.InputHitTest(aP);
-            DependencyObject target = obj as DependencyObject;
+        //private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    DataGrid datagrid = sender as DataGrid;
+        //    Point aP = e.GetPosition(datagrid);
+        //    IInputElement obj = datagrid.InputHitTest(aP);
+        //    DependencyObject target = obj as DependencyObject;
 
-            if (SelectedDatas != null)
-                SelectedDatas.Clear();
+        //    if (SelectedDatas != null)
+        //        SelectedDatas.Clear();
 
-            while (target != null)
-            {
-                if (target is DataGridRow)
-                    if (datagrid.SelectedIndex != -1)
-                    {
-                        if (isLua)
-                        {
-                            TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem, ref IDtypeName, this);
-                            textEditor.Show();
-                        }
-                        else
-                        {
-                            //SelectedData = ;
-                            TextEditor textEditor = new TextEditor((LangTextDto)datagrid.SelectedItem, ref IDtypeName, this);
-                            textEditor.Show();
-                            //MessageBox.Show((LangData)datagrid.SelectedItem);
-                        }
+        //    while (target != null)
+        //    {
+        //        if (target is DataGridRow)
+        //            if (datagrid.SelectedIndex != -1)
+        //            {
+        //                if (isLua)
+        //                {
+        //                    TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem, ref IDtypeName, this);
+        //                    textEditor.Show();
+        //                }
+        //                else
+        //                {
+        //                    //SelectedData = ;
+        //                    TextEditor textEditor = new TextEditor((LangTextDto)datagrid.SelectedItem, ref IDtypeName, this);
+        //                    textEditor.Show();
+        //                    //MessageBox.Show((LangData)datagrid.SelectedItem);
+        //                }
 
 
-                    }
+        //            }
 
-                target = VisualTreeHelper.GetParent(target);
-            }
-        }
+        //        target = VisualTreeHelper.GetParent(target);
+        //    }
+        //}
 
 
         private void CsvFileCompare_Click(object sender, RoutedEventArgs e)
@@ -211,175 +213,175 @@ namespace ESO_LangEditorGUI
             importTranslate.Show();
         }
 
-        private async void SearchTextBlock_EnterPress(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter && SearchTextBox.IsFocused)
-            {
-                await SearchDB();
-            }
-        }
+        //private async void SearchTextBlock_EnterPress(object sender, KeyEventArgs e)
+        //{
+        //    if (e.Key == Key.Enter && SearchTextBox.IsFocused)
+        //    {
+        //        await SearchDB();
+        //    }
+        //}
 
-        private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-           // textBlock_SelectionInfo.Text = "已选择 " + LangData.SelectedItems.Count + " 条文本";
+        //private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //   // textBlock_SelectionInfo.Text = "已选择 " + LangData.SelectedItems.Count + " 条文本";
 
-        }
+        //}
 
-        private void LangSearch_MouseRightUp(object sender, MouseButtonEventArgs e)
-        {
-            DataGrid grid = (DataGrid)sender;
-            var selectedItems = grid.SelectedItems;
+        //private void LangSearch_MouseRightUp(object sender, MouseButtonEventArgs e)
+        //{
+        //    DataGrid grid = (DataGrid)sender;
+        //    var selectedItems = grid.SelectedItems;
 
-            if (isLua)
-            {
-                if (SelectedLuaDatas != null)
-                    SelectedLuaDatas.Clear();
+        //    if (isLua)
+        //    {
+        //        if (SelectedLuaDatas != null)
+        //            SelectedLuaDatas.Clear();
 
-                SelectedLuaDatas = new List<LuaUIData>();
+        //        SelectedLuaDatas = new List<LuaUIData>();
 
-                if (selectedItems.Count > 1)
-                {
-                    foreach (var selectedItem in selectedItems)
-                    {
-                        if (selectedItem != null)
-                            SelectedLuaDatas.Add((LuaUIData)selectedItem);
-                    }
+        //        if (selectedItems.Count > 1)
+        //        {
+        //            foreach (var selectedItem in selectedItems)
+        //            {
+        //                if (selectedItem != null)
+        //                    SelectedLuaDatas.Add((LuaUIData)selectedItem);
+        //            }
 
-                    TextEditor textEditor = new TextEditor(SelectedLuaDatas, ref IDtypeName, this);
-                    textEditor.Show();
-                }
-            }
-            else
-            {
-                if (SelectedDatas != null)
-                    SelectedDatas.Clear();
+        //            //TextEditor textEditor = new TextEditor(SelectedLuaDatas, ref IDtypeName, this);
+        //            //textEditor.Show();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (SelectedDatas != null)
+        //            SelectedDatas.Clear();
 
-                SelectedDatas = new List<LangTextDto>();
+        //        SelectedDatas = new List<ESO_LangEditorLib.Models.Client.LangTextDto>();
 
-                if (selectedItems.Count > 1)
-                {
-                    foreach (var selectedItem in selectedItems)
-                    {
-                        if (selectedItem != null)
-                            SelectedDatas.Add((LangTextDto)selectedItem);
-                    }
+        //        if (selectedItems.Count > 1)
+        //        {
+        //            foreach (var selectedItem in selectedItems)
+        //            {
+        //                if (selectedItem != null)
+        //                    SelectedDatas.Add((ESO_LangEditorLib.Models.Client.LangTextDto)selectedItem);
+        //            }
 
-                    TextEditor textEditor = new TextEditor(SelectedDatas, ref IDtypeName, this);
-                    textEditor.Show();
-                }
-            }
+        //            //TextEditor textEditor = new TextEditor(SelectedDatas, ref IDtypeName, this);
+        //            //textEditor.Show();
+        //        }
+        //    }
 
-        }
+        //}
 
-        private async Task SearchDB()
-        {
-            int selectedSearchType = SearchTypeComboBox.SelectedIndex;
-            int selectedSearchTextPosition = SearchTextPositionComboBox.SelectedIndex;
-            string searchText = SearchTextBox.Text;
+        //private async Task SearchDB()
+        //{
+        //    int selectedSearchType = SearchTypeComboBox.SelectedIndex;
+        //    int selectedSearchTextPosition = SearchTextPositionComboBox.SelectedIndex;
+        //    string searchText = SearchTextBox.Text;
 
-            SearchButton.IsEnabled = false;
-            //SearchButton.Content = "正在搜索……";
-            SearchTextBox.IsEnabled = false;
+        //    SearchButton.IsEnabled = false;
+        //    //SearchButton.Content = "正在搜索……";
+        //    SearchTextBox.IsEnabled = false;
 
-            //if (SearchTypeComboBox.SelectedIndex == 0)
-            //{
-            //    if (System.Text.RegularExpressions.Regex.IsMatch(SearchTextBox.Text, "[^0-9]"))
-            //    {
-            //        MessageBox.Show("Please enter only numbers.");
-            //    }
-            //}
+        //    //if (SearchTypeComboBox.SelectedIndex == 0)
+        //    //{
+        //    //    if (System.Text.RegularExpressions.Regex.IsMatch(SearchTextBox.Text, "[^0-9]"))
+        //    //    {
+        //    //        MessageBox.Show("Please enter only numbers.");
+        //    //    }
+        //    //}
 
 
 
-            MessageBoxResult result = MessageBoxResult.Cancel;
+        //    MessageBoxResult result = MessageBoxResult.Cancel;
 
-            if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
-            {
-                result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
-                    MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            }
-            else
-            {
-                await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
-            }
+        //    if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
+        //    {
+        //        result = MessageBox.Show("留空将执行全局搜索，即搜索数据库内全部内容，确定要执行吗？", "内存爆炸警告",
+        //            MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+        //    }
+        //    else
+        //    {
+        //        await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
+        //    }
 
-            switch (result)
-            {
-                case MessageBoxResult.OK:
-                    await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
-                    break;
-                case MessageBoxResult.Cancel:
-                    break;
-            }
+        //    switch (result)
+        //    {
+        //        case MessageBoxResult.OK:
+        //            await GetLangData(selectedSearchType, selectedSearchTextPosition, searchText);
+        //            break;
+        //        case MessageBoxResult.Cancel:
+        //            break;
+        //    }
 
-            //LangData.ItemsSource = SearchData;
-            SearchButton.IsEnabled = true;
-            //SearchButton.Content = "搜索";
-            SearchTextBox.IsEnabled = true;
+        //    //LangData.ItemsSource = SearchData;
+        //    SearchButton.IsEnabled = true;
+        //    //SearchButton.Content = "搜索";
+        //    SearchTextBox.IsEnabled = true;
 
-            //textBlock_Info.Text = GetInfoBlockText();
-        }
+        //    //textBlock_Info.Text = GetInfoBlockText();
+        //}
 
-        private async Task GetLangData(int selectedSearchType, int selectedSearchTextPosition, string searchText)
-        {
-            int searchType = selectedSearchType;
+        //private async Task GetLangData(int selectedSearchType, int selectedSearchTextPosition, string searchText)
+        //{
+        //    int searchType = selectedSearchType;
 
-            if (windowControll.InputCheck(searchType, searchText))
-            {
-                if (searchType == 5 && isLua == false)
-                    searchType = 6;
+        //    if (windowControll.InputCheck(searchType, searchText))
+        //    {
+        //        if (searchType == 5 && isLua == false)
+        //            searchType = 6;
 
-                if (isLua)
-                {
-                    searchLuaData = await Task.Run(() =>
-                    {
-                        var query = db.GetLuaLangsListAsync(searchType, selectedSearchTextPosition, searchText);
-                        return query;
-                    });
-                    //LangData.ItemsSource = searchLuaData;
-                }
-                else
-                {
-                    //SearchData = await Task.Run(() =>
-                    //{
-                    //    var query = db.GetLangsListAsync(searchType, selectedSearchTextPosition, searchText);
-                    //    return query;
-                    //});
-                    //LangData.ItemsSource = SearchData;
-                }
-            }
-            else
-            {
-                MessageBox.Show("当前搜索条件仅支持数字！", "提示",
-                      MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+        //        if (isLua)
+        //        {
+        //            //searchLuaData = await Task.Run(() =>
+        //            //{
+        //            //    var query = db.GetLuaLangsListAsync(searchType, selectedSearchTextPosition, searchText);
+        //            //    return query;
+        //            //});
+        //            //LangData.ItemsSource = searchLuaData;
+        //        }
+        //        else
+        //        {
+        //            //SearchData = await Task.Run(() =>
+        //            //{
+        //            //    var query = db.GetLangsListAsync(searchType, selectedSearchTextPosition, searchText);
+        //            //    return query;
+        //            //});
+        //            //LangData.ItemsSource = SearchData;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("当前搜索条件仅支持数字！", "提示",
+        //              MessageBoxButton.OK, MessageBoxImage.Information);
+        //    }
 
-        }
+        //}
 
         //private string GetInfoBlockText()
         //{
         //    //return "总计搜索到" + LangData.Items.Count + "条结果。";
         //}
 
-        public async Task SetSaveStats(bool saved)
-        {
-            if (saved)
-            {
-                var messageQueue = Snackbar_SaveInfo.MessageQueue;
-                var message = "保存成功！";
-                messageQueue.Enqueue(message);
+        //public async Task SetSaveStats(bool saved)
+        //{
+        //    if (saved)
+        //    {
+        //        var messageQueue = Snackbar_SaveInfo.MessageQueue;
+        //        var message = "保存成功！";
+        //        messageQueue.Enqueue(message);
 
-            }
-            else
-            {
-                var messageQueue = Snackbar_SaveInfo.MessageQueue;
-                var message = "保存失败！";
-                messageQueue.Enqueue(message);
+        //    }
+        //    else
+        //    {
+        //        var messageQueue = Snackbar_SaveInfo.MessageQueue;
+        //        var message = "保存失败！";
+        //        messageQueue.Enqueue(message);
 
-            }
+        //    }
 
 
-        }
+        //}
 
 
         private void OpenHelpURLinBrowser(object sender, RoutedEventArgs e)
@@ -504,7 +506,7 @@ namespace ESO_LangEditorGUI
             switch (result)
             {
                 case MessageBoxResult.Yes:
-                    strExport.ExportStrDB();
+                    //strExport.ExportStrDB();
                     break;
                 case MessageBoxResult.No:
                     break;

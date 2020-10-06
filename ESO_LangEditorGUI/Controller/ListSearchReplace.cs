@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorLib.Models;
+﻿using ESO_LangEditorLib.Models.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +29,7 @@ namespace ESO_LangEditorGUI.Controller
 
             return pattern;
         }
-        public int FindMatch(List<LangText> input, string keyword, bool isOnlyMatchWord, RegexOptions option)
+        public int FindMatch(List<LangTextDto> input, string keyword, bool isOnlyMatchWord, RegexOptions option)
         #region 查询匹配 不区分大小写 重载
         {
             string pattern = SetMatchRule(keyword, isOnlyMatchWord);
@@ -37,7 +37,7 @@ namespace ESO_LangEditorGUI.Controller
 
             foreach (var text in input)
             {
-                if (Regex.IsMatch(text.Text_ZH, pattern, option))
+                if (Regex.IsMatch(text.TextZh, pattern, option))
                 {
                     count++;
                 }
@@ -46,7 +46,7 @@ namespace ESO_LangEditorGUI.Controller
         }
         #endregion
 
-        public int FindMatch(List<LangText> input, string keyword, bool isOnlyMatchWord)
+        public int FindMatch(List<LangTextDto> input, string keyword, bool isOnlyMatchWord)
         #region 查询匹配 区分大小写 重载
         {
             string pattern = SetMatchRule(keyword, isOnlyMatchWord);
@@ -54,7 +54,7 @@ namespace ESO_LangEditorGUI.Controller
 
             foreach (var text in input)
             {
-                if (Regex.IsMatch(text.Text_ZH, pattern))
+                if (Regex.IsMatch(text.TextZh, pattern))
                 {
                     count++;
                 }
@@ -63,70 +63,70 @@ namespace ESO_LangEditorGUI.Controller
         }
         #endregion
 
-        public List<LangText> SearchReplace(List<LangText> input, string keyword, string replaceWord, bool isOnlyMatchWord, RegexOptions option)
+        public List<LangTextDto> SearchReplace(List<LangTextDto> input, string keyword, string replaceWord, bool isOnlyMatchWord, RegexOptions option)
         #region 批量替换 不区分大小写 重载
         {
             string pattern = SetMatchRule(keyword, isOnlyMatchWord);
             //int count = 0;
 
-            List<LangText> result = new List<LangText>();
+            List<LangTextDto> result = new List<LangTextDto>();
 
             foreach (var text in input)
             {
                 
-                if (Regex.IsMatch(text.Text_ZH, pattern, option))
+                if (Regex.IsMatch(text.TextZh, pattern, option))
                 {
-                    string replacedWord = Regex.Replace(text.Text_ZH, pattern, replaceWord);
+                    string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord);
 
-                    result.Add(new LangText
+                    result.Add(new LangTextDto
                     {
-                        UniqueID = text.UniqueID,
-                        ID = text.ID,
-                        Unknown = text.Unknown,
-                        Lang_Index = text.Lang_Index,
-                        Text_EN = text.Text_EN,
-                        Text_ZH = replacedWord,
+                        TextId = text.TextId,
+                        Id = text.Id,
+                        //Unknown = text.Unknown,
+                        //Lang_Index = text.Lang_Index,
+                        TextEn = text.TextEn,
+                        TextZh = replacedWord,
                         IsTranslated = 1,
-                        RowStats = text.RowStats,
+                        //RowStats = text.RowStats,
                         UpdateStats = text.UpdateStats,
 
                     });
-                    Debug.WriteLine("{0}, {1}.",text.UniqueID, replacedWord);
+                    Debug.WriteLine("{0}, {1}.",text.TextId, replacedWord);
                 }
             }
             return result;
         }
         #endregion
 
-        public List<LangText> SearchReplace(List<LangText> input, string keyword, string replaceWord, bool isOnlyMatchWord)
+        public List<LangTextDto> SearchReplace(List<LangTextDto> input, string keyword, string replaceWord, bool isOnlyMatchWord)
         #region 批量替换 区分大小写 重载
         {
             string pattern = SetMatchRule(keyword, isOnlyMatchWord);
             //int count = 0;
 
-            List<LangText> result = new List<LangText>();
+            List<LangTextDto> result = new List<LangTextDto>();
 
             foreach (var text in input)
             {
 
-                if (Regex.IsMatch(text.Text_ZH, pattern))
+                if (Regex.IsMatch(text.TextZh, pattern))
                 {
-                    string replacedWord = Regex.Replace(text.Text_ZH, pattern, replaceWord);
+                    string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord);
 
-                    result.Add(new LangText
+                    result.Add(new LangTextDto
                     {
-                        UniqueID = text.UniqueID,
-                        ID = text.ID,
-                        Unknown = text.Unknown,
-                        Lang_Index = text.Lang_Index,
-                        Text_EN = text.Text_EN,
-                        Text_ZH = replacedWord,
+                        TextId = text.TextId,
+                        Id = text.Id,
+                        //Unknown = text.Unknown,
+                        //Lang_Index = text.Lang_Index,
+                        TextEn = text.TextEn,
+                        TextZh = replacedWord,
                         IsTranslated = 1,
-                        RowStats = text.RowStats,
+                        //RowStats = text.RowStats,
                         UpdateStats = text.UpdateStats,
 
                     });
-                    Debug.WriteLine("{0}, {1}.", text.UniqueID, replacedWord);
+                    Debug.WriteLine("{0}, {1}.", text.TextId, replacedWord);
                 }
             }
             return result;

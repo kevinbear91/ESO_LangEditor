@@ -1,6 +1,5 @@
-﻿using ESO_LangEditorGUI.Model;
-using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models;
+﻿using ESO_LangEditorLib;
+using ESO_LangEditorLib.Models.Client;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -21,8 +20,8 @@ namespace ESO_LangEditorGUI.View
     {
         private List<string> filePath = new List<string>();
         List<string> fileList = new List<string>();
-        List<LangText> SearchData = new List<LangText>();
-        List<LuaUIData> SearchLuaData = new List<LuaUIData>();
+        List<LangTextDto> SearchData = new List<LangTextDto>();
+        //List<LuaUIData> SearchLuaData = new List<LuaUIData>();
         //private List<UIstrFile> SearchStrData;
 
         private bool isLua;
@@ -161,24 +160,24 @@ namespace ESO_LangEditorGUI.View
 
             if (dbPath.EndsWith(".LangUI"))   //Lua Str UI文本
             {
-                SearchLuaData = await importDB.ExportLuaReaderToListAsync(dbPath);
-                TranslateData_dataGrid.ItemsSource = SearchLuaData;
+                //SearchLuaData = await importDB.ExportLuaReaderToListAsync(dbPath);
+                //TranslateData_dataGrid.ItemsSource = SearchLuaData;
 
-                textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
+                //textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
+                //textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
 
-                isLua = true;
+                //isLua = true;
                 
-                if(isSaveToDb)
-                    await db.UpdateLangsZH(SearchLuaData);
+                //if(isSaveToDb)
+                //    await db.UpdateLangsZH(SearchLuaData);
 
-                ImportToDB_button.IsEnabled = true;
+                //ImportToDB_button.IsEnabled = true;
             }
             else if (dbPath.EndsWith(".db"))
             {
                 var oldTranslate = new ImportOldTranslateDB();
 
-                SearchData = oldTranslate.FullSearchData(dbPath);
+                //SearchData = oldTranslate.FullSearchData(dbPath);
                 TranslateData_dataGrid.ItemsSource = SearchData;
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
                 textBlock_SelectionInfo.Text = "当前文件共 " + SearchData.Count + " 条文本。";
@@ -193,21 +192,21 @@ namespace ESO_LangEditorGUI.View
             {
                 var oldTranslate = new ImportOldTranslateDB();
 
-                SearchLuaData = oldTranslate.FullSearchStrDB(dbPath, "Pregame");
-                TranslateData_dataGrid.ItemsSource = SearchLuaData;
+                //SearchLuaData = oldTranslate.FullSearchStrDB(dbPath, "Pregame");
+                //TranslateData_dataGrid.ItemsSource = SearchLuaData;
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";
-                textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
+                //textBlock_SelectionInfo.Text = "当前文件共 " + SearchLuaData.Count + " 条文本。";
 
                 isLua = true;
 
                 if (isSaveToDb)
-                    await db.UpdateLangsZH(SearchLuaData);
+                    //await db.UpdateLangsZH(SearchLuaData);
 
                 ImportToDB_button.IsEnabled = true;
             }
             else
             {
-                SearchData = await importDB.ExportReaderToListAsync(dbPath);
+                //SearchData = await importDB.ExportReaderToListAsync(dbPath);
                 TranslateData_dataGrid.ItemsSource = SearchData;
 
                 textBlock_Info.Text = "共 " + filePath.Count().ToString() + " 个文件，已选择 " + FileID_listBox.SelectedItems.Count + " 个。";

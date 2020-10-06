@@ -10,9 +10,9 @@ namespace ESO_LangEditorLib
     public class ImportOldTranslateDB
     {
 
-        public List<LangText> FullSearchData(string dbPath)
+        public List<LangTextDto> FullSearchData(string dbPath)
         {
-            var _LangViewData = new List<LangText>();
+            var _LangViewData = new List<LangTextDto>();
 
             //string rowStatsInt = " WHERE RowStats in (0,10,20)";
 
@@ -58,7 +58,7 @@ namespace ESO_LangEditorLib
 
 
                             //Console.WriteLine("查询了{0},{1},{2}", sr.GetInt32(0), sr.GetInt32(2), sr.GetString(5));
-                            _LangViewData.Add(new LangText
+                            _LangViewData.Add(new LangTextDto
                             {
                                 UniqueID = id + "-" + unknown + "-" + index,
                                 ID = id,                   //游戏内文本ID

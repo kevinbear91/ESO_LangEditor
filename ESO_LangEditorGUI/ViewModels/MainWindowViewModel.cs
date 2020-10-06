@@ -1,6 +1,6 @@
 ﻿using ESO_LangEditorGUI.Command;
-using ESO_LangEditorGUI.Models.Enum;
 using ESO_LangEditorGUI.View;
+using ESO_LangEditorLib.Models.Client.Enum;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -18,15 +18,22 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private string _windowTitle;
         private IEnumerable<SearchPostion> _searchPostion;
-        private SearchPostion _selectedSearchPostion;
-        private SearchTextType _selectedSearchTextType;
         private string _searchInfo;
         private string _selectedInfo;
         private List<DataGridTextColumn> _dataGridColumnHeader;
         private string _keyword;
+        private bool _isLuaChecked;
+
+        public UC_LangDataGrid LangDataGrid { get; set; }
+
         public DataGridViewModel LangDataGridView { get; }
 
-        public UC_LangDataGrid LangDataGrid { get; }
+        //public UC_LangDataGrid LangDataGrid 
+        //{ 
+        //    get  { return _langDataGrid; }
+        //    set { }
+
+        //}
 
         public ICommand MainviewCommand { get; }
 
@@ -40,11 +47,7 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _windowTitle = value; NotifyPropertyChanged(); }
         }
 
-        public SearchPostion SelectedSearchPostion
-        {
-            get { return _selectedSearchPostion; }
-            set { _selectedSearchPostion = value;}
-        }
+        public SearchPostion SelectedSearchPostion { get; set; }
 
         public IEnumerable<SearchPostion> SearchPostion
         {
@@ -52,11 +55,7 @@ namespace ESO_LangEditorGUI.ViewModels
             //set { _searchPostion =  }
         }
 
-        public SearchTextType SelectedSearchTextType
-        {
-            get { return _selectedSearchTextType; }
-            set { _selectedSearchTextType = value; }
-        }
+        public SearchTextType SelectedSearchTextType { get; set; }
 
         public IEnumerable<SearchTextType> SearchTextType
         {
@@ -76,11 +75,11 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _selectedInfo = value; NotifyPropertyChanged(); }
         }
 
-        public List<DataGridTextColumn> DataGridColumnHeader
-        {
-            get { return _dataGridColumnHeader; }
-            set { _dataGridColumnHeader = value; NotifyPropertyChanged(); }
-        }
+        //public List<DataGridTextColumn> DataGridColumnHeader
+        //{
+        //    get { return _dataGridColumnHeader; }
+        //    set { _dataGridColumnHeader = value; NotifyPropertyChanged(); }
+        //}
 
         public string Keyword
         {
@@ -88,19 +87,22 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _keyword = value; NotifyPropertyChanged(); }
         }
 
+        public bool IsLuaChecked
+        {
+            get { return _isLuaChecked; }
+            set { _isLuaChecked = value; NotifyPropertyChanged(); }
+        }
 
 
-        public MainWindowViewModel()
+
+        public MainWindowViewModel(UC_LangDataGrid langdatagrid)
         {
             LoadMainView();
-
-            //LangDataGrid = new UC_LangDataGrid
-            //{
-            //    DataContext = _langDataGridView
-            //};
-            LangDataGridView = new DataGridViewModel();
-
-            SearchLangCommand = new SearchLangCommand(this, LangDataGridView);
+            LangDataGrid = langdatagrid;
+            LangDataGrid.MainWindowViewModel = this;
+            LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.MainViewWindow;
+            //LangDataGridView = new DataGridViewModel();
+            SearchLangCommand = new SearchLangCommand(this);
             
         }
 
@@ -109,6 +111,8 @@ namespace ESO_LangEditorGUI.ViewModels
             WindowTitle = "ESO文本查询编辑器" + version;
             SearchInfo = "暂无查询";
             SelectedInfo = "无选择条目";
+
+            _keyword = "148ed451-bf19-43e9-a8d3-55f922cd349e";
 
         }
 

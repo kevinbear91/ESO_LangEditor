@@ -83,8 +83,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
-
-
+                                
                                 <TextBox x:Name="SearchTextBox" 
                                          Grid.Column="0"
                                     materialDesign:HintAssist.Hint="输入搜索文本"
@@ -93,13 +92,12 @@
                                     TextWrapping="Wrap"
                                     VerticalAlignment="Stretch"
                                     Text="{Binding Keyword, UpdateSourceTrigger=PropertyChanged}"
-                                    KeyDown="SearchTextBlock_EnterPress" HorizontalAlignment="Stretch" />
+                                    HorizontalAlignment="Stretch" />
 
                                 <CheckBox x:Name="SearchStr_checkBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
                                           Grid.Column="1"
                                           Content="UI模式" 
-                                          Checked="SearchStr_checkBox_Checked" 
-                                          Unchecked="SearchStr_checkBox_Unchecked" 
+                                          IsChecked="{Binding IsLuaChecked}"
                                           Margin="0,0,5,0" HorizontalAlignment="Right" />
 
                             </Grid>
@@ -159,6 +157,7 @@
                         <Button x:Name="SearchButton" Style="{DynamicResource MaterialDesignToolForegroundButton}" 
                             Grid.Column="5"
                             Command="{Binding SearchLangCommand}"
+                            CommandParameter="{Binding LangDataGrid}"
                             IsDefault="True"
                             Margin="10 0 0 0"
                             Width="30" Height="30" HorizontalAlignment="Left" Cursor="Hand" >
@@ -191,7 +190,7 @@
                     MinRowHeight="20" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
 
                 </DataGrid>-->
-                <ucd:UC_LangDataGrid x:Name="LangDataGrid" DataContext="{Binding LangDataGridView}" />
+                <ucd:UC_LangDataGrid x:Name="LangDataGrid" /> <!--DataContext="{Binding LangDataGridView}"--> 
 
             </DockPanel>
 

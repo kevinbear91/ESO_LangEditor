@@ -1,10 +1,12 @@
 ﻿using ESO_LangEditorGUI.Model;
 using ESO_LangEditorGUI.View;
+using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
 using ESO_LangEditorLib.Models.Client;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,65 +22,76 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class TextEditor : Window
     {
-        private LangTextDto EditData;
-        private List<LangTextDto> SelectedItems;
-        private List<LangTextDto> ReplacedItems;
-
+        private ESO_LangEditorLib.Models.Client.LangTextDto EditData;
         private LuaUIData EditLuaData;
-        private List<LuaUIData> SelectedLuaItems;
 
         private LangDbController db = new LangDbController();
+
+        private bool _isTextZhChanged = false;
+
+        TextEditorViewModel _dataContext { get; }
+
+        public DataGridViewModel LangDataGridView { get; }
+
         private bool isLua;
 
         IDCatalog IDtypeName;
         MainWindow Mainwindow;
 
-        public TextEditor(LangTextDto LangData, ref IDCatalog IDtype, MainWindow window)
+        public TextEditor(List<ESO_LangEditorLib.Models.Client.LangTextDto> langData)
         {
 
             InitializeComponent();
-            EditData = LangData;
+            _dataContext = new TextEditorViewModel(LangDataGrid, langData);
+            DataContext = _dataContext;
+
+            //_dataContext.EditorList = langData;
+            //_dataContext.CurrentLangText = langData.ElementAt(0);
+
+            
+
+            textBox_ZH.TextChanged += new TextChangedEventHandler(TextChanged);
+
+            Closed += TextEditorWindow_Closed;
+
+            //EditData = LangData;
             isLua = false;
 
-            InitWindowVariables(false, ref IDtype, window);
+            //InitWindowVariables(false, ref IDtype, window);
 
         }
 
-        public TextEditor(LuaUIData LangLuaData, ref IDCatalog IDtype, MainWindow window)
+        private void TextEditorWindow_Closed(object sender, EventArgs e)
+        {
+            //MainWindowViewModel viewModel = (MainWindowViewModel)DataContext;
+            //viewModel.SaveSettings();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
         {
 
-            InitializeComponent();
-            EditLuaData = LangLuaData;
-            isLua = true;
-
-            InitWindowVariables(false, ref IDtype, window);
-            //List_Datagrid_Display(LangData);
-
+            if(_isTextZhChanged)
+            {
+                base.OnClosing(e);
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to close?", "Close Confirmation", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                e.Cancel = result == MessageBoxResult.Cancel;
+            }
+            else
+            {
+                base.OnClosing(e);
+            }
+            
         }
 
-        
-
-        public TextEditor(List<LangTextDto> SelectedItemsList, ref IDCatalog IDtype, MainWindow window)
+        private void TextChanged(object Sender, TextChangedEventArgs e)
         {
-
-            InitializeComponent();
-            isLua = false;
-            SelectedItems = SelectedItemsList;
-
-            InitWindowVariables(true, ref IDtype, window);
+            if(textBox_ZH.Text != _dataContext.CurrentLangText.TextZh)
+                _isTextZhChanged = true;
+            else
+                _isTextZhChanged = false;
         }
 
-        public TextEditor(List<LuaUIData> SelectedLuaItemsList, ref IDCatalog IDtype, MainWindow window)
-        {
-
-            InitializeComponent();
-            isLua = true;
-            SelectedLuaItems = SelectedLuaItemsList;
-
-            InitWindowVariables(true, ref IDtype, window);
-        }
-
-        public void ApplyReplacedList(List<LangTextDto> replacedList)
+        public void ApplyReplacedList(List<ESO_LangEditorLib.Models.Client.LangTextDto> replacedList)
         {
             //SelectedItems = replacedList;
             
@@ -108,93 +121,93 @@ namespace ESO_LangEditorGUI.View
 
         private void InitWindowVariables(bool isList, ref IDCatalog IDtype, MainWindow window)
         {
-            Mainwindow = window;
-            IDtypeName = IDtype;
-            textBox_EN.IsReadOnly = true;
-            button_saveModifyList.IsEnabled = false;
+            //Mainwindow = window;
+            //IDtypeName = IDtype;
+            //textBox_EN.IsReadOnly = true;
+            //button_saveModifyList.IsEnabled = false;
 
-            GeneratingColumns();
+            //GeneratingColumns();
 
-            if (isList)
-            {
-                this.Height = 600;
-                GridMover.Visibility = Visibility.Visible;
-                List_expander.Visibility = Visibility.Visible;
+            //if (isList)
+            //{
+            //    this.Height = 600;
+            //    GridMover.Visibility = Visibility.Visible;
+            //    //List_expander.Visibility = Visibility.Visible;
 
-                List_Datagrid_Display();
-                if(isLua)
-                    button_modifyList.IsEnabled = false;
-                else
-                    button_modifyList.IsEnabled = true;
-            }
-            else
-            {
-                this.Height = 400;
-                GridMover.Visibility = Visibility.Collapsed;
-                List_expander.Visibility = Visibility.Collapsed;
+            //    List_Datagrid_Display();
+            //    if(isLua)
+            //        button_modifyList.IsEnabled = false;
+            //    else
+            //        button_modifyList.IsEnabled = true;
+            //}
+            //else
+            //{
+            //    this.Height = 400;
+            //    GridMover.Visibility = Visibility.Collapsed;
+            //    //List_expander.Visibility = Visibility.Collapsed;
 
-                UpdateUIContent();
-                button_modifyList.IsEnabled = false;
-            }
+            //    UpdateUIContent();
+            //    button_modifyList.IsEnabled = false;
+            //}
         }
         private void InitWindowVariables(bool isEnableButton)
         {
-            textBox_EN.IsReadOnly = true;
-            button_saveModifyList.IsEnabled = isEnableButton;
+            //textBox_EN.IsReadOnly = true;
+            //button_saveModifyList.IsEnabled = isEnableButton;
 
-            GeneratingColumns();
+            //GeneratingColumns();
 
-            GridMover.Visibility = Visibility.Visible;
-            List_expander.Visibility = Visibility.Visible;
+            //GridMover.Visibility = Visibility.Visible;
+            ////List_expander.Visibility = Visibility.Visible;
 
-            List_Datagrid_Display();
+            //List_Datagrid_Display();
         }
 
 
         private void GeneratingColumns()
         {
-            List_dataGrid.Columns.Clear();
+            //List_dataGrid.Columns.Clear();
 
-            if (isLua)
-            {
-                DataGridTextColumn c1 = new DataGridTextColumn();
-                c1.Header = "UI ID";
-                c1.Binding = new Binding("UniqueID");
-                //c1.Width = 100;
-                List_dataGrid.Columns.Add(c1);
+            //if (isLua)
+            //{
+            //    DataGridTextColumn c1 = new DataGridTextColumn();
+            //    c1.Header = "UI ID";
+            //    c1.Binding = new Binding("UniqueID");
+            //    //c1.Width = 100;
+            //    //List_dataGrid.Columns.Add(c1);
 
-                DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "英文";
-                //c2.Width = 100;
-                c2.Binding = new Binding("Text_EN");
-                List_dataGrid.Columns.Add(c2);
+            //    DataGridTextColumn c2 = new DataGridTextColumn();
+            //    c2.Header = "英文";
+            //    //c2.Width = 100;
+            //    c2.Binding = new Binding("Text_EN");
+            //    //List_dataGrid.Columns.Add(c2);
 
-                DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "汉化";
-                //c3.Width = 100;
-                c3.Binding = new Binding("Text_ZH");
-                List_dataGrid.Columns.Add(c3);
-            }
-            else
-            {
-                DataGridTextColumn c1 = new DataGridTextColumn();
-                c1.Header = "文本ID";
-                c1.Binding = new Binding("UniqueID");
-                //c1.Width = 100;
-                List_dataGrid.Columns.Add(c1);
+            //    DataGridTextColumn c3 = new DataGridTextColumn();
+            //    c3.Header = "汉化";
+            //    //c3.Width = 100;
+            //    c3.Binding = new Binding("Text_ZH");
+            //    //List_dataGrid.Columns.Add(c3);
+            //}
+            //else
+            //{
+            //    DataGridTextColumn c1 = new DataGridTextColumn();
+            //    c1.Header = "文本ID";
+            //    c1.Binding = new Binding("UniqueID");
+            //    //c1.Width = 100;
+            //    List_dataGrid.Columns.Add(c1);
 
-                DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "英文";
-                //c2.Width = 100;
-                c2.Binding = new Binding("Text_EN");
-                List_dataGrid.Columns.Add(c2);
+            //    DataGridTextColumn c2 = new DataGridTextColumn();
+            //    c2.Header = "英文";
+            //    //c2.Width = 100;
+            //    c2.Binding = new Binding("Text_EN");
+            //    List_dataGrid.Columns.Add(c2);
 
-                DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "汉化";
-                //c3.Width = 100;
-                c3.Binding = new Binding("Text_ZH");
-                List_dataGrid.Columns.Add(c3);
-            }
+            //    DataGridTextColumn c3 = new DataGridTextColumn();
+            //    c3.Header = "汉化";
+            //    //c3.Width = 100;
+            //    c3.Binding = new Binding("Text_ZH");
+            //    List_dataGrid.Columns.Add(c3);
+            //}
 
         }
 
@@ -206,103 +219,109 @@ namespace ESO_LangEditorGUI.View
             this.Close();
         }
 
-        private async void Button_save_Click(object sender, RoutedEventArgs e)
+        private void Button_save_Click(object sender, RoutedEventArgs e)
         {
-            //var EditedData = new LangSearchModel();
-            
-            //connDB.ConnectTranslateDB();
-
-
-            if(isLua)
-            {
-                button_save.IsEnabled = false;
-
-                var EditLuaData = GetEditedLuaData();
-                //await Task.Run(() => db.UpdateLangsZH(EditLuaData));
-                int result = await db.UpdateLangsZH(EditLuaData);
-                SaveMessagePopup(result);
-
-                //MessageBox.Show("ID: " + EditLuaData.UniqueID +
-                //    Environment.NewLine + "ZH: " + EditLuaData.Text_ZH);
-
-                //MessageBox.Show(updateResult);
-
-                if (List_dataGrid.Items.Count > 1)
-                {
-                    int i = List_dataGrid.SelectedIndex;
-
-                    //List_dataGrid.Items.RemoveAt(i);
-                    SelectedLuaItems.RemoveAt(i);
-
-                    List_dataGrid.ItemsSource = null;
-                    List_dataGrid.ItemsSource = SelectedLuaItems;
-
-                    if (i > 0)
-                    {
-                        List_dataGrid.SelectedIndex = i - 1;
-                    }
-                    else
-                    {
-                        List_dataGrid.SelectedIndex = 0;
-                    }
-                    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
-                    EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
-                    UpdateUIContent();
-                    button_save.IsEnabled = true;
-                }
-                else
-                {
-                    button_save.IsEnabled = true;
-                    this.Close();
-                }
-            }
-            else
-            {
-                button_save.IsEnabled = false;
-
-                EditData.TextZh = textBox_ZH.Text;
-
-
-                //var EditedData = GetEditedData();
-                int result = 1;// await db.UpdateLangsZH(EditedData);
-
-                //Mainwindow.SetSaveStats(true);
-                SaveMessagePopup(result);
-
-                //save_stats.Foreground = Brushes.Green;
-                //save_stats.Text = "保存成功！";
-                if (List_dataGrid.Items.Count > 1)
-                {
-                    int i = List_dataGrid.SelectedIndex;
-
-                    //List_dataGrid.Items.RemoveAt(i);   //当 ItemsSource 正在使用时操作无效。改用 ItemsControl.ItemsSource 访问和修改元素。
-                    SelectedItems.RemoveAt(i);
-
-                    List_dataGrid.ItemsSource = null;
-                    List_dataGrid.ItemsSource = SelectedItems;
-
-                    if (i > 0)
-                    {
-                        List_dataGrid.SelectedIndex = i - 1;
-                    }
-                    else
-                    {
-                        List_dataGrid.SelectedIndex = 0;
-                    }
-                    //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
-                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
-                    UpdateUIContent();
-                    button_save.IsEnabled = true;
-                }
-                else
-                {
-                    button_save.IsEnabled = true;
-                    this.Close();
-                }
-                //MessageBox.Show(updateResult);
-            }
-
+            _dataContext.CurrentLangText.TextZh = textBox_ZH.Text;
+            _isTextZhChanged = false;
         }
+
+        //private async void Button_save_Click(object sender, RoutedEventArgs e)
+        //{
+        //    //var EditedData = new LangSearchModel();
+            
+        //    //connDB.ConnectTranslateDB();
+
+
+        //    if(isLua)
+        //    {
+        //        button_save.IsEnabled = false;
+
+        //        var EditLuaData = GetEditedLuaData();
+        //        //await Task.Run(() => db.UpdateLangsZH(EditLuaData));
+        //        int result = await db.UpdateLangsZH(EditLuaData);
+        //        SaveMessagePopup(result);
+
+        //        //MessageBox.Show("ID: " + EditLuaData.UniqueID +
+        //        //    Environment.NewLine + "ZH: " + EditLuaData.Text_ZH);
+
+        //        //MessageBox.Show(updateResult);
+
+        //        if (List_dataGrid.Items.Count > 1)
+        //        {
+        //            int i = List_dataGrid.SelectedIndex;
+
+        //            //List_dataGrid.Items.RemoveAt(i);
+        //            SelectedLuaItems.RemoveAt(i);
+
+        //            List_dataGrid.ItemsSource = null;
+        //            List_dataGrid.ItemsSource = SelectedLuaItems;
+
+        //            if (i > 0)
+        //            {
+        //                List_dataGrid.SelectedIndex = i - 1;
+        //            }
+        //            else
+        //            {
+        //                List_dataGrid.SelectedIndex = 0;
+        //            }
+        //            //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+        //            EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
+        //            UpdateUIContent();
+        //            button_save.IsEnabled = true;
+        //        }
+        //        else
+        //        {
+        //            button_save.IsEnabled = true;
+        //            this.Close();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        button_save.IsEnabled = false;
+
+        //        EditData.TextZh = textBox_ZH.Text;
+
+
+        //        //var EditedData = GetEditedData();
+        //        int result = 1;// await db.UpdateLangsZH(EditedData);
+
+        //        //Mainwindow.SetSaveStats(true);
+        //        SaveMessagePopup(result);
+
+        //        //save_stats.Foreground = Brushes.Green;
+        //        //save_stats.Text = "保存成功！";
+        //        if (List_dataGrid.Items.Count > 1)
+        //        {
+        //            int i = List_dataGrid.SelectedIndex;
+
+        //            //List_dataGrid.Items.RemoveAt(i);   //当 ItemsSource 正在使用时操作无效。改用 ItemsControl.ItemsSource 访问和修改元素。
+        //            SelectedItems.RemoveAt(i);
+
+        //            List_dataGrid.ItemsSource = null;
+        //            List_dataGrid.ItemsSource = SelectedItems;
+
+        //            if (i > 0)
+        //            {
+        //                List_dataGrid.SelectedIndex = i - 1;
+        //            }
+        //            else
+        //            {
+        //                List_dataGrid.SelectedIndex = 0;
+        //            }
+        //            //MessageBox.Show(List_dataGrid.SelectedIndex.ToString() + ", " + i);
+        //            EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+        //            UpdateUIContent();
+        //            button_save.IsEnabled = true;
+        //        }
+        //        else
+        //        {
+        //            button_save.IsEnabled = true;
+        //            this.Close();
+        //        }
+        //        //MessageBox.Show(updateResult);
+        //    }
+
+        //}
 
         private void SaveMessagePopup(int result)
         {
@@ -339,71 +358,71 @@ namespace ESO_LangEditorGUI.View
         {
             this.Height = 600;
             
-            List_expander.Header = "收起列表";
+            //List_expander.Header = "收起列表";
         }
 
         private void List_expander_Collapsed(object sender, RoutedEventArgs e)
         {
             this.Height = 400;
-            List_expander.Header = "展开列表";
+            //List_expander.Header = "展开列表";
         }
 
         private void List_Datagrid_Display()
         {
             //var IDtypeName = new IDCatalog();
 
-            if (List_dataGrid.Items.Count > 1)
-                List_dataGrid.ItemsSource = null;
+            //if (List_dataGrid.Items.Count > 1)
+            //    List_dataGrid.ItemsSource = null;
 
-            if (isLua)
-            {
-                if (SelectedLuaItems != null && SelectedLuaItems.Count > 1)
-                {
-                    List_expander.Visibility = Visibility.Visible;
-                    List_expander.IsExpanded = true;
+            //if (isLua)
+            //{
+            //    if (SelectedLuaItems != null && SelectedLuaItems.Count > 1)
+            //    {
+            //        List_expander.Visibility = Visibility.Visible;
+            //        List_expander.IsExpanded = true;
 
-                    List_dataGrid.ItemsSource = SelectedLuaItems;
-
-
-                    List_dataGrid.SelectedIndex = 0;
+            //        List_dataGrid.ItemsSource = SelectedLuaItems;
 
 
-                    EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
-                    UpdateUIContent();
-
-                }
-                else
-                {
-                    List_expander.Visibility = Visibility.Hidden;
-                    List_expander.IsExpanded = false;
-                    //EditData = LangData;
-                    UpdateUIContent();
-                }
-            }
-            else
-            {
-                if (SelectedItems != null && SelectedItems.Count > 1)
-                {
-                    List_expander.Visibility = Visibility.Visible;
-                    List_expander.IsExpanded = true;
-
-                    List_dataGrid.ItemsSource = SelectedItems;
-
-                    List_dataGrid.SelectedIndex = 0;
+            //        List_dataGrid.SelectedIndex = 0;
 
 
-                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
-                    UpdateUIContent();
+            //        EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
+            //        UpdateUIContent();
 
-                }
-                else
-                {
-                    List_expander.Visibility = Visibility.Hidden;
-                    List_expander.IsExpanded = false;
-                    //EditData = LangData;
-                    UpdateUIContent();
-                }
-            }
+            //    }
+            //    else
+            //    {
+            //        List_expander.Visibility = Visibility.Hidden;
+            //        List_expander.IsExpanded = false;
+            //        //EditData = LangData;
+            //        UpdateUIContent();
+            //    }
+            //}
+            //else
+            //{
+            //    if (SelectedItems != null && SelectedItems.Count > 1)
+            //    {
+            //        List_expander.Visibility = Visibility.Visible;
+            //        List_expander.IsExpanded = true;
+
+            //        List_dataGrid.ItemsSource = SelectedItems;
+
+            //        List_dataGrid.SelectedIndex = 0;
+
+
+            //        EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+            //        UpdateUIContent();
+
+            //    }
+            //    else
+            //    {
+            //        List_expander.Visibility = Visibility.Hidden;
+            //        List_expander.IsExpanded = false;
+            //        //EditData = LangData;
+            //        UpdateUIContent();
+            //    }
+            //}
 
         }
 
@@ -418,12 +437,12 @@ namespace ESO_LangEditorGUI.View
             {
                 if(isLua)
                 {
-                    EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
+                    //EditLuaData = SelectedLuaItems.ElementAt(List_dataGrid.SelectedIndex);
                     UpdateUIContent();
                 }
                 else
                 {
-                    EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
+                    //EditData = SelectedItems.ElementAt(List_dataGrid.SelectedIndex);
                     UpdateUIContent();
                 }
 
@@ -473,7 +492,7 @@ namespace ESO_LangEditorGUI.View
 
        
 
-        private LangTextDto GetEditedData()
+        private ESO_LangEditorLib.Models.Client.LangTextDto GetEditedData()
         {
             //int rowStats = EditData.RowStats;
             //int translate = EditData.IsTranslated;
@@ -485,7 +504,7 @@ namespace ESO_LangEditorGUI.View
             //else
             //    rowStats = 4;
 
-            var EditedData = new LangTextDto
+            var EditedData = new ESO_LangEditorLib.Models.Client.LangTextDto
             {
                 Id = EditData.Id,
                 //ID = EditData.ID,

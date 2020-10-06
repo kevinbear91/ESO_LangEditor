@@ -1,6 +1,5 @@
 ﻿using ESO_LangEditorGUI.View;
 using ESO_LangEditorGUI.Controller;
-using ESO_LangEditorLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Globalization;
+using ESO_LangEditorLib.Models.Client;
 
 namespace ESO_LangEditorGUI.View
 {
@@ -22,11 +22,11 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class TextEditor_SearchReplace : Window
     {
-        List<LangText> LangList;
+        List<LangTextDto> LangList;
         ListSearchReplace searchReplace = new ListSearchReplace();
         TextEditor textWindow;
 
-        public TextEditor_SearchReplace(List<LangText> list, TextEditor window)
+        public TextEditor_SearchReplace(List<LangTextDto> list, TextEditor window)
         {
             InitializeComponent();
             LangList = list;
@@ -73,7 +73,7 @@ namespace ESO_LangEditorGUI.View
         {
             bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
             bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
-            List<LangText> result;
+            List<LangTextDto> result;
             string keyWord;
             
             try

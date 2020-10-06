@@ -8,7 +8,7 @@ using System.Text;
 namespace ESO_LangEditorLib.Models
 {
     [Table("lang_data")]
-    public class LangText
+    public class LangTextDto
     {
 
         //主键

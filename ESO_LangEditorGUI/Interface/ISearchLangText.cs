@@ -1,5 +1,5 @@
-﻿using ESO_LangEditorGUI.Models.Enum;
-using ESO_LangEditorLib.Models.Client;
+﻿using ESO_LangEditorLib.Models.Client;
+using ESO_LangEditorLib.Models.Client.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +9,7 @@ namespace ESO_LangEditorGUI.Interface
 {
     public interface ISearchLangText
     {
-        Task<List<LangTextDto>> GetLangText(SearchPostion searchPostion, SearchTextType searchType, string keyWord);
+        Task<List<LangTextDto>> GetLangTexts(SearchPostion searchPostion, SearchTextType searchType, string keyWord);
         LangTextDto GetLangText(SearchPostion searchPostion, SearchTextType searchType, int keyWord);
 
 

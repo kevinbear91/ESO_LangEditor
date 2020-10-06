@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ESO_LangEditorGUI.Model
+namespace ESO_LangEditorLib.Models.Client
 {
     public class UserDto
     {

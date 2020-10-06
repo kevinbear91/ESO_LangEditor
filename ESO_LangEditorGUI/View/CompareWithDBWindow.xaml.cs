@@ -1,5 +1,5 @@
 ﻿using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models;
+using ESO_LangEditorLib.Models.Client;
 using Microsoft.Win32;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,25 +22,25 @@ namespace ESO_LangEditorGUI.View
     {
 
         #region Lang DB 变量
-        private Dictionary<string, LangText> dbLangDict;
-        private Dictionary<string, LangText> CsvDict;
+        private Dictionary<string, LangTextDto> dbLangDict;
+        private Dictionary<string, LangTextDto> CsvDict;
 
-        private List<LangText> added = new List<LangText>();
-        private List<LangText> changed = new List<LangText>();
-        private List<LangText> nonChanged = new List<LangText>();
-        private List<LangText> removedList = new List<LangText>();
-        private Dictionary<string, LangText> removed = new Dictionary<string, LangText>();
+        private List<LangTextDto> added = new List<LangTextDto>();
+        private List<LangTextDto> changed = new List<LangTextDto>();
+        private List<LangTextDto> nonChanged = new List<LangTextDto>();
+        private List<LangTextDto> removedList = new List<LangTextDto>();
+        private Dictionary<string, LangTextDto> removed = new Dictionary<string, LangTextDto>();
         #endregion
 
         #region Lua Str UI 变量
-        private Dictionary<string, LuaUIData> dbLuaStr;
-        private Dictionary<string, LuaUIData> luaDict;
+        //private Dictionary<string, LuaUIData> dbLuaStr;
+        //private Dictionary<string, LuaUIData> luaDict;
 
-        private List<LuaUIData> luaAdded = new List<LuaUIData>();
-        private List<LuaUIData> luaChanged = new List<LuaUIData>();
-        private List<LuaUIData> luaNonChanged = new List<LuaUIData>();
-        private List<LuaUIData> luaRemovedList = new List<LuaUIData>();
-        private Dictionary<string, LuaUIData> luaRemoved = new Dictionary<string, LuaUIData>();
+        //private List<LuaUIData> luaAdded = new List<LuaUIData>();
+        //private List<LuaUIData> luaChanged = new List<LuaUIData>();
+        //private List<LuaUIData> luaNonChanged = new List<LuaUIData>();
+        //private List<LuaUIData> luaRemovedList = new List<LuaUIData>();
+        //private Dictionary<string, LuaUIData> luaRemoved = new Dictionary<string, LuaUIData>();
         #endregion
 
 
@@ -66,24 +66,24 @@ namespace ESO_LangEditorGUI.View
 
         private void SeletedCsvFileCheck(TextBox textBoxName)
         {
-            OpenFileDialog dialog = new OpenFileDialog { Multiselect = true };
-            //dialog.Filter = "csv (*.csv)|.csv";
-            if (dialog.ShowDialog(this) == true)
-            {
-                if (dialog.FileName.EndsWith(".csv") || dialog.FileName.EndsWith(".lua"))
-                {
-                    foreach(var file in dialog.FileNames)
-                    {
-                        filepath.Add(file);
-                    }
-                    textBoxName.Text = dialog.FileName;
-                }
-                else
-                {
-                    MessageBox.Show("仅支持读取 .csv 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-                    textBoxName.Text = "";
-                }
-            }
+            //OpenFileDialog dialog = new OpenFileDialog { Multiselect = true };
+            ////dialog.Filter = "csv (*.csv)|.csv";
+            //if (dialog.ShowDialog(this) == true)
+            //{
+            //    if (dialog.FileName.EndsWith(".csv") || dialog.FileName.EndsWith(".lua"))
+            //    {
+            //        foreach(var file in dialog.FileNames)
+            //        {
+            //            filepath.Add(file);
+            //        }
+            //        textBoxName.Text = dialog.FileName;
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("仅支持读取 .csv 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            //        textBoxName.Text = "";
+            //    }
+            //}
         }
 
 
@@ -109,26 +109,26 @@ namespace ESO_LangEditorGUI.View
                     LoadCsv_Buton.IsEnabled = false;
                     SaveToDB_Button.IsEnabled = false;
 
-                    if (filePath.EndsWith(".lua"))
-                    {
-                        ParserLuaStr luaParser = new ParserLuaStr();
+                    //if (filePath.EndsWith(".lua"))
+                    //{
+                    //    ParserLuaStr luaParser = new ParserLuaStr();
 
-                        luaDict = luaParser.LuaStrParser(filepath);
-                        dbLuaStr = await Task.Run(() => db.GetAllLuaLangsDictionaryAsync());
+                    //    luaDict = luaParser.LuaStrParser(filepath);
+                    //    dbLuaStr = await Task.Run(() => db.GetAllLuaLangsDictionaryAsync());
 
-                        DiffDictionary(dbLuaStr, luaDict);
-                        Debug.WriteLine(dbLuaStr.Count());
-                    }
-                    else
-                    {
-                        ParserCsv csvparser = new ParserCsv();
+                    //    DiffDictionary(dbLuaStr, luaDict);
+                    //    Debug.WriteLine(dbLuaStr.Count());
+                    //}
+                    //else
+                    //{
+                    //    ParserCsv csvparser = new ParserCsv();
 
-                        CsvDict = await csvparser.CsvReaderToDictionaryAsync(filePath);
-                        dbLangDict = await Task.Run(() => db.GetAllLangsDictionaryAsync());
+                    //    CsvDict = await csvparser.CsvReaderToDictionaryAsync(filePath);
+                    //    dbLangDict = await Task.Run(() => db.GetAllLangsDictionaryAsync());
 
-                        DiffDictionary(dbLangDict, CsvDict);
-                        Debug.WriteLine(dbLangDict.Count());
-                    }
+                    //    DiffDictionary(dbLangDict, CsvDict);
+                    //    Debug.WriteLine(dbLangDict.Count());
+                    //}
 
                     //LoadCsv_Buton.IsEnabled = false;
                     SaveToDB_Button.IsEnabled = true;
@@ -142,115 +142,115 @@ namespace ESO_LangEditorGUI.View
 
         }
 
-        private void DiffDictionary(Dictionary<string, LangText> first, Dictionary<string, LangText> second)
+        private void DiffDictionary(Dictionary<string, LangTextDto> first, Dictionary<string, LangTextDto> second)
         {
-            Debug.WriteLine("开始比较。");
+            //Debug.WriteLine("开始比较。");
 
-            removed = first;
+            //removed = first;
 
-            foreach (var other in second)
-            {
+            //foreach (var other in second)
+            //{
 
-                if (first.TryGetValue(other.Key, out LangText firstValue))
-                {
-                    if (firstValue.Text_EN.Equals(other.Value.Text_EN))
-                    {
-                        nonChanged.Add(firstValue);
-                        removed.Remove(other.Key);
-                    }
-                    else
-                    {
-                        changed.Add(new LangText
-                        { 
-                        UniqueID = other.Value.UniqueID,
-                        ID = other.Value.ID,
-                        Unknown = other.Value.Unknown,
-                        Lang_Index = other.Value.Lang_Index,
-                        Text_EN = other.Value.Text_EN,
-                        Text_ZH = firstValue.Text_ZH,
-                        UpdateStats = VersionInput_textBox.Text,
-                        IsTranslated = firstValue.IsTranslated,
-                        RowStats = 2,
-                        });
-                        removed.Remove(other.Key);
-                    }
-                }
-                else
-                {
-                    added.Add(new LangText
-                    {
-                        UniqueID = other.Value.UniqueID,
-                        ID = other.Value.ID,
-                        Unknown = other.Value.Unknown,
-                        Lang_Index = other.Value.Lang_Index,
-                        Text_EN = other.Value.Text_EN,
-                        Text_ZH = other.Value.Text_EN,
-                        UpdateStats = VersionInput_textBox.Text,
-                        IsTranslated = 0,
-                        RowStats = 1,
-                    });
-                    removed.Remove(other.Key);
-                }
-            }
+            //    if (first.TryGetValue(other.Key, out LangTextDto firstValue))
+            //    {
+            //        if (firstValue.Text_EN.Equals(other.Value.Text_EN))
+            //        {
+            //            nonChanged.Add(firstValue);
+            //            removed.Remove(other.Key);
+            //        }
+            //        else
+            //        {
+            //            changed.Add(new LangTextDto
+            //            { 
+            //            UniqueID = other.Value.UniqueID,
+            //            ID = other.Value.ID,
+            //            Unknown = other.Value.Unknown,
+            //            Lang_Index = other.Value.Lang_Index,
+            //            Text_EN = other.Value.Text_EN,
+            //            Text_ZH = firstValue.Text_ZH,
+            //            UpdateStats = VersionInput_textBox.Text,
+            //            IsTranslated = firstValue.IsTranslated,
+            //            RowStats = 2,
+            //            });
+            //            removed.Remove(other.Key);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        added.Add(new LangTextDto
+            //        {
+            //            UniqueID = other.Value.UniqueID,
+            //            ID = other.Value.ID,
+            //            Unknown = other.Value.Unknown,
+            //            Lang_Index = other.Value.Lang_Index,
+            //            Text_EN = other.Value.Text_EN,
+            //            Text_ZH = other.Value.Text_EN,
+            //            UpdateStats = VersionInput_textBox.Text,
+            //            IsTranslated = 0,
+            //            RowStats = 1,
+            //        });
+            //        removed.Remove(other.Key);
+            //    }
+            //}
 
-            removedList = removed.Values.ToList();
+            //removedList = removed.Values.ToList();
 
-            SetCompareUI(false);
+            //SetCompareUI(false);
 
         }
 
 
-        private void DiffDictionary(Dictionary<string, LuaUIData> first, Dictionary<string, LuaUIData> second)
-        {
-            Debug.WriteLine("开始比较。");
+        //private void DiffDictionary(Dictionary<string, LuaUIData> first, Dictionary<string, LuaUIData> second)
+        //{
+        //    Debug.WriteLine("开始比较。");
 
-            luaRemoved = first;
+        //    luaRemoved = first;
 
-            foreach (var other in second)
-            {
+        //    foreach (var other in second)
+        //    {
 
-                if (first.TryGetValue(other.Key, out LuaUIData firstValue))
-                {
-                    if (firstValue.Text_EN.Equals(other.Value.Text_EN))
-                    {
-                        luaNonChanged.Add(firstValue);
-                        luaRemoved.Remove(other.Key);
-                    }
-                    else
-                    {
-                        luaChanged.Add(new LuaUIData
-                        {
-                            UniqueID = other.Value.UniqueID,
-                            Text_EN = other.Value.Text_EN,
-                            Text_ZH = firstValue.Text_ZH,
-                            UpdateStats = VersionInput_textBox.Text,
-                            IsTranslated = firstValue.IsTranslated,
-                            RowStats = 2,
-                            DataEnum = other.Value.DataEnum,
-                        });
-                        luaRemoved.Remove(other.Key);
-                    }
-                }
-                else
-                {
-                    luaAdded.Add(new LuaUIData
-                    {
-                        UniqueID = other.Value.UniqueID,
-                        Text_EN = other.Value.Text_EN,
-                        Text_ZH = other.Value.Text_EN,
-                        UpdateStats = VersionInput_textBox.Text,
-                        IsTranslated = 0,
-                        RowStats = 1,
-                        DataEnum = other.Value.DataEnum,
-                    });
-                    luaRemoved.Remove(other.Key);
-                }
-            }
+        //        if (first.TryGetValue(other.Key, out LuaUIData firstValue))
+        //        {
+        //            if (firstValue.Text_EN.Equals(other.Value.Text_EN))
+        //            {
+        //                luaNonChanged.Add(firstValue);
+        //                luaRemoved.Remove(other.Key);
+        //            }
+        //            else
+        //            {
+        //                luaChanged.Add(new LuaUIData
+        //                {
+        //                    UniqueID = other.Value.UniqueID,
+        //                    Text_EN = other.Value.Text_EN,
+        //                    Text_ZH = firstValue.Text_ZH,
+        //                    UpdateStats = VersionInput_textBox.Text,
+        //                    IsTranslated = firstValue.IsTranslated,
+        //                    RowStats = 2,
+        //                    DataEnum = other.Value.DataEnum,
+        //                });
+        //                luaRemoved.Remove(other.Key);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            luaAdded.Add(new LuaUIData
+        //            {
+        //                UniqueID = other.Value.UniqueID,
+        //                Text_EN = other.Value.Text_EN,
+        //                Text_ZH = other.Value.Text_EN,
+        //                UpdateStats = VersionInput_textBox.Text,
+        //                IsTranslated = 0,
+        //                RowStats = 1,
+        //                DataEnum = other.Value.DataEnum,
+        //            });
+        //            luaRemoved.Remove(other.Key);
+        //        }
+        //    }
 
-            luaRemovedList = luaRemoved.Values.ToList();
+        //    luaRemovedList = luaRemoved.Values.ToList();
 
-            SetCompareUI(true);
-        }
+        //    SetCompareUI(true);
+        //}
 
         private void SetCompareUI(bool isLua)
         {
@@ -263,9 +263,9 @@ namespace ESO_LangEditorGUI.View
 
             if(isLua)
             {
-                GeneratingColumns(luaAdded, Added_DataGrid, Added_tabitem);
-                GeneratingColumns(luaChanged, Changed_DataGrid, Changed_tabitem);
-                GeneratingColumns(luaRemovedList, Removed_DataGrid, Removed_tabitem);
+                //GeneratingColumns(luaAdded, Added_DataGrid, Added_tabitem);
+                //GeneratingColumns(luaChanged, Changed_DataGrid, Changed_tabitem);
+                //GeneratingColumns(luaRemovedList, Removed_DataGrid, Removed_tabitem);
             }
             else
             {
@@ -287,72 +287,72 @@ namespace ESO_LangEditorGUI.View
             }
         }
 
-        private void GeneratingColumns(List<LangText> listName, DataGrid dataGridName, TabItem tabItemName)
+        private void GeneratingColumns(List<LangTextDto> listName, DataGrid dataGridName, TabItem tabItemName)
         {
-            if (listName.Count > 0)
-            {
-                DataGridTextColumn c1 = new DataGridTextColumn();
-                c1.Header = "文本ID";
-                c1.Binding = new Binding("UniqueID");
-                //c1.Width = 110;
-                dataGridName.Columns.Add(c1);
+            //if (listName.Count > 0)
+            //{
+            //    DataGridTextColumn c1 = new DataGridTextColumn();
+            //    c1.Header = "文本ID";
+            //    c1.Binding = new Binding("UniqueID");
+            //    //c1.Width = 110;
+            //    dataGridName.Columns.Add(c1);
 
-                DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "英文";
-                //c2.Width = 200;
-                c2.Binding = new Binding("Text_EN");
-                dataGridName.Columns.Add(c2);
+            //    DataGridTextColumn c2 = new DataGridTextColumn();
+            //    c2.Header = "英文";
+            //    //c2.Width = 200;
+            //    c2.Binding = new Binding("Text_EN");
+            //    dataGridName.Columns.Add(c2);
 
-                DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "汉化";
-                //c3.Width = 200;
-                c3.Binding = new Binding("Text_ZH");
-                dataGridName.Columns.Add(c3);
+            //    DataGridTextColumn c3 = new DataGridTextColumn();
+            //    c3.Header = "汉化";
+            //    //c3.Width = 200;
+            //    c3.Binding = new Binding("Text_ZH");
+            //    dataGridName.Columns.Add(c3);
 
-                dataGridName.ItemsSource = listName;
+            //    dataGridName.ItemsSource = listName;
 
-                tabItemName.Header = tabItemName.Header + "(" + listName.Count + ")";
-            }
-            else
-            {
-                tabItemName.Visibility = Visibility.Collapsed;
-            }
+            //    tabItemName.Header = tabItemName.Header + "(" + listName.Count + ")";
+            //}
+            //else
+            //{
+            //    tabItemName.Visibility = Visibility.Collapsed;
+            //}
         }
 
 
-        private void GeneratingColumns(List<LuaUIData> listName, DataGrid dataGridName, TabItem tabItemName)
-        #region Lua Str
-        {
-            if (listName.Count > 0)
-            {
-                DataGridTextColumn c1 = new DataGridTextColumn();
-                c1.Header = "文本ID";
-                c1.Binding = new Binding("UniqueID");
-                //c1.Width = 110;
-                dataGridName.Columns.Add(c1);
+        //private void GeneratingColumns(List<LuaUIData> listName, DataGrid dataGridName, TabItem tabItemName)
+        //#region Lua Str
+        //{
+        //    //if (listName.Count > 0)
+        //    //{
+        //    //    DataGridTextColumn c1 = new DataGridTextColumn();
+        //    //    c1.Header = "文本ID";
+        //    //    c1.Binding = new Binding("UniqueID");
+        //    //    //c1.Width = 110;
+        //    //    dataGridName.Columns.Add(c1);
 
-                DataGridTextColumn c2 = new DataGridTextColumn();
-                c2.Header = "英文";
-                //c2.Width = 200;
-                c2.Binding = new Binding("Text_EN");
-                dataGridName.Columns.Add(c2);
+        //    //    DataGridTextColumn c2 = new DataGridTextColumn();
+        //    //    c2.Header = "英文";
+        //    //    //c2.Width = 200;
+        //    //    c2.Binding = new Binding("Text_EN");
+        //    //    dataGridName.Columns.Add(c2);
 
-                DataGridTextColumn c3 = new DataGridTextColumn();
-                c3.Header = "汉化";
-                //c3.Width = 200;
-                c3.Binding = new Binding("Text_ZH");
-                dataGridName.Columns.Add(c3);
+        //    //    DataGridTextColumn c3 = new DataGridTextColumn();
+        //    //    c3.Header = "汉化";
+        //    //    //c3.Width = 200;
+        //    //    c3.Binding = new Binding("Text_ZH");
+        //    //    dataGridName.Columns.Add(c3);
 
-                dataGridName.ItemsSource = listName;
+        //    //    dataGridName.ItemsSource = listName;
 
-                tabItemName.Header = tabItemName.Header + "(" + listName.Count + ")";
-            }
-            else
-            {
-                tabItemName.Visibility = Visibility.Collapsed;
-            }
-        }
-        #endregion
+        //    //    tabItemName.Header = tabItemName.Header + "(" + listName.Count + ")";
+        //    //}
+        //    //else
+        //    //{
+        //    //    tabItemName.Visibility = Visibility.Collapsed;
+        //    //}
+        //}
+        //#endregion
 
 
         private async void SaveToDB_Button_Click(object sender, RoutedEventArgs e)
@@ -391,23 +391,23 @@ namespace ESO_LangEditorGUI.View
                     await Task.Run(() => db.DeleteLangs(removedList));
                 }
 
-                if (luaAdded.Count >= 1)    //判断新加内容是否为空  --LUA
-                {
-                    SaveToDB_Button.Content = "正在保存新加内容……";
-                    await Task.Run(() => db.AddNewLangs(luaAdded));
-                }
+                //if (luaAdded.Count >= 1)    //判断新加内容是否为空  --LUA
+                //{
+                //    SaveToDB_Button.Content = "正在保存新加内容……";
+                //    await Task.Run(() => db.AddNewLangs(luaAdded));
+                //}
 
-                if (luaChanged.Count >= 1)   //判断修改内容是否为空  --LUA
-                {
-                    SaveToDB_Button.Content = "正在应用修改内容……";
-                    await Task.Run(() => db.UpdateLangsEN(luaChanged));
-                }
+                //if (luaChanged.Count >= 1)   //判断修改内容是否为空  --LUA
+                //{
+                //    SaveToDB_Button.Content = "正在应用修改内容……";
+                //    await Task.Run(() => db.UpdateLangsEN(luaChanged));
+                //}
 
-                if (luaRemovedList.Count >= 1)   //判断移除内容是否为空  --LUA
-                {
-                    SaveToDB_Button.Content = "正在删除移除内容……";
-                    await Task.Run(() => db.DeleteLangs(luaRemovedList));
-                }
+                //if (luaRemovedList.Count >= 1)   //判断移除内容是否为空  --LUA
+                //{
+                //    SaveToDB_Button.Content = "正在删除移除内容……";
+                //    await Task.Run(() => db.DeleteLangs(luaRemovedList));
+                //}
 
             }
 

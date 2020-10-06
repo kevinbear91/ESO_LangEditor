@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace ESO_LangEditorGUI.Models.Enum
+namespace ESO_LangEditorLib.Models.Client.Enum
 {
     public enum SearchPostion : ushort
     {

@@ -1,144 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ESO_LangEditorGUI.Model
+namespace ESO_LangEditorLib.Models.Client
 {
-    public class LangTextDto1: INotifyPropertyChanged
+    public class LangTextDto : BaseDataModelClient
     {
-        private Guid id;
-        private string textId;
-        private int idType;
-        private string textEn;
-        private string textZh;
-        private int isTranslated;
-        private string updateStats;
-        private DateTime enLastModifyTimestamp;
-        private DateTime zhLastModifyTimestamp;
-        private Guid userId;
+        private Guid _id;
+        private string _textId;
+        private int _idType;
+        private string _textEn;
+        private string _textZh;
+        private LangType _langType;
+        private int _isTranslated;
+        private string _updateStats;
+        private DateTime _enLastModifyTimestamp;
+        private DateTime _zhLastModifyTimestamp;
+        private Guid _userId;
 
-        public Guid Id
-        {
-            get { return id; }
-
-            set
-            {
-                id = value;
-                OnPropertyChanged("Id");
-            }
+        public Guid Id 
+        { 
+            get { return _id; } 
+            set { _id = value; NotifyPropertyChanged(); } 
         }
 
-        public string TextId 
+        public string TextId
         {
-            get { return textId; }
-
-            set
-            {
-                textId = value;
-                OnPropertyChanged("TextId");
-            }
+            get { return _textId; }
+            set { _textId = value; NotifyPropertyChanged(); }
         }
 
-        public int IdType 
+        public int IdType
         {
-            get { return idType; }
-
-            set
-            {
-                idType = value;
-                OnPropertyChanged("IdType");
-            }
+            get { return _idType; }
+            set { _idType = value; NotifyPropertyChanged(); }
         }
 
-        public string TextEn 
+        public string TextEn
         {
-            get { return textEn; }
-
-            set
-            {
-                textEn = value;
-                OnPropertyChanged("TextEn");
-            }
+            get { return _textEn; }
+            set { _textEn = value; NotifyPropertyChanged(); }
         }
 
-        public string TextZh 
+        public string TextZh
         {
-            get { return textZh; }
-
-            set
-            {
-                textZh = value;
-                OnPropertyChanged("TextZh");
-            }
+            get { return _textZh; }
+            set { _textZh = value; NotifyPropertyChanged(); }
         }
 
-        public int IsTranslated 
+        public LangType LangType
         {
-            get { return isTranslated; }
-
-            set
-            {
-                isTranslated = value;
-                OnPropertyChanged("IsTranslated");
-            }
+            get { return _langType; }
+            set { _langType = value; NotifyPropertyChanged(); }
         }
 
-        public string UpdateStats 
+        public int IsTranslated
         {
-            get { return updateStats; }
-
-            set
-            {
-                updateStats = value;
-                OnPropertyChanged("UpdateStats");
-            }
+            get { return _isTranslated; }
+            set { _isTranslated = value; NotifyPropertyChanged(); }
         }
 
-        public DateTime EnLastModifyTimestamp 
+        public string UpdateStats
         {
-            get { return enLastModifyTimestamp; }
-
-            set
-            {
-                enLastModifyTimestamp = value;
-                OnPropertyChanged("EnLastModifyTimestamp");
-            }
+            get { return _updateStats; }
+            set { _updateStats = value; NotifyPropertyChanged(); }
         }
 
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-DD,HH:MM}")]
-        public DateTime ZhLastModifyTimestamp 
+        public DateTime EnLastModifyTimestamp
         {
-            get { return zhLastModifyTimestamp; }
-
-            set
-            {
-                zhLastModifyTimestamp = value;
-                OnPropertyChanged("ZhLastModifyTimestamp");
-            }
+            get { return _enLastModifyTimestamp; }
+            set { _enLastModifyTimestamp = value; NotifyPropertyChanged(); }
         }
 
-        public Guid UserId 
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-DD,HH:MM}")]
+        public DateTime ZhLastModifyTimestamp
         {
-            get { return userId; }
-
-            set
-            {
-                userId = value;
-                OnPropertyChanged("UserId");
-            }
+            get { return _zhLastModifyTimestamp; }
+            set { _zhLastModifyTimestamp = value; NotifyPropertyChanged(); }
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
+        public Guid UserId
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            get { return _userId; }
+            set { _userId = value; NotifyPropertyChanged(); }
         }
 
+        //public override string ToString()
+        //{
+        //    //return ;
+        //}
     }
 }

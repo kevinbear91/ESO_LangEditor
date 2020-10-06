@@ -63,7 +63,7 @@ namespace ESO_LangEditorGUI.Controller
             var tolang = new ThirdPartController();
 
             export.ExportAsText();
-            export.ExportStrDB();
+            //export.ExportStrDB();
 
             if (GetEsoZhPath() == "chs")
                 tolang.ConvertTxTtoLang(false);

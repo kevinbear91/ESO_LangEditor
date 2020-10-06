@@ -1,6 +1,8 @@
 ﻿using ESO_LangEditorGUI.Model;
 using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models;
+using ESO_LangEditorLib.Models.Client.Enum;
+using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,13 +18,13 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class ExportTranslate : Window
     {
-        private List<LangText> SearchData;
+        private List<LangTextDto> SearchData;
         private List<LuaUIData> SearchLuaData;
         //private List<UIstrFile> SearchStrData;
 
         private bool isLua;
 
-        LangDbController db = new LangDbController();
+        LangTextRepository db = new LangTextRepository();
 
         public ExportTranslate()
         {
@@ -46,7 +48,7 @@ namespace ESO_LangEditorGUI.View
             if (isLua)
             {
 
-                SearchLuaData = await Task.Run(() => db.GetLuaLangsListAsync(5, 0, "1"));
+                //SearchLuaData = await Task.Run(() => db.GetLangTexts("1", SearchTextType.TranslateStatus));
 
                 Translated_DataGrid.ItemsSource = SearchLuaData;
 
@@ -57,7 +59,7 @@ namespace ESO_LangEditorGUI.View
             else
             {
 
-                SearchData = await Task.Run(() => db.GetLangsListAsync(6, 0, "1"));
+                SearchData = (List<LangTextDto>)await Task.Run(() => db.GetLangTexts("1", SearchTextType.TranslateStatus));
 
                 Translated_DataGrid.ItemsSource = SearchData;
 
