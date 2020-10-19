@@ -10,25 +10,31 @@ namespace ESO_LangEditorGUI.Services
 {
     public class CompareLangsFromCsvAndDb
     {
-        private List<LangTextDto> _added { get; set; }
+        private List<LangTextDto> _added = new List<LangTextDto>(); 
 
-        private List<LangTextDto> _changed { get; set; }
+        private List<LangTextDto> _changed = new List<LangTextDto>();
 
-        private List<LangTextDto> _nonChanged { get; set; }
+        private List<LangTextDto> _nonChanged = new List<LangTextDto>();
 
-        private List<LangTextDto> _removedList { get; set; }
+        private List<LangTextDto> _removedList = new List<LangTextDto>();
 
-        private Dictionary<string, LangTextDto> _removedDict { get; set; }
+        private Dictionary<string, LangTextDto> _removedDict = new Dictionary<string, LangTextDto>();
 
-        private CompareWindowViewModel compareWindowViewModel { get; }
+        private CompareWindowViewModel _compareWindowViewModel { get; }
 
-        private Dictionary<string, LangTextDto> _first { get; set; }
-        private Dictionary<string, LangTextDto> _second { get; set; }
+        private Dictionary<string, LangTextDto> _first;
+        private Dictionary<string, LangTextDto> _second; 
 
 
-        public CompareLangsFromCsvAndDb(Dictionary<string, LangTextDto> first, Dictionary<string, LangTextDto> second)
+        public CompareLangsFromCsvAndDb(CompareWindowViewModel compareWindowViewModel)
         {
-            
+            _compareWindowViewModel = compareWindowViewModel;
+
+            _first = _compareWindowViewModel.DbDict;
+            _second = _compareWindowViewModel.CsvDict;
+
+
+            //CompareDicts();
         }
 
         public void CompareDicts()
@@ -83,6 +89,14 @@ namespace ESO_LangEditorGUI.Services
             }
 
             _removedList = _removedDict.Values.ToList();
+
+            _compareWindowViewModel.Added = _added;
+            _compareWindowViewModel.Changed = _changed;
+            _compareWindowViewModel.RemovedList = _removedList;
+
+            _compareWindowViewModel.AddedTag = _added.Count.ToString();
+            _compareWindowViewModel.ChangedTag = _changed.Count.ToString();
+            _compareWindowViewModel.RemovedTag = _removedList.Count.ToString();
         }
     }
 }

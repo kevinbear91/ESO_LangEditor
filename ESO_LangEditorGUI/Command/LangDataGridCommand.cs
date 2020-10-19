@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorGUI.View;
+﻿using ESO_LangEditorGUI.View.UserControls;
 using ESO_LangEditorLib.Models.Client;
 using ESO_LangEditorLib.Models.Client.Enum;
 using System;
@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace ESO_LangEditorGUI.Command
 {
-    public class LangDataGridCommand : CommandBase
+    public class LangDataGridCommand : CommandBaseAsync
     {
         private readonly LangDataGridContextMenu _langdataMenu;
         private readonly List<LangTextDto> _selectedItems;

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace ESO_LangEditorGUI.Controller
+namespace ESO_LangEditorGUI.Services
 {
-    public class ThirdPartController
+    public class ThirdPartSerices
     {
         public void OpenCCtoCHT()
         {

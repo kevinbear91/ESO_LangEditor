@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:ucd="clr-namespace:ESO_LangEditorGUI.View"
+        xmlns:ucd="clr-namespace:ESO_LangEditorGUI.View.UserControls"
         xmlns:local="clr-namespace:ESO_LangEditorGUI" xmlns:local1="clr-namespace:ESO_LangEditorGUI.Converter"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="500" Width="820" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500">
 
+    <materialDesign:DialogHost
+        Identifier="RootDialog"
+        DialogTheme="Inherit"
+        SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
     <materialDesign:DrawerHost LeftDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHost">
         <materialDesign:DrawerHost.TopDrawerContent>
             <StackPanel Margin="20" HorizontalAlignment="Left" Orientation="Horizontal" >
@@ -28,7 +32,7 @@
                         <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
                     </MenuItem>
                     <MenuItem Header="高级">
-                        <MenuItem Header="导出文本至.lang" Click="ExportToLang_Click"/>
+                        <MenuItem Header="导出文本至.lang" Command="{Binding ExportToLangCommand}"/>
                         <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
                         <MenuItem Header="导出繁体至.lang" Click="ExportToCHT_Click"/>
                         <MenuItem Header="一键发布" Click="PackToRlease_Click"/>
@@ -96,6 +100,7 @@
 
                                 <CheckBox x:Name="SearchStr_checkBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
                                           Grid.Column="1"
+                                          IsEnabled="False"
                                           Content="UI模式" 
                                           IsChecked="{Binding IsLuaChecked}"
                                           Margin="0,0,5,0" HorizontalAlignment="Right" />
@@ -131,7 +136,7 @@
                                                   HorizontalAlignment="Left"
                                                   materialDesign:ShadowAssist.ShadowDepth="Depth1">
                             <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"
-                                      ItemsSource="{Binding SearchTextType}" SelectedItem="{Binding SelectedSearchTextType, Mode=TwoWay}" SelectedIndex="1">
+                                      ItemsSource="{Binding SearchTextType}" SelectedItem="{Binding SelectedSearchTextType, Mode=TwoWay}" SelectedIndex="3">
                                 <ComboBox.Resources>
                                     <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
                                 </ComboBox.Resources>
@@ -207,6 +212,7 @@
                                 <ColumnDefinition Width="230*"/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="230*"/>
+                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </ItemsPanelTemplate>
@@ -221,6 +227,22 @@
                                Text="{Binding SelectedInfo}" Width="230" />
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
+                <StatusBarItem Grid.Column="4">
+                    <DockPanel>
+                            <Button
+                                Command="{Binding RunDialogCommand}"
+                                Width="128" Cursor="Hand">
+                                RUN CODE
+                            </Button>
+                            <!--<TextBlock x:Name="textBlock_ProgressInfo" DockPanel.Dock="Left" TextWrapping="Wrap" 
+                               Text="{Binding ProgressInfo}" Width="200" />-->
+                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     IsIndeterminate="True"
+                                     Height="15"
+                                     Value="60" DockPanel.Dock="Right"  
+                                     Visibility="{Binding ProgressbarVisibility}" />
+                    </DockPanel>
+                </StatusBarItem>
 
 
 
@@ -233,4 +255,5 @@
 
         </Grid>
     </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
 </Window>

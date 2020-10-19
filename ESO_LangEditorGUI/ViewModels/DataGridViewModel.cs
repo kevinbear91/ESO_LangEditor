@@ -8,7 +8,7 @@ namespace ESO_LangEditorGUI.ViewModels
     public class DataGridViewModel : BaseViewModel
     {
         private List<LangTextDto> _gridData;
-        private LangTextDto _selectedData;
+        private LangTextDto _gridSelectedItem;
         private List<LangTextDto> _gridSelectedItems;
 
         public List<LangTextDto> GridData
@@ -17,13 +17,13 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _gridData = value; NotifyPropertyChanged(); }
         }
 
-        public LangTextDto SelectedData
+        public LangTextDto GridSelectedItem
         {
-            get { return _selectedData; }
-            set { _selectedData = value; NotifyPropertyChanged(); }
+            get { return _gridSelectedItem; }
+            set { _gridSelectedItem = value; NotifyPropertyChanged(); }
         }
 
-        public List<LangTextDto> GridSelectedItem
+        public List<LangTextDto> GridSelectedItems
         {
             get { return _gridSelectedItems; }
             set { _gridSelectedItems = value; NotifyPropertyChanged(); }

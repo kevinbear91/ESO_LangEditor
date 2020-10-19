@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace ESO_LangEditorGUI.Command
 {
-    public class MainViewCommand : CommandBase
+    public class MainViewCommand : CommandBaseAsync
     {
 
 

@@ -9,9 +9,9 @@ namespace ESO_LangEditorLib
     public class LangDbContext : DbContext 
     {
         public DbSet<LangTextDto> LangData { get; set; }
-        public DbSet<LuaUIData> LuaLang { get; set; }
+        //public DbSet<LuaUIData> LuaLang { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-           => optionsBuilder.UseSqlite(@"Data Source=Data/LangData.db");
+           => optionsBuilder.UseSqlite(@"Data Source=Data/LangData_v3.db");
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

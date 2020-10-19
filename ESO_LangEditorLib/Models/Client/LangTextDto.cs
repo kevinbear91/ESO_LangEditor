@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ESO_LangEditorLib.Models.Client
 {
+    [Table("lang_texts")]
     public class LangTextDto : BaseDataModelClient
     {
         private Guid _id;
@@ -19,12 +22,14 @@ namespace ESO_LangEditorLib.Models.Client
         private DateTime _zhLastModifyTimestamp;
         private Guid _userId;
 
+        [Key]
         public Guid Id 
         { 
             get { return _id; } 
             set { _id = value; NotifyPropertyChanged(); } 
         }
 
+        //ID+Unknown+Index 为游戏内唯一文本ID。
         public string TextId
         {
             get { return _textId; }
@@ -49,12 +54,17 @@ namespace ESO_LangEditorLib.Models.Client
             set { _textZh = value; NotifyPropertyChanged(); }
         }
 
-        public LangType LangType
+        public LangType LangLuaType
         {
             get { return _langType; }
             set { _langType = value; NotifyPropertyChanged(); }
         }
 
+        
+        //是否翻译标记 -- 
+        // 0 = 未翻译或初始内容
+        // 1 = 已翻译（导出标记）
+        // 2 = 导入的已翻译内容
         public int IsTranslated
         {
             get { return _isTranslated; }

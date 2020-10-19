@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ESO_LangEditorGUI.Command
 {
-    public abstract class CommandBase : ICommand
+    public abstract class CommandBaseAsync : ICommand
     {
         private bool _isExecuting;
         public event EventHandler CanExecuteChanged;
@@ -22,15 +23,15 @@ namespace ESO_LangEditorGUI.Command
             return !IsExecuting;
         }
 
-        public void Execute(object parameter)
+        public async void Execute(object parameter)
         {
             IsExecuting = true;
 
-            ExecuteCommand(parameter);
+            await ExecuteAsync(parameter);
 
             IsExecuting = false;
         }
 
-        public abstract void ExecuteCommand(object parameter);
+        public abstract Task ExecuteAsync(object parameter);
     }
 }

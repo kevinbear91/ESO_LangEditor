@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ESO_LangEditorGUI.View"
+        xmlns:uc="clr-namespace:ESO_LangEditorGUI.View.UserControls" 
+        xmlns:local="clr-namespace:ESO_LangEditorGUI.View" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="导出翻译文本" Height="410" Width="520" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFEEEEEE">
@@ -13,18 +15,25 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <Canvas Grid.Row="0" VerticalAlignment="Top" Margin="0,20,0,0">
-            <DataGrid x:Name="Translated_DataGrid" 
+        <!--<Canvas Grid.Row="0" VerticalAlignment="Top" Margin="0,20,0,0">
+            
+            
+            --><!--<DataGrid x:Name="Translated_DataGrid" 
                           IsReadOnly="True"
                           AutoGenerateColumns="False" Margin="10,0,0,0" 
                       Width="485" Height="270"
-                      ColumnWidth="100*" />
-        </Canvas>
+                      ColumnWidth="100*" />--><!--
+        </Canvas>-->
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <uc:UC_LangDataGrid x:Name="LangDataGrid" Height="270" Grid.Row="0" />
+        </ScrollViewer>
+        
 
         <Canvas Grid.Row="1">
-            <Button x:Name="ExportTranslate_Button" Content="导出" Click="ExportTranslate_Button_Click" Margin="10,0,0,0"/>
+            <Button x:Name="ExportTranslate_Button" Content="导出" Command="{Binding ExportTranslateCommand}" CommandParameter="{Binding IsExportSelectedItems}" Margin="10,0,0,0" Cursor="Hand"/>
             <Button x:Name="Cancel_Button" Content="取消" Click="Cancel_Button_Click" Margin="100,0,0,0" Cursor="Hand"/>
-            <CheckBox x:Name="IsStr_checkBox" Content="导出UI STR文本" Checked="IsStr_checkBox_Checked" Unchecked="IsStr_checkBox_Unchecked" Margin="200,0,0,0"/>
+            <CheckBox x:Name="ExportSelectedItems_checkBox" Content="导出已选择文本" IsChecked="{Binding IsExportSelectedItems}" Margin="200,0,0,0"/>
         </Canvas>
 
         <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
@@ -43,14 +52,21 @@
             </StatusBar.ItemsPanel>
 
             <StatusBarItem Grid.Column="0">
-                <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
+                <TextBlock x:Name="textBlock_Info"  TextWrapping="Wrap" Text="{Binding SearchResultInfo}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+                <TextBlock x:Name="textBlock_SelectionInfo"  TextWrapping="Wrap" Text="{Binding SelectedInfo}"  />
             </StatusBarItem>
             <Separator Grid.Column="3" />
         </StatusBar>
+
+        <materialDesign:Snackbar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                 MessageQueue="{materialDesign:MessageQueue}"
+                                 x:Name="Snackbar_SaveInfo">
+            <materialDesign:SnackbarMessage Content="{Binding MdNotifyContent}"
+                                            ActionContent="ACCENT" />
+        </materialDesign:Snackbar>
 
 
 

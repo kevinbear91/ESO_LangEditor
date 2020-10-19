@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorGUI.Controller;
+﻿using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorLib;
 using System;
 using System.Collections.Generic;
@@ -17,14 +17,17 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class PackToRelase : Window
     {
-        readonly PackAddonFiles packFiles;
+        //readonly PackAddonFiles packFiles;
 
         public PackToRelase()
         {
+            DataContext = new PackFileViewModel();
+
+
             InitializeComponent();
             CHSorCHT_comboBox.ItemsSource = GeneratingChsOrChtCombox();
             CHSorCHT_comboBox.SelectedIndex = 0;
-            packFiles = new PackAddonFiles(this);
+            //packFiles = new PackAddonFiles(this);
         }
 
         private ObservableCollection<string> GeneratingChsOrChtCombox()
@@ -45,10 +48,10 @@ namespace ESO_LangEditorGUI.View
 
             if (CheckResFolder())
             {
-                if (CheckField())
-                    packFiles.ProcessFiles(esoZhVersion, apiVersion);
-                else
-                    MessageBox.Show("汉化版本号与API版本号不得为空！");
+                //if (CheckField())
+                //    packFiles.ProcessFiles(esoZhVersion, apiVersion);
+                //else
+                //    MessageBox.Show("汉化版本号与API版本号不得为空！");
             }
             else
             {

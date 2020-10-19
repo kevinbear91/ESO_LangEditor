@@ -34,6 +34,7 @@ namespace ESO_LangEditorDatabaseModifier
                 {
                     Id = new Guid(),
                     TextId = langv2.UniqueID,
+                    IdType = langv2.ID,
                     TextEn = langv2.Text_EN,
                     TextZh = langv2.Text_ZH,
                     LangType = LangType.LangText,
@@ -53,6 +54,7 @@ namespace ESO_LangEditorDatabaseModifier
                 {
                     Id = new Guid(),
                     TextId = luav2.UniqueID,
+                    IdType = 100,
                     TextEn = luav2.Text_EN,
                     TextZh = luav2.Text_ZH,
                     LangType = (LangType)luav2.DataEnum,

@@ -15,7 +15,7 @@ namespace ESO_LangEditorGUI.Services
     {
         private string _dbPath;
         private string _dbUpdatePath;
-        private readonly LocalSearchLangText _search = new LocalSearchLangText();
+        private readonly LangTextRepository _search = new LangTextRepository();
 
         public StartupDBCheck(string dbPath, string dbUpdatePath)
         {
@@ -40,7 +40,7 @@ namespace ESO_LangEditorGUI.Services
             ProcessDbUpdateResult result;// = ProcessDbUpdateResult.Success;
             var exportTranslate = new LangExportFromDb();
 
-            SearchData = await _search.GetLangTexts(SearchPostion.Full, SearchTextType.TranslateStatus, "1");
+            SearchData = await _search.GetLangTextsAsync("1", SearchTextType.TranslateStatus, SearchPostion.Full);
             //searchLuaData = await _search.GetLuaLangsListAsync(5, 0, "1");
 
             if (SearchData.Count >= 1)

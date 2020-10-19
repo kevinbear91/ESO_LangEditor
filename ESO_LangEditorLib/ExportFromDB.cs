@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorLib.Models;
+﻿using ESO_LangEditorLib.Models.Client;
 using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace ESO_LangEditorLib
 
             var db = new LangTextRepository();
 
-            var dbData = db.GeAlltLangTexts();
+            var dbData = db.GetAlltLangTexts(0);
 
             if (!Directory.Exists("_tmp"))
                 Directory.CreateDirectory("_tmp");
@@ -66,15 +66,15 @@ namespace ESO_LangEditorLib
                 //能找到个合适的分隔符真鸡巴难，\v = 匹配垂直制表符，\u000B
                 //备用替代"`"
                 int translate = 2;
-                outputText.Add(d.UniqueID
-                    + "\v" + d.ID
-                    + "\v" + d.Unknown
-                    + "\v" + d.Lang_Index
-                    + "\v" + d.Text_EN
-                    + "\v" + d.Text_ZH
-                    + "\v" + d.UpdateStats
-                    + "\v" + translate
-                    + "\v" + d.RowStats);
+                //outputText.Add(d.UniqueID
+                //    + "\v" + d.ID
+                //    + "\v" + d.Unknown
+                //    + "\v" + d.Lang_Index
+                //    + "\v" + d.Text_EN
+                //    + "\v" + d.Text_ZH
+                //    + "\v" + d.UpdateStats
+                //    + "\v" + translate
+                //    + "\v" + d.RowStats);
             }
 
             using (StreamWriter sw = new StreamWriter(directory + "/" + fileName))
@@ -89,37 +89,37 @@ namespace ESO_LangEditorLib
 
         }
 
-        public void ExportLangListFullColumnAsText(List<LuaUIData> data, string directory, string fileName)
-        {
-            var outputText = new List<string>();
+        //public void ExportLangListFullColumnAsText(List<LuaUIData> data, string directory, string fileName)
+        //{
+        //    var outputText = new List<string>();
 
 
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
+        //    if (!Directory.Exists(directory))
+        //        Directory.CreateDirectory(directory);
 
-            foreach (var d in data)
-            {
-                //能找到个合适的分隔符真鸡巴难，\v = 匹配垂直制表符，\u000B
-                //备用替代"`"
-                int translate = 2;
-                outputText.Add(d.UniqueID
-                    + "\v" + d.Text_EN
-                    + "\v" + d.Text_ZH
-                    + "\v" + translate
-                    + "\v" + d.RowStats);
-            }
+        //    foreach (var d in data)
+        //    {
+        //        //能找到个合适的分隔符真鸡巴难，\v = 匹配垂直制表符，\u000B
+        //        //备用替代"`"
+        //        int translate = 2;
+        //        outputText.Add(d.UniqueID
+        //            + "\v" + d.Text_EN
+        //            + "\v" + d.Text_ZH
+        //            + "\v" + translate
+        //            + "\v" + d.RowStats);
+        //    }
 
-            using (StreamWriter sw = new StreamWriter(directory + "/" + fileName))
-            {
-                foreach (string s in outputText)
-                {
-                    sw.WriteLine(s);
-                }
-                sw.Flush();
-                sw.Close();
-            }
+        //    using (StreamWriter sw = new StreamWriter(directory + "/" + fileName))
+        //    {
+        //        foreach (string s in outputText)
+        //        {
+        //            sw.WriteLine(s);
+        //        }
+        //        sw.Flush();
+        //        sw.Close();
+        //    }
 
-        }
+        //}
 
         //public void ExportIDArray(int[] ID_Array)
         //{
@@ -179,28 +179,28 @@ namespace ESO_LangEditorLib
             return dbPath;
         }
 
-        public string ExportTranslateDB(List<LuaUIData> SearchData)
-        {
-            //var connDB = new SQLiteController();
-            string filName = GetTimeToFileName();
-            List<LuaUIData> data = SearchData;
+        //public string ExportTranslateDB(List<LuaUIData> SearchData)
+        //{
+        //    //var connDB = new SQLiteController();
+        //    string filName = GetTimeToFileName();
+        //    List<LuaUIData> data = SearchData;
 
-            if (!Directory.Exists("Export"))
-                Directory.CreateDirectory("Export");
+        //    if (!Directory.Exists("Export"))
+        //        Directory.CreateDirectory("Export");
 
-            string dbPath = @"Export\Translate_" + filName + ".LangUI";
+        //    string dbPath = @"Export\Translate_" + filName + ".LangUI";
 
-            if (File.Exists(dbPath))
-            {
-                ExportTranslateDB(data);
-            }
-            else
-            {
-                ExportLangListFullColumnAsText(SearchData, "Export", "Translate_" + filName + ".LangUI");
-            }
+        //    if (File.Exists(dbPath))
+        //    {
+        //        ExportTranslateDB(data);
+        //    }
+        //    else
+        //    {
+        //        ExportLangListFullColumnAsText(SearchData, "Export", "Translate_" + filName + ".LangUI");
+        //    }
 
-            return dbPath;
-        }
+        //    return dbPath;
+        //}
 
         //public string ExportTranslateDB(List<UIstrFile> Data)
         //{

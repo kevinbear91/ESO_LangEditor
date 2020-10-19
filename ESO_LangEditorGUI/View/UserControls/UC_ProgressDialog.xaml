@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="ESO_LangEditorGUI.View.UserControls.ProgressDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:ESO_LangEditorGUI.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <Grid Margin="16">
+
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                     HorizontalAlignment="Center"
+                     Grid.Row="0"
+                     IsIndeterminate="True"
+                     Value="0" />
+        <TextBlock Grid.Row="1" Margin="0 16 0 0" Text="{Binding CurrentExcuteText}" HorizontalAlignment="Center" FontSize="14"></TextBlock>
+
+        <Button IsCancel="True" Grid.Row="2" Margin="0 16 0 0" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" HorizontalAlignment="Center" Cursor="Hand">
+            <Button.CommandParameter>
+                <system:Boolean>False</system:Boolean>
+            </Button.CommandParameter>
+            CANCEL
+        </Button>
+
+        
+    </Grid>
+</UserControl>

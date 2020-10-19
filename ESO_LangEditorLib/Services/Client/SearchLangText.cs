@@ -10,9 +10,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ESO_LangEditorGUI.Interface
+namespace ESO_LangEditorLib.Services.Client
 {
-    public class SearchLangText : ISearchLangText
+    public class SearchLangText
     {
         private List<LangTextDto> langText;
 
@@ -52,7 +52,7 @@ namespace ESO_LangEditorGUI.Interface
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString());
+                    //MessageBox.Show(ex.ToString());
                 }
 
             }

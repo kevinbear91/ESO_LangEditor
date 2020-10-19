@@ -2,7 +2,6 @@
 using ESO_LangEditorGUI.View;
 using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models;
 using ESO_LangEditorLib.Models.Client;
 using System;
 using System.Collections.Generic;
@@ -22,14 +21,14 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class TextEditor : Window
     {
-        private ESO_LangEditorLib.Models.Client.LangTextDto EditData;
-        private LuaUIData EditLuaData;
+        private LangTextDto EditData;
+        //private LuaUIData EditLuaData;
 
         private LangDbController db = new LangDbController();
 
         private bool _isTextZhChanged = false;
 
-        TextEditorViewModel _dataContext { get; }
+        private TextEditorViewModel _dataContext { get; }
 
         public DataGridViewModel LangDataGridView { get; }
 
@@ -38,17 +37,37 @@ namespace ESO_LangEditorGUI.View
         IDCatalog IDtypeName;
         MainWindow Mainwindow;
 
-        public TextEditor(List<ESO_LangEditorLib.Models.Client.LangTextDto> langData)
+        public TextEditor(List<LangTextDto> langData)
         {
 
             InitializeComponent();
             _dataContext = new TextEditorViewModel(LangDataGrid, langData);
             DataContext = _dataContext;
+            this.Height = 400;
 
             //_dataContext.EditorList = langData;
             //_dataContext.CurrentLangText = langData.ElementAt(0);
 
             
+
+            textBox_ZH.TextChanged += new TextChangedEventHandler(TextChanged);
+
+            Closed += TextEditorWindow_Closed;
+
+            //EditData = LangData;
+            isLua = false;
+
+            //InitWindowVariables(false, ref IDtype, window);
+
+        }
+
+        public TextEditor(LangTextDto langData)
+        {
+
+            InitializeComponent();
+            _dataContext = new TextEditorViewModel(LangDataGrid, langData);
+            DataContext = _dataContext;
+            this.Height = 400;
 
             textBox_ZH.TextChanged += new TextChangedEventHandler(TextChanged);
 
@@ -330,9 +349,9 @@ namespace ESO_LangEditorGUI.View
 
             if (result == 1)
             {
-                if (isLua)
-                    message = "文本ID：" + GetEditedLuaData().UniqueID + " 保存成功！";
-                else
+                //if (isLua)
+                //    //message = "文本ID：" + GetEditedLuaData().UniqueID + " 保存成功！";
+                //else
                     message = "文本ID：" + GetEditedData().Id + " 保存成功！";
             }
             else if (result > 1)
@@ -458,18 +477,18 @@ namespace ESO_LangEditorGUI.View
 
             if(isLua)
             {
-                textBox_EN.Text = EditLuaData.Text_EN;
-                textBox_ZH.Text = EditLuaData.Text_ZH;
+                //textBox_EN.Text = EditLuaData.Text_EN;
+                //textBox_ZH.Text = EditLuaData.Text_ZH;
 
-                string modifyInfo = "，编辑信息：正常.";
+                //string modifyInfo = "，编辑信息：正常.";
 
-                if (EditLuaData.RowStats == 2 && EditLuaData.IsTranslated == 2)
-                    modifyInfo = "，编辑信息：本条内容在 " + EditLuaData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
+                //if (EditLuaData.RowStats == 2 && EditLuaData.IsTranslated == 2)
+                //    modifyInfo = "，编辑信息：本条内容在 " + EditLuaData.UpdateStats + " 版本做出了修改，可能与原文不匹配。";
 
-                //if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
-                //    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
+                ////if (EditData.RowStats == 3 && EditData.IsTranslated == 2)
+                ////    modifyInfo = "，编辑信息：本条内容在 " + EditData.UpdateStats + " 版本做出了修改，已经更新了对应的翻译。";
 
-                textblock_information.Text = "字段：" + EditLuaData.UniqueID  + modifyInfo;
+                //textblock_information.Text = "字段：" + EditLuaData.UniqueID  + modifyInfo;
             }
             else
             {
@@ -520,33 +539,33 @@ namespace ESO_LangEditorGUI.View
             return EditedData;
         }
 
-        private LuaUIData GetEditedLuaData()
-        {
-            int rowStats = EditLuaData.RowStats;
-            //int translate = EditData.IsTranslated;
+        //private LuaUIData GetEditedLuaData()
+        //{
+        //    int rowStats = EditLuaData.RowStats;
+        //    //int translate = EditData.IsTranslated;
 
-            if (rowStats == 2)
-                rowStats = 4;
-            else if (rowStats != 4)
-                rowStats = 3;
-            else
-                rowStats = 4;
+        //    if (rowStats == 2)
+        //        rowStats = 4;
+        //    else if (rowStats != 4)
+        //        rowStats = 3;
+        //    else
+        //        rowStats = 4;
 
-            var EditedData = new LuaUIData
-            {
-                UniqueID = EditLuaData.UniqueID,
-                //ID = EditData.ID,
-                //Unknown = EditData.Unknown,
-                //Lang_Index = EditData.Lang_Index,
-                //Text_EN = EditData.Text_EN,
-                Text_ZH = textBox_ZH.Text,
-                //UpdateStats = EditData.UpdateStats,
-                RowStats = rowStats,
-                IsTranslated = 1,
-            };
+        //    var EditedData = new LuaUIData
+        //    {
+        //        UniqueID = EditLuaData.UniqueID,
+        //        //ID = EditData.ID,
+        //        //Unknown = EditData.Unknown,
+        //        //Lang_Index = EditData.Lang_Index,
+        //        //Text_EN = EditData.Text_EN,
+        //        Text_ZH = textBox_ZH.Text,
+        //        //UpdateStats = EditData.UpdateStats,
+        //        RowStats = rowStats,
+        //        IsTranslated = 1,
+        //    };
 
-            return EditedData;
-        }
+        //    return EditedData;
+        //}
 
         private void Button_modifyList_Click(object sender, RoutedEventArgs e)
         {

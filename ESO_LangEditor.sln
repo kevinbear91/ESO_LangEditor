@@ -3,18 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorGUI_old", "ESO_LangEditorGUI_old\ESO_LangEditorGUI_old.csproj", "{C2CDA787-6446-43B9-824F-4B2F2D2B29CD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E98855B1-7C8C-441E-873B-2CD9E393607C} = {E98855B1-7C8C-441E-873B-2CD9E393607C}
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorLib", "ESO_LangEditorLib\ESO_LangEditorLib.csproj", "{E98855B1-7C8C-441E-873B-2CD9E393607C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorServer", "ESO_LangEditorServer\ESO_LangEditorServer.csproj", "{3346F5DD-0238-4938-A608-B7E15478F7C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorGUI", "ESO_LangEditorGUI\ESO_LangEditorGUI.csproj", "{E51B6D60-76E3-410A-99D8-2C5B256AB832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESO_LangEditorDatabaseModifier", "ESO_LangEditorDatabaseModifier\ESO_LangEditorDatabaseModifier.csproj", "{18C9EAA4-7B53-4071-80EA-C398702BDBD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorDatabaseModifier", "ESO_LangEditorDatabaseModifier\ESO_LangEditorDatabaseModifier.csproj", "{18C9EAA4-7B53-4071-80EA-C398702BDBD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C2CDA787-6446-43B9-824F-4B2F2D2B29CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2CDA787-6446-43B9-824F-4B2F2D2B29CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2CDA787-6446-43B9-824F-4B2F2D2B29CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2CDA787-6446-43B9-824F-4B2F2D2B29CD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E98855B1-7C8C-441E-873B-2CD9E393607C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E98855B1-7C8C-441E-873B-2CD9E393607C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E98855B1-7C8C-441E-873B-2CD9E393607C}.Release|Any CPU.ActiveCfg = Release|Any CPU

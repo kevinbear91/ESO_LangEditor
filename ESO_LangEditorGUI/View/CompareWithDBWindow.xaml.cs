@@ -1,4 +1,5 @@
-﻿using ESO_LangEditorLib;
+﻿using ESO_LangEditorGUI.ViewModels;
+using ESO_LangEditorLib;
 using ESO_LangEditorLib.Models.Client;
 using Microsoft.Win32;
 using System.Collections.Generic;
@@ -54,15 +55,17 @@ namespace ESO_LangEditorGUI.View
         {
             InitializeComponent();
 
-            CheckSaveToDBButtonCanEnable();
+            DataContext = new CompareWindowViewModel(LangDataGrid);
 
-            NewFileURLtextBox.Text = "";
+            //CheckSaveToDBButtonCanEnable();
+
+            //NewFileURLtextBox.Text = "";
         }
 
-        private void BrowseNewFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            SeletedCsvFileCheck(NewFileURLtextBox);
-        }
+        //private void BrowseNewFileButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SeletedCsvFileCheck(NewFileURLtextBox);
+        //}
 
         private void SeletedCsvFileCheck(TextBox textBoxName)
         {
@@ -101,43 +104,43 @@ namespace ESO_LangEditorGUI.View
             }
             else
             {
-                if (NewFileURLtextBox.Text != "")
-                {
-                    VersionInput_textBox.IsEnabled = false;
+                //if (NewFileURLtextBox.Text != "")
+                //{
+                //    VersionInput_textBox.IsEnabled = false;
 
-                    filePath = NewFileURLtextBox.Text;  //&& fileName != NewFileURLtextBox.Text
-                    LoadCsv_Buton.IsEnabled = false;
-                    SaveToDB_Button.IsEnabled = false;
+                //    filePath = NewFileURLtextBox.Text;  //&& fileName != NewFileURLtextBox.Text
+                //    LoadCsv_Buton.IsEnabled = false;
+                //    SaveToDB_Button.IsEnabled = false;
 
-                    //if (filePath.EndsWith(".lua"))
-                    //{
-                    //    ParserLuaStr luaParser = new ParserLuaStr();
+                //    //if (filePath.EndsWith(".lua"))
+                //    //{
+                //    //    ParserLuaStr luaParser = new ParserLuaStr();
 
-                    //    luaDict = luaParser.LuaStrParser(filepath);
-                    //    dbLuaStr = await Task.Run(() => db.GetAllLuaLangsDictionaryAsync());
+                //    //    luaDict = luaParser.LuaStrParser(filepath);
+                //    //    dbLuaStr = await Task.Run(() => db.GetAllLuaLangsDictionaryAsync());
 
-                    //    DiffDictionary(dbLuaStr, luaDict);
-                    //    Debug.WriteLine(dbLuaStr.Count());
-                    //}
-                    //else
-                    //{
-                    //    ParserCsv csvparser = new ParserCsv();
+                //    //    DiffDictionary(dbLuaStr, luaDict);
+                //    //    Debug.WriteLine(dbLuaStr.Count());
+                //    //}
+                //    //else
+                //    //{
+                //    //    ParserCsv csvparser = new ParserCsv();
 
-                    //    CsvDict = await csvparser.CsvReaderToDictionaryAsync(filePath);
-                    //    dbLangDict = await Task.Run(() => db.GetAllLangsDictionaryAsync());
+                //    //    CsvDict = await csvparser.CsvReaderToDictionaryAsync(filePath);
+                //    //    dbLangDict = await Task.Run(() => db.GetAllLangsDictionaryAsync());
 
-                    //    DiffDictionary(dbLangDict, CsvDict);
-                    //    Debug.WriteLine(dbLangDict.Count());
-                    //}
+                //    //    DiffDictionary(dbLangDict, CsvDict);
+                //    //    Debug.WriteLine(dbLangDict.Count());
+                //    //}
 
-                    //LoadCsv_Buton.IsEnabled = false;
-                    SaveToDB_Button.IsEnabled = true;
+                //    //LoadCsv_Buton.IsEnabled = false;
+                //    SaveToDB_Button.IsEnabled = true;
 
-                }
-                else
-                {
-                    MessageBox.Show("未选择CSV文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                //}
+                //else
+                //{
+                //    MessageBox.Show("未选择CSV文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                //}
             }
 
         }
@@ -252,40 +255,40 @@ namespace ESO_LangEditorGUI.View
         //    SetCompareUI(true);
         //}
 
-        private void SetCompareUI(bool isLua)
-        {
-            List<TabItem> tabs = new List<TabItem>
-            {
-                Added_tabitem,
-                Changed_tabitem,
-                Removed_tabitem
-            };
+        //private void SetCompareUI(bool isLua)
+        //{
+        //    List<TabItem> tabs = new List<TabItem>
+        //    {
+        //        Added_tabitem,
+        //        Changed_tabitem,
+        //        Removed_tabitem
+        //    };
 
-            if(isLua)
-            {
-                //GeneratingColumns(luaAdded, Added_DataGrid, Added_tabitem);
-                //GeneratingColumns(luaChanged, Changed_DataGrid, Changed_tabitem);
-                //GeneratingColumns(luaRemovedList, Removed_DataGrid, Removed_tabitem);
-            }
-            else
-            {
-                GeneratingColumns(added, Added_DataGrid, Added_tabitem);
-                GeneratingColumns(changed, Changed_DataGrid, Changed_tabitem);
-                GeneratingColumns(removedList, Removed_DataGrid, Removed_tabitem);
-            }
+        //    if(isLua)
+        //    {
+        //        GeneratingColumns(luaAdded, Added_DataGrid, Added_tabitem);
+        //        GeneratingColumns(luaChanged, Changed_DataGrid, Changed_tabitem);
+        //        GeneratingColumns(luaRemovedList, Removed_DataGrid, Removed_tabitem);
+        //    }
+        //    else
+        //    {
+        //        GeneratingColumns(added, Added_DataGrid, Added_tabitem);
+        //        GeneratingColumns(changed, Changed_DataGrid, Changed_tabitem);
+        //        GeneratingColumns(removedList, Removed_DataGrid, Removed_tabitem);
+        //    }
 
-            foreach(var tab in tabs)
-            {
-                if (tab.Visibility != Visibility.Collapsed)
-                {
-                    tab.IsSelected = true;
-                }
-                else
-                {
-                    tab.IsSelected = false;
-                }
-            }
-        }
+        //    foreach(var tab in tabs)
+        //    {
+        //        if (tab.Visibility != Visibility.Collapsed)
+        //        {
+        //            tab.IsSelected = true;
+        //        }
+        //        else
+        //        {
+        //            tab.IsSelected = false;
+        //        }
+        //    }
+        //}
 
         private void GeneratingColumns(List<LangTextDto> listName, DataGrid dataGridName, TabItem tabItemName)
         {
@@ -425,27 +428,27 @@ namespace ESO_LangEditorGUI.View
         {
             //if (VersionInput_textBox.Text == "")
             //    VersionInput_textBox.Text = "更新版本号(必填)";
-            CheckSaveToDBButtonCanEnable();
+            //CheckSaveToDBButtonCanEnable();
 
         }
 
-        private bool CheckSaveToDBButtonCanEnable()
-        {
-            if (NewFileURLtextBox.Text != "" 
-                && VersionInput_textBox.Text != ""
-                && VersionInput_textBox.Text != " "
-                && VersionInput_textBox.Text != "更新版本号(必填)"
-                /*&& langData != null*/)
-            {
-                SaveToDB_Button.IsEnabled = true;
-                return true;
-            }
-            else
-            {
-                SaveToDB_Button.IsEnabled = false;
-                return false;
-            }
-        }
+        //private bool CheckSaveToDBButtonCanEnable()
+        //{
+        //    if (NewFileURLtextBox.Text != "" 
+        //        && VersionInput_textBox.Text != ""
+        //        && VersionInput_textBox.Text != " "
+        //        && VersionInput_textBox.Text != "更新版本号(必填)"
+        //        /*&& langData != null*/)
+        //    {
+        //        SaveToDB_Button.IsEnabled = true;
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        SaveToDB_Button.IsEnabled = false;
+        //        return false;
+        //    }
+        //}
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {

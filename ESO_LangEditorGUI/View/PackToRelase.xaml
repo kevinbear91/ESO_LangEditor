@@ -11,12 +11,14 @@
         <TextBox x:Name="EsoZhVersion" materialDesign:HintAssist.Hint="汉化版本号" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  HorizontalAlignment="Left" Margin="39,40,0,0" 
-                 TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                 Text="{Binding AddonVersion}" />
         <TextBox x:Name="APIversion_textBox" materialDesign:HintAssist.Hint="API版本" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  HorizontalAlignment="Left" Margin="39,85,0,0" 
-                 TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <ComboBox x:Name="CHSorCHT_comboBox" HorizontalAlignment="Left" Margin="39,144,0,0" VerticalAlignment="Top" Width="120"/>
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="120"
+                 Text="{Binding ApiVersion}" />
+        <ComboBox x:Name="CHSorCHT_comboBox" ItemsSource="{Binding ChsOrChtList}" HorizontalAlignment="Left" Margin="39,144,0,0" VerticalAlignment="Top" Width="120"/>
         <Button x:Name="Pack_button" Content="一键导出" Style="{StaticResource MaterialDesignRaisedButton}"
                 materialDesign:ButtonProgressAssist.Value="-1"
                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"

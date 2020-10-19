@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ESO_LangEditorGUI.View"
+        xmlns:local="clr-namespace:ESO_LangEditorGUI.View" xmlns:uc="clr-namespace:ESO_LangEditorGUI.View.UserControls"
         mc:Ignorable="d"
         Title="导入翻译" Height="350" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
@@ -13,23 +13,72 @@
             <RowDefinition Height="19*"/>
         </Grid.RowDefinitions>
         <Canvas Grid.Row="0" Margin="0,0,0,13">
-            <Button x:Name="OpenFile_button" Content="浏览……" Canvas.Left="20" Canvas.Top="15" Width="75" Click="Import_button_Click"/>
-            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="130" Width="75" Canvas.Top="15" Click="ImportToDB_button_Click" Cursor="Hand"/>
-            <CheckBox x:Name="ImportAll_Checkbox" Content="导入全部" Canvas.Left="240" Canvas.Top="30"/>
+            <Button x:Name="OpenFile_button" Content="浏览……" Canvas.Left="20" Canvas.Top="15" Width="75" 
+                    Command="{Binding OpenFileCommand}" 
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
+            <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="130" Width="75" Canvas.Top="15" 
+                    Command="{Binding ImportTraslate}" Cursor="Hand" />
+            <CheckBox x:Name="ImportAll_Checkbox" Content="导入全部文件" IsChecked="{Binding ImportAllFileCheckbox}" Canvas.Left="240" Canvas.Top="30"/>
 
         </Canvas>
 
-        <Canvas  Grid.Row="1" Margin="0,0,0,5">
-            <DataGrid x:Name="TranslateData_dataGrid" Height="196" Canvas.Left="174" Canvas.Top="10" Width="510" IsReadOnly="True" 
-                      AutoGenerateColumns="False"
-                      ColumnWidth="150*" />
-
-            <ListBox x:Name="FileID_listBox" Height="196" Canvas.Left="10" Canvas.Top="10" 
+        <DockPanel Grid.Row="1">
+            <!--<ListBox x:Name="FileID_listBox" Height="196" 
+                     ItemsSource="{Binding FileList}"
                      Width="140" SelectionMode="Extended" 
-                     SelectionChanged="IDList_SelectChanged" />
-            
+                     SelectionChanged="IDList_SelectChanged" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Value}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
 
-        </Canvas>
+            </ListBox>-->
+
+            <ListBox Name="FileViewer" ItemsSource="{Binding FileList}"
+                     Width="140" SelectionChanged="FileViewer_SelectionChanged">
+
+                <ListBox.ItemTemplate >
+                    <DataTemplate >
+                        <TextBlock Text="{Binding Value}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+
+            </ListBox>
+
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Canvas.Left="174" >
+                <uc:UC_LangDataGrid x:Name="LangDataGrid"  DockPanel.Dock="Right" />
+            </ScrollViewer>
+        </DockPanel>
+
+        <!--<Canvas  Grid.Row="1" Margin="0,0,0,5">
+
+            --><!--<DataGrid x:Name="TranslateData_dataGrid" Height="196" Canvas.Left="174" Canvas.Top="10" Width="510" IsReadOnly="True" 
+                      AutoGenerateColumns="False"
+                      ColumnWidth="150*" />-->
+
+
+            <!--<ListBox x:Name="FileID_listBox" Height="196" Canvas.Left="10" Canvas.Top="10"
+                     ItemsSource="{Binding Path=FileList}"
+                     Width="140" SelectionMode="Extended" 
+                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     SelectionChanged="IDList_SelectChanged" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+
+                        <TextBlock Text="{Binding Value}" />
+
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+            </ListBox>--><!--
+
+
+
+        </Canvas>-->
 
         <StatusBar Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,7,10,7">
             <StatusBar.ItemsPanel>
@@ -47,15 +96,15 @@
             </StatusBar.ItemsPanel>
 
             <StatusBarItem Grid.Column="0">
-                <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="textBlock_Info" Width="230"/>
+                <TextBlock x:Name="textBlock_Info"  TextWrapping="Wrap" Text="{Binding FileListCount}" />
             </StatusBarItem>
             <Separator Grid.Column="1" />
             <StatusBarItem Grid.Column="2">
-                <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_SelectionInfo" Width="230" />
+                <TextBlock x:Name="textBlock_SelectionInfo"  TextWrapping="Wrap" Text="{Binding FileSelectedInfo}" />
             </StatusBarItem>
             <Separator Grid.Column="3" />
             <StatusBarItem Grid.Column="4">
-                <TextBlock x:Name="textBlock_Total" Canvas.Left="240" TextWrapping="Wrap" Text="textBlock_Total" Width="230" />
+                <TextBlock x:Name="textBlock_Total" TextWrapping="Wrap" Text="{Binding ImportFileCount}" />
             </StatusBarItem>
         </StatusBar>
 

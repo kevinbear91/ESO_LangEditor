@@ -21,7 +21,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ESO_LangEditorGUI.View
+namespace ESO_LangEditorGUI.View.UserControls
 {
     /// <summary>
     /// UC_LangDataGrid.xaml 的交互逻辑
@@ -31,16 +31,19 @@ namespace ESO_LangEditorGUI.View
         //WindowController windowControll = new WindowController();
         private ContextMenu _menu = new ContextMenu();
         public ContextMenu _rowRightClickMenu = new ContextMenu();
-        private DataGridViewModel _dataContext = new DataGridViewModel();
+        private readonly DataGridViewModel _dataContext = new DataGridViewModel();
+        private LangTextDto _selectedItem;
         private List<LangTextDto> _selectedItems;
 
         private EnumDescriptionConverter _enumDescriptionConverter = new EnumDescriptionConverter();
 
         public MainWindowViewModel MainWindowViewModel { get; set; }
         public TextEditorViewModel TextEditorViewModel { get; set; }
+        public ExportTranslateWindowViewModel exportTranslateWindowViewModel { get; set; }
 
         public LangDataGridInWindow LangDatGridinWindow { get; set; }
 
+        public DataGridViewModel LangDataGridDC { get { return _dataContext; } }
 
         public ICommand LangDataGridCommand { get;}
 
@@ -57,45 +60,30 @@ namespace ESO_LangEditorGUI.View
             InitializeComponent();
             LangDataGridCommand = new LangDataGridCommand(this);
             DataContext = _dataContext;
-
             
         }
         
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
             DataGrid datagrid = sender as DataGrid;
-            Point aP = e.GetPosition(datagrid);
-            IInputElement obj = datagrid.InputHitTest(aP);
-            DependencyObject target = obj as DependencyObject;
 
-            while (target != null)
+            switch (LangDatGridinWindow)
             {
-                if (target is DataGridRow)
-                    if (datagrid.SelectedIndex != -1)
-                    {
-                        //if (isLua)
-                        //{
-                        //    TextEditor textEditor = new TextEditor((LuaUIData)datagrid.SelectedItem, ref IDtypeName, this);
-                        //    textEditor.Show();
-                        //}
-                        //else
-                        //{
-                        //    //SelectedData = ;
-                        //    TextEditor textEditor = new TextEditor((LangTextDto)datagrid.SelectedItem, ref IDtypeName, this);
-                        //    textEditor.Show();
-                        //    //MessageBox.Show((LangData)datagrid.SelectedItem);
-                        //}
-
-                        //SelectedData = ;
-                        //TextEditor textEditor = new TextEditor((LangTextDto)datagrid.SelectedItem);
-                        //textEditor.Show();
-                        //MessageBox.Show((LangData)datagrid.SelectedItem);
-
-                    }
-
-                target = VisualTreeHelper.GetParent(target);
+                case LangDataGridInWindow.MainViewWindow:
+                    _selectedItem = (LangTextDto)datagrid.SelectedItem;
+                    _dataContext.GridSelectedItem = _selectedItem;
+                    MainWindowViewModel.SelectedInfo = "已选择 1 条文本";
+                    break;
+                //case LangDataGridInWindow.TextEditorWindow:
+                //    TextEditorViewModel.CurrentLangText = (LangTextDto)datagrid.SelectedItem;
+                //    //Info todo
+                //    break;
             }
+
+            TextEditor textEditor = new TextEditor(_selectedItem);
+            textEditor.Show();
 
         }
         private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -106,13 +94,17 @@ namespace ESO_LangEditorGUI.View
             {
                 case LangDataGridInWindow.MainViewWindow:
                     _selectedItems = datagrid.SelectedItems.OfType<LangTextDto>().ToList();
-                    _dataContext.GridSelectedItem = _selectedItems;
+                    _dataContext.GridSelectedItems = _selectedItems;
                     MainWindowViewModel.SelectedInfo = "已选择 " + _selectedItems.Count + " 条文本";
                     break;
                 case LangDataGridInWindow.TextEditorWindow:
                     TextEditorViewModel.CurrentLangText = (LangTextDto)datagrid.SelectedItem;
                     //Info todo
                     break;
+                case LangDataGridInWindow.ExportTranslateWindow:
+                    exportTranslateWindowViewModel.SelectedItems = datagrid.SelectedItems.OfType<LangTextDto>().ToList();
+                    break;
+
             }
 
 

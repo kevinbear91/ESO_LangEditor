@@ -9,7 +9,7 @@ namespace ESO_LangEditorLib.Models.Client.Enum
         MainViewWindow = 1,
         TextEditorWindow = 2,
         CompareWindow = 3,
-        ExportWindow = 4,
-        ImportWindow = 5,
+        ExportTranslateWindow = 4,
+        ImportTranslateWindow = 5,
     }
 }

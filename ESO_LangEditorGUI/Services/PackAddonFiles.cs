@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditorGUI.View;
 using ESO_LangEditorLib;
+using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace ESO_LangEditorGUI.Controller
+namespace ESO_LangEditorGUI.Services
 {
     public class PackAddonFiles
     {
@@ -59,11 +60,15 @@ namespace ESO_LangEditorGUI.Controller
 
         private void ExportDbFiles()
         {
-            var export = new ExportFromDB();
-            var tolang = new ThirdPartController();
+            var readDb = new LangTextRepository();
+            var export = new ExportDbToFile();
+            var tolang = new ThirdPartSerices();
 
-            export.ExportAsText();
-            //export.ExportStrDB();
+            var langtexts = readDb.GetAlltLangTexts(0);
+            var langlua = readDb.GetAlltLangTexts(1);
+
+            export.ExportText(langtexts);
+            export.ExportLua(langlua);
 
             if (GetEsoZhPath() == "chs")
                 tolang.ConvertTxTtoLang(false);
