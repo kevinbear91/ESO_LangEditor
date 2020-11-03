@@ -15,18 +15,17 @@ using System.Windows.Shapes;
 namespace ESO_LangEditorGUI.View.UserControls
 {
     /// <summary>
-    /// ProgressDialog.xaml 的交互逻辑
+    /// UC_Login.xaml 的交互逻辑
     /// </summary>
-    public partial class ProgressDialog : UserControl
+    public partial class UC_Login : UserControl
     {
-        public ProgressDialogViewModel DataContent { get; } = new ProgressDialogViewModel();
+        public LoginViewModel DataContent;
 
-        public ProgressDialog()
+        public UC_Login(MainWindowViewModel mainWindowViewModel)
         {
             InitializeComponent();
-
+            DataContent = new LoginViewModel(mainWindowViewModel);
             DataContext = DataContent;
         }
-
     }
 }

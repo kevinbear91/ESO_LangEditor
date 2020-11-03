@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditorLib.Models;
 using ESO_LangEditorLib.Models.Client;
+using ESO_LangEditorLib.Models.Client.Enum;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,19 +16,21 @@ namespace ESO_LangEditorLib.Services.Client
     public class ExportDbToFile
     {
 
-        public string ExportLangTextsAsJson(List<LangTextDto> langtextsList)
+        public string ExportLangTextsAsJson(List<LangTextDto> langtextsList, LangChangeType changeType)
         {
             //var langtexts = langtextsList;
-            
+
             //string jsonString;
             //jsonString = JsonSerializer.Serialize(JsonDto);
+
+            string fileName;
 
             var json = new JsonDto
             {
                 LangTexts = langtextsList,
                 Version = "1",
-                ExportTime = DateTime.Now
-                
+                ExportTime = DateTime.Now,
+                ChangeType = changeType,
             };
 
             var options = new JsonSerializerOptions
@@ -48,28 +51,36 @@ namespace ESO_LangEditorLib.Services.Client
             //byte[] utf8Json = JsonSerializer.SerializeToUtf8Bytes(json, options);
             string jsonString = JsonSerializer.Serialize(json, options);
 
-            string filName = @"Export\Translate_" + GetTimeToFileName() + ".json";
+            if (changeType == LangChangeType.ChangedZH)
+            {
+                fileName = @"Export\Translate_" + GetTimeToFileName() + ".json";
+            }
+            else
+            {
+                fileName = @"Export\DatabaseRev_" + GetTimeToFileName() + "_" + changeType.ToString() + ".json";
+            }
+            
 
             try
             {
 
-                using (StreamWriter sw = File.CreateText(filName))
+                using (StreamWriter sw = File.CreateText(fileName))
                 {
                     sw.WriteLine(jsonString);
                     //await JsonSerializer.SerializeAsync(fs, jsonString);
                 }
 
-                return filName;
+                return fileName;
             }
             catch (DirectoryNotFoundException)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(filName));
-                using (StreamWriter sw = File.CreateText(filName))
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                using (StreamWriter sw = File.CreateText(fileName))
                 {
                     sw.WriteLine(jsonString);
                     //await JsonSerializer.SerializeAsync(fs, jsonString);
                 }
-                return filName;
+                return fileName;
             }
 
         }

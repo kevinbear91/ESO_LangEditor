@@ -23,14 +23,13 @@ namespace ESO_LangEditorLib.Services.Client
             {
                 listData = searchType switch
                 {
-                    SearchTextType.UniqueID => await db.LangData.Where(d => d.TextId == searchPosAndWord).ToListAsync(),
+                    SearchTextType.UniqueID => await db.LangData.Where(d => d.TextId == keyWord).ToListAsync(),
                     SearchTextType.TextEnglish => await db.LangData.Where(d => EF.Functions.Like(d.TextEn, searchPosAndWord)).ToListAsync(),
                     SearchTextType.TextChineseS => await db.LangData.Where(d => EF.Functions.Like(d.TextZh, searchPosAndWord)).ToListAsync(),
                     SearchTextType.UpdateStatus => await db.LangData.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
-                    //SearchTextType.ReviewStatus => db.LangData.Where(d => d. == ToInt32(keyWord)).ToList(),
                     SearchTextType.TranslateStatus => await db.LangData.Where(d => d.IsTranslated == ToInt32(keyWord)).ToListAsync(),
-                    //SearchTextType.Guid => throw new NotImplementedException(),
-                    //SearchTextType.Type => throw new NotImplementedException(),
+                    SearchTextType.Guid => await db.LangData.Where(d => d.Id == new Guid(keyWord)).ToListAsync(),
+                    SearchTextType.Type => await db.LangData.Where(d => d.IdType == ToInt32(keyWord)).ToListAsync(),
                     //SearchTextType.ByUser => throw new NotImplementedException(),
                     _ => await db.LangData.Where(d => EF.Functions.Like(d.TextEn, searchPosAndWord)).ToListAsync(),
                 };
@@ -72,14 +71,91 @@ namespace ESO_LangEditorLib.Services.Client
             Db.Entry(lang).Property("TextZh").IsModified = true;
             Db.Entry(lang).Property("IsTranslated").IsModified = true;
             Db.Entry(lang).Property("ZhLastModifyTimestamp").IsModified = true;
+            Db.Entry(lang).Property("UserId").IsModified = true;
 
             //Db.Update(langList);
             return await Db.SaveChangesAsync();
         }
 
+        public async Task<int> UpdateTranslated(List<LangTextDto> langs)
+        {
+            using var Db = new LangDbContext();
 
+            foreach(var l in langs)
+            {
+                l.IsTranslated = 2;
+                Db.Attach(l);
+                Db.Entry(l).Property("IsTranslated").IsModified = true;
+            }
 
+            return await Db.SaveChangesAsync();
+        }
 
+        public async Task<int> AddNewLangs(List<LangTextDto> langList)
+        {
+            using var Db = new LangDbContext();
+            Db.AddRange(langList);
+            return await Db.SaveChangesAsync();
+        }
+
+        public async Task<int> DeleteLangs(List<LangTextDto> langList)
+        {
+            using var Db = new LangDbContext();
+            Db.RemoveRange(langList);
+            return await Db.SaveChangesAsync();
+        }
+
+        public async Task UpdateLangsEN(List<LangTextDto> langList)
+        {
+            using var Db = new LangDbContext();
+
+            //int i = 0;
+            foreach (var l in langList)    //EF core 不支持List批量标记，但循环速度不差，2700条执行时间基本在1秒左右。
+            {
+                //i += 1;
+                Db.Attach(l);
+
+                Db.Entry(l).Property("TextEn").IsModified = true;
+                Db.Entry(l).Property("UpdateStats").IsModified = true;
+                Db.Entry(l).Property("IsTranslated").IsModified = true;
+                Db.Entry(l).Property("EnLastModifyTimestamp").IsModified = true;
+                Db.Entry(l).Property("UserId").IsModified = true;
+
+                //Debug.WriteLine("UniqueID: " + l.UniqueID + ", "
+                //    + "Text_EN: " + l.Text_EN + ", "
+                //    + "UpdateStats: " + l.UpdateStats + ", "
+                //    + "Counter: " + i);
+            }
+
+            //Db.UpdateRange(langList);
+            await Db.SaveChangesAsync();
+        }
+
+        public async Task UpdateLangsZH(List<LangTextDto> langList)
+        {
+            using var Db = new LangDbContext();
+
+            //int i = 0;
+            foreach (var l in langList)    //EF core 不支持List批量标记，但循环速度不差，2700条执行时间基本在1秒左右。
+            {
+                //i += 1;
+                Db.Attach(l);
+
+                Db.Entry(l).Property("TextZh").IsModified = true;
+                Db.Entry(l).Property("UpdateStats").IsModified = true;
+                Db.Entry(l).Property("IsTranslated").IsModified = true;
+                Db.Entry(l).Property("ZhLastModifyTimestamp").IsModified = true;
+                Db.Entry(l).Property("UserId").IsModified = true;
+
+                //Debug.WriteLine("UniqueID: " + l.UniqueID + ", "
+                //    + "Text_EN: " + l.Text_EN + ", "
+                //    + "UpdateStats: " + l.UpdateStats + ", "
+                //    + "Counter: " + i);
+            }
+
+            //Db.UpdateRange(langList);
+            await Db.SaveChangesAsync();
+        }
 
 
         private static string GetKeywordWithPostion(SearchPostion searchPostion, string keyWord)

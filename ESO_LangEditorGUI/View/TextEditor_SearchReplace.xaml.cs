@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Globalization;
 using ESO_LangEditorLib.Models.Client;
+using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.ViewModels;
 
 namespace ESO_LangEditorGUI.View
 {
@@ -22,52 +24,53 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class TextEditor_SearchReplace : Window
     {
-        List<LangTextDto> LangList;
-        ListSearchReplace searchReplace = new ListSearchReplace();
-        TextEditor textWindow;
+        //List<LangTextDto> LangList;
+       // ListSearchReplace searchReplace = new ListSearchReplace();
+        //TextEditor textWindow;
 
-        public TextEditor_SearchReplace(List<LangTextDto> list, TextEditor window)
+        public TextEditor_SearchReplace(List<LangTextDto> list)
         {
             InitializeComponent();
-            LangList = list;
-            textWindow = window;
-            CheckBox_OnlyMatchWord.IsChecked = true;
+            //LangList = list;
+            DataContext = new SearchReplaceViewModel(list, LangDataGrid);
+            //textWindow = window;
+            //CheckBox_OnlyMatchWord.IsChecked = true;
         }
 
-        private void Button_findMatch_Click(object sender, RoutedEventArgs e)
-        {
-            bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
-            bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
-            int findNumber;
-            string keyWord;
+        //private void Button_findMatch_Click(object sender, RoutedEventArgs e)
+        //{
+        //    bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
+        //    bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
+        //    int findNumber;
+        //    string keyWord;
 
-            try
-            {
-                if (!string.IsNullOrEmpty(searchKeyWord.Text))
-                {
-                    if (searchKeyWord.Text.Contains('?'))
-                        keyWord = searchKeyWord.Text.Replace("?", @"\?");
-                    else
-                        keyWord = searchKeyWord.Text;
+        //    try
+        //    {
+        //        if (!string.IsNullOrEmpty(searchKeyWord.Text))
+        //        {
+        //            if (searchKeyWord.Text.Contains('?'))
+        //                keyWord = searchKeyWord.Text.Replace("?", @"\?");
+        //            else
+        //                keyWord = searchKeyWord.Text;
 
-                    if (isingoreCase)
-                        findNumber = searchReplace.FindMatch(LangList, keyWord, onlyMatchword);
-                    else
-                        findNumber = searchReplace.FindMatch(LangList, keyWord, onlyMatchword, RegexOptions.IgnoreCase);
+        //            if (isingoreCase)
+        //                findNumber = searchReplace.FindMatch(LangList, keyWord, onlyMatchword);
+        //            else
+        //                findNumber = searchReplace.FindMatch(LangList, keyWord, onlyMatchword, RegexOptions.IgnoreCase);
 
-                    MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + findNumber);
-                }
-                else
-                {
-                    MessageBox.Show("查找匹配数时，关键字不可以为空，空格请谨慎匹配！");
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("查找匹配数时发生了错误，错误信息： " + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            
-        }
+        //            MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + findNumber);
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("查找匹配数时，关键字不可以为空，空格请谨慎匹配！");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("查找匹配数时发生了错误，错误信息： " + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+
+        //}
 
         private void Button_Replace_Click(object sender, RoutedEventArgs e)
         {
@@ -85,10 +88,10 @@ namespace ESO_LangEditorGUI.View
                     else
                         keyWord = searchKeyWord.Text;
 
-                    if (isingoreCase)
-                        result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword);
-                    else
-                        result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
+                    //if (isingoreCase)
+                    //    result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword);
+                    //else
+                    //    result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
 
                     //textWindow.ApplyReplacedList(result);
                     this.Close();

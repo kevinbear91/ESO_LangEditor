@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="15*" MaxHeight="350" />
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -31,23 +31,28 @@
         <GroupBox Header="中文" Grid.Column="1" >
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                       Margin="20,0,0,8">
-                <TextBox x:Name="textBox_ZH" Text="{Binding Path=CurrentLangText.TextZh, Mode=OneWay}"  TextWrapping="Wrap" BorderBrush="#FFABADB3"/>
+                <TextBox x:Name="textBox_ZH" Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" BorderBrush="#FFABADB3" />
             </ScrollViewer>
         </GroupBox>
 
-        <Canvas Grid.Row="1" Grid.Column="1" Margin="10,10,15,2" >
-            <Button x:Name="button_save" Content="保存" Margin="20,0,0,0" Command="{Binding LangEditorSaveButton}" CommandParameter="{Binding ElementName=textBox_ZH}" Cursor="Hand"  />
-            <Button x:Name="button_cancel" Content="取消" Margin="120,0,0,0"  Click="Button_cancel_Click" />
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="20 0 20 0">
+            <Button x:Name="button_save" Content="保存" Margin="10 0 20 0" Command="{Binding LangEditorSaveButton}" CommandParameter="{Binding ElementName=textBox_ZH}" Cursor="Hand"  />
+            <Button x:Name="button_cancel" Content="取消" Margin="20 0 20 0" Click="Button_cancel_Click" />
+        </StackPanel>
+        <!--<Canvas Grid.Row="1" Grid.Column="1" Margin="10,10,15,2" >
+            
+        </Canvas>-->
+
+        <Canvas  Grid.Row="1" Grid.Column="0" Margin="20 15 20 15">
+            <TextBlock x:Name="textblock_information" Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" />
+            
+            <!--<Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
+            <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" Cursor="Hand" />-->
         </Canvas>
 
-        <Canvas  Grid.Row="1" Grid.Column="0" Margin="20,10,15,2" Cursor="Hand">
-            <Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
-            <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" Cursor="Hand" />
-        </Canvas>
-
-        <Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">
-            <TextBlock x:Name="textblock_information" TextWrapping="Wrap" />
-        </Canvas>
+        <!--<Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">
+            
+        </Canvas>-->
 
         <GridSplitter Grid.Row="1" Grid.ColumnSpan="2"
                       x:Name="GridMover"
@@ -55,33 +60,19 @@
                       ResizeDirection="Rows" 
                       Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />
 
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
+        
+            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" 
+                          Visibility="{Binding DataListVisbility}" 
+                          Margin="10 5 10 5" 
+                          VerticalScrollBarVisibility="Auto" >
                 <uc:UC_LangDataGrid x:Name="LangDataGrid" />
             </ScrollViewer>
-            
-        </StackPanel>
 
         
 
-        <!--<Expander x:Name="List_expander" Header="展开列表" 
-                  VerticalAlignment="Top"
-                      ExpandDirection="Down" 
-                      Margin="20,50,20,0"
-                      MinWidth="500" Width="auto"
-                      MinHeight="50" Height="auto"
-                      UseLayoutRounding="False" Expanded="List_expander_Expanded" 
-                      Collapsed="List_expander_Collapsed"
-                      Grid.Row="2" Grid.ColumnSpan="2" >
-            <DataGrid x:Name="List_dataGrid" VerticalAlignment="Top"
-                              IsReadOnly="True"
-                              SelectionMode="Single" 
-                              SelectionChanged="List_datagrid_SelectionChanged"
-                              MinHeight="50" Height="auto"
-                              ColumnWidth="200*"
-                              AutoGenerateColumns="False" Margin="0,10,20,0" />
+        
 
-        </Expander>-->
+        
         <materialDesign:Snackbar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                  MessageQueue="{materialDesign:MessageQueue}"
                                  x:Name="Snackbar_SaveInfo">

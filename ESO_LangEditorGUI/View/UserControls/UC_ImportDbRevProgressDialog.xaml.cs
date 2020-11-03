@@ -17,11 +17,11 @@ namespace ESO_LangEditorGUI.View.UserControls
     /// <summary>
     /// ProgressDialog.xaml 的交互逻辑
     /// </summary>
-    public partial class ProgressDialog : UserControl
+    public partial class ImportDbRevProgressDialog : UserControl
     {
-        public ProgressDialogViewModel DataContent { get; } = new ProgressDialogViewModel();
+        public ImportDbRevProgressDialogViewModel DataContent { get; } = new ImportDbRevProgressDialogViewModel();
 
-        public ProgressDialog()
+        public ImportDbRevProgressDialog()
         {
             InitializeComponent();
 

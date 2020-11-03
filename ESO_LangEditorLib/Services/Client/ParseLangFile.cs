@@ -79,6 +79,7 @@ namespace ESO_LangEditorLib.Services.Client
                     IdType = ToInt32(id),
                     TextId = key,
                     TextEn = text,
+                    LangLuaType = LangType.LangText,
 
 
                     //UniqueID = key,
@@ -120,6 +121,7 @@ namespace ESO_LangEditorLib.Services.Client
                     {
                         string id = match.Groups[1].Value;
                         string text_en = match.Groups[2].Value;
+                        int idType = 100;
 
                         if (luaResult.Count >= 1 && luaResult.TryGetValue(id, out LangTextDto luaResultValue))
                         {
@@ -135,6 +137,7 @@ namespace ESO_LangEditorLib.Services.Client
                                     luaResult.Add(id, new LangTextDto
                                     {
                                         TextId = id,
+                                        IdType = idType,
                                         TextEn = text_en,
                                         LangLuaType = LangType.LuaClient,
                                     });
@@ -144,6 +147,7 @@ namespace ESO_LangEditorLib.Services.Client
                                     luaResult.Add(id, new LangTextDto
                                     {
                                         TextId = id,
+                                        IdType = idType,
                                         TextEn = text_en,
                                         LangLuaType = LangType.LuaPreGame,
                                     });
@@ -158,6 +162,7 @@ namespace ESO_LangEditorLib.Services.Client
                                 luaResult.Add(id, new LangTextDto
                                 {
                                     TextId = id,
+                                    IdType = idType,
                                     TextEn = text_en,
                                     LangLuaType = LangType.LuaClient,
                                 });
@@ -167,6 +172,7 @@ namespace ESO_LangEditorLib.Services.Client
                                 luaResult.Add(id, new LangTextDto
                                 {
                                     TextId = id,
+                                    IdType = idType,
                                     TextEn = text_en,
                                     LangLuaType = LangType.LuaPreGame,
                                 });
@@ -192,7 +198,7 @@ namespace ESO_LangEditorLib.Services.Client
             return luaResult;
         }
 
-        public List<LangTextDto> JsonReader(string path)
+        public List<LangTextDto> JsonToLangTextListReader(string path)
         {
 
             JsonDto jsonFile;// = new JsonDto();
@@ -220,6 +226,27 @@ namespace ESO_LangEditorLib.Services.Client
             return jsonFile.LangTexts;
 
             //string jsonString = JsonSerializer.Deserialize(json, options);
+        }
+
+        public JsonDto JsonToDtoReader(string path)
+        {
+
+            //JsonDto jsonFile;// = new JsonDto();
+            string jsonString;
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+
+            };
+
+            using (StreamReader reader = new StreamReader(path))
+            {
+                jsonString = reader.ReadToEnd();
+            }
+
+            return JsonSerializer.Deserialize<JsonDto>(jsonString);
         }
 
         public List<LangTextDto> LangTextReaderToListAsync(string path)

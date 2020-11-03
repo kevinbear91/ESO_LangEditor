@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="500" Width="820" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500">
 
-    <materialDesign:DialogHost
+    <materialDesign:DialogHost Name="RootDialogWindow"
         Identifier="RootDialog"
         DialogTheme="Inherit"
         SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
@@ -29,15 +29,20 @@
                     </MenuItem>
                     <MenuItem Header="导出">
                         <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
-                        <MenuItem Header="导出ID文本" Click="ExportID_Click"/>
+                        <!--<MenuItem Header="导出ID文本" Click="ExportID_Click"/>-->
                     </MenuItem>
                     <MenuItem Header="高级">
-                        <MenuItem Header="导出文本至.lang" Command="{Binding ExportToLangCommand}"/>
-                        <MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>
-                        <MenuItem Header="导出繁体至.lang" Click="ExportToCHT_Click"/>
+                        <MenuItem Header="导出文本至.lang" Command="{Binding OpenDoalogCommand}"/>
+                        <!--<MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>-->
                         <MenuItem Header="一键发布" Click="PackToRlease_Click"/>
                     </MenuItem>
-                    <MenuItem Header="帮助">
+                        <MenuItem Header="网络">
+                            <MenuItem Header="服务器线路">
+                                <MenuItem Header="IKDC2(IPv4)" IsChecked="True" IsCheckable="True" />
+                                <!--<MenuItem Header="IKDC2(IPv6)" IsChecked="False" IsCheckable="True" />-->
+                            </MenuItem>
+                        </MenuItem>
+                        <MenuItem Header="帮助">
                         <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
                     </MenuItem>
                 </Menu>
@@ -199,9 +204,6 @@
 
             </DockPanel>
 
-
-
-
             <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -228,14 +230,9 @@
                 </StatusBarItem>
                 <Separator Grid.Column="3" />
                 <StatusBarItem Grid.Column="4">
-                    <DockPanel>
-                            <Button
-                                Command="{Binding RunDialogCommand}"
-                                Width="128" Cursor="Hand">
-                                RUN CODE
-                            </Button>
-                            <!--<TextBlock x:Name="textBlock_ProgressInfo" DockPanel.Dock="Left" TextWrapping="Wrap" 
-                               Text="{Binding ProgressInfo}" Width="200" />-->
+                        <DockPanel>
+                            <TextBlock x:Name="textBlock_ProgressInfo" DockPanel.Dock="Left" TextWrapping="Wrap" 
+                               Text="{Binding ProgressInfo}" Width="200" />
                         <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
                                      IsIndeterminate="True"
                                      Height="15"

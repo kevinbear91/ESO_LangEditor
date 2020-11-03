@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ESO_LangEditorGUI.Command
@@ -46,9 +47,11 @@ namespace ESO_LangEditorGUI.Command
                 exportItems = _langDatagrid.LangDataGridDC.GridData;
             }
 
-            var path = exporter.ExportLangTextsAsJson(exportItems);
+            var path = exporter.ExportLangTextsAsJson(exportItems, LangChangeType.ChangedZH);
+            _localSearch.UpdateTranslated(exportItems);
+            //_exportWindowViewModel.MdNotifyContent = path;
 
-            _exportWindowViewModel.MdNotifyContent = path;
+            MessageBox.Show("导出文件路径为：" + path);
         }
 
         //public void SetEnable(bool canEnable)
@@ -68,9 +71,6 @@ namespace ESO_LangEditorGUI.Command
 
             _langDatagrid.LangDataGridDC.GridData = result;
             _exportWindowViewModel.SearchResultInfo = result.Count.ToString();
-
-            
-
         }
     }
 }

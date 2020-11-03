@@ -35,7 +35,6 @@
             <Button x:Name="LoadCsv_Buton" Content="{Binding LoadButtonContent}" Command="{Binding LoadCsvAndDbCommand}" Canvas.Left="130" Canvas.Top="10" Cursor="Hand" />
             <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新版本号(必填)" 
                      TextWrapping="Wrap" Width="130" 
-                     
                      Margin="0,0,20,0" Canvas.Left="281" FontSize="14" Height="32" Canvas.Top="10">
                 <TextBox.Text>
                     <Binding Path="UpdateVersionText" UpdateSourceTrigger="PropertyChanged">
@@ -69,29 +68,31 @@
                                  CommandParameter="Removed"
                                  Content="{Binding RemovedTag}"  />
                 </StackPanel>
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Margin="0,40,0,0" Width="462">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,40,0,0" Width="462">
                     <uc:UC_LangDataGrid x:Name="LangDataGrid" Height="200" Grid.Row="0" />
                 </ScrollViewer>
             </Canvas>
 
         </GroupBox>
 
-        <Canvas Margin="20,5,0,0" Grid.Row="2">
-            <Button x:Name="SaveToDB_Button" Content="保存" Click="SaveToDB_Button_Click" Canvas.Left="311">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=VersionInput_textBox}" Value="True">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            <Button x:Name="Cancel_Button" Content="取消" Canvas.Left="406" Click="Cancel_Button_Click"/>
+        <DockPanel Grid.Row="2" Margin="20 0">
+            <TextBlock Width="300" Text="{Binding InfoText}" VerticalAlignment="Center" ></TextBlock>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button x:Name="SaveToDB_Button" Content="保存" Command="{Binding SaveToDbCommand}" Margin="20 0"  >
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=VersionInput_textBox}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="Cancel_Button" Content="取消" Click="Cancel_Button_Click" Margin="20 0"  />
+            </StackPanel>
+        </DockPanel>
 
-
-        </Canvas>
 
     </Grid>
 </Window>

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,9 @@
 
   <ItemGroup>
     <Compile Update="View\PackToRelase.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\UserControls\UC_ImportDbRevProgressDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -31,9 +35,13 @@
     <Page Update="View\PackToRelase.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\UserControls\UC_ImportDbRevProgressDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Command\Export\" />
     <Folder Include="Services\LangException\" />
   </ItemGroup>
 

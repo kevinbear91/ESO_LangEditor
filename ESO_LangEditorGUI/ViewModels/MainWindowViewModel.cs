@@ -6,13 +6,9 @@ using ESO_LangEditorLib.Services.Client;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ESO_LangEditorGUI.ViewModels
@@ -27,20 +23,13 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _selectedInfo;
         private string _progressInfo;
         private Visibility _progessbarVisibility;
-        //private List<DataGridTextColumn> _dataGridColumnHeader;
         private string _keyword;
         private bool _isLuaChecked;
+        private MainWindow _mainWindow;
 
         public UC_LangDataGrid LangDataGrid { get; set; }
 
         public DataGridViewModel LangDataGridView { get; }
-
-        //public UC_LangDataGrid LangDataGrid 
-        //{ 
-        //    get  { return _langDataGrid; }
-        //    set { }
-
-        //}
 
         public ICommand MainviewCommand { get; }
 
@@ -48,7 +37,10 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public ICommand ExportToLangCommand { get; }
 
-        public ICommand RunDialogCommand => new LangOpenDialogCommand(ExecuteRunDialog);
+        //public ICommand RunDialogCommand => new LangOpenDialogCommand(ExecuteRunDialog);
+
+        public ICommand OpenDoalogCommand => new LangOpenDialogCommand(ExportToLang);
+
 
 
 
@@ -98,12 +90,6 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _progessbarVisibility = value; NotifyPropertyChanged(); }
         }
 
-        //public List<DataGridTextColumn> DataGridColumnHeader
-        //{
-        //    get { return _dataGridColumnHeader; }
-        //    set { _dataGridColumnHeader = value; NotifyPropertyChanged(); }
-        //}
-
         public string Keyword
         {
             get { return _keyword; }
@@ -117,19 +103,58 @@ namespace ESO_LangEditorGUI.ViewModels
         }
 
 
-
-        public MainWindowViewModel(UC_LangDataGrid langdatagrid)
+        public MainWindowViewModel(UC_LangDataGrid langdatagrid, MainWindow mainWindow)
         {
             LoadMainView();
             LangDataGrid = langdatagrid;
             LangDataGrid.MainWindowViewModel = this;
             LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.MainViewWindow;
+            _mainWindow = mainWindow;
             //LangDataGridView = new DataGridViewModel();
             SearchLangCommand = new SearchLangCommand(this);
 
             ProgressbarVisibility = Visibility.Hidden;
 
-            ExportToLangCommand = new ExportToFileCommand(this);
+            
+
+            _mainWindow.RootDialogWindow.Loaded += RootDialogWindow_Loaded;
+            //
+
+
+            //ExportToLangCommand = new ExportToFileCommand(this);
+        }
+
+        private void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            GuidVaildStartupCheck();
+        }
+
+        public void GuidVaildStartupCheck()
+        {
+            if (App.LangConfig.UserGuid == Guid.Empty)
+            {
+                ShowLoginUC();
+            }
+            else
+            {
+                App.LangNetworkService = new NetworkService(App.LangConfig, this);
+            }
+        }
+
+        private async void ShowLoginUC()
+        {
+            var view = new UC_Login(this);
+
+            //show the dialog
+            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+        }
+
+        public async void ShowImportDbRevUC()
+        {
+            var view = new ImportDbRevProgressDialog();
+
+            //show the dialog
+            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
         }
 
         private void LoadMainView()
@@ -142,74 +167,54 @@ namespace ESO_LangEditorGUI.ViewModels
 
         }
 
-        private async void ExportToLang()
+        private async void ExportToLang(object o)
         {
-            var _langTextRepository = new LangTextRepository();
-            var _thirdPartSerices = new ThirdPartSerices();
-            var exportDbToFile = new ExportDbToFile();
-            
-            MessageBoxResult resultExport = MessageBox.Show("一键导出文本到.lang文件，点击确定开始，不导出请点取消。"
-                + Environment.NewLine
-                + "点击确定之后请耐心等待，输出完毕后会弹出提示!", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Information);
-            switch (resultExport)
-            {
-                case MessageBoxResult.OK:
-                    ProgressInfo = "正在读取数据库……";
-                    ProgressbarVisibility = Visibility.Visible;
-                    var langtexts = await Task.Run(() => _langTextRepository.GetAlltLangTexts(0));
-
-                    ProgressInfo = "正在写入文件……";
-                    await Task.Run(() => exportDbToFile.ExportText(langtexts));
-
-                    ProgressInfo = "正在转换格式……";
-                    await Task.Run(() => _thirdPartSerices.ConvertTxTtoLang(false));
-
-                    ProgressInfo = "";
-                    ProgressbarVisibility = Visibility.Hidden;
-                    MessageBox.Show("导出完成!", "完成", MessageBoxButton.OK, MessageBoxImage.Information);
-                    break;
-                case MessageBoxResult.Cancel:
-                    break;
-            }
-        }
-
-        private async void ExecuteRunDialog(object o)
-        {
-            //let's set up a little MVVM, cos that's what the cool kids are doing:
-            var view = new ProgressDialog
-            {
-                //DataContext = new SampleDialogViewModel()
-            };
-
+            var view = new ProgressDialog();
 
             //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ExtendedOpenedEventHandler, ExtendedClosingEventHandler);
+            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
 
-            //check the result...
-            Console.WriteLine("Dialog was closed, the CommandParameter used to close it was: " + (result ?? "NULL"));
         }
 
-        private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
+        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
-            Console.WriteLine("You could intercept the open and affect the dialog using eventArgs.Session.");
+            Console.WriteLine("You can intercept the closing event, and cancel here.");
         }
 
-        private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        private void ClosingEventAndSaveConfigHandler(object sender, DialogClosingEventArgs eventArgs)
         {
-            if ((bool)eventArgs.Parameter == false) return;
 
-            //OK, lets cancel the close...
-            eventArgs.Cancel();
 
-            //...now, lets update the "session" with some new content!
-            //eventArgs.Session.UpdateContent(new SampleProgressDialog());
-            //note, you can also grab the session when the dialog opens via the DialogOpenedEventHandler
-
-            //lets run a fake operation for 3 seconds then close this baby.
-            //Task.Delay(TimeSpan.FromSeconds(3))
-            //    .ContinueWith((t, _) => eventArgs.Session.Close(false), null,
-            //        TaskScheduler.FromCurrentSynchronizationContext());
+            Console.WriteLine("You can intercept the closing event, and cancel here.");
         }
+
+        private void ExportLuaToStr()
+        {
+            var readDb = new LangTextRepository();
+            var export = new ExportDbToFile();
+
+            var langlua = readDb.GetAlltLangTexts(1);
+            export.ExportLua(langlua);
+        }
+
+        private bool CompareDatabaseRev()
+        {
+            return App.LangConfig.DatabaseRev != App.LangConfigServer.LangDatabaseRevised;
+        }
+
+
+        //private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
+        //{
+        //    Console.WriteLine("You could intercept the open and affect the dialog using eventArgs.Session.");
+        //}
+
+        //private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        //{
+        //    if ((bool)eventArgs.Parameter == false) return;
+
+        //    eventArgs.Cancel();
+
+        //}
 
 
         //public void GetLangSearchInfo(int count)

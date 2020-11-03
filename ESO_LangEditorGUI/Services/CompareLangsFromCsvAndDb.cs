@@ -57,14 +57,17 @@ namespace ESO_LangEditorGUI.Services
                     {
                         _changed.Add(new LangTextDto
                         {
-                            TextId = other.Value.TextId,
-                            //ID = other.Value.ID,
-                            //Unknown = other.Value.Unknown,
-                            //Lang_Index = other.Value.Lang_Index,
+                            Id = firstValue.Id,
+                            TextId = firstValue.TextId,
+                            IdType = firstValue.IdType,
                             TextEn = other.Value.TextEn,
                             TextZh = firstValue.TextZh,
-                            //UpdateStats = VersionInput_textBox.Text,
+                            UpdateStats = _compareWindowViewModel.UpdateVersionText,
                             IsTranslated = firstValue.IsTranslated,
+                            EnLastModifyTimestamp = DateTime.Now,
+                            ZhLastModifyTimestamp = firstValue.ZhLastModifyTimestamp,
+                            LangLuaType = firstValue.LangLuaType,
+                            UserId = App.LangConfig.UserGuid,
                             //review = 2,
                         });
                         _removedDict.Remove(other.Key);
@@ -74,15 +77,17 @@ namespace ESO_LangEditorGUI.Services
                 {
                     _added.Add(new LangTextDto
                     {
+                        Id = Guid.NewGuid(),
                         TextId = other.Value.TextId,
-                        //ID = other.Value.ID,
-                        //Unknown = other.Value.Unknown,
-                        //Lang_Index = other.Value.Lang_Index,
+                        IdType = other.Value.IdType,
                         TextEn = other.Value.TextEn,
                         TextZh = other.Value.TextEn,
-                        //UpdateStats = VersionInput_textBox.Text,
+                        UpdateStats = _compareWindowViewModel.UpdateVersionText,
                         IsTranslated = 0,
-                        //RowStats = 1,
+                        EnLastModifyTimestamp = DateTime.Now,
+                        ZhLastModifyTimestamp = DateTime.Now,
+                        LangLuaType = other.Value.LangLuaType,
+                        UserId = App.LangConfig.UserGuid,
                     });
                     _removedDict.Remove(other.Key);
                 }

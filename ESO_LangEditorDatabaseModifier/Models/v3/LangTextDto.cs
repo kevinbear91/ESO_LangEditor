@@ -28,6 +28,7 @@ namespace ESO_LangEditorDatabaseModifier.Model.v3
             set { _id = value; NotifyPropertyChanged(); }
         }
 
+        //ID+Unknown+Index 为游戏内唯一文本ID。
         public string TextId
         {
             get { return _textId; }
@@ -52,12 +53,17 @@ namespace ESO_LangEditorDatabaseModifier.Model.v3
             set { _textZh = value; NotifyPropertyChanged(); }
         }
 
-        public LangType LangType
+        public LangType LangLuaType
         {
             get { return _langType; }
             set { _langType = value; NotifyPropertyChanged(); }
         }
 
+
+        //是否翻译标记 -- 
+        // 0 = 未翻译或初始内容
+        // 1 = 已翻译（导出标记）
+        // 2 = 导入的已翻译内容
         public int IsTranslated
         {
             get { return _isTranslated; }

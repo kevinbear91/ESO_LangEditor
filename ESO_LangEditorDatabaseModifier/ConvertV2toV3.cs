@@ -32,17 +32,17 @@ namespace ESO_LangEditorDatabaseModifier
             {
                 _langTextsv3.Add(new LangTextDto_v3
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     TextId = langv2.UniqueID,
                     IdType = langv2.ID,
                     TextEn = langv2.Text_EN,
                     TextZh = langv2.Text_ZH,
-                    LangType = LangType.LangText,
+                    LangLuaType = LangType.LangText,
                     IsTranslated = langv2.IsTranslated,
                     UpdateStats = langv2.UpdateStats,
                     EnLastModifyTimestamp = DateTime.Now,
                     ZhLastModifyTimestamp = DateTime.Now,
-                    UserId = new Guid("148ED451-BF19-43E9-A8D3-55F922CD349E"),
+                    UserId = new Guid("8475B578-80F4-4ED0-AE41-C32A45D6D9E6"),
                 }) ;
             }
 
@@ -57,12 +57,12 @@ namespace ESO_LangEditorDatabaseModifier
                     IdType = 100,
                     TextEn = luav2.Text_EN,
                     TextZh = luav2.Text_ZH,
-                    LangType = (LangType)luav2.DataEnum,
+                    LangLuaType = (LangType)luav2.DataEnum,
                     IsTranslated = luav2.IsTranslated,
                     UpdateStats = luav2.UpdateStats,
                     EnLastModifyTimestamp = DateTime.Now,
                     ZhLastModifyTimestamp = DateTime.Now,
-                    UserId = new Guid("148ED451-BF19-43E9-A8D3-55F922CD349E"),
+                    UserId = new Guid("8475B578-80F4-4ED0-AE41-C32A45D6D9E6"),
                 });
             }
 

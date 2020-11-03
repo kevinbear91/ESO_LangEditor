@@ -21,13 +21,13 @@ namespace ESO_LangEditorGUI
     public partial class MainWindow : Window
     {
 
-        IDCatalog IDtypeName = new IDCatalog();
+        //IDCatalog IDtypeName = new IDCatalog();
 
         public MainWindow()
         {
 
             InitializeComponent();
-            DataContext = new MainWindowViewModel(LangDataGrid);
+            DataContext = new MainWindowViewModel(LangDataGrid, this);
 
             GeneratingChips();
 
@@ -78,14 +78,14 @@ namespace ESO_LangEditorGUI
 
         private void CsvCompareWithDB_Click(object sender, RoutedEventArgs e)
         {
-            var compareWithDBWindows = new CompareWithDBWindow();
-            compareWithDBWindows.Show();
+            new CompareWithDBWindow().Show();
+            //compareWithDBWindows.Show();
         }
 
         private void ExportTranslate_Click(object sender, RoutedEventArgs e)
         {
-            var exportTranslateWindow = new ExportTranslate();
-            exportTranslateWindow.Show();
+            new ExportTranslate().Show();
+            //exportTranslateWindow.Show();
         }
 
 
@@ -99,8 +99,8 @@ namespace ESO_LangEditorGUI
 
         private void ImportTranslate_Click(object sender, RoutedEventArgs e)
         {
-            var importTranslate = new ImportTranslateDB();
-            importTranslate.Show();
+            new ImportTranslateDB().Show();
+            //importTranslate.Show();
         }
 
         private void OpenHelpURLinBrowser(object sender, RoutedEventArgs e)
@@ -209,9 +209,9 @@ namespace ESO_LangEditorGUI
 
         private void PackToRlease_Click(object sender, RoutedEventArgs e)
         {
-            var PackWindow = new PackToRelase();
+            new PackToRelase().Show();
 
-            PackWindow.Show();
+            //PackWindow.Show();
         }
 
         private void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)

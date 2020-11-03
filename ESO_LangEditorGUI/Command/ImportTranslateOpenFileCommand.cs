@@ -59,8 +59,8 @@ namespace ESO_LangEditorGUI.Command
                 }
                 //TotalFiles_textBlock.Text = "共 " + fileList.Count().ToString() + " 个文件，已选择 0 个。";
             }
-            if (_importTranslateWindowViewModel.FileList.Count > 1)
-                _importTranslateWindowViewModel.ImportTraslate.IsExecuting = false;
+            //if (_importTranslateWindowViewModel.FileList.Count > 1)
+            //    _importTranslateWindowViewModel.ImportTraslate.IsExecuting = false;
 
             //throw new NotImplementedException();
         }

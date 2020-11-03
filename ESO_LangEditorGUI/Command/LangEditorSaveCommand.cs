@@ -10,37 +10,47 @@ using System.Windows.Controls;
 
 namespace ESO_LangEditorGUI.Command
 {
-    class LangEditorSaveCommand : CommandBaseAsync
+    class LangEditorSaveCommand : CommandBase
     {
-        private LangTextRepository _langTextRepository = new LangTextRepository();
-        private TextEditorViewModel _textEditorViewModel;
+        //private LangTextRepository _langTextRepository = new LangTextRepository();
+        //private TextEditorViewModel _textEditorViewModel;
 
+        private readonly Action<object> _executeMethod;
 
-        public LangEditorSaveCommand(TextEditorViewModel textEditorViewModel)
+        public LangEditorSaveCommand(Action<object> execute)
         {
-            _textEditorViewModel = textEditorViewModel;
+            //_textEditorViewModel = textEditorViewModel;
+            _executeMethod = execute;
         }
 
-
-
-        public override async Task ExecuteAsync(object parameter)
+        public override void ExecuteCommand(object parameter)
         {
             //LangTextDto langtext = parameter as LangTextDto;
 
-            TextBox langtextZh = parameter as TextBox;
-            LangTextDto lang = _textEditorViewModel.CurrentLangText;
+            _executeMethod(parameter);
 
-            lang.TextZh = langtextZh.Text;
-            lang.IsTranslated = 1;
-            lang.ZhLastModifyTimestamp = DateTime.Now;
+            //TextBox langtextZh = parameter as TextBox;
+            //LangTextDto lang = _textEditorViewModel.CurrentLangText;
 
-            Debug.WriteLine("{0},{1}", lang.TextZh, lang.ZhLastModifyTimestamp);
+            //if (langtextZh.Text != lang.TextZh)
+            //{
+            //    lang.TextZh = langtextZh.Text;
+            //    lang.IsTranslated = 1;
+            //    lang.ZhLastModifyTimestamp = DateTime.Now;
 
-            int update = await _langTextRepository.UpdateLangZh(lang);
+            //    Debug.WriteLine("{0},{1}", lang.TextZh, lang.ZhLastModifyTimestamp);
+
+            //    int update = await _langTextRepository.UpdateLangZh(lang);
+
+
+            //    _textEditorViewModel.MdNotifyContent = update.ToString();
+            //}
+            //else
+            //{
+
+            //}    
 
             
-
-            _textEditorViewModel.MdNotifyContent = update.ToString();
 
 
             //throw new NotImplementedException();

@@ -98,7 +98,9 @@ namespace ESO_LangEditorGUI.View.UserControls
                     MainWindowViewModel.SelectedInfo = "已选择 " + _selectedItems.Count + " 条文本";
                     break;
                 case LangDataGridInWindow.TextEditorWindow:
-                    TextEditorViewModel.CurrentLangText = (LangTextDto)datagrid.SelectedItem;
+                    TextEditorViewModel.SetCurrentSelectedValue((LangTextDto)datagrid.SelectedItem, datagrid.SelectedIndex);
+                    //TextEditorViewModel.CurrentLangText = (LangTextDto)datagrid.SelectedItem;
+                    //TextEditorViewModel.CurrentSelectIndex = datagrid.SelectedIndex;
                     //Info todo
                     break;
                 case LangDataGridInWindow.ExportTranslateWindow:
@@ -250,7 +252,11 @@ namespace ESO_LangEditorGUI.View.UserControls
                 case LangDataGridContextMenu.EditMutilItem:
                     OpenLangEditorWindow();
                     break;
-                //LangDataGridContextMenu.SearchAndReplace => "查找替换",
+                case LangDataGridContextMenu.SearchAndReplace:
+                    new TextEditor_SearchReplace(_selectedItems).Show();
+                    break;
+
+                    //LangDataGridContextMenu.SearchAndReplace => "查找替换",
 
             };
 

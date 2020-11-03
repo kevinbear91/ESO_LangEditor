@@ -1,5 +1,7 @@
-﻿using ESO_LangEditorGUI.View;
-using ESO_LangEditorLib;
+﻿using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.ViewModels;
+using ESO_LangEditorLib.Models;
+using ESO_LangEditorLib.Models.Client.Enum;
 using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
@@ -12,23 +14,31 @@ using System.Windows;
 
 namespace ESO_LangEditorGUI.Services
 {
-    public class PackAddonFiles
+    public class PackAllAddonFile
     {
-        readonly PackToRelase _window;
+        private string _addonVersion;
+        private string _apiVersion;
+        private CHSorCHT _chsOrChtListSelected;
+        private List<FilePaths> _copyFilePaths;
+        private List<FilePaths> _filePaths;
 
-        public PackAddonFiles(PackToRelase window)
+        
+
+        public PackAllAddonFile(PackFileViewModel packFileViewModel)
         {
-            _window = window;
+            _addonVersion = packFileViewModel.AddonVersion;
+            _apiVersion = packFileViewModel.ApiVersion;
+            _chsOrChtListSelected = packFileViewModel.ChsOrChtListSelected;
         }
 
-        public void ProcessFiles(string esoZhVersion, string esoApiVersion)
+        public void ProcessFiles()
         {
             try
             {
                 ExportDbFiles();
                 CopyResList();
-                ModifyFiles(esoZhVersion, esoApiVersion);
-                PackTempFiles(esoZhVersion);
+                ModifyFiles();
+                PackTempFiles();
                 MessageBox.Show("打包完成！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (DirectoryNotFoundException)
@@ -39,23 +49,10 @@ namespace ESO_LangEditorGUI.Services
             {
                 MessageBox.Show("无法找到必要文件，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("发生错误，信息：" + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-
-        private string GetEsoZhPath()
-        {
-            int selectedIndex = _window.CHSorCHT_comboBox.SelectedIndex;
-            string path = selectedIndex switch
-            {
-                0 => "chs",
-                1 => "cht",
-                _ => "chs",
-            };
-            return path;
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show("发生错误，信息：" + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
         }
 
         private void ExportDbFiles()
@@ -70,7 +67,7 @@ namespace ESO_LangEditorGUI.Services
             export.ExportText(langtexts);
             export.ExportLua(langlua);
 
-            if (GetEsoZhPath() == "chs")
+            if (_chsOrChtListSelected == CHSorCHT.chs)
                 tolang.ConvertTxTtoLang(false);
             else
             {
@@ -82,11 +79,64 @@ namespace ESO_LangEditorGUI.Services
             GC.WaitForPendingFinalizers();
         }
 
-        private void ModifyFiles(string esoZhVersion, string esoApiVersion)
+        private void ModifyFiles()
         {
-            string esozhPath = GetEsoZhPath();
-            List<FilePaths> copyFilePaths = new List<FilePaths>();
-            List<FilePaths> filePaths = new List<FilePaths>
+            //List<FilePaths> copyFilePaths, filePaths;
+            CreateFileList(_chsOrChtListSelected);
+
+            foreach (var f in _filePaths)
+            {
+                modifyfile(f.SourcePath, f.DestPath);
+                Debug.WriteLine("{0},{1}", f.SourcePath, f.DestPath);
+            }
+
+            foreach (var c in _copyFilePaths)
+            {
+                if (Directory.Exists(Path.GetDirectoryName(c.DestPath)))
+                {
+                    File.Copy(c.SourcePath, c.DestPath, true);
+                }
+                else
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(c.DestPath));
+                    File.Copy(c.SourcePath, c.DestPath, true);
+                }
+            }
+
+        }
+
+        private void modifyfile(string readPath, string outputPath)
+
+        {
+            string modifyText;
+            using (var sr = new StreamReader(readPath, Encoding.UTF8))
+            {
+                modifyText = sr.ReadToEnd();
+            }
+
+            modifyText = modifyText.Replace("{EsoZhVersion}", _addonVersion);
+            modifyText = modifyText.Replace("{EsoApiVersion}", _apiVersion);
+
+
+            using (var sw = new StreamWriter(outputPath))
+            {
+                if (Directory.Exists(Path.GetDirectoryName(outputPath)))
+                {
+                    sw.Write(modifyText);
+                }
+                else
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
+                    sw.Write(modifyText);
+                }
+            }
+        }
+
+        private void CreateFileList(CHSorCHT chsOrcht)
+        {
+            var esozhPath = chsOrcht;
+            _copyFilePaths = new List<FilePaths>();
+            _filePaths = new List<FilePaths>
             {
                 new FilePaths
                 {
@@ -105,21 +155,20 @@ namespace ESO_LangEditorGUI.Services
                 //    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_pregame.str",
                 //}
             };
-
-            if (esozhPath == "chs")
+            if (_chsOrChtListSelected == CHSorCHT.chs)
             {
-                filePaths.Add(new FilePaths
+                _filePaths.Add(new FilePaths
                 {
                     SourcePath = @"Export\zh_pregame.str",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_pregame.str",
                 });
-                copyFilePaths.Add(new FilePaths
+                _copyFilePaths.Add(new FilePaths
                 {
                     SourcePath = @"Export\zh_client.str",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str",
                 });
 
-                copyFilePaths.Add(new FilePaths
+                _copyFilePaths.Add(new FilePaths
                 {
                     SourcePath = @"Export\zh.lang",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\gamedata\lang\zh.lang",
@@ -130,80 +179,31 @@ namespace ESO_LangEditorGUI.Services
             }
             else
             {
-                filePaths.Add(new FilePaths
+                _filePaths.Add(new FilePaths
                 {
                     SourcePath = @"Export\zht_pregame.str",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_pregame.str",
                 });
-                copyFilePaths.Add(new FilePaths
+                _copyFilePaths.Add(new FilePaths
                 {
                     SourcePath = @"Export\zht_client.str",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str",
                 });
 
-                copyFilePaths.Add(new FilePaths
+                _copyFilePaths.Add(new FilePaths
                 {
                     SourcePath = @"Export\zht.lang",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\gamedata\lang\zh.lang",
                 });
                 //File.Copy(@"Export\zht_client.str", @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str", true);
             }
-
-            foreach(var f in filePaths)
-            {
-                modifyfile(f.SourcePath,f.DestPath, esoZhVersion, esoApiVersion);
-                Debug.WriteLine("{0},{1}",f.SourcePath,f.DestPath);
-            }
-
-            foreach(var c in copyFilePaths)
-            {
-                if (Directory.Exists(Path.GetDirectoryName(c.DestPath)))
-                {
-                    File.Copy(c.SourcePath, c.DestPath, true);
-                }
-                else
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(c.DestPath));
-                    File.Copy(c.SourcePath, c.DestPath, true);
-                }
-            }
-
-            #region 修改文件方法
-            static void modifyfile(string readPath, string outputPath, string esoZhVersion, string esoApiVersion)
-            
-            {
-                string modifyText;
-                using (var sr = new StreamReader(readPath, Encoding.UTF8))
-                {
-                    modifyText = sr.ReadToEnd();
-                }
-
-                modifyText = modifyText.Replace("{EsoZhVersion}", esoZhVersion);
-                modifyText = modifyText.Replace("{EsoApiVersion}", esoApiVersion);
-
-
-                using (var sw = new StreamWriter(outputPath))
-                {
-                    if (Directory.Exists(Path.GetDirectoryName(outputPath)))
-                    {
-                        sw.Write(modifyText);
-                    }
-                    else
-                    {
-                        Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
-                        sw.Write(modifyText);
-                    }
-                }
-            }
-            #endregion
-
         }
 
         private void CopyResList()
         {
             List<string> fileList;
 
-            if (GetEsoZhPath() == "chs")
+            if (_chsOrChtListSelected == CHSorCHT.chs)
                 fileList = File.ReadAllLines(@"Resources\PackCHS.txt").ToList();
             else
                 fileList = File.ReadAllLines(@"Resources\PackCHT.txt").ToList();
@@ -226,25 +226,20 @@ namespace ESO_LangEditorGUI.Services
 
         }
 
-        private void PackTempFiles(string esoZhVersion)
+        private void PackTempFiles()
         {
-            string chsOrCht = GetEsoZhPath();
+            //string chsOrCht = GetEsoZhPath();
             string zipPath;
 
-            string dirPath = @"_tmp\pack\" + chsOrCht;
+            string dirPath = @"_tmp\pack\" + _chsOrChtListSelected.ToString();
 
-            if (chsOrCht == "chs")
-                zipPath = @"Export\微攻略汉化" + esoZhVersion + "_简体.zip";
+            if (_chsOrChtListSelected == CHSorCHT.chs)
+                zipPath = @"Export\微攻略汉化" + _addonVersion + "_简体.zip";
             else
-                zipPath = @"Export\微攻略汉化" + esoZhVersion + "_繁体.zip";
+                zipPath = @"Export\微攻略汉化" + _addonVersion + "_繁体.zip";
 
             ZipFile.CreateFromDirectory(dirPath, zipPath);
 
         }
-    }
-    class FilePaths
-    {
-        public string SourcePath { get; set; }
-        public string DestPath { get; set; }
     }
 }

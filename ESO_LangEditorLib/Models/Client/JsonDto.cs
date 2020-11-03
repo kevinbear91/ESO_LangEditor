@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESO_LangEditorLib.Models.Client.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,7 @@ namespace ESO_LangEditorLib.Models.Client
         //public List<LangLuaDto> LangLuas { get; set; }
         public string Version { get; set; }
         public DateTime ExportTime { get; set; }
+        public LangChangeType ChangeType { get; set; }
         //List<>
     }
 }

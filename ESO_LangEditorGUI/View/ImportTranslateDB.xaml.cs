@@ -39,84 +39,8 @@ namespace ESO_LangEditorGUI.View
 
             DataContext = new ImportTranslateWindowViewModel(LangDataGrid);
 
-            //GeneratingColumns(false);
-            //textBlock_Info.Text = "";
-            //textBlock_SelectionInfo.Text = "";
-            //textBlock_Total.Text = "";
-            //ImportToDB_button.IsEnabled = false;
-            //ImportAll_Checkbox.IsEnabled = false;
         }
 
-        
-
-        //private void Import_button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    OpenFileDialog dialog = new OpenFileDialog
-        //    {
-        //        Multiselect = true
-        //    };
-
-        //    if (dialog.ShowDialog(this) == true)
-        //    {
-        //        if (dialog.FileName.EndsWith(".LangDB") || dialog.FileName.EndsWith(".LangUI") || dialog.FileName.EndsWith(".db") || dialog.FileName.EndsWith(".dbUI"))
-        //        {
-        //            //if (fileList.Count >= 1 || filePath.Count >= 1)
-        //            //{
-        //            //    fileList.Clear();
-        //            //    filePath.Clear();
-        //            //    FileID_listBox.ItemsSource = null;
-        //            //}
-
-        //            foreach (var file in dialog.FileNames)
-        //            {
-        //                //fileList.Add(System.IO.Path.GetFileName(file));
-        //                //filePath.Add(file);
-        //            }
-
-        //            //FileID_listBox.ItemsSource = fileList;
-        //            //FileID_listBox.SelectedIndex = 0;
-
-        //            //textBlock_Info.Text = "共 " + filePath.Count + " 个文件";
-        //            //ImportToDB_button.IsEnabled = true;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("仅支持读取 .LangDB、 .LangUI、.db、.dbUI 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-        //            FileID_listBox.ItemsSource = "";
-        //        }
-        //        //TotalFiles_textBlock.Text = "共 " + fileList.Count().ToString() + " 个文件，已选择 0 个。";
-        //    }
-        //    //if (fileList.Count > 1 && filePath.Count > 1)
-        //    //    ImportAll_Checkbox.IsEnabled = true;
-        //}
-
-
-        //private async void IDList_SelectChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    int seletedIndex = FileID_listBox.SelectedIndex;
-        //    string dbPath;
-
-        //    //if (fileList.Count != 0)
-        //    //{
-        //    //    dbPath = filePath.ElementAt(seletedIndex);
-        //    //    await ReadFileByName(dbPath, false);
-                
-        //    //}
-                
-
-        //    //if (filePath.Count >= 0 && seletedIndex == -1)
-        //    //{
-        //    //    dbPath = filePath.ElementAt(0);
-        //    //    //DataGridSet(dbPath);
-        //    //}
-        //    //else
-        //    //{
-        //    //    dbPath = filePath.ElementAt(seletedIndex);
-        //    //    //DataGridSet(dbPath);
-        //    //}
-
-
-        //}
 
         private async Task ReadFileByName(string dbPath, bool isSaveToDb)
         {
@@ -235,7 +159,7 @@ namespace ESO_LangEditorGUI.View
             string path = selectedItem.Key;
 
             if (path.EndsWith(".json"))
-                LangDataGrid.LangDataGridDC.GridData = parseLangFile.JsonReader(path);
+                LangDataGrid.LangDataGridDC.GridData = parseLangFile.JsonToLangTextListReader(path);
             else
                 LangDataGrid.LangDataGridDC.GridData = parseLangFile.LangTextReaderToListAsync(path);
                 

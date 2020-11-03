@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorGUI", "ESO_La
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorDatabaseModifier", "ESO_LangEditorDatabaseModifier\ESO_LangEditorDatabaseModifier.csproj", "{18C9EAA4-7B53-4071-80EA-C398702BDBD1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorUpdater", "ESO_LangEditorUpdater\ESO_LangEditorUpdater.csproj", "{495FD35C-C361-46F4-9474-8A2529EF9323}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E98855B1-7C8C-441E-873B-2CD9E393607C} = {E98855B1-7C8C-441E-873B-2CD9E393607C}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +38,10 @@ Global
 		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495FD35C-C361-46F4-9474-8A2529EF9323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495FD35C-C361-46F4-9474-8A2529EF9323}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495FD35C-C361-46F4-9474-8A2529EF9323}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495FD35C-C361-46F4-9474-8A2529EF9323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

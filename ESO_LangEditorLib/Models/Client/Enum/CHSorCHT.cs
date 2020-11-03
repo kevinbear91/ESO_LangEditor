@@ -5,11 +5,11 @@ using System.Text;
 
 namespace ESO_LangEditorLib.Models.Client.Enum
 {
-    public enum CHSorCHT : byte
+    public enum CHSorCHT : ushort
     {
-        [Description("简体中文")]
+        [Description("打包简体中文")]
         chs = 1,
-        [Description("繁体中文")]
+        [Description("打包繁体中文")]
         cht,
     }
 }

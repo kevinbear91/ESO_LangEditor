@@ -1,11 +1,17 @@
 ﻿using ESO_LangEditorGUI.Services;
+using ESO_LangEditorLib.Models;
+using ESO_LangEditorLib.Models.Client;
+using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -16,8 +22,16 @@ namespace ESO_LangEditorGUI
     /// </summary>
     public partial class App : Application
     {
-        //public static HttpClient ApiClient { get; set; }
+        public static HttpClient ApiClient { get; set; }
         public static bool OnlineMode { get; set; }
+        public static IDCatalog iDCatalog = new IDCatalog();
+        public static GameVersion gameUpdateVersionName = new GameVersion();
+        public static ConfigJson LangConfig;
+        public static HandshakeJson LangConfigServer;
+        public static NetworkService LangNetworkService;
+        public static string ServerPath;
+        public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
+        public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
 
         public void App_Startup(object sender, StartupEventArgs e)
         {
@@ -27,7 +41,20 @@ namespace ESO_LangEditorGUI
             //InitializeClient();
             //RegisterDependencies();
 
-            var dbCheck = new StartupDBCheck(@"Data\LangData.db", @"Data\LangData.update");
+            LangConfig = ConfigJson.Load();
+            ConfigJson.Save(LangConfig);
+
+            //HandshakeJson handshake = new HandshakeJson();
+            //HandshakeJson.Save(handshake);
+
+            
+            //LangNetworkService.CompareServerConfig();
+
+            //var startupNetCheck = new StartupNetHandShake(LangConfig);
+
+
+
+            var dbCheck = new StartupDBCheck(@"Data\LangData_v3.db", @"Data\LangData_v3.update");
 
             if (dbCheck.IsDBExist & dbCheck.CheckDbUpdateExist)
             {

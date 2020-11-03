@@ -54,5 +54,11 @@ namespace ESO_LangEditorGUI.ViewModels
 
             ExportTranslateCommand = new ExportTranslateCommand(langdatagrid, this);
         }
+
+
+        //private void SearchTranslatedLangs()
+        //{
+
+        //}
     }
 }

@@ -36,7 +36,7 @@
             </ListBox>-->
 
             <ListBox Name="FileViewer" ItemsSource="{Binding FileList}"
-                     Width="140" SelectionChanged="FileViewer_SelectionChanged">
+                     Width="140" SelectionChanged="FileViewer_SelectionChanged" SelectedItem="{Binding SelectedItemFilePath}" >
 
                 <ListBox.ItemTemplate >
                     <DataTemplate >
