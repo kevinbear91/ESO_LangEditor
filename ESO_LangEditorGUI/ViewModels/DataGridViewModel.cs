@@ -17,17 +17,9 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _gridData = value; NotifyPropertyChanged(); }
         }
 
-        public LangTextDto GridSelectedItem
-        {
-            get { return _gridSelectedItem; }
-            set { _gridSelectedItem = value; NotifyPropertyChanged(); }
-        }
+        public LangTextDto GridSelectedItem { get; set; }
 
-        public List<LangTextDto> GridSelectedItems
-        {
-            get { return _gridSelectedItems; }
-            set { _gridSelectedItems = value; NotifyPropertyChanged(); }
-        }
+        public List<LangTextDto> GridSelectedItems { get; set; }
 
         
     }

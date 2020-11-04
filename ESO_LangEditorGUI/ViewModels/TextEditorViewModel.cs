@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -25,7 +26,9 @@ namespace ESO_LangEditorGUI.ViewModels
         private Visibility _dataListVisbility;
         private string _langTextZh;
         private LangTextRepository _langTextRepository = new LangTextRepository();
-        private ISnackbarMessageQueue _snackbarMessageQueue;
+        private SnackbarMessageQueue _snackbarMessageQueue;
+        private List<LangTextDto> _langDataList = new List<LangTextDto>();
+        //private LangTextDto> _langDataList;
 
         //public int TextEditorWindowHeight { get; set; }
         public int TextEditorWindowWidth { get; set; }
@@ -36,6 +39,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public ICommand LangEditorSaveButton { get; }
 
+        public event EventHandler OnRequestClose;
 
         //public List<LangTextDto> EditorList
         //{
@@ -111,7 +115,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         //}
 
-        public TextEditorViewModel(UC_LangDataGrid langdatagrid, List<LangTextDto> langData, ISnackbarMessageQueue snackbarMessageQueue)
+        public TextEditorViewModel(UC_LangDataGrid langdatagrid, List<LangTextDto> langData, SnackbarMessageQueue snackbarMessageQueue)
         {
             //_editorList = editorList;
 
@@ -122,28 +126,32 @@ namespace ESO_LangEditorGUI.ViewModels
             LangDataGrid.TextEditorViewModel = this;
             LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.TextEditorWindow;
 
-            if (langData.Count > 1)
+            _langDataList = langData;
+
+            if (_langDataList.Count > 1)
             {
                 _gridDataGridHeight = 200;
                 _textEditorWindowHeight = 600;
                 DataListVisbility = Visibility.Visible;
-                LangDataGrid.LangDataGrid.ItemsSource = langData;
-                CurrentLangText = langData.ElementAt(0);
+                LangDataGrid.LangDataGridDC.GridData = _langDataList;
+                LangDataGrid.LangDataGridDC.GridSelectedItem = _langDataList.ElementAt(0);
+                CurrentLangText = _langDataList.ElementAt(0);
             }
             else
             {
                 _gridDataGridHeight = 40;
                 _textEditorWindowHeight = 400;
                 DataListVisbility = Visibility.Collapsed;
-                CurrentLangText = langData.ElementAt(0);
+                CurrentLangText = _langDataList.ElementAt(0);
             }
             LangTextZh = CurrentLangText.TextZh;
             LangtextInfo = "update";
+            _snackbarMessageQueue = snackbarMessageQueue;
             LangEditorSaveButton = new LangEditorSaveCommand(SaveCurrentToDb);
 
         }
 
-        public TextEditorViewModel(UC_LangDataGrid langdatagrid, LangTextDto langData, ISnackbarMessageQueue snackbarMessageQueue)
+        public TextEditorViewModel(UC_LangDataGrid langdatagrid, LangTextDto langData, SnackbarMessageQueue snackbarMessageQueue)
         {
             LangDataGrid = langdatagrid;
             LangDataGrid.TextEditorViewModel = this;
@@ -163,10 +171,14 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public void SetCurrentSelectedValue(LangTextDto selectedItem, int selectedIndex)
         {
-            CurrentLangText = selectedItem;
-            LangTextZh = CurrentLangText.TextZh;
-            CurrentSelectIndex = selectedIndex;
-            LangtextInfo = "update";
+            if (selectedItem != null & selectedIndex != -1)
+            {
+                CurrentLangText = selectedItem;
+                LangTextZh = CurrentLangText.TextZh;
+                CurrentSelectIndex = selectedIndex;
+                LangtextInfo = "update";
+            }
+            
         }
 
         private string CompareEditTime()
@@ -221,6 +233,8 @@ namespace ESO_LangEditorGUI.ViewModels
                     MdNotifyContent = "文本保存失败！";
 
                 _snackbarMessageQueue.Enqueue(MdNotifyContent);
+
+                ModifyDataGridAfterSave();
             }
             else
             {
@@ -228,6 +242,33 @@ namespace ESO_LangEditorGUI.ViewModels
                 _snackbarMessageQueue.Enqueue(MdNotifyContent);
 
             }
+        }
+
+        private void ModifyDataGridAfterSave()
+        {
+            if (_langDataList.Count > 1)
+            {
+                var removeitem = _langDataList.Single(l => l.Id == CurrentLangText.Id);
+                Debug.WriteLine(removeitem.Id.ToString());
+
+                _langDataList.Remove(removeitem);
+
+                LangDataGrid.LangDataGridDC.GridData = _langDataList;
+                LangDataGrid.LangDataGrid.Items.Refresh();
+
+
+                if (CurrentSelectIndex > 0)
+                    CurrentSelectIndex = CurrentSelectIndex - 1;
+                else
+                    CurrentSelectIndex = 0;
+
+                SetCurrentSelectedValue(_langDataList.ElementAt(CurrentSelectIndex), CurrentSelectIndex);
+            }
+            else
+            {
+                OnRequestClose(this, new EventArgs());
+            }
+                
         }
 
     }

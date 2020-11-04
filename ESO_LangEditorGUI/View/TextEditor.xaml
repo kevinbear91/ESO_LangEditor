@@ -68,11 +68,6 @@
                 <uc:UC_LangDataGrid x:Name="LangDataGrid" />
             </ScrollViewer>
 
-        
-
-        
-
-        
         <materialDesign:Snackbar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                  MessageQueue="{materialDesign:MessageQueue}"
                                  x:Name="Snackbar_SaveInfo">

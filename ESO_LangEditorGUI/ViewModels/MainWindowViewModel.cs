@@ -15,7 +15,7 @@ namespace ESO_LangEditorGUI.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private readonly string version = " v3.0.0";
+        private readonly string version = " v3.0.1";
 
         private string _windowTitle;
         private IEnumerable<SearchPostion> _searchPostion;

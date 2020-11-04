@@ -8,6 +8,7 @@ using ESO_LangEditorLib.Models.Client.Enum;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -250,7 +251,7 @@ namespace ESO_LangEditorGUI.View.UserControls
             {
                 //LangDataGridContextMenu.EditCurrentItem => "编辑当前",
                 case LangDataGridContextMenu.EditMutilItem:
-                    OpenLangEditorWindow();
+                    new TextEditor(GetSeletedItems()).Show();
                     break;
                 case LangDataGridContextMenu.SearchAndReplace:
                     new TextEditor_SearchReplace(_selectedItems).Show();
@@ -264,14 +265,26 @@ namespace ESO_LangEditorGUI.View.UserControls
 
         }
 
-        private void OpenLangEditorWindow()
+        private List<LangTextDto> GetSeletedItems()
         {
-            //List<LangTextDto> selectedItems = (List<LangTextDto>)LangDataGrid.SelectedItems;
+            var list = new List<LangTextDto>();
 
-            TextEditor langEditor = new TextEditor(_selectedItems);
-
-            //langEditor.UpdateData(_selectedItems);
-            langEditor.Show();
+            foreach (var selectedItem in LangDataGrid.SelectedItems)
+            {
+                if (selectedItem != null)
+                    list.Add((LangTextDto)selectedItem);
+            }
+            return list;
         }
+
+        //private void OpenLangEditorWindow()
+        //{
+        //    //List<LangTextDto> selectedItems = (List<LangTextDto>)LangDataGrid.SelectedItems;
+
+        //    TextEditor langEditor = new TextEditor(_selectedItems);
+
+        //    //langEditor.UpdateData(_selectedItems);
+        //    langEditor.Show();
+        //}
     }
 }

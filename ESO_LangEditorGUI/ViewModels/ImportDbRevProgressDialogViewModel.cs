@@ -200,7 +200,7 @@ namespace ESO_LangEditorGUI.ViewModels
                 + e.ProgressPercentage 
                 + "%，已下载大小：" 
                 + SizeSuffix(e.BytesReceived) 
-                + ", 总大小：" 
+                + "，总大小："
                 + SizeSuffix(e.TotalBytesToReceive);
         }
 
