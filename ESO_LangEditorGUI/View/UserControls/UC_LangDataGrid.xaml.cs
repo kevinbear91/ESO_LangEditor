@@ -109,22 +109,6 @@ namespace ESO_LangEditorGUI.View.UserControls
                     break;
 
             }
-
-
-            //if (_dataContext.LangDatGridinWindow == LangDataGridInWindow.MainViewWindow)
-            //{
-            //    _selectedItems = datagrid.SelectedItems.OfType<LangTextDto>().ToList();
-
-            //    _dataContext.GridSelectedItem = _selectedItems;
-
-            //    MainWindowViewModel.SelectedInfo = "已选择 " + _selectedItems.Count + " 条文本";
-            //}
-            //else
-            //{
-                
-            //}
-            
-            
         }
 
 

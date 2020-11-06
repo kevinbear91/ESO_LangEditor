@@ -95,10 +95,6 @@ namespace ESO_LangEditorGUI.View
         }
 
 
-
-
-
-
         private void Button_cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

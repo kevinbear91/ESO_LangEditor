@@ -78,7 +78,7 @@
         <DockPanel Grid.Row="2" Margin="20 0">
             <TextBlock Width="300" Text="{Binding InfoText}" VerticalAlignment="Center" ></TextBlock>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Button x:Name="SaveToDB_Button" Content="保存" Command="{Binding SaveToDbCommand}" Margin="20 0"  >
+                <Button x:Name="SaveToDB_Button" Content="保存" Command="{Binding SaveToDbCommand}" Margin="20 0" Cursor="Hand"  >
                     <Button.Style>
                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                             <Style.Triggers>
