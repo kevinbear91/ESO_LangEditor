@@ -6,15 +6,15 @@
         xmlns:uc="clr-namespace:ESO_LangEditorGUI.View.UserControls" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="文本编辑" Height="{Binding TextEditorWindowHeight, Mode=TwoWay}" Width="640" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="400">
+        Title="文本编辑" Height="{Binding TextEditorWindowHeight, Mode=TwoWay}" Width="700" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="640" MinHeight="400">
     <Grid x:Name="GridContent" Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="15*" MaxHeight="350" />
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="83*" MaxHeight="350" />
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -37,18 +37,19 @@
 
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="20 0 20 0">
             <Button x:Name="button_save" Content="保存" Margin="10 0 20 0" Command="{Binding LangEditorSaveButton}" CommandParameter="{Binding ElementName=textBox_ZH}" Cursor="Hand"  />
-            <Button x:Name="button_cancel" Content="取消" Margin="20 0 20 0" Click="Button_cancel_Click" />
+            <Button x:Name="button_cancel" Content="取消" Margin="20 0 20 0" Click="Button_cancel_Click" Cursor="Hand" />
         </StackPanel>
         <!--<Canvas Grid.Row="1" Grid.Column="1" Margin="10,10,15,2" >
             
         </Canvas>-->
 
-        <Canvas  Grid.Row="1" Grid.Column="0" Margin="20 15 20 15">
-            <TextBlock x:Name="textblock_information" Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" />
-            
-            <!--<Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
+
+        <TextBlock x:Name="textblock_information" Grid.Row="1" Grid.Column="0" Margin="20 5 20 15" 
+                       Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" />
+
+        <!--<Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
             <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" Cursor="Hand" />-->
-        </Canvas>
+
 
         <!--<Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">
             
@@ -60,13 +61,13 @@
                       ResizeDirection="Rows" 
                       Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />
 
-        
-            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" 
+
+        <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" 
                           Visibility="{Binding DataListVisbility}" 
                           Margin="10 5 10 5" 
                           VerticalScrollBarVisibility="Auto" >
-                <uc:UC_LangDataGrid x:Name="LangDataGrid" />
-            </ScrollViewer>
+            <uc:UC_LangDataGrid x:Name="LangDataGrid" />
+        </ScrollViewer>
 
         <materialDesign:Snackbar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                  MessageQueue="{materialDesign:MessageQueue}"

@@ -74,7 +74,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public string LangtextInfo
         {
             get { return _langtextInfo; }
-            set { _langtextInfo = "文本ID：" + CurrentLangText.TextId + "，文本类型：" + GetIdCategory() + "，" 
+            set { _langtextInfo = "ID：" + CurrentLangText.TextId + "，类型：" + GetIdCategory() + "，" 
                     + "\r\n" + GetVersionName() + " 版本加入或修改，"
                     + "\r\n" + CompareEditTime(); NotifyPropertyChanged(); }
         }
@@ -188,14 +188,14 @@ namespace ESO_LangEditorGUI.ViewModels
             if (CurrentLangText.EnLastModifyTimestamp > CurrentLangText.ZhLastModifyTimestamp)
             {
                 if (CurrentLangText.IsTranslated == 1 || CurrentLangText.IsTranslated == 2)
-                    resultWord = "英文文本已修改， 翻译可能不匹配。";
+                    resultWord = "英文已修改， 翻译可能不匹配。";
                 else
-                    resultWord = "文本待译。";
+                    resultWord = "待译。";
             }
             else
             {
                 if (CurrentLangText.IsTranslated == 1 || CurrentLangText.IsTranslated == 2)
-                    resultWord = "英文文本修改后已翻译。";
+                    resultWord = "英文修改后已翻译。";
                 else
                     resultWord = "文本可能为初始化内容。";
             }
