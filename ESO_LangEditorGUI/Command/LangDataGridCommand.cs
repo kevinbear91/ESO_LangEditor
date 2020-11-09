@@ -1,6 +1,6 @@
 ﻿using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorLib.Models.Client;
-using ESO_LangEditorLib.Models.Client.Enum;
+using ESO_LangEditorModels;
+using ESO_LangEditorModels.Enum;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,24 +33,8 @@ namespace ESO_LangEditorGUI.Command
 
         public override Task ExecuteAsync(object parameter)
         {
-            //UC_LangDataGrid _langDatagrid = parameter as UC_LangDataGrid;
-
-            //object value = (object[])parameter;
-            //LangTextDto selectedItems = parameter as LangTextDto;
-            //IList selectedItems = (IList)value[0];
-            //LangDataGridContextMenu _langdataMenu = value[1] as LangDataGridContextMenu;
-
-
-
-            //string boxstring = _langdataMenu switch
-            // {
-            //     LangDataGridContextMenu.EditMutilItem => "已选择了{0}个项",
-
-            // };_langDatagrid.LangDataGrid.SelectedItems.Count.ToString(),
 
             LangDataGridContextMenu _menuEnum = (LangDataGridContextMenu)parameter;
-
-
 
             MessageBox.Show(_menuEnum.ToString());
 

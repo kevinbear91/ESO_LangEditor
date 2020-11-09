@@ -1,7 +1,7 @@
 ﻿using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorLib.Models.Client;
-using ESO_LangEditorLib.Models.Client.Enum;
+using ESO_LangEditorModels;
+using ESO_LangEditorModels.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;

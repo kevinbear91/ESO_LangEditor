@@ -1,18 +1,9 @@
-﻿using ESO_LangEditorGUI.Model;
-using ESO_LangEditorGUI.View;
-using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models.Client;
+﻿using ESO_LangEditorGUI.ViewModels;
+using ESO_LangEditorModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media;
 
 namespace ESO_LangEditorGUI.View
 {
@@ -21,10 +12,9 @@ namespace ESO_LangEditorGUI.View
     /// </summary>
     public partial class TextEditor : Window
     {
-        private LangTextDto EditData;
-        //private LuaUIData EditLuaData;
 
-        private LangDbController db = new LangDbController();
+
+        //private LangDbController db = new LangDbController();
 
         private bool _isTextZhChanged = false;
 
@@ -34,7 +24,6 @@ namespace ESO_LangEditorGUI.View
 
         private bool isLua;
 
-        IDCatalog IDtypeName;
         MainWindow Mainwindow;
 
         public TextEditor(List<LangTextDto> langData)

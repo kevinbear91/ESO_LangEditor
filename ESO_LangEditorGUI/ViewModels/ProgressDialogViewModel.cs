@@ -1,6 +1,5 @@
 ﻿using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
-using ESO_LangEditorLib.Services.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorLib.Models.Client.Enum;
+﻿using ESO_LangEditorModels.Enum;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -24,7 +24,7 @@ namespace ESO_LangEditorGUI.Services
             //string strValue = Convert.ToString(value);
 
             if (string.IsNullOrEmpty((string)value))
-                return new ValidationResult(false, "输入框不可为空！");
+                return new ValidationResult(false, "不支持全局搜索，请输入文本。");
 
             bool canConvert = false;
 

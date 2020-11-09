@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 
 namespace ESO_LangEditorUpdater
@@ -10,6 +11,11 @@ namespace ESO_LangEditorUpdater
         {
             if (args.Length == 4)
             {
+                if (File.Exists("ESO_LangEditorLib.dll"))
+                {
+                    File.Delete("ESO_LangEditorLib.dll");
+                    File.Delete("ESO_LangEditorLib.pdb");
+                }
                 new LangDownloader(args).StartDownload();
                 Console.ReadKey();
             }

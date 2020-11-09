@@ -1,6 +1,5 @@
 ﻿using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib.Models;
-using ESO_LangEditorLib.Models.Client;
+using ESO_LangEditorModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -103,7 +102,7 @@ namespace ESO_LangEditorGUI.Services
 
         public void CompareServerConfig()
         {
-            if (GetFileExistAndSha256("ESO_LangEditorUpdater.exe", App.LangConfigServer.LangUpdaterExeSha256))
+            if (_config.LangUpdaterVersion == App.LangConfigServer.LangUpdaterVersion)
             {
                 if (_config.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
                 {
@@ -177,7 +176,7 @@ namespace ESO_LangEditorGUI.Services
             using var client = new WebClient();
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateUpdaterDownloadComplete);
             client.DownloadFileAsync(new Uri(App.ServerPath + App.LangConfigServer.LangUpdaterPackPath), "UpdaterPack.zip");
-            client.Dispose();
+            
         }
 
         void DelegateUpdaterDownloadComplete(object s, AsyncCompletedEventArgs e)
@@ -195,7 +194,8 @@ namespace ESO_LangEditorGUI.Services
                 _mainWindowViewModel.ProgressInfo = "SHA256校验通过，准备解压文件。";
                 Debug.WriteLine("SHA256校验通过，准备解压文件。");
                 ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
-                _config.LangUpdaterSha256 = App.LangConfigServer.LangUpdaterExeSha256;
+                _config.LangUpdaterDllSha256 = App.LangConfigServer.LangUpdaterDllSha256;
+                _config.LangUpdaterVersion = App.LangConfigServer.LangUpdaterVersion;
                 ConfigJson.Save(_config);
                 File.Delete("UpdaterPack.zip");
                 CompareServerConfig();

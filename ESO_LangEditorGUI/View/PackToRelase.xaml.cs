@@ -1,13 +1,5 @@
 ﻿using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.Unicode;
 using System.Windows;
 
 namespace ESO_LangEditorGUI.View

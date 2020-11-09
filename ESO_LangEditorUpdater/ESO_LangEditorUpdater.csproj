@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESO_LangEditorLib\ESO_LangEditorLib.csproj" />
+    <ProjectReference Include="..\ESO_LangEditorModels\ESO_LangEditorModels.csproj" />
   </ItemGroup>
 
 </Project>

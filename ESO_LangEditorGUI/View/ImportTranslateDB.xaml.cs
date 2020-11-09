@@ -1,17 +1,8 @@
-﻿using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models.Client;
-using ESO_LangEditorLib.Services.Client;
-using Microsoft.Win32;
-using System;
+﻿using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.ViewModels;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace ESO_LangEditorGUI.View
 {

@@ -1,7 +1,4 @@
-﻿using ESO_LangEditorLib.Models.Client.Enum;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ESO_LangEditorModels.Enum;
 using System.Windows;
 using System.Windows.Data;
 

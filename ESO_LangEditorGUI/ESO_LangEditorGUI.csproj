@@ -9,11 +9,13 @@
 
   <ItemGroup>
     <PackageReference Include="MaterialDesignThemes" Version="3.1.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESO_LangEditorLib\ESO_LangEditorLib.csproj" />
+    <ProjectReference Include="..\ESO_LangEditorModels\ESO_LangEditorModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +44,7 @@
 
   <ItemGroup>
     <Folder Include="Command\Export\" />
+    <Folder Include="Models\" />
     <Folder Include="Services\LangException\" />
   </ItemGroup>
 

@@ -1,17 +1,11 @@
-﻿using ESO_LangEditorGUI.Model;
-using ESO_LangEditorGUI.Controller;
-using ESO_LangEditorGUI.View;
-using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models;
-using ESO_LangEditorLib.Models.Client;
+﻿using ESO_LangEditorGUI.View;
 using System;
-
 using System.Windows;
-
 using System.Diagnostics;
 using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorGUI.Interface;
 using MaterialDesignThemes.Wpf;
+using ESO_LangEditorGUI.Services;
 
 namespace ESO_LangEditorGUI
 {
@@ -79,7 +73,7 @@ namespace ESO_LangEditorGUI
                 + Environment.NewLine
                 + "点击之后请耐心等待!", "提示", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
-            var strExport = new ExportFromDB();
+            var strExport = new ExportDbToFile();
 
             switch (result)
             {

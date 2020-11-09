@@ -1,13 +1,5 @@
 ﻿using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib;
-using ESO_LangEditorLib.Models.Client;
-using Microsoft.Win32;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,17 +14,7 @@ namespace ESO_LangEditorGUI.View
     public partial class CompareWithDBWindow : Window
     {
 
-        #region Lang DB 变量
-
-        private List<LangTextDto> added = new List<LangTextDto>();
-        private List<LangTextDto> changed = new List<LangTextDto>();
-        private List<LangTextDto> nonChanged = new List<LangTextDto>();
-        private List<LangTextDto> removedList = new List<LangTextDto>();
-        private Dictionary<string, LangTextDto> removed = new Dictionary<string, LangTextDto>();
-        #endregion
-
-
-        private LangDbController db = new LangDbController();
+        //private LangDbController db = new LangDbController();
         public CompareWithDBWindow()
         {
             InitializeComponent();
@@ -44,41 +26,41 @@ namespace ESO_LangEditorGUI.View
 
         private async void SaveToDB_Button_Click(object sender, RoutedEventArgs e)
         {
-            string updateStats = VersionInput_textBox.Text;
+            //string updateStats = VersionInput_textBox.Text;
 
 
-            if (updateStats == "" || updateStats == "更新版本号" || updateStats == "更新版本号(必填)")
-            {
-                MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-            else
-            {
-                SaveToDB_Button.IsEnabled = false;
-                SaveToDB_Button.Content = "正在应用更改……";
+            //if (updateStats == "" || updateStats == "更新版本号" || updateStats == "更新版本号(必填)")
+            //{
+            //    MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
+            //            MessageBoxButton.OK, MessageBoxImage.Warning);
+            //}
+            //else
+            //{
+            //    SaveToDB_Button.IsEnabled = false;
+            //    SaveToDB_Button.Content = "正在应用更改……";
 
-                if (added.Count >= 1)    //判断新加内容是否为空
-                {
-                    SaveToDB_Button.Content = "正在保存新加内容……";
-                    await Task.Run(() => db.AddNewLangs(added));
-                }
+            //    if (added.Count >= 1)    //判断新加内容是否为空
+            //    {
+            //        SaveToDB_Button.Content = "正在保存新加内容……";
+            //        await Task.Run(() => db.AddNewLangs(added));
+            //    }
 
-                if (changed.Count >= 1)   //判断修改内容是否为空
-                {
-                    SaveToDB_Button.Content = "正在应用修改内容……";
-                    await Task.Run(() => db.UpdateLangsEN(changed));
-                }
+            //    if (changed.Count >= 1)   //判断修改内容是否为空
+            //    {
+            //        SaveToDB_Button.Content = "正在应用修改内容……";
+            //        await Task.Run(() => db.UpdateLangsEN(changed));
+            //    }
 
-                if (removedList.Count >= 1)   //判断移除内容是否为空
-                {
-                    SaveToDB_Button.Content = "正在删除移除内容……";
-                    await Task.Run(() => db.DeleteLangs(removedList));
-                }
+            //    if (removedList.Count >= 1)   //判断移除内容是否为空
+            //    {
+            //        SaveToDB_Button.Content = "正在删除移除内容……";
+            //        await Task.Run(() => db.DeleteLangs(removedList));
+            //    }
 
-            }
+            //}
 
-            SaveToDB_Button.IsEnabled = true;
-            SaveToDB_Button.Content = "保存";
+            //SaveToDB_Button.IsEnabled = true;
+            //SaveToDB_Button.Content = "保存";
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)

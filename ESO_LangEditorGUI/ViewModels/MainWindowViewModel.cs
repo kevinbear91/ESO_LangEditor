@@ -1,8 +1,7 @@
 ﻿using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
 using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorLib.Models.Client.Enum;
-using ESO_LangEditorLib.Services.Client;
+using ESO_LangEditorModels.Enum;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;

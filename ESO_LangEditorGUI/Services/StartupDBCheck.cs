@@ -1,7 +1,5 @@
-﻿using ESO_LangEditorLib.Models;
-using ESO_LangEditorLib.Models.Client;
-using ESO_LangEditorLib.Models.Client.Enum;
-using ESO_LangEditorLib.Services.Client;
+﻿using ESO_LangEditorModels;
+using ESO_LangEditorModels.Enum;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,7 +32,7 @@ namespace ESO_LangEditorGUI.Services
 
         public async Task<ProcessDbUpdateResult> ProcessUpdateMerge()
         {
-            List<ESO_LangEditorLib.Models.Client.LangTextDto> SearchData;
+            List<LangTextDto> SearchData;
             //List<LangLuaDto> searchLuaData;
 
             ProcessDbUpdateResult result;// = ProcessDbUpdateResult.Success;

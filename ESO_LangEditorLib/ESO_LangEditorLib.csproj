@@ -13,6 +13,11 @@
   <ItemGroup>
     <Folder Include="Models\Server\" />
     <Folder Include="Properties\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ESO_LangEditorModels\ESO_LangEditorModels.csproj" />
   </ItemGroup>
 
 </Project>

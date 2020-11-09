@@ -1,12 +1,11 @@
-﻿using ESO_LangEditorGUI.View.UserControls;
+﻿using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.View.UserControls;
 using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib.Models.Client;
-using ESO_LangEditorLib.Models.Client.Enum;
-using ESO_LangEditorLib.Services.Client;
+using ESO_LangEditorModels;
+using ESO_LangEditorModels.Enum;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;

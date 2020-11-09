@@ -1,5 +1,4 @@
 ﻿using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorLib.Models.Client;
 using System;
 using System.Collections.Generic;
 using System.Text;
