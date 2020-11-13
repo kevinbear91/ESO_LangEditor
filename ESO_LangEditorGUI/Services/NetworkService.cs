@@ -1,7 +1,6 @@
 ﻿using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorModels;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,9 +8,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,33 +67,39 @@ namespace ESO_LangEditorGUI.Services
             _mainWindowViewModel.ProgressInfo = "正在尝试连接服务器……";
             _mainWindowViewModel.ProgressbarVisibility = Visibility.Visible;
 
-            using (HttpResponseMessage respond = await App.ApiClient.GetAsync(App.ServerPath + "/AppConfig.json"))
+            try
             {
-                string result = respond.Content.ReadAsStringAsync().Result;
-
-                var options = new JsonSerializerOptions
+                using (HttpResponseMessage respond = await App.ApiClient.GetAsync(App.ServerPath + "/AppConfig.json"))
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
+                    string result = respond.Content.ReadAsStringAsync().Result;
 
-                if (respond.IsSuccessStatusCode)
-                {
-                    //Debug.WriteLine(result);
-                    _mainWindowViewModel.ProgressInfo = "正在读取服务器版本数据……";
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
 
-                    App.LangConfigServer = JsonSerializer.Deserialize<HandshakeJson>(result, options);
+                    if (respond.IsSuccessStatusCode)
+                    {
+                        //Debug.WriteLine(result);
+                        _mainWindowViewModel.ProgressInfo = "正在读取服务器版本数据……";
 
-                    StartupCheck();
-                    //UpdateLangEditorVersion();
+                        App.LangConfigServer = JsonSerializer.Deserialize<HandshakeJson>(result, options);
 
+                        StartupCheck();
+                        //UpdateLangEditorVersion();
+
+                    }
+                    if (!respond.IsSuccessStatusCode)
+                    {
+                        _mainWindowViewModel.ProgressInfo = "连接服务器失败，错误码：" + respond.StatusCode;
+                    }
                 }
-                if (!respond.IsSuccessStatusCode)
-                {
-                    _mainWindowViewModel.ProgressInfo = "连接服务器失败，错误码：" + respond.StatusCode;
-                }
-
-
                 //return respond.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException)
+            {
+                _mainWindowViewModel.ProgressInfo = "连接服务器失败";
+                _mainWindowViewModel.ProgressbarVisibility = Visibility.Collapsed;
             }
         }
 
