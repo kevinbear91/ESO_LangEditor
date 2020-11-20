@@ -67,15 +67,22 @@ namespace ESO_LangEditorGUI.View.UserControls
                     _selectedItem = (LangTextDto)datagrid.SelectedItem;
                     _dataContext.GridSelectedItem = _selectedItem;
                     MainWindowViewModel.SelectedInfo = "已选择 1 条文本";
+                    new TextEditor(_selectedItem).Show();
                     break;
                 //case LangDataGridInWindow.TextEditorWindow:
                 //    TextEditorViewModel.CurrentLangText = (LangTextDto)datagrid.SelectedItem;
                 //    //Info todo
                 //    break;
+                default:
+                    break;
             }
 
-            TextEditor textEditor = new TextEditor(_selectedItem);
-            textEditor.Show();
+            //OpenTextEditorWindow();
+
+            //void OpenTextEditorWindow()
+            //{
+                
+            //}
 
         }
         private void LangSearchDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -122,7 +129,7 @@ namespace ESO_LangEditorGUI.View.UserControls
                 {
                     HeaderRightClickMenuGenerater();
                 }
-                else if (target is DataGridRow)
+                else if (target is DataGridRow & LangDatGridinWindow == LangDataGridInWindow.MainViewWindow)
                 {
                     if (datagrid.SelectedIndex != -1)
                     {

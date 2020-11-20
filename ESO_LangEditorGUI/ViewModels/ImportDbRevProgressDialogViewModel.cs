@@ -22,8 +22,8 @@ namespace ESO_LangEditorGUI.ViewModels
     public class ImportDbRevProgressDialogViewModel : BaseViewModel
     {
         private string _currentExcuteText;
-        private Visibility _beginButtonVisibility;
-        private bool _closeButtonEnable;
+        private Visibility _closeButtonVisibility = Visibility.Collapsed;
+        private bool _closeButtonEnable = false;
         private bool _progressbarDisplay;
         private string _downloadSpeed;
 
@@ -35,10 +35,16 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _currentExcuteText = value; NotifyPropertyChanged(); }
         }
 
-        public Visibility BeginButtonVisibility
+        public Visibility CloseButtonVisibility
         {
-            get { return _beginButtonVisibility; }
-            set { _beginButtonVisibility = value; NotifyPropertyChanged(); }
+            get { return _closeButtonVisibility; }
+            set { _closeButtonVisibility = value; NotifyPropertyChanged(); }
+        }
+
+        public bool CloseButtonEnable
+        {
+            get { return _closeButtonEnable; }
+            set { _closeButtonEnable = value; NotifyPropertyChanged(); }
         }
 
         public bool ProgressbarDisplay
@@ -65,13 +71,15 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private HttpClient apiClient { get; set; }
 
+     
 
         public ImportDbRevProgressDialogViewModel()
         {
             //CurrentExcuteText = "导出为.lang，等待点击开始按钮执行";
             ProgressbarDisplay = false;
             //BeginButtonEnable = true;
-            //CloseButtonEnable = true;
+            CloseButtonEnable = false;
+            CloseButtonVisibility = Visibility.Collapsed;
             DatabaseRevCal();
         }
 
@@ -103,10 +111,36 @@ namespace ESO_LangEditorGUI.ViewModels
                 count++;
 
                 CurrentExcuteText = "当前正在下载和导入第 " + count.ToString() + " 项，共有 " + RevCompareNum.ToString() + " 个数据文件下载。" +
-                    "\n如果窗口突然假死请勿强行结束程序，目前导入时会导致此问题，完成后会自动退出。";
+                    "\n如果窗口突然假死请勿强行结束程序，目前导入时会导致此问题。\n如果完成后没有自动退出此窗口，可以点击关闭按钮。";
 
-                DownloadDatabaseRevFile(path);
+                Uri uri = new Uri(path);
+                string filename = Path.GetFileName(uri.LocalPath);
+
+                using (WebClient client = new WebClient())
+                {
+                    try
+                    {
+                        client.DownloadProgressChanged += Editor_DownloadProgressChanged;
+                        await client.DownloadFileTaskAsync(uri, DownloadFolder + filename);
+                        //client.DownloadFileCompleted += DatabaseZipExtractAndImport(DownloadFolder + filename);
+                    }
+
+                    catch(WebException ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                    }
+                    
+                }
+
+                DatabaseZipExtractAndImport(DownloadFolder + filename);
+
+                //await Task.Run(() => DownloadDatabaseRevFile(path));
+                //Task.Wait(DownloadDatabaseRevFile(path));
+
             }
+
+            CloseButtonEnable = true;
+            CloseButtonVisibility = Visibility.Visible;
 
         }
 
@@ -119,56 +153,64 @@ namespace ESO_LangEditorGUI.ViewModels
                 ConfigJson.Save(langconfig);
                 DialogHost.CloseDialogCommand.Execute(null, null);
                 App.LangNetworkService.CompareServerConfig();
+            }
+
+        }
+
+
+        //private void DownloadDatabaseRevFile(string path)
+        //{
+        //    //JsonDto langText;
+        //    Uri uri = new Uri(path);
+        //    string filename = Path.GetFileName(uri.LocalPath);
+
+        //    using (WebClient client = new WebClient())
+        //    {
+        //        client.DownloadProgressChanged += Editor_DownloadProgressChanged;
+        //        client.DownloadFileAsync(uri, DownloadFolder + filename);
+        //        //client.DownloadFileCompleted += DatabaseZipExtractAndImport(DownloadFolder + filename);
                 
-            }
+                
+        //    }
+            
+        //}
 
-        }
 
-        private void DownloadDatabaseRevFile(string path)
+
+
+        //private Task DelegateUnzip(object s, AsyncCompletedEventArgs e)
+        //{
+        //    DatabaseZipExtractAndImport((string)s);
+
+        //    return Task.CompletedTask;
+        //}
+
+        private void DatabaseZipExtractAndImport(string filename)
         {
-            //JsonDto langText;
-            Uri uri = new Uri(path);
-            string filename = Path.GetFileName(uri.LocalPath);
+            List<string> fileList = new List<string>();
+            ParseLangFile parseLangFile = new ParseLangFile();
 
-            using (WebClient client = new WebClient())
+            using (ZipArchive archive = ZipFile.OpenRead(filename))
             {
-                client.DownloadProgressChanged += Editor_DownloadProgressChanged;
-                client.DownloadFileCompleted += DatabaseZipExtractAndImport(DownloadFolder + filename);
-                client.DownloadFileAsync(uri, DownloadFolder + filename);
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    fileList.Add(entry.FullName);
+                    Debug.WriteLine(entry.FullName);
+                }
             }
+            ZipFile.ExtractToDirectory(filename, DownloadFolder, true);
 
-        }
-
-        private void DelegateUnzip(object s, AsyncCompletedEventArgs e)
-        {
-            DatabaseZipExtractAndImport((string)s);
-        }
-
-        private AsyncCompletedEventHandler DatabaseZipExtractAndImport(string filename)
-        {
-            Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
+            foreach (var path in fileList)
             {
-                List<string> fileList = new List<string>();
-                ParseLangFile parseLangFile = new ParseLangFile();
-
-                using (ZipArchive archive = ZipFile.OpenRead(filename))
-                {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
-                    {
-                        fileList.Add(entry.FullName);
-                        Debug.WriteLine(entry.FullName);
-                    }
-                }
-                ZipFile.ExtractToDirectory(filename, DownloadFolder, true);
-
-                foreach (var path in fileList)
-                {
-                    ImportDataToDb(parseLangFile.JsonToDtoReader(DownloadFolder + path));
-                }
-                TaskCount++;
-                CompletedImportCheck();
-            };
-            return new AsyncCompletedEventHandler(action);
+                ImportDataToDb(parseLangFile.JsonToDtoReader(DownloadFolder + path));
+            }
+            TaskCount++;
+            CompletedImportCheck();
+            //Action<object, AsyncCompletedEventArgs> action = (sender, e) =>
+            //{
+                
+            //};
+            //return new AsyncCompletedEventHandler(action);
         }
 
         private void ImportDataToDb(JsonDto json)

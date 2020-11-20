@@ -105,7 +105,8 @@ namespace ESO_LangEditorGUI.Services
 
         public void CompareServerConfig()
         {
-            if (_config.LangUpdaterVersion == App.LangConfigServer.LangUpdaterVersion)
+            if (_config.LangUpdaterVersion == App.LangConfigServer.LangUpdaterVersion
+                & _config.LangUpdaterDllSha256 == App.LangConfigServer.LangUpdaterDllSha256)
             {
                 if (_config.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
                 {

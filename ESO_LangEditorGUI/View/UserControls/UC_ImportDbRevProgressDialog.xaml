@@ -24,6 +24,8 @@
         <StackPanel Grid.Row="1">
             <TextBlock  Margin="0 16 0 0" Text="{Binding CurrentExcuteText}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="14"></TextBlock>
             <TextBlock  Margin="0 16 0 0" Text="{Binding DownloadSpeed}" HorizontalAlignment="Center" FontSize="14"></TextBlock>
+            <Button Margin="0 16 0 0" Content="关闭窗口" Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" IsEnabled="{Binding CloseButtonEnable}" Visibility="{Binding CloseButtonVisibility}" Cursor="Hand" />
         </StackPanel>
         
 
