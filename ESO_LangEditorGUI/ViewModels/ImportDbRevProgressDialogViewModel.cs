@@ -11,6 +11,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -73,14 +74,18 @@ namespace ESO_LangEditorGUI.ViewModels
 
      
 
-        public ImportDbRevProgressDialogViewModel()
+        public ImportDbRevProgressDialogViewModel(bool isDbRev)
         {
             //CurrentExcuteText = "导出为.lang，等待点击开始按钮执行";
             ProgressbarDisplay = false;
             //BeginButtonEnable = true;
             CloseButtonEnable = false;
             CloseButtonVisibility = Visibility.Collapsed;
-            DatabaseRevCal();
+
+            if (isDbRev)
+                DatabaseRevCal();
+            else
+                DatabaseVersionCal();
         }
 
 
@@ -153,6 +158,76 @@ namespace ESO_LangEditorGUI.ViewModels
                 ConfigJson.Save(langconfig);
                 DialogHost.CloseDialogCommand.Execute(null, null);
                 App.LangNetworkService.CompareServerConfig();
+            }
+
+        }
+
+        private async void DatabaseVersionCal()
+        {
+            string downloadPath = App.ServerPath + App.LangConfigServer.LangDatabasePath;
+            
+            Uri uri = new Uri(downloadPath);
+            string filename = Path.GetFileName(uri.LocalPath);
+
+            string localPath = App.WorkingDirectory + @"\" + filename;
+
+            var fileExist = GetFileExistAndSha256(localPath, App.LangConfigServer.LangDatabasePackSha256);
+
+            if (fileExist)
+            {
+
+                try
+                {
+                    CurrentExcuteText = "正在处理数据库相关任务……";
+
+                    DownloadSpeed = "正在解压……";
+                    ZipFile.ExtractToDirectory(filename, App.WorkingDirectory, true);
+
+                    var dbCheck = new StartupDBCheck(@"Data\LangData_v3.db", @"Data\LangData_v3.update");
+
+                    DownloadSpeed = "对比数据库……";
+                    await dbCheck.ProcessUpdateMerge();
+
+                    DownloadSpeed = "完成";
+
+
+                    var langconfig = App.LangConfig;
+                    langconfig.LangDatabaseVersion = App.LangConfigServer.LangDatabaseVersion;
+                    ConfigJson.Save(langconfig);
+                    App.LangNetworkService.CompareServerConfig();
+                    File.Delete(localPath);
+
+                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    CloseButtonEnable = true;
+                    CloseButtonVisibility = Visibility.Visible;
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("解压出错！" + Environment.NewLine + e.ToString());
+                }
+            }
+            else
+            {
+                using (WebClient client = new WebClient())
+                {
+                    try
+                    {
+                        CurrentExcuteText = "正在下载全量数据库，下载后会自动导出已翻译的内容。";
+
+                        client.DownloadProgressChanged += Editor_DownloadProgressChanged;
+                        await client.DownloadFileTaskAsync(uri, localPath);
+                        //client.DownloadFileCompleted += DatabaseZipExtractAndImport(DownloadFolder + filename);
+                    }
+
+                    catch (WebException ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                    }
+
+                }
+
+                DatabaseVersionCal();
             }
 
         }
@@ -242,6 +317,27 @@ namespace ESO_LangEditorGUI.ViewModels
                 + SizeSuffix(e.BytesReceived) 
                 + "，总大小："
                 + SizeSuffix(e.TotalBytesToReceive);
+        }
+
+        private bool GetFileExistAndSha256(string filePath, string fileSHA265)
+        {
+            string hashReslut;
+
+            if (File.Exists(filePath))
+            {
+                using (FileStream stream = File.OpenRead(filePath))
+                {
+                    Debug.WriteLine(filePath);
+                    SHA256Managed sha = new SHA256Managed();
+                    byte[] hash = sha.ComputeHash(stream);
+                    hashReslut = BitConverter.ToString(hash).Replace("-", String.Empty);
+                }
+                return fileSHA265 == hashReslut;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         static readonly string[] SizeSuffixes =

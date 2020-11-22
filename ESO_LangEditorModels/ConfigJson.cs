@@ -16,6 +16,7 @@ namespace ESO_LangEditorModels
         public List<ServerNameDto> LangServerList { get; set; }
         public string DefaultServerName { get; set; }
         public int DatabaseRev { get; set; }
+        public int LangDatabaseVersion { get; set; }
         public string UserToken { get; set; }
         public Guid UserGuid { get; set; }
 
@@ -41,6 +42,7 @@ namespace ESO_LangEditorModels
             });
             DefaultServerName = "LangEditor-IKDC2-v4";
             DatabaseRev = 25;
+            LangDatabaseVersion = 1;
             UserToken = "";
             UserGuid = Guid.Empty;
         }

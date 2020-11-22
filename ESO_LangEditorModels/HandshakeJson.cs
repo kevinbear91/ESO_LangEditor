@@ -13,6 +13,8 @@ namespace ESO_LangEditorModels
         public string LangFullpackSHA256 { get; set; }
         public int LangDatabaseRevised { get; set; }
         public string LangDatabasePath { get; set; }
+        public int LangDatabaseVersion { get; set; }
+        public string LangDatabasePackSha256 { get; set; }
         public string LangUpdaterExeSha256 { get; set; }
         public string LangUpdaterDllSha256 { get; set; }
         public string LangUpdaterVersion { get; set; }

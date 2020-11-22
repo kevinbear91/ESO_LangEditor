@@ -36,44 +36,47 @@ namespace ESO_LangEditorGUI.Services
             //List<LangLuaDto> searchLuaData;
 
             ProcessDbUpdateResult result;// = ProcessDbUpdateResult.Success;
-            var exportTranslate = new LangExportFromDb();
+            var exportTranslate = new ExportDbToFile();
 
             SearchData = await _search.GetLangTextsAsync("1", SearchTextType.TranslateStatus, SearchPostion.Full);
             //searchLuaData = await _search.GetLuaLangsListAsync(5, 0, "1");
 
-            if (SearchData.Count >= 1)
+            if (File.Exists(_dbPath))
             {
-                string exportPath = exportTranslate.ExportTranslatedLang(SearchData);
-
-                if (File.Exists(exportPath))
+                if (SearchData.Count >= 1)
                 {
-                    GC.Collect();
-                    GC.WaitForPendingFinalizers();
-                    File.Delete(_dbPath);
-                    File.Move(_dbUpdatePath, _dbPath);
-                    File.Delete(_dbUpdatePath);
+                    string exportPath = exportTranslate.ExportLangTextsAsJson(SearchData, LangChangeType.ChangedZH);
 
-                    MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
-                        + Environment.NewLine
-                        + "请将 " + exportPath + " 发送给校对或导入人员，你自己也请使用导入翻译功能导入到更新的数据库！",
-                        "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (File.Exists(exportPath))
+                    {
+                        MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，现已将翻译过的文本导出。"
+                            + Environment.NewLine
+                            + "请将 " + exportPath + " 发送给校对或导入人员！",
+                            "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return ProcessDbUpdateResult.UnableToExportLangText;
+                    }
 
-                    result = ProcessDbUpdateResult.Success;
-                }
-                else
-                {
-                    result = ProcessDbUpdateResult.UnableToExportLangText;
-                    MessageBox.Show("发现了新版数据库，但你本地已查询到翻译过但未导出的文本，但导出失败！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+
                 }
 
-                
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                File.Delete(_dbPath);
+                File.Move(_dbUpdatePath, _dbPath);
+                File.Delete(_dbUpdatePath);
+
+                return ProcessDbUpdateResult.Success;
             }
             else
             {
                 MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                result = ProcessDbUpdateResult.UnableToFindDbFile;
+                return ProcessDbUpdateResult.UnableToFindDbFile;
             }
-            return result;
+            
 
             //#region  检查CSV数据库更新
             //if (File.Exists(DBPath) && File.Exists(csvDataUpdatePath))

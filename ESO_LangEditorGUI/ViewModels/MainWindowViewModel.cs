@@ -148,9 +148,9 @@ namespace ESO_LangEditorGUI.ViewModels
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
         }
 
-        public async void ShowImportDbRevUC()
+        public async void ShowImportDbRevUC(bool isDbRev)
         {
-            var view = new ImportDbRevProgressDialog();
+            var view = new ImportDbRevProgressDialog(isDbRev);
 
             //show the dialog
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);

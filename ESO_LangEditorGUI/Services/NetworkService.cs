@@ -112,10 +112,15 @@ namespace ESO_LangEditorGUI.Services
                 {
                     UpdateLangEditorVersion();
                 }
+                else if (CompareDatabaseVersion())
+                {
+                    _mainWindowViewModel.ProgressInfo = "发现全量数据库……";
+                    _mainWindowViewModel.ShowImportDbRevUC(false);
+                }
                 else if (CompareDatabaseRev())
                 {
                     _mainWindowViewModel.ProgressInfo = "发现更新数据库……";
-                    _mainWindowViewModel.ShowImportDbRevUC();
+                    _mainWindowViewModel.ShowImportDbRevUC(true);
                 }
                 else
                 {
@@ -211,6 +216,11 @@ namespace ESO_LangEditorGUI.Services
         private bool CompareDatabaseRev()
         {
             return _config.DatabaseRev != App.LangConfigServer.LangDatabaseRevised;
+        }
+
+        private bool CompareDatabaseVersion()
+        {
+            return _config.LangDatabaseVersion != App.LangConfigServer.LangDatabaseVersion;
         }
     }
 }
