@@ -24,6 +24,8 @@ namespace ESO_LangEditorGUI.Services
 
             string fileName;
 
+            langtextsList.ForEach(lang => lang.IsTranslated = 2);
+
             var json = new JsonDto
             {
                 LangTexts = langtextsList,

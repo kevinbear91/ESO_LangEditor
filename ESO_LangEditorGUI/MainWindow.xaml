@@ -79,7 +79,7 @@
 
                         <ToggleButton Grid.Column="0" Style="{StaticResource MaterialDesignFlatToggleButton}"
                               IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}" >
-                            <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" />
+                            <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" Foreground="White" />
                         </ToggleButton>
 
                         <materialDesign:ColorZone Mode="Standard" Padding="8 4 0 0"
