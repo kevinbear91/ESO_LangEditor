@@ -40,7 +40,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public ICommand OpenDoalogCommand => new LangOpenDialogCommand(ExportToLang);
 
-
+        public ExcuteViewModelMethod ExportLuaToStrCommand => new ExcuteViewModelMethod(ExportLuaToStr);
 
 
         public string WindowTitle
@@ -187,13 +187,15 @@ namespace ESO_LangEditorGUI.ViewModels
             Console.WriteLine("You can intercept the closing event, and cancel here.");
         }
 
-        private void ExportLuaToStr()
+        private void ExportLuaToStr(object o)
         {
             var readDb = new LangTextRepository();
             var export = new ExportDbToFile();
 
             var langlua = readDb.GetAlltLangTexts(1);
             export.ExportLua(langlua);
+
+            MessageBox.Show("导出完成！");
         }
 
         private bool CompareDatabaseRev()

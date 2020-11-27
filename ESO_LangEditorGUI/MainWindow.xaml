@@ -35,7 +35,7 @@
                     </MenuItem>
                     <MenuItem Header="高级">
                         <MenuItem Header="导出文本至.lang" Command="{Binding OpenDoalogCommand}"/>
-                        <!--<MenuItem Header="导出UI Str内容" Click="ExportToStr_Click"/>-->
+                            <MenuItem Header="导出UI Str内容" Command="{Binding ExportLuaToStrCommand}"/>
                         <MenuItem Header="一键发布" Click="PackToRlease_Click"/>
                     </MenuItem>
                         <MenuItem Header="网络">
