@@ -24,43 +24,7 @@ namespace ESO_LangEditorGUI.View
             //CheckBox_OnlyMatchWord.IsChecked = true;
         }
 
-        private void Button_Replace_Click(object sender, RoutedEventArgs e)
-        {
-            bool onlyMatchword = (bool)CheckBox_OnlyMatchWord.IsChecked;
-            bool isingoreCase = (bool)CheckBox_IgnoreCase.IsChecked;
-            List<LangTextDto> result;
-            string keyWord;
-            
-            try
-            {
-                if (!string.IsNullOrEmpty(searchKeyWord.Text) && !string.IsNullOrEmpty(replaceKeyWord.Text))
-                {
-                    if (searchKeyWord.Text.Contains('?'))
-                        keyWord = searchKeyWord.Text.Replace("?", @"\?");
-                    else
-                        keyWord = searchKeyWord.Text;
-
-                    //if (isingoreCase)
-                    //    result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword);
-                    //else
-                    //    result = searchReplace.SearchReplace(LangList, keyWord, replaceKeyWord.Text, onlyMatchword, RegexOptions.IgnoreCase);
-
-                    //textWindow.ApplyReplacedList(result);
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("查找内容与替换内容均不许为空，空格请谨慎匹配！");
-                }
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("替换时发生了错误，错误信息： " + Environment.NewLine + ex.ToString(), "错误",MessageBoxButton.OK,MessageBoxImage.Error);
-            }
-            
-
-            //MessageBox.Show("列表内" + LangList.Count + ". 匹配到 " + result.Count);
-        }
+       
         
     }
 }

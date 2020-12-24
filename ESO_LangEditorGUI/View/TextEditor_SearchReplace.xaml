@@ -60,8 +60,7 @@
 
             <Button x:Name="Button_Replace" Content="替换"
                     Margin="0 30 0 0"
-                    Command="{Binding SaveSearchResultCommand}"
-                    Click="Button_Replace_Click" Cursor="Hand" />
+                    Command="{Binding SaveSearchResultCommand}" />
 
             <!--<Button x:Name="Button_findMatch" Content="查询匹配数" Canvas.Top="75" Width="112" Click="Button_findMatch_Click" />-->
 
