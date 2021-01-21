@@ -1,14 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ESO_LangEditorServer
+namespace ESO_LangEditorApi
 {
     public class Program
     {
@@ -44,6 +44,6 @@ namespace ESO_LangEditorServer
                 logging.ClearProviders();
                 logging.SetMinimumLevel(LogLevel.Trace);
             })
-            .UseNLog();  // NLog: Setup NLog for Dependency injection
+            .UseNLog();  // NLog: Setup NLog for Dependency injection;
     }
 }

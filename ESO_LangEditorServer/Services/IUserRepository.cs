@@ -8,8 +8,7 @@ namespace ESO_LangEditorServer.Services
 {
     public interface IUserRepository
     {
-        IEnumerable<UserDto> GetUsers();
-        UserDto GetUser(Guid userID);
-        bool IsUserExists(Guid userID);
+        User GetUser(Guid id);
+        void Save(User user);
     }
 }
