@@ -21,7 +21,7 @@ namespace ESO_LangEditor.API.Controllers
 
         public AdminController(RoleManager<Role> roleManager, UserManager<User> userManager, IMapper mapper)
         {
-            this._roleManager = roleManager;
+            _roleManager = roleManager;
             _userManager = userManager;
             Mapper = mapper;
 
@@ -69,6 +69,48 @@ namespace ESO_LangEditor.API.Controllers
             var userDto = Mapper.Map<UserDto>(user);
 
             return userDto;
+        }
+
+
+        [HttpPost("addrole/{roleName}", Name = nameof(AddRoleAsync))]
+        public async Task<ActionResult> AddRoleAsync(string roleName)
+        {
+            bool isRoleExist = await _roleManager.RoleExistsAsync(roleName);
+
+            if (!isRoleExist)
+            {
+                await _roleManager.CreateAsync(new Role { Name = roleName });
+
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        private async Task<ActionResult> AddUserToRoleAsync(User user, string roleName)
+        {
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            bool isRoleExist = await _roleManager.RoleExistsAsync(roleName);
+
+            if (!isRoleExist)
+            {
+                //await _roleManager.CreateAsync(new Role { Name = roleName });
+
+                return NotFound();
+            }
+            else
+            {
+                await _userManager.IsInRoleAsync(user, roleName);
+                return Ok();
+
+            }
+
+            //await _userManager.AddToRoleAsync(user, roleName);
+
         }
 
     }

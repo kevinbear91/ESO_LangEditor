@@ -22,44 +22,22 @@ namespace ESO_LangEditor.API.Controllers
         public IConfiguration Configuration { get; }
         public RoleManager<Role> RoleManager { get; }
         public UserManager<User> UserManager { get; }
+        private SignInManager<User> _signInManager;
 
         public AuthenticateController(UserManager<User> userManager, RoleManager<Role> roleManager,
-            IConfiguration configuration)
+            IConfiguration configuration, SignInManager<User> signInManager)
         {
             UserManager = userManager;
             RoleManager = roleManager;
+            _signInManager = signInManager;
             Configuration = configuration;
         }
 
-        [HttpPost("register", Name = nameof(AddUserAsync))]
-        public async Task<IActionResult> AddUserAsync(RegisterUser registerUser)
-        {
-            var user = new User
-            {
-                UserName = registerUser.UserName,
-                Email = registerUser.Email,
-
-            };
-
-            IdentityResult result = await UserManager.CreateAsync(user, registerUser.Password);
-
-            if (result.Succeeded)
-            {
-
-                await AddUserToRoleAsync(user, "Editor");
-                return Ok();
-            }
-            else
-            {
-                ModelState.AddModelError("Error", result.Errors.FirstOrDefault()?.Description);
-                return BadRequest(ModelState);
-            }
-
-        }
+        
 
 
         [HttpPost("token2", Name = nameof(GenerateTokenAsync))]
-        public async Task<IActionResult> GenerateTokenAsync(LoginUser loginUser)
+        public async Task<IActionResult> GenerateTokenAsync(LoginUserDto loginUser)
         {
             var user = await UserManager.FindByNameAsync(loginUser.UserName);
 
@@ -67,6 +45,7 @@ namespace ESO_LangEditor.API.Controllers
             {
                 return Unauthorized();
             }
+
 
             var result = UserManager.PasswordHasher.VerifyHashedPassword(user, user.PasswordHash, loginUser.Password);
 
@@ -112,30 +91,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        private async Task AddUserToRoleAsync(User user, string roleName)
-        {
-            if (user == null)
-            {
-                return;
-            }
-
-            bool isRoleExist = await RoleManager.RoleExistsAsync(roleName);
-
-            if (!isRoleExist)
-            {
-                await RoleManager.CreateAsync(new Role { Name = roleName });
-            }
-            else
-            {
-                if (await UserManager.IsInRoleAsync(user, roleName))
-                {
-                    return;
-                }
-            }
-
-            await UserManager.AddToRoleAsync(user, roleName);
-
-        }
+        
 
 
     }

@@ -79,6 +79,7 @@ namespace ESO_LangEditorApi
             })
               .AddJwtBearer(options =>
               {
+
                   options.TokenValidationParameters = new TokenValidationParameters
                   {
                       ValidateAudience = true,
