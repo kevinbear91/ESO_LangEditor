@@ -3,15 +3,17 @@ using System;
 using ESO_LangEditor.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ESO_LangEditor.API.Migrations
 {
     [DbContext(typeof(LangtextApiDbContext))]
-    partial class LangtextApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210127132831_AddTokenField")]
+    partial class AddTokenField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,7 +75,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 115740052,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(4180),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(7951),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Whatever you say! I'll see what I can find out.",
                             TextId = "115740052-0-11491",
@@ -89,7 +91,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 200879108,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5069),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(8881),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "No. Doesn't have a clue. That's what makes it so exciting!\\n\\nThis is an honest-to-goodness secret mission! I always wanted to go on a secret mission! Besides, once you talk to Solgra, you'll understand. She explains things much better than I do.",
                             TextId = "200879108-0-40943",
@@ -105,7 +107,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 200879108,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5106),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(8921),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "A well? Yeah, I saw the old well. We'll need a rope or something to climb down, though.\\n\\nCheck near the forge. I noticed tools and ropes hanging around. One of those ropes should serve our needs.",
                             TextId = "200879108-0-40960",
@@ -121,7 +123,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 200879108,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5126),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(8941),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Have you seen my bow skills? I'm sure Solgra noticed and said to herself, \"That's a fine young lass! She can put a shaft through an apple balanced on the back of a moving wamasu. I shall recruit her!\"\\n\\nEither that or she was desperate for some help.",
                             TextId = "200879108-0-40993",
@@ -137,7 +139,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 132143172,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5145),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(8961),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Devastate an enemy with an enhanced charge from your staff, dealing <<1>> and an additional <<2>> over <<3>>.",
                             TextId = "132143172-0-29078",
@@ -153,7 +155,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 198758357,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5163),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(8980),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Brutal Carnage",
                             TextId = "198758357-0-137184",
@@ -169,7 +171,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 8290981,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5182),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(8998),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Za'ji^M",
                             TextId = "8290981-0-91160",
@@ -185,7 +187,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 242841733,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5200),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(9014),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Restoration Staff of Kyne's Wind",
                             TextId = "242841733-0-162450",
@@ -201,7 +203,7 @@ namespace ESO_LangEditor.API.Migrations
                             IdType = 100,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)3,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 777, DateTimeKind.Local).AddTicks(5218),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 17, DateTimeKind.Local).AddTicks(9091),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Two-Handed Melee",
                             TextId = "SI_EQUIPMENTFILTERTYPE8",
@@ -317,12 +319,12 @@ namespace ESO_LangEditor.API.Migrations
                         {
                             Id = new Guid("d05c0e82-025e-4e31-97ae-b8858ab0a784"),
                             ArchiveReasonFor = 0,
-                            ArchiveTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(5701),
+                            ArchiveTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 20, DateTimeKind.Local).AddTicks(19),
                             EnLastModifyTimestamp = new DateTime(2020, 11, 2, 21, 48, 38, 613, DateTimeKind.Unspecified).AddTicks(4703),
                             IdType = 103224356,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(5058),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 19, DateTimeKind.Local).AddTicks(9338),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "We need to meet with General Renmus as soon as possible. To do this, I must bribe his clerk, obtain forged credentials, and delay the merchant who is currently scheduled to meet with him.",
                             TextId = "103224356-0-51125",
@@ -335,12 +337,12 @@ namespace ESO_LangEditor.API.Migrations
                         {
                             Id = new Guid("08d42f95-66ff-4bcb-adc7-b395f436086c"),
                             ArchiveReasonFor = 0,
-                            ArchiveTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(6436),
+                            ArchiveTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 20, DateTimeKind.Local).AddTicks(809),
                             EnLastModifyTimestamp = new DateTime(2020, 11, 2, 21, 48, 38, 626, DateTimeKind.Unspecified).AddTicks(4609),
                             IdType = 139139780,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(6422),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 20, DateTimeKind.Local).AddTicks(791),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "A manifest of items shipped by Arniel Branck.",
                             TextId = "139139780-0-7300",
@@ -353,12 +355,12 @@ namespace ESO_LangEditor.API.Migrations
                         {
                             Id = new Guid("ba652528-900f-437b-8832-eb6d387ad010"),
                             ArchiveReasonFor = 0,
-                            ArchiveTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(6468),
+                            ArchiveTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 20, DateTimeKind.Local).AddTicks(844),
                             EnLastModifyTimestamp = new DateTime(2020, 11, 2, 21, 48, 38, 673, DateTimeKind.Unspecified).AddTicks(397),
                             IdType = 115740052,
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(6465),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 20, DateTimeKind.Local).AddTicks(842),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "I don't see Nartise. Let's move on.",
                             TextId = "115740052-0-35623",
@@ -449,7 +451,7 @@ namespace ESO_LangEditor.API.Migrations
                             IsTranslated = (byte)2,
                             LangTextType = (byte)3,
                             ReasonFor = 0,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(1873),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 19, DateTimeKind.Local).AddTicks(6021),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Destruction Staff",
                             TextId = "SI_EQUIPMENTFILTERTYPE9",
@@ -466,7 +468,7 @@ namespace ESO_LangEditor.API.Migrations
                             IsTranslated = (byte)2,
                             LangTextType = (byte)2,
                             ReasonFor = 0,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(2660),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 19, DateTimeKind.Local).AddTicks(6829),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "All Materials",
                             TextId = "SI_GAMEPAD_ALCHEMY_ALL_MATERIALS",
@@ -483,7 +485,7 @@ namespace ESO_LangEditor.API.Migrations
                             IsTranslated = (byte)2,
                             LangTextType = (byte)4,
                             ReasonFor = 0,
-                            ReviewTimestamp = new DateTime(2021, 1, 27, 22, 59, 25, 779, DateTimeKind.Local).AddTicks(2696),
+                            ReviewTimestamp = new DateTime(2021, 1, 27, 21, 28, 31, 19, DateTimeKind.Local).AddTicks(6868),
                             ReviewerId = new Guid("8475b578-80f4-4ed0-ae41-c32a45d6d9e6"),
                             TextEn = "Dungeon: Selene's Web",
                             TextId = "10860933-0-964",
@@ -600,10 +602,6 @@ namespace ESO_LangEditor.API.Migrations
                     b.Property<string>("UserName")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
-
-                    b.Property<string>("UserNickName")
-                        .HasColumnType("character varying(20)")
-                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 

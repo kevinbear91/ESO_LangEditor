@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     [Route("api/admin/user")]
     [ApiController]
     public class AdminController : Controller
@@ -87,6 +88,35 @@ namespace ESO_LangEditor.API.Controllers
             return BadRequest();
         }
 
+        [HttpPost("{userGuid}/torole/{roleName}", Name = nameof(AddUserToRoleAsync))]
+        public async Task<ActionResult> AddUserToRoleAsync(string userGuid, string roleName)
+        {
+
+            var user = await _userManager.FindByIdAsync(userGuid);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            bool isRoleExist = await _roleManager.RoleExistsAsync(roleName);
+
+            if (!isRoleExist)
+            {
+                //await _roleManager.CreateAsync(new Role { Name = roleName });
+
+                return BadRequest();
+            }
+            
+            if (await _userManager.IsInRoleAsync(user, roleName))
+                return BadRequest();
+
+            await _userManager.AddToRoleAsync(user, roleName);
+
+            return Ok();
+        }
+
+
         private async Task<ActionResult> AddUserToRoleAsync(User user, string roleName)
         {
             if (user == null)
@@ -100,7 +130,7 @@ namespace ESO_LangEditor.API.Controllers
             {
                 //await _roleManager.CreateAsync(new Role { Name = roleName });
 
-                return NotFound();
+                return BadRequest();
             }
             else
             {

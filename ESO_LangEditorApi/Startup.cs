@@ -1,4 +1,5 @@
 using AutoMapper;
+using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.EFCore;
 using ESO_LangEditor.EFCore.DataRepositories;
@@ -65,6 +66,7 @@ namespace ESO_LangEditorApi
             });
             //services.AddScoped<ILangTextRepository, MockLangtextRepository>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddTransient<ITokenService, TokenService>();
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<LangtextApiDbContext>()

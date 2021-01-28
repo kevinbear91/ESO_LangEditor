@@ -1,11 +1,14 @@
-﻿using ESO_LangEditor.Core.Entities;
+﻿using ESO_LangEditor.API.Services;
+using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
@@ -17,12 +20,17 @@ namespace ESO_LangEditor.API.Controllers
 
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private RoleManager<Role> _roleManager;
+        private ITokenService _tokenService;
 
         public AccountController(UserManager<User> userManager,
-          SignInManager<User> signInManager)
+          SignInManager<User> signInManager, ITokenService tokenService,
+          RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _tokenService = tokenService;
+            _roleManager = roleManager;
         }
 
         [HttpPost("register", Name = nameof(AddUserAsync))]
@@ -40,7 +48,7 @@ namespace ESO_LangEditor.API.Controllers
             if (result.Succeeded)
             {
 
-                //await AddUserToRoleAsync(user, "Editor");
+                await _userManager.AddToRoleAsync(user, "Editor");
                 return Ok();
             }
             else
@@ -55,20 +63,70 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<IActionResult> Login(LoginUserDto loginUser)
         {
 
-            var result = await _signInManager.PasswordSignInAsync(
-                    loginUser.UserName, loginUser.Password, true, false);
+            //var result = await _signInManager.PasswordSignInAsync(
+            //        loginUser.UserName, loginUser.Password, true, false);
 
-            if (result.Succeeded)
+            var user = await _userManager.FindByNameAsync(loginUser.UserName);
+
+            if(user == null)
             {
-
-                //return RedirectToAction("index"，"home");
-                return Ok();
+                return Unauthorized();
             }
 
 
+            if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
+            {
+                return Unauthorized();
+            }
+
+            //await _userManager.GetRolesAsync(user)
+
+
+            //if (!result.Succeeded)
+            //{
+            //    //return RedirectToAction("index"，"home");
+            //    return BadRequest();
+            //}
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            foreach (var roleItem in userRoles)
+            {
+                userClaims.Add(new Claim(ClaimTypes.Role, roleItem));
+            }
+
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    //new Claim(claims., Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
+                };
+
+            claims.AddRange(userClaims);
+
+            //var claims = new List<Claim>
+            //{
+            //    new Claim(ClaimTypes.Name, loginUser.UserName),
+            //    new Claim(ClaimTypes., loginUser.UserName),
+            //    //new Claim(ClaimTypes.Role, await _userManager.GetRolesAsync(user))
+            //};
+            var authToken = _tokenService.GenerateAccessToken(claims);
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpireTime = DateTime.Now.AddDays(7);
+            //userContext.SaveChanges();
+
+            await _userManager.UpdateAsync(user);
+
+            return Ok(new
+            {
+                AuthToken = authToken,
+                RefreshToken = refreshToken
+            });
 
             //ModelState.AddModelError(string.Empty, "登录失败，请重试");
-            return BadRequest();
+            
 
 
             //return View(model);
