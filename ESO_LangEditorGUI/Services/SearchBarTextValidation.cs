@@ -1,8 +1,9 @@
-﻿using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Markup;
 using static System.Convert;
@@ -21,10 +22,11 @@ namespace ESO_LangEditorGUI.Services
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
+            //Task.Delay(2000);
             //string strValue = Convert.ToString(value);
 
-            if (string.IsNullOrEmpty((string)value))
-                return new ValidationResult(false, "不支持全局搜索，请输入文本。");
+            //if (string.IsNullOrWhiteSpace((string)value))
+            //    return new ValidationResult(false, "不支持全局搜索，请输入文本。");
 
             bool canConvert = false;
 

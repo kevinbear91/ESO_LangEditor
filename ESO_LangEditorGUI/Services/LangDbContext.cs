@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ESO_LangEditorGUI.Services

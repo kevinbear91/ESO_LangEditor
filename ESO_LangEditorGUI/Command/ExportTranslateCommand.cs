@@ -1,8 +1,8 @@
-﻿using ESO_LangEditorGUI.Services;
-using ESO_LangEditorGUI.View.UserControls;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.Views.UserControls;
 using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,14 +43,14 @@ namespace ESO_LangEditorGUI.Command
             }
             else
             {
-                exportItems = _langDatagrid.LangDataGridDC.GridData;
+                //exportItems = _langDatagrid.LangDataGridDC.GridData;
             }
 
-            var path = exporter.ExportLangTextsAsJson(exportItems, LangChangeType.ChangedZH);
-            _localSearch.UpdateTranslated(exportItems);
+            //var path = exporter.ExportLangTextsAsJson(exportItems, LangChangeType.ChangedZH);
+            //_localSearch.UpdateTranslated(exportItems);
             //_exportWindowViewModel.MdNotifyContent = path;
 
-            MessageBox.Show("导出文件路径为：" + path);
+            //MessageBox.Show("导出文件路径为：" + path);
         }
 
         //public void SetEnable(bool canEnable)
@@ -68,7 +68,7 @@ namespace ESO_LangEditorGUI.Command
             if (result.Count >= 1)
                 IsExecuting = false;
 
-            _langDatagrid.LangDataGridDC.GridData = result;
+            //_langDatagrid.LangDataGridDC.GridData = result;
             _exportWindowViewModel.SearchResultInfo = result.Count.ToString();
         }
     }

@@ -1,6 +1,6 @@
-﻿using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Views.UserControls;
 using System;
 using System.Collections;
 using System.Collections.Generic;

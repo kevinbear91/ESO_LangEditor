@@ -1,8 +1,8 @@
-﻿using ESO_LangEditorGUI.Command;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
-using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+using ESO_LangEditorGUI.Views.UserControls;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -122,9 +122,9 @@ namespace ESO_LangEditorGUI.ViewModels
             //_currentLangText = editorList.ElementAt(0);
             
 
-            LangDataGrid = langdatagrid;
-            LangDataGrid.TextEditorViewModel = this;
-            LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.TextEditorWindow;
+            //LangDataGrid = langdatagrid;
+            //LangDataGrid.TextEditorViewModel = this;
+            //LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.TextEditorWindow;
 
             _langDataList = langData;
 
@@ -133,8 +133,8 @@ namespace ESO_LangEditorGUI.ViewModels
                 _gridDataGridHeight = 200;
                 _textEditorWindowHeight = 600;
                 DataListVisbility = Visibility.Visible;
-                LangDataGrid.LangDataGridDC.GridData = _langDataList;
-                LangDataGrid.LangDataGridDC.GridSelectedItem = _langDataList.ElementAt(0);
+                //LangDataGrid.LangDataGridDC.GridData = _langDataList;
+                //LangDataGrid.LangDataGridDC.GridSelectedItem = _langDataList.ElementAt(0);
                 CurrentLangText = _langDataList.ElementAt(0);
             }
             else
@@ -153,9 +153,9 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public TextEditorViewModel(UC_LangDataGrid langdatagrid, LangTextDto langData, SnackbarMessageQueue snackbarMessageQueue)
         {
-            LangDataGrid = langdatagrid;
-            LangDataGrid.TextEditorViewModel = this;
-            LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.TextEditorWindow;
+            //LangDataGrid = langdatagrid;
+            //LangDataGrid.TextEditorViewModel = this;
+            //LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.TextEditorWindow;
 
             CurrentLangText = langData;
             LangTextZh = CurrentLangText.TextZh;
@@ -253,8 +253,8 @@ namespace ESO_LangEditorGUI.ViewModels
 
                 _langDataList.Remove(removeitem);
 
-                LangDataGrid.LangDataGridDC.GridData = _langDataList;
-                LangDataGrid.LangDataGrid.Items.Refresh();
+                //LangDataGrid.LangDataGridDC.GridData = _langDataList;
+                //LangDataGrid.LangDataGrid.Items.Refresh();
 
 
                 if (CurrentSelectIndex > 0)

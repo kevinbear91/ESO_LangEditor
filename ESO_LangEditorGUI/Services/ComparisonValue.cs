@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
 using System.Windows;
 using System.Windows.Data;
 

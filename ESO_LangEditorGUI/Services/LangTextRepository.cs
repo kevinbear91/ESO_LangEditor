@@ -1,5 +1,5 @@
-﻿using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

@@ -36,12 +36,14 @@ namespace ESO_LangEditor.API.Controllers
             return langtextList.ToList();
         }
 
-        [Authorize(Roles = "Editor")]
+        [Authorize(Roles = "editor")]
         //[AllowAnonymous]
         [HttpGet("{langtextGuid}")]
-        public async Task<ActionResult<LangText>> GetLangTextByGuidAsync(Guid langtextGuid)
+        public async Task<ActionResult<IEnumerable<LangTextDto>>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
+            var langtextDto = Mapper.Map<List<LangTextDto>>(langtext);
+
 
             if (langtext == null)
             {
@@ -49,7 +51,7 @@ namespace ESO_LangEditor.API.Controllers
             }
             else
             {
-                return langtext;
+                return langtextDto;
             }
 
         }
@@ -100,8 +102,8 @@ namespace ESO_LangEditor.API.Controllers
 
             var langtextReview = Mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.Deleted;
-            langtext.ReviewerId = userId;
-            langtext.ReviewTimestamp = DateTime.Now;
+            //langtext.ReviewerId = userId;
+            //langtext.ReviewTimestamp = DateTime.Now;
 
             //Mapper.Map(langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 
@@ -147,8 +149,8 @@ namespace ESO_LangEditor.API.Controllers
 
             var langtextReview = Mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.ZhChanged;
-            langtext.ReviewerId = userId;
-            langtext.ReviewTimestamp = DateTime.Now;
+            //langtext.ReviewerId = userId;
+            //langtext.ReviewTimestamp = DateTime.Now;
 
             Mapper.Map(langTextForUpdateZh, langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 
@@ -177,8 +179,8 @@ namespace ESO_LangEditor.API.Controllers
 
             var langtextReview = Mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.EnChanged;
-            langtext.ReviewerId = userId;
-            langtext.ReviewTimestamp = DateTime.Now;
+            //langtext.ReviewerId = userId;
+            //langtext.ReviewTimestamp = DateTime.Now;
 
             //Mapper.Map(langTextForUpdateEn, langtext, typeof(LangTextForUpdateEnDto), typeof(LangText));
             Mapper.Map(langTextForUpdateEn, langtextReview, typeof(LangTextForUpdateEnDto), typeof(LangTextReview));

@@ -1,4 +1,5 @@
-﻿using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -78,7 +79,7 @@ namespace ESO_LangEditorGUI.Services
                     IdType = ToInt32(id),
                     TextId = key,
                     TextEn = text,
-                    LangLuaType = LangType.LangText,
+                    LangTextType = LangType.LangText,
 
 
                     //UniqueID = key,
@@ -127,7 +128,7 @@ namespace ESO_LangEditorGUI.Services
                             if (luaResultValue.TextId.Contains(id))
                             {
 
-                                luaResult[id].LangLuaType = LangType.LuaBoth;
+                                luaResult[id].LangTextType = LangType.LuaBoth;
                             }
                             else
                             {
@@ -138,7 +139,7 @@ namespace ESO_LangEditorGUI.Services
                                         TextId = id,
                                         IdType = idType,
                                         TextEn = text_en,
-                                        LangLuaType = LangType.LuaClient,
+                                        LangTextType = LangType.LuaClient,
                                     });
                                 }
                                 else
@@ -148,7 +149,7 @@ namespace ESO_LangEditorGUI.Services
                                         TextId = id,
                                         IdType = idType,
                                         TextEn = text_en,
-                                        LangLuaType = LangType.LuaPreGame,
+                                        LangTextType = LangType.LuaPreGame,
                                     });
                                 }
                             }
@@ -163,7 +164,7 @@ namespace ESO_LangEditorGUI.Services
                                     TextId = id,
                                     IdType = idType,
                                     TextEn = text_en,
-                                    LangLuaType = LangType.LuaClient,
+                                    LangTextType = LangType.LuaClient,
                                 });
                             }
                             else
@@ -173,7 +174,7 @@ namespace ESO_LangEditorGUI.Services
                                     TextId = id,
                                     IdType = idType,
                                     TextEn = text_en,
-                                    LangLuaType = LangType.LuaPreGame,
+                                    LangTextType = LangType.LuaPreGame,
                                 });
                             }
                         }
@@ -200,7 +201,7 @@ namespace ESO_LangEditorGUI.Services
         public List<LangTextDto> JsonToLangTextListReader(string path)
         {
 
-            JsonDto jsonFile;// = new JsonDto();
+            JsonFileDto jsonFile;// = new JsonDto();
             string jsonString;
 
             var options = new JsonSerializerOptions
@@ -215,7 +216,7 @@ namespace ESO_LangEditorGUI.Services
                 jsonString = reader.ReadToEnd();
             }
 
-            jsonFile = JsonSerializer.Deserialize<JsonDto>(jsonString);
+            jsonFile = JsonSerializer.Deserialize<JsonFileDto>(jsonString);
 
             //foreach (var zh in jsonFile.LangTexts)
             //{
@@ -227,7 +228,7 @@ namespace ESO_LangEditorGUI.Services
             //string jsonString = JsonSerializer.Deserialize(json, options);
         }
 
-        public JsonDto JsonToDtoReader(string path)
+        public JsonFileDto JsonToDtoReader(string path)
         {
 
             //JsonDto jsonFile;// = new JsonDto();
@@ -245,7 +246,7 @@ namespace ESO_LangEditorGUI.Services
                 jsonString = reader.ReadToEnd();
             }
 
-            return JsonSerializer.Deserialize<JsonDto>(jsonString);
+            return JsonSerializer.Deserialize<JsonFileDto>(jsonString);
         }
 
         public List<LangTextDto> LangTextReaderToListAsync(string path)
@@ -289,7 +290,7 @@ namespace ESO_LangEditorGUI.Services
                             TextEn = en,
                             TextZh = zh,
                             //LangType = LangType.
-                            IsTranslated = ToInt32(translate),
+                            IsTranslated = ToByte(translate),
                             UpdateStats = "Update27",
                             //RowStats = ToInt32(rowStats),
                         });

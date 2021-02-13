@@ -1,8 +1,8 @@
-﻿using ESO_LangEditorGUI.Command;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
-using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+using ESO_LangEditorGUI.Views.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -97,7 +97,7 @@ namespace ESO_LangEditorGUI.ViewModels
             }
         }
 
-        private void ImportDataToDb(JsonDto json)
+        private void ImportDataToDb(JsonFileDto json)
         {
             var db = new LangTextRepository();
 

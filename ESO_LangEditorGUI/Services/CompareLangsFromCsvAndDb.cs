@@ -1,5 +1,5 @@
-﻿using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,7 +66,7 @@ namespace ESO_LangEditorGUI.Services
                             IsTranslated = firstValue.IsTranslated,
                             EnLastModifyTimestamp = DateTime.Now,
                             ZhLastModifyTimestamp = firstValue.ZhLastModifyTimestamp,
-                            LangLuaType = firstValue.LangLuaType,
+                            LangTextType = firstValue.LangTextType,
                             UserId = App.LangConfig.UserGuid,
                             //review = 2,
                         });
@@ -86,7 +86,7 @@ namespace ESO_LangEditorGUI.Services
                         IsTranslated = 0,
                         EnLastModifyTimestamp = DateTime.Now,
                         ZhLastModifyTimestamp = DateTime.Now,
-                        LangLuaType = other.Value.LangLuaType,
+                        LangTextType = other.Value.LangTextType,
                         UserId = App.LangConfig.UserGuid,
                     });
                     _removedDict.Remove(other.Key);

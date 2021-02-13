@@ -1,7 +1,7 @@
-﻿using ESO_LangEditorGUI.Services;
-using ESO_LangEditorGUI.View;
+﻿using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.Views;
 using ESO_LangEditorGUI.ViewModels;
-using ESO_LangEditorModels;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;

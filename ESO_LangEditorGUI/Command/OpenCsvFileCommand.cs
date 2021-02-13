@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorGUI.View;
+﻿using ESO_LangEditorGUI.Views;
 using ESO_LangEditorGUI.ViewModels;
 using Microsoft.Win32;
 using System;

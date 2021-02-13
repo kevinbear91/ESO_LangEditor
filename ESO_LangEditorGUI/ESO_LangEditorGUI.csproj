@@ -8,36 +8,46 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\photomode_29122020_205522_1.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+    <PackageReference Include="Prism.Core" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.Unity" Version="8.0.0.1909" />
+    <PackageReference Include="Prism.Wpf" Version="8.0.0.1909" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ESO_LangEditorModels\ESO_LangEditorModels.csproj" />
+    <ProjectReference Include="..\ESO_LangEditor.Core\ESO_LangEditor.Core.csproj" />
+    <ProjectReference Include="..\ESO_LangEditor.EFCore\ESO_LangEditor.EFCore.csproj" />
+    <ProjectReference Include="..\ESO_LangEditor.GUI.NetClient\ESO_LangEditor.GUI.NetClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="View\PackToRelase.xaml.cs">
+    <Compile Update="Views\PackToRelase.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="View\UserControls\UC_ImportDbRevProgressDialog.xaml.cs">
+    <Compile Update="Views\UserControls\UC_ImportDbRevProgressDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="View\ExportTranslate.xaml">
+    <Page Update="Views\ExportTranslate.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\ImportTranslateDB.xaml">
+    <Page Update="Views\ImportTranslateDB.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\PackToRelase.xaml">
+    <Page Update="Views\PackToRelase.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="View\UserControls\UC_ImportDbRevProgressDialog.xaml">
+    <Page Update="Views\UserControls\UC_ImportDbRevProgressDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
@@ -46,6 +56,10 @@
     <Folder Include="Command\Export\" />
     <Folder Include="Models\" />
     <Folder Include="Services\LangException\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\photomode_29122020_205522_1.jpg" />
   </ItemGroup>
 
 </Project>

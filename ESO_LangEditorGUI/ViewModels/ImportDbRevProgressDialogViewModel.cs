@@ -1,6 +1,6 @@
-﻿using ESO_LangEditorGUI.Services;
-using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Services;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -155,7 +155,7 @@ namespace ESO_LangEditorGUI.ViewModels
             {
                 var langconfig = App.LangConfig;
                 langconfig.DatabaseRev = App.LangConfigServer.LangDatabaseRevised;
-                ConfigJson.Save(langconfig);
+                AppConfigClient.Save(langconfig);
                 DialogHost.CloseDialogCommand.Execute(null, null);
                 App.LangNetworkService.CompareServerConfig();
             }
@@ -193,7 +193,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
                     var langconfig = App.LangConfig;
                     langconfig.LangDatabaseVersion = App.LangConfigServer.LangDatabaseVersion;
-                    ConfigJson.Save(langconfig);
+                    AppConfigClient.Save(langconfig);
                     App.LangNetworkService.CompareServerConfig();
                     File.Delete(localPath);
 
@@ -288,7 +288,7 @@ namespace ESO_LangEditorGUI.ViewModels
             //return new AsyncCompletedEventHandler(action);
         }
 
-        private void ImportDataToDb(JsonDto json)
+        private void ImportDataToDb(JsonFileDto json)
         {
             var db = new LangTextRepository();
 

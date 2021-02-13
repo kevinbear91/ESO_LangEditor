@@ -1,7 +1,7 @@
-﻿using ESO_LangEditorGUI.Command;
-using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Command;
+using ESO_LangEditorGUI.Views.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -46,13 +46,13 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public bool IsExportSelectedItems { get; set; }
 
-        public ExportTranslateWindowViewModel(UC_LangDataGrid langdatagrid)
+        public ExportTranslateWindowViewModel()
         {
-            LangDataGrid = langdatagrid;
-            LangDataGrid.exportTranslateWindowViewModel = this;
-            LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.ExportTranslateWindow;
+            //LangDataGrid = langdatagrid;
+            //LangDataGrid.exportTranslateWindowViewModel = this;
+            //LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.ExportTranslateWindow;
 
-            ExportTranslateCommand = new ExportTranslateCommand(langdatagrid, this);
+            //ExportTranslateCommand = new ExportTranslateCommand(langdatagrid, this);
         }
 
 

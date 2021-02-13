@@ -12,7 +12,7 @@ namespace ESO_LangEditorModels
 
         public IDCatalog()
         {
-            InitFileidToCategory();
+             InitFileidToCategory();
         }
 
         public string GetCategory(int fileid)

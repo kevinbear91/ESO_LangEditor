@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -137,7 +137,7 @@ namespace ESO_LangEditorGUI.Services
             string jsonString;
             //jsonString = JsonSerializer.Serialize(JsonDto);
 
-            var json = new JsonDto();
+            var json = new JsonFileDto();
 
             json.LangTexts = translatedLangTexts;
             json.ExportTime = DateTime.Now;

@@ -119,7 +119,7 @@ namespace ESO_LangEditor.API.Controllers
 
             await _userManager.UpdateAsync(user);
 
-            return Ok(new
+            return Ok(new TokenDto
             {
                 AuthToken = authToken,
                 RefreshToken = refreshToken

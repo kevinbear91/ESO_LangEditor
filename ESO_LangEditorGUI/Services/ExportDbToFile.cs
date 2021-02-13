@@ -1,5 +1,5 @@
-﻿using ESO_LangEditorModels;
-using ESO_LangEditorModels.Enum;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +26,7 @@ namespace ESO_LangEditorGUI.Services
 
             langtextsList.ForEach(lang => lang.IsTranslated = 2);
 
-            var json = new JsonDto
+            var json = new JsonFileDto
             {
                 LangTexts = langtextsList,
                 Version = "1",
@@ -145,7 +145,7 @@ namespace ESO_LangEditorGUI.Services
 
             foreach (var d in langList)
             {
-                switch (d.LangLuaType)
+                switch (d.LangTextType)
                 {
                     case LangType.LuaPreGame:
                         pregameData.Add("[" + d.TextId + "]"

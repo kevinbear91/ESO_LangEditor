@@ -1,5 +1,5 @@
-﻿using ESO_LangEditorGUI.Command;
-using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Command;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -33,9 +33,9 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             var config = App.LangConfig;
             config.UserGuid = UserGuid;
-            ConfigJson.Save(config);
+            AppConfigClient.Save(config);
             DialogHost.CloseDialogCommand.Execute(null, null);
-            _mainWindowViewModel.GuidVaildStartupCheck();
+            //_mainWindowViewModel.GuidVaildStartupCheck();
             
         }
 

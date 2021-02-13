@@ -1,30 +1,43 @@
-﻿using ESO_LangEditorGUI.Command;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.EFCore.RepositoryWrapper;
+using ESO_LangEditor.GUI.NetClient;
+using ESO_LangEditorGUI.Command;
+using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services;
-using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorModels.Enum;
+using ESO_LangEditorGUI.Views;
+using ESO_LangEditorGUI.Views.UserControls;
 using MaterialDesignThemes.Wpf;
+using Prism.Events;
+using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace ESO_LangEditorGUI.ViewModels
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BindableBase
     {
         private readonly string version = " " + App.LangConfig.LangEditorVersion;
 
         private string _windowTitle;
-        private IEnumerable<SearchPostion> _searchPostion;
         private string _searchInfo;
         private string _selectedInfo;
         private string _progressInfo;
         private Visibility _progessbarVisibility;
         private string _keyword;
-        private bool _isLuaChecked;
-        private MainWindow _mainWindow;
+        private ObservableCollection<LangTextDto> _gridData;
+        private LangTextDto _gridSelectedItem;
+        private List<LangTextDto> _gridSelectedItems;
+
 
         public UC_LangDataGrid LangDataGrid { get; set; }
 
@@ -40,105 +53,117 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public ICommand OpenDoalogCommand => new LangOpenDialogCommand(ExportToLang);
 
+        //public ICommand DataGridDoubleClickCommand => new LangOpenDialogCommand(OpenLangEditor);
+
         public ExcuteViewModelMethod ExportLuaToStrCommand => new ExcuteViewModelMethod(ExportLuaToStr);
 
 
         public string WindowTitle
         {
             get { return _windowTitle; }
-            set { _windowTitle = value; NotifyPropertyChanged(); }
+            set { SetProperty(ref _windowTitle, value); }
+            //set { _windowTitle = value; NotifyPropertyChanged(); }
         }
 
-        public SearchPostion SelectedSearchPostion { get; set; }
-
-        public IEnumerable<SearchPostion> SearchPostion
-        {
-            get { return Enum.GetValues(typeof(SearchPostion)).Cast<SearchPostion>(); }
-            //set { _searchPostion =  }
-        }
-
-        public SearchTextType SelectedSearchTextType { get; set; }
-
-        public IEnumerable<SearchTextType> SearchTextType
-        {
-            get { return Enum.GetValues(typeof(SearchTextType)).Cast<SearchTextType>(); }
-            //set { _searchTextType = value; NotifyPropertyChanged(); }
-        }
 
         public string SearchInfo
         {
             get { return _searchInfo; }
-            set { _searchInfo = "查询到 " + value + " 条文本"; ; NotifyPropertyChanged(); }
-        }
+            set { SetProperty(ref _searchInfo, "查询到 " + value + " 条文本"); }
+                //set { _searchInfo = "查询到 " + value + " 条文本"; ; NotifyPropertyChanged(); }
+            }
 
         public string SelectedInfo
         {
             get { return _selectedInfo; }
-            set { _selectedInfo = value; NotifyPropertyChanged(); }
+            set { SetProperty(ref _selectedInfo, value); }
         }
 
         public string ProgressInfo
         {
             get { return _progressInfo; }
-            set { _progressInfo = value; NotifyPropertyChanged(); }
+            set { SetProperty(ref _progressInfo, value); }
         }
 
         public Visibility ProgressbarVisibility
         {
             get { return _progessbarVisibility; }
-            set { _progessbarVisibility = value; NotifyPropertyChanged(); }
+            set { SetProperty(ref _progessbarVisibility, value); }
         }
 
         public string Keyword
         {
             get { return _keyword; }
-            set { _keyword = value; NotifyPropertyChanged(); }
+            set { SetProperty(ref _keyword, value); }
         }
 
-        public bool IsLuaChecked
+        public ObservableCollection<LangTextDto> GridData
         {
-            get { return _isLuaChecked; }
-            set { _isLuaChecked = value; NotifyPropertyChanged(); }
+            get { return _gridData; }
+            set { SetProperty(ref _gridData, value); }
         }
 
+        public LangTextDto GridSelectedItem { get; set; }
 
-        public MainWindowViewModel(UC_LangDataGrid langdatagrid, MainWindow mainWindow)
+        public List<LangTextDto> GridSelectedItems { get; set; }
+
+        //public DelegateCommand GetCommand
+
+        IEventAggregator _ea;
+        public SnackbarMessageQueue MainWindowMessageQueue { get; }
+
+        public MainWindowViewModel(IEventAggregator ea)
         {
             LoadMainView();
-            LangDataGrid = langdatagrid;
-            LangDataGrid.MainWindowViewModel = this;
-            LangDataGrid.LangDatGridinWindow = LangDataGridInWindow.MainViewWindow;
-            _mainWindow = mainWindow;
-            //LangDataGridView = new DataGridViewModel();
-            SearchLangCommand = new SearchLangCommand(this);
+            GridData = new ObservableCollection<LangTextDto>();
 
-            ProgressbarVisibility = Visibility.Hidden;
+            //_langTextSearch = new LangTextSearchService(App.RepoClient, App.Mapper);
 
-            
+            _ea = ea;
 
-            _mainWindow.RootDialogWindow.Loaded += RootDialogWindow_Loaded;
+            _ea.GetEvent<LangtextPostToMainDataGrid>().Subscribe(LangtextDataReceived);
+            _ea.GetEvent<MainDataGridSelectedItemsToMainWindowVM>().Subscribe(LangtextDataSelected);
+            _ea.GetEvent<LangtextSavedMessageQueueToMainWindowEventArgs>().Subscribe(ShowMessageQueueWithString);
+
+            MainWindowMessageQueue = new SnackbarMessageQueue();
+
+            //_ea.GetEvent<DataGridSelectedItemCount>().Subscribe(DataGridSelectedCount);
+
+            //_mainWindow.RootDialogWindow.Loaded += RootDialogWindow_Loaded;
             //
 
 
             //ExportToLangCommand = new ExportToFileCommand(this);
         }
 
-        private void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
+        public void DataGridSelectedCount(List<LangTextDto> langtextList)
         {
-            GuidVaildStartupCheck();
+            SelectedInfo = "已选择 " + langtextList.Count + " 条文本";
         }
 
-        public void GuidVaildStartupCheck()
+        public void LangtextDataSelected(List<LangTextDto> obj)
         {
-            if (App.LangConfig.UserGuid == Guid.Empty)
-            {
-                ShowLoginUC();
-            }
-            else
-            {
-                App.LangNetworkService = new NetworkService(App.LangConfig, this);
-            }
+            //SelectedInfo = "已选择 " + obj.Count + " 项";
         }
+
+        //private void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    GuidVaildStartupCheck();
+        //}
+
+        //public void GuidVaildStartupCheck()
+        //{
+        //    if (App.LangConfig.UserGuid == Guid.Empty)
+        //    {
+        //        ShowLoginUC();
+        //    }
+        //    else
+        //    {
+        //        //var startCheck = new StartupConfigCheck(this);
+        //        //startCheck.TryToGetServerRespondAndConfig();
+        //        //App.LangNetworkService = new NetworkService(App.LangConfig, this);
+        //    }
+        //}
 
         private async void ShowLoginUC()
         {
@@ -175,6 +200,17 @@ namespace ESO_LangEditorGUI.ViewModels
 
         }
 
+        public async void OpenLangEditor(LangTextDto langtext)
+        {
+            var view = new LangtextEditor(langtext);
+            view.Show();
+
+            //show the dialog
+           // var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+
+        }
+
+
         private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
             Console.WriteLine("You can intercept the closing event, and cancel here.");
@@ -203,6 +239,33 @@ namespace ESO_LangEditorGUI.ViewModels
             return App.LangConfig.DatabaseRev != App.LangConfigServer.LangDatabaseRevised;
         }
 
+        private void LangtextDataReceived(List<LangTextDto> langtexList)
+        {
+            if (GridData.Count > 0)
+                GridData.Clear();
+
+            GridData.AddRange(langtexList);
+        }
+
+        private void ShowMessageQueueWithString(string str)
+        {
+            MainWindowMessageQueue.Enqueue(str);
+        }
+
+        public void EventHookTester()
+        {
+            MessageBox.Show("Respond From EventHook");
+        }
+
+        //public void EventHookWithParmTester(List<LangTextDto> langtextList)
+        //{
+        //    var list = o as List<LangTextDto>;
+
+        //    SelectedInfo = langtextList.Count.ToString();
+
+        //    MessageBox.Show("Respond From EventHook, parm: {0}", langtextList.Count.ToString());
+
+        //}
 
         //private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
         //{

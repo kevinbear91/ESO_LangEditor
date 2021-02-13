@@ -14,8 +14,8 @@ namespace ESO_LangEditorDatabaseModifier
 
             if (input.Key == ConsoleKey.C)
             {
-                var converter = new ConvertV2toV3();
-                converter.Convertv2Tov3();
+                var converter = new ConvertV3toV4();
+                converter.Convertv3Tov4();
 
                 Debug.WriteLine("Everthing is done!");
             }

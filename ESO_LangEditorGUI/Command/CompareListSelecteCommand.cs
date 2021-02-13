@@ -20,20 +20,20 @@ namespace ESO_LangEditorGUI.Command
             //List<LangTextDto> data = parameter as List<LangTextDto>;
 
             string selectedKey = parameter as string;
-            var datagrid = _compareWindowViewModel.LangDataGrid.LangDataGridDC;
+            //var datagrid = _compareWindowViewModel.LangDataGrid.LangDataGridDC;
 
-            switch (selectedKey)
-            {
-                case "Added":
-                    datagrid.GridData = _compareWindowViewModel.Added;
-                    break;
-                case "Changed":
-                    datagrid.GridData = _compareWindowViewModel.Changed;
-                    break;
-                case "Removed":
-                    datagrid.GridData = _compareWindowViewModel.RemovedList;
-                    break;
-            }
+            //switch (selectedKey)
+            //{
+            //    case "Added":
+            //        datagrid.GridData = _compareWindowViewModel.Added;
+            //        break;
+            //    case "Changed":
+            //        datagrid.GridData = _compareWindowViewModel.Changed;
+            //        break;
+            //    case "Removed":
+            //        datagrid.GridData = _compareWindowViewModel.RemovedList;
+            //        break;
+            //}
 
             //throw new NotImplementedException();
         }

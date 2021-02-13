@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

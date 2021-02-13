@@ -1,7 +1,7 @@
-﻿using ESO_LangEditorGUI.Command;
+﻿using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
-using ESO_LangEditorGUI.View.UserControls;
-using ESO_LangEditorModels;
+using ESO_LangEditorGUI.Views.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,7 +62,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public SearchReplaceViewModel(List<LangTextDto> langList, UC_LangDataGrid langDataGrid)
         {
             _langList = langList;
-            _dataGridViewModel = langDataGrid.LangDataGridDC;
+            //_dataGridViewModel = langDataGrid.LangDataGridDC;
             _dataGridViewModel.GridData = langList;
             _searchReplace = new ListSearchReplace(langList);
         }
