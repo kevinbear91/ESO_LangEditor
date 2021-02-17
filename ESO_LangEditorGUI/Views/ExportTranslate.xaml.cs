@@ -1,4 +1,6 @@
-﻿using ESO_LangEditorGUI.ViewModels;
+﻿using ESO_LangEditorGUI.EventAggres;
+using ESO_LangEditorGUI.ViewModels;
+using ESO_LangEditorGUI.Views.UserControls;
 using System.Windows;
 
 namespace ESO_LangEditorGUI.Views
@@ -12,10 +14,21 @@ namespace ESO_LangEditorGUI.Views
         public ExportTranslate()
         {
             InitializeComponent();
-
-            //DataContext = new ExportTranslateWindowViewModel(LangDataGrid);
+            AddHandler(UC_LangDataGrid.DataGridSelectionChangedEvent,
+               new RoutedEventHandler(DataGridSelectionChangedEvent));
         }
 
+        private void DataGridSelectionChangedEvent(object sender, RoutedEventArgs e)
+        {
+            var vm = DataContext as ExportTranslateViewModel;
+            DataGridSelectedChangedEventArgs args = (DataGridSelectedChangedEventArgs)e;
+
+            var langtextList = args.LangTextListDto;
+
+            vm.SelectedItems = langtextList;
+            vm.SelectedInfo = langtextList.Count.ToString();
+            vm.OnRequestClose += (s, e) => this.Close();
+        }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {

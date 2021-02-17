@@ -11,7 +11,7 @@ namespace ESO_LangEditor.EFCore.DataRepositories
     {
         public LangTextRepositoryClient(DbContext dbcontext) : base(dbcontext)
         {
-
+            
         }
     }
 }

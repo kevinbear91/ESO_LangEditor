@@ -6,37 +6,38 @@
         xmlns:uc="clr-namespace:ESO_LangEditorGUI.Views.UserControls" 
         xmlns:local="clr-namespace:ESO_LangEditorGUI.Views" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
-        Title="导出翻译文本" Height="410" Width="520" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        TextElement.FontSize="14"
+        Title="导出翻译文本" Height="410" Width="600" Background="#FFEEEEEE" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" Tag="ExportTranslateWindow">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
             <RowDefinition/>
-            <RowDefinition Height="30"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <!--<Canvas Grid.Row="0" VerticalAlignment="Top" Margin="0,20,0,0">
-            
-            
-            --><!--<DataGrid x:Name="Translated_DataGrid" 
-                          IsReadOnly="True"
-                          AutoGenerateColumns="False" Margin="10,0,0,0" 
-                      Width="485" Height="270"
-                      ColumnWidth="100*" />--><!--
-        </Canvas>-->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6" >
+            <ToolBarTray Margin="0,5,0,5" >
+                <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
+                          VerticalAlignment="Center" ToolBarTray.IsLocked="True">
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <uc:UC_LangDataGrid Height="270" Grid.Row="0" />
+                    <Button ToolTip="Export" Command="{Binding ExportTranslateCommand}" IsEnabled="{Binding ExportEnabled}">
+                        <materialDesign:PackIcon Kind="ExportVariant" />
+                    </Button>
+                    <Separator />
+                    <CheckBox x:Name="ExportSelectedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" Content="导出已选择文本" IsChecked="{Binding IsExportSelectedItems}" />
+
+                </ToolBar>
+            </ToolBarTray>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,0,0,40" Grid.RowSpan="2" >
+            <uc:UC_LangDataGrid />
         </ScrollViewer>
-        
 
-        <Canvas Grid.Row="1">
-            <Button x:Name="ExportTranslate_Button" Content="导出" Command="{Binding ExportTranslateCommand}" CommandParameter="{Binding IsExportSelectedItems}" Margin="10,0,0,0" Cursor="Hand"/>
-            <Button x:Name="Cancel_Button" Content="取消" Click="Cancel_Button_Click" Margin="100,0,0,0" Cursor="Hand"/>
-            <CheckBox x:Name="ExportSelectedItems_checkBox" Content="导出已选择文本" IsChecked="{Binding IsExportSelectedItems}" Margin="200,0,0,0"/>
-        </Canvas>
-
-        <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
+        <StatusBar Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,8,10,9">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>
@@ -60,15 +61,5 @@
             </StatusBarItem>
             <Separator Grid.Column="3" />
         </StatusBar>
-
-        <materialDesign:Snackbar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                                 MessageQueue="{materialDesign:MessageQueue}"
-                                 x:Name="Snackbar_SaveInfo">
-            <materialDesign:SnackbarMessage Content="{Binding MdNotifyContent}"
-                                            ActionContent="ACCENT" />
-        </materialDesign:Snackbar>
-
-
-
     </Grid>
 </Window>

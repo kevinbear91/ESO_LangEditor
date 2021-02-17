@@ -6,6 +6,8 @@ namespace ESO_LangEditor.Core.Models
 {
     public class LangTextForUpdateEnDto
     {
+        public Guid Id { get; set; }
+
         public string TextEn { get; set; }
 
         public byte IsTranslated { get; set; }

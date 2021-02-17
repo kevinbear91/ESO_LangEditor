@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ESO_LangEditorGUI.EventAggres
 {
-    public class LangtextSavedMessageQueueToMainWindowEventArgs : PubSubEvent<string>
+    public class CloseMainWindowDrawerHostEvent : PubSubEvent
     {
 
     }

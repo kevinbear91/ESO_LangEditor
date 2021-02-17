@@ -16,7 +16,7 @@
         Identifier="RootDialog"
         DialogTheme="Inherit"
         SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
-        <materialDesign:DrawerHost LeftDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHost">
+        <materialDesign:DrawerHost TopDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHostMainWindow" >
             <materialDesign:DrawerHost.TopDrawerContent>
                 <ucd:MainMenu />
 

@@ -16,13 +16,11 @@ namespace ESO_LangEditorGUI.Command
     public class ExportTranslateCommand : CommandBase
     {
         private readonly LangTextRepository _localSearch = new LangTextRepository();
-        private readonly ExportTranslateWindowViewModel _exportWindowViewModel;
-        private readonly UC_LangDataGrid _langDatagrid;
+        private readonly ExportTranslateViewModel _exportWindowViewModel;
 
 
-        public ExportTranslateCommand(UC_LangDataGrid langDatagrid, ExportTranslateWindowViewModel exportWindowViewModel)
+        public ExportTranslateCommand(ExportTranslateViewModel exportWindowViewModel)
         {
-            _langDatagrid = langDatagrid;
             _exportWindowViewModel = exportWindowViewModel;
 
             SearchTranslatedText();

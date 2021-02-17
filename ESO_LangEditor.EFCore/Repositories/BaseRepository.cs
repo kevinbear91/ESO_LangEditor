@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -56,6 +57,22 @@ namespace ESO_LangEditor.EFCore.Repositories
             DbContext.Set<T>().Remove(entity);
         }
 
-        
+        public void CreateList(List<T> entity)
+        {
+            DbContext.Set<T>().AddRange(entity);
+        }
+
+        public void UpdateList(List<T> entity)
+        {
+            DbContext.Set<T>().UpdateRange(entity);
+            //DbContext.SaveChangesAsync();
+        }
+
+        public void DeleteList(List<T> entity)
+        {
+            DbContext.Set<T>().RemoveRange(entity);
+        }
+
     }
+
 }

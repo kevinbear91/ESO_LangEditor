@@ -33,34 +33,13 @@
                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MaterialDesignMenuItem}" >
                         <Setter Property="Header" Value="{Binding Path=Header}"/>
                         <Setter Property="Command" Value="{Binding Path=Command}"/>
+                        <Setter Property="CommandParameter" Value="{Binding Path=CommandParameter}"/>
                     </Style>
                     <HierarchicalDataTemplate 
                      DataType="{x:Type local1:MenuItemContent}"
                      ItemsSource="{Binding Path=ChildMenuItems}">
                     </HierarchicalDataTemplate>
                 </Menu.Resources>
-                <!--<MenuItem Header="导入" VerticalContentAlignment="Center" >
-                    <MenuItem Header="导入翻译文本" Click="ImportTranslate_Click"  />
-                    <MenuItem Header="CSV和Lua与数据库对比" Click="CsvCompareWithDB_Click" />
-                </MenuItem>
-                <MenuItem Header="导出">
-                    <MenuItem Header="导出已翻译内容" Click="ExportTranslate_Click" />
-                    --><!--<MenuItem Header="导出ID文本" Click="ExportID_Click"/>--><!--
-                </MenuItem>
-                <MenuItem Header="高级">
-                    <MenuItem Header="导出文本至.lang" Command="{Binding OpenDoalogCommand}"/>
-                    <MenuItem Header="导出UI Str内容" Command="{Binding ExportLuaToStrCommand}"/>
-                    <MenuItem Header="一键发布" Click="PackToRlease_Click"/>
-                </MenuItem>
-                <MenuItem Header="网络">
-                    <MenuItem Header="服务器线路">
-                        <MenuItem Header="IKDC2(IPv4)" IsChecked="True" IsCheckable="True" />
-                        --><!--<MenuItem Header="IKDC2(IPv6)" IsChecked="False" IsCheckable="True" />--><!--
-                    </MenuItem>
-                </MenuItem>
-                <MenuItem Header="帮助">
-                    <MenuItem Header="使用说明" Click="OpenHelpURLinBrowser"/>
-                </MenuItem>-->
             </Menu>
             <!--<TextBlock Text="Left drawer content" TextWrapping="Wrap" Margin="0,20"/>
                 <CheckBox IsChecked="{Binding LockDrawer}" Content="Lock Drawer" />-->

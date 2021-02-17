@@ -95,6 +95,11 @@ namespace ESO_LangEditorGUI.Views.UserControls
                 _selectedItem = (LangTextDto)datagrid.SelectedItem;
                 MakeSelectedItemToEditorEventArgs(_selectedItem);
             }
+            else if (tag == "ExportTranslateWindow")
+            {
+                _selectedItems = datagrid.SelectedItems.OfType<LangTextDto>().ToList();
+                MakeSelectedItemToEventArgs(_selectedItems);
+            }
         }
 
 

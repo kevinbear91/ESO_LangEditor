@@ -6,6 +6,7 @@ namespace ESO_LangEditor.Core.Models
 {
     public class LangTextForUpdateZhDto
     {
+        public Guid Id { get; set; }
 
         public string TextZh { get; set; }
 

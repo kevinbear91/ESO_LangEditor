@@ -2,10 +2,12 @@
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.EFCore;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Convert;
@@ -16,76 +18,151 @@ namespace ESO_LangEditorGUI.Services
     {
         private IRepositoryWrapperClient _repositoryWrapper; 
         private IMapper _mapper;
-
+        private LangtextClientDbContext _langtextClientDb;
 
         public LangTextRepoClientService(/*IRepositoryWrapperClient repositoryWrapper, IMapper mapper*/)
         {
-            _repositoryWrapper = App.RepoClient; // repositoryWrapper;
+            //_langtextClientDb = new LangtextClientDbContext(App.DbOptionsBuilder);
+            //_repositoryWrapper = new RepositoryWrapperClient(LangtextClientDb); // repositoryWrapper;
             _mapper = App.Mapper; // mapper;
         }
 
         public async Task<IEnumerable<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
-            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
+            LangText langtext;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                langtext = await db.Langtexts.FindAsync(langtextGuid);
+                db.Dispose();
+            }
+
             var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
-
-
-
             return langtextDto;
-            //if (langtext == null)
-            //{
-            //    return NotFound();
-            //}
-            //else
-            //{
-            //    return langtextDto;
-            //}
-
         }
 
         public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, SearchTextType searchType, SearchPostion searchPostion)
         {
-            //var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
-            //var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
-
             string searchPosAndWord = GetKeywordWithPostion(searchPostion, keyWord);
+            List<LangText> langtext;
 
-            //return langtextDto;
-
-
-            var langtext = searchType switch
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                SearchTextType.UniqueID => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => d.TextId == keyWord),
-                SearchTextType.TextEnglish => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => EF.Functions.Like(d.TextEn, searchPosAndWord)),
-                SearchTextType.TextChineseS => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => EF.Functions.Like(d.TextZh, searchPosAndWord)),
-                SearchTextType.UpdateStatus => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)),
-                SearchTextType.TranslateStatus => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => d.IsTranslated == ToInt32(keyWord)),
-                SearchTextType.Guid => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => d.Id == new Guid(keyWord)),
-                SearchTextType.Type => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => d.IdType == ToInt32(keyWord)),
-                //SearchTextType.ByUser => throw new NotImplementedException(),
-                _ => await _repositoryWrapper.LangTextRepo.GetByConditionAsync(d => EF.Functions.Like(d.TextEn, searchPosAndWord)),
-            };
+                langtext = searchType switch
+                {
+                    SearchTextType.UniqueID => await db.Langtexts.Where(d => d.TextId == keyWord).ToListAsync(),
+                    SearchTextType.TextEnglish => await db.Langtexts.Where(d => EF.Functions.Like(d.TextEn, searchPosAndWord)).ToListAsync(),
+                    SearchTextType.TextChineseS => await db.Langtexts.Where(d => EF.Functions.Like(d.TextZh, searchPosAndWord)).ToListAsync(),
+                    SearchTextType.UpdateStatus => await db.Langtexts.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
+                    SearchTextType.TranslateStatus => await db.Langtexts.Where(d => d.IsTranslated == ToSByte(keyWord)).ToListAsync(),
+                    SearchTextType.Guid => await db.Langtexts.Where(d => d.Id == new Guid(keyWord)).ToListAsync(),
+                    SearchTextType.Type => await db.Langtexts.Where(d => d.IdType == ToInt32(keyWord)).ToListAsync(),
+                    //SearchTextType.ByUser => throw new NotImplementedException(),
+                    _ => await db.Langtexts.Where(d => EF.Functions.Like(d.TextEn, searchPosAndWord)).ToListAsync(),
+                };
+
+                db.Dispose();
+            }
 
             var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
-
             return langtextDto;
-
         }
 
-        public async Task<bool> UpdateLangtextZh(Guid langtextId, LangTextForUpdateZhDto langtextDto)
+        public async Task<bool> AddLangtexts(List<LangText> langtextDto)
         {
+            int saveCount = 0;
 
-            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextId);
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                db.Langtexts.AddRange(langtextDto);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
 
-            //var langtextUpdate = _mapper.Map<LangText>(langtextDto);
+            return saveCount > 0;
+        }
 
-            _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+        public async Task<bool> UpdateLangtextEn(List<LangTextForUpdateEnDto> langtextDto)
+        {
+            //LangText langtext;
+            int saveCount = 0;
 
-            _repositoryWrapper.LangTextRepo.Update(langtext);
+            var lang = _mapper.Map<List<LangText>>(langtextDto);
 
-            return await _repositoryWrapper.LangTextRepo.SaveAsync();
-            //Db.Update(langList);
-            //return await Db.SaveChangesAsync();
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                db.Langtexts.UpdateRange(lang);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
+        }
+
+
+        public async Task<bool> UpdateLangtextZh(LangTextForUpdateZhDto langtextDto)
+        {
+            int saveCount = 0;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var lang = _mapper.Map<LangText>(langtextDto);
+
+                db.Langtexts.Update(lang);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
+        }
+
+        public async Task<bool> UpdateLangtextZh(List<LangTextForUpdateZhDto> langtextDto)
+        {
+            int saveCount = 0;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var lang = _mapper.Map<List<LangText>>(langtextDto);
+
+                db.Langtexts.UpdateRange(lang);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
+        }
+
+        public async Task<bool> UpdateTranslateStatus(List<LangTextDto> langtexts)
+        {
+            int saveCount = 0;
+            foreach (var langtext in langtexts)
+            {
+                langtext.IsTranslated = 2;
+            }
+            var lang = _mapper.Map<List<LangText>>(langtexts);
+
+            using(var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                db.Langtexts.UpdateRange(lang);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
+        }
+
+        public async Task<bool> DeleteLangtexts(List<LangText> langtextDto)
+        {
+            int saveCount = 0;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                db.Langtexts.RemoveRange(langtextDto);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
         }
 
 

@@ -111,6 +111,8 @@ namespace ESO_LangEditorGUI.ViewModels
 
         IEventAggregator _ea;
         public SnackbarMessageQueue MainWindowMessageQueue { get; }
+        public event EventHandler OnRequestClose;
+        public event EventHandler CloseDrawerHostEvent;
 
         public MainWindowViewModel(IEventAggregator ea)
         {
@@ -123,7 +125,8 @@ namespace ESO_LangEditorGUI.ViewModels
 
             _ea.GetEvent<LangtextPostToMainDataGrid>().Subscribe(LangtextDataReceived);
             _ea.GetEvent<MainDataGridSelectedItemsToMainWindowVM>().Subscribe(LangtextDataSelected);
-            _ea.GetEvent<LangtextSavedMessageQueueToMainWindowEventArgs>().Subscribe(ShowMessageQueueWithString);
+            _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Subscribe(ShowMessageQueueWithString);
+            _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Subscribe(CloseDrawerHost);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
 
@@ -250,6 +253,11 @@ namespace ESO_LangEditorGUI.ViewModels
         private void ShowMessageQueueWithString(string str)
         {
             MainWindowMessageQueue.Enqueue(str);
+        }
+
+        private void CloseDrawerHost()
+        {
+            CloseDrawerHostEvent(this, new EventArgs());
         }
 
         public void EventHookTester()

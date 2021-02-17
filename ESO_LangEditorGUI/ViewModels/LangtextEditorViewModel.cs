@@ -186,7 +186,7 @@ namespace ESO_LangEditorGUI.ViewModels
                     else
                     {
                         OnRequestClose(this, new EventArgs());
-                        _ea.GetEvent<LangtextSavedMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！" 
+                        _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！" 
                             + "需重新搜索才会刷新表格。");
 
                     }

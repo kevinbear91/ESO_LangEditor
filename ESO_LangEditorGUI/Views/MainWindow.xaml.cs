@@ -7,6 +7,7 @@ using ESO_LangEditorGUI.Services;
 using Prism.Events;
 using ESO_LangEditorGUI.Views.UserControls;
 using ESO_LangEditorGUI.EventAggres;
+using System.Windows.Controls;
 
 namespace ESO_LangEditorGUI.Views
 {
@@ -25,6 +26,12 @@ namespace ESO_LangEditorGUI.Views
 
             AddHandler(UC_LangDataGrid.DataGridSelectionChangedEvent,
                 new RoutedEventHandler(DataGridSelectionChangedEvent));
+
+            //AddHandler(ExportTranslate.CloseMainWindowDrawerHostEvent,
+            //    new RoutedEventHandler(CloseDrawerHostEvent));
+
+            var vm = DataContext as MainWindowViewModel;
+            vm.CloseDrawerHostEvent += (s, e) => this.CloseDrawerHostEvent();
         }
 
         private void DataGridSelectionChangedEvent(object sender, RoutedEventArgs e)
@@ -33,7 +40,6 @@ namespace ESO_LangEditorGUI.Views
             DataGridSelectedChangedEventArgs args = (DataGridSelectedChangedEventArgs)e;
 
             var langtextList = args.LangTextListDto;
-
             vm.DataGridSelectedCount(langtextList);
         }
 
@@ -46,6 +52,11 @@ namespace ESO_LangEditorGUI.Views
             var langtext = args.LangTextDto;
             vm.OpenLangEditor(langtext);
 
+        }
+
+        private void CloseDrawerHostEvent()
+        {
+            DrawerHostMainWindow.IsTopDrawerOpen = false;
         }
 
         private void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)

@@ -43,18 +43,21 @@ namespace ESO_LangEditorGUI
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
 
-        public static readonly LangtextClientDbContext LangtextClientDb;
+        //public static readonly LangtextClientDbContext LangtextClientDb;
         public static readonly IMapper Mapper;
-        public static readonly IRepositoryWrapperClient RepoClient;
+        //public static readonly IRepositoryWrapperClient RepoClient;
+        public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
 
 
         static App()
         {
-            var contextOptions = new DbContextOptionsBuilder<LangtextClientDbContext>()
+            DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
                 .UseSqlite(@"Data Source=Data/LangData_v4.db")
                 .Options;
 
-            LangtextClientDb = new LangtextClientDbContext(contextOptions);
+            //LangtextClientDb = new LangtextClientDbContext(contextOptions);
+            //DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
+            //    .UseSqlite(@"Data Source=Data/LangData_v4.db");
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -63,7 +66,7 @@ namespace ESO_LangEditorGUI
 
             Mapper = new Mapper(config);
 
-            RepoClient = new RepositoryWrapperClient(LangtextClientDb);
+            //RepoClient = new RepositoryWrapperClient(LangtextClientDb);
         }
 
         public void App_Startup(object sender, StartupEventArgs e)

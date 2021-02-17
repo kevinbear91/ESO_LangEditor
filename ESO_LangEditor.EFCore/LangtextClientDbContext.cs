@@ -10,7 +10,7 @@ namespace ESO_LangEditor.EFCore
     {
         public LangtextClientDbContext(DbContextOptions<LangtextClientDbContext> options) : base(options)
         {
-
+            
         }
 
         public DbSet<LangText> Langtexts { get; set; }
