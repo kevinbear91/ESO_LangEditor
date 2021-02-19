@@ -20,18 +20,18 @@ namespace ESO_LangEditorGUI.Services
 
         private Dictionary<string, LangTextDto> _removedDict = new Dictionary<string, LangTextDto>();
 
-        private CompareWindowViewModel _compareWindowViewModel { get; }
+        private CompareWithDBWindowViewModel _compareWindowViewModel { get; }
 
         private Dictionary<string, LangTextDto> _first;
         private Dictionary<string, LangTextDto> _second; 
 
 
-        public CompareLangsFromCsvAndDb(CompareWindowViewModel compareWindowViewModel)
+        public CompareLangsFromCsvAndDb(Dictionary<string, LangTextDto> dbDict, Dictionary<string, LangTextDto> csvDict)
         {
-            _compareWindowViewModel = compareWindowViewModel;
+            
 
-            _first = _compareWindowViewModel.DbDict;
-            _second = _compareWindowViewModel.CsvDict;
+            _first = dbDict;
+            _second = csvDict;
 
 
             //CompareDicts();

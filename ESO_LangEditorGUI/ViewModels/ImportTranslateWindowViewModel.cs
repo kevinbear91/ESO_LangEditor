@@ -56,7 +56,7 @@ namespace ESO_LangEditorGUI.ViewModels
             set { _ImportAllFileCheckbox = value; NotifyPropertyChanged(); }
         }
 
-        private ParseLangFile parseLangFile = new ParseLangFile();
+        private LangFileParser parseLangFile = new LangFileParser();
 
         public ICommand ImportTraslate => new ExcuteViewModelMethod(ImportLangs);
         public ImportTranslateOpenFileCommand OpenFileCommand { get; }

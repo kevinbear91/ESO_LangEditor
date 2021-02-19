@@ -19,6 +19,9 @@ namespace ESO_LangEditorGUI.Views
         {
             InitializeComponent();
 
+            var vm = DataContext as CompareWithDBWindowViewModel;
+            vm.compareWithDBWindow = this;
+
             //DataContext = new CompareWindowViewModel(LangDataGrid);
 
         }

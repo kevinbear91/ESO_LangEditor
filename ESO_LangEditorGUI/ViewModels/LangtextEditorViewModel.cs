@@ -157,6 +157,7 @@ namespace ESO_LangEditorGUI.ViewModels
             {
                 var langtextUpdateZh = new LangTextForUpdateZhDto
                 {
+                    Id = CurrentLangText.Id,
                     TextZh = LangTextZh,
                     IsTranslated = 1,
                     ZnLastModifyTimestamp = DateTime.Now,
@@ -165,7 +166,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
                 //Debug.WriteLine("{0},{1}", CurrentLangText.TextZh, CurrentLangText.ZhLastModifyTimestamp);
 
-                if(await _langTextRepoClient.UpdateLangtextZh(CurrentLangText.Id, langtextUpdateZh))
+                if(await _langTextRepoClient.UpdateLangtextZh(langtextUpdateZh))
                 {
                     CurrentLangText.TextZh = LangTextZh;
 

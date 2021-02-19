@@ -7,6 +7,7 @@ using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,10 @@ namespace ESO_LangEditorGUI.Services
 {
     public class LangTextRepoClientService
     {
-        private IRepositoryWrapperClient _repositoryWrapper; 
         private IMapper _mapper;
-        private LangtextClientDbContext _langtextClientDb;
 
-        public LangTextRepoClientService(/*IRepositoryWrapperClient repositoryWrapper, IMapper mapper*/)
+        public LangTextRepoClientService()
         {
-            //_langtextClientDb = new LangtextClientDbContext(App.DbOptionsBuilder);
-            //_repositoryWrapper = new RepositoryWrapperClient(LangtextClientDb); // repositoryWrapper;
             _mapper = App.Mapper; // mapper;
         }
 
@@ -68,6 +65,24 @@ namespace ESO_LangEditorGUI.Services
             return langtextDto;
         }
 
+        public async Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync()
+        {
+            List<LangText> langtext;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                langtext = await db.Langtexts.ToListAsync();
+                db.Dispose();
+            }
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
+
+            var langtextDirct = langtextDto.ToDictionary(d => d.TextId);
+            Debug.WriteLine(langtextDirct.Count);
+            return langtextDirct;
+        }
+
+
         public async Task<bool> AddLangtexts(List<LangText> langtextDto)
         {
             int saveCount = 0;
@@ -84,7 +99,6 @@ namespace ESO_LangEditorGUI.Services
 
         public async Task<bool> UpdateLangtextEn(List<LangTextForUpdateEnDto> langtextDto)
         {
-            //LangText langtext;
             int saveCount = 0;
 
             var lang = _mapper.Map<List<LangText>>(langtextDto);

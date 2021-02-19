@@ -15,7 +15,7 @@ using static System.Convert;
 
 namespace ESO_LangEditorGUI.Services
 {
-    public class ParseLangFile
+    public class LangFileParser
     {
 
 
@@ -331,67 +331,6 @@ namespace ESO_LangEditorGUI.Services
                 //MessageBox.Show("读取完毕，共 " + csvData.Count + " 行数据。");
             }
             return fileContent;
-
-            //static void ParserLangTextAddToList(List<LangTextDto> csvData, out string uniqueID, out string id, out string unknown, out string index, out string text, out string zh, out string translate, out string rowStats, string[] words)
-            //#region 分析.LangDB 文件，并将分析后的文本加入 List<CsvData>
-            //{
-
-            //    uniqueID = words[0];
-            //    id = words[1];
-            //    unknown = words[2];
-            //    index = words[3];
-            //    text = words[4];
-            //    zh = words[5];
-            //    translate = words[7];
-            //    rowStats = words[8];
-
-            //    csvData.Add(new LangTextDto
-            //    {
-            //        //UniqueID = uniqueID,
-            //        //ID = ToInt32(id),
-            //        //Unknown = ToInt32(unknown),
-            //        //Lang_Index = ToInt32(index),
-            //        //Text_EN = text,
-            //        //Text_ZH = zh,
-            //        //IsTranslated = ToInt32(translate),
-            //        //RowStats = ToInt32(rowStats),
-            //    }); ;
-
-            //    Debug.WriteLine("ID: " + id + ", "
-            //        + "Unknown: " + unknown + ", "
-            //        + "Index: " + index + ", "
-            //        + "Text: " + text + ", "
-            //        + "zh: " + zh + ", "
-            //        + "translate: " + translate + ", "
-            //        + "rowStats: " + rowStats);
-            //}
-            //#endregion
-
-            //static void ParserLangUIAddToList(List<LuaUIData> csvData, out string uniqueID, out string en, out string zh, out string translate, out string rowStats, string[] words)
-            //#region 分析.LangUI 文件，并将分析后的文本加入 List<CsvData>
-            //{
-
-            //    uniqueID = words[0];
-            //    en = words[1];
-            //    zh = words[2];
-            //    translate = words[3];
-            //    rowStats = words[4];
-
-            //    csvData.Add(new LuaUIData
-            //    {
-            //        UniqueID = uniqueID,
-            //        Text_EN = en,
-            //        Text_ZH = zh,
-            //        IsTranslated = ToInt32(translate),
-            //        RowStats = ToInt32(rowStats),
-            //    }); ;
-
-            //    Debug.WriteLine("ID: " + uniqueID + ", "
-            //        + "zh: " + zh + ", "
-            //        + "translate: " + translate + ", "
-            //        + "rowStats: " + rowStats);
-            //}
-            //#endregion
         }
         #endregion
 

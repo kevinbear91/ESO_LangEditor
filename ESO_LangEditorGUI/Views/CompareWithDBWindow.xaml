@@ -6,36 +6,39 @@
         xmlns:uc="clr-namespace:ESO_LangEditorGUI.Views.UserControls" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ESO_LangEditorGUI.Views" 
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
+        TextElement.FontSize="14"
         Title="对比文本" Height="450" Width="530" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
-    <Grid Background="#FFEEEEEE" Margin="0,-1,0,1">
+    <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
             <RowDefinition/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
 
-
-
-
-
-
-        <Canvas Grid.Column="1" Margin="0,5,0,0" >
-            <materialDesign:Badged Canvas.Left="20" Canvas.Top="10"
-                Badge="{Binding FileCount}">
+        <StackPanel Grid.Column="1" Margin="10" Orientation="Horizontal">
+            <materialDesign:Badged Badge="{Binding FileCount}" Margin="0,7,0,0">
                 <materialDesign:Badged.ToolTip>
                     <TextBlock Text="{Binding FilePathTooltip}" />
                 </materialDesign:Badged.ToolTip>
                 <Button x:Name="BrowseNewFileButton" 
-                    Content="浏览..."
+                        Width="56"
                     Command="{Binding OpenFileCommand}" 
-                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Cursor="Hand" />
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" Cursor="Hand" HorizontalAlignment="Left" VerticalAlignment="Center"  >
+                    <materialDesign:PackIcon Kind="FileSearchOutline" Width="24" Height="24"/>
+                </Button>
             </materialDesign:Badged>
 
-            <Button x:Name="LoadCsv_Buton" Content="{Binding LoadButtonContent}" Command="{Binding LoadCsvAndDbCommand}" Canvas.Left="130" Canvas.Top="10" Cursor="Hand" />
+            <!--<Button x:Name="LoadCsv_Buton" 
+                    Width="50"
+                    Command="{Binding LoadCsvAndDbCommand}" 
+                    Cursor="Hand" HorizontalAlignment="Left" >
+                <materialDesign:PackIcon Kind="FileReplace" />
+            </Button>-->
             <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新版本号(必填)" 
-                     TextWrapping="Wrap" Width="130" 
-                     Margin="0,0,20,0" Canvas.Left="281" FontSize="14" Height="32" Canvas.Top="10">
+                     TextWrapping="Wrap" Width="130" Margin="30,0,30,0" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" >
                 <TextBox.Text>
                     <Binding Path="UpdateVersionText" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -46,51 +49,56 @@
                 </TextBox.Text>
             </TextBox>
 
-        </Canvas>
+            <Button x:Name="SaveToDB_Button" Content="保存" Command="{Binding SaveToDbCommand}" Margin="20 0" Cursor="Hand"  >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=VersionInput_textBox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+        </StackPanel>
 
 
-        <GroupBox Header="变更文本内容" Grid.Row="1" Margin="20,0,0,0" BorderBrush="#FF959595"  Width="480" Height="300" HorizontalAlignment="Left" VerticalAlignment="Top">
-            <Canvas>
-                <StackPanel Orientation="Horizontal" Height="30">
+        <GroupBox Header="变更文本内容" Grid.Row="1"  BorderBrush="#FF959595" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0">
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              IsChecked="True"
                              Command="{Binding CompareListSelecteCommand}"
                              CommandParameter="Added"
-                             Content="{Binding AddedTag}"  />
+                             Content="{Binding AddedTag, FallbackValue='新增'}"  />
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                              IsChecked="False"
                              Command="{Binding CompareListSelecteCommand}"
                              CommandParameter="Changed"
-                             Content="{Binding ChangedTag}"  />
+                             Content="{Binding ChangedTag, FallbackValue='修改'}"  />
                     <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}"
                                  IsChecked="False"
                                  Command="{Binding CompareListSelecteCommand}"
                                  CommandParameter="Removed"
-                                 Content="{Binding RemovedTag}"  />
+                                 Content="{Binding RemovedTag, FallbackValue='移除'}"  />
                 </StackPanel>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,40,0,0" Width="462">
-                    <uc:UC_LangDataGrid Height="200" Grid.Row="0" />
-                </ScrollViewer>
-            </Canvas>
+
+                <StackPanel Grid.Row="1">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <uc:UC_LangDataGrid />
+                    </ScrollViewer>
+                </StackPanel>
+            </Grid>
 
         </GroupBox>
 
-        <DockPanel Grid.Row="2" Margin="20 0">
-            <TextBlock Width="300" Text="{Binding InfoText}" VerticalAlignment="Center" ></TextBlock>
-            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                <Button x:Name="SaveToDB_Button" Content="保存" Command="{Binding SaveToDbCommand}" Margin="20 0" Cursor="Hand"  >
-                    <Button.Style>
-                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=VersionInput_textBox}" Value="True">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                </Button>
-                <Button x:Name="Cancel_Button" Content="取消" Click="Cancel_Button_Click" Margin="20 0"  />
-            </StackPanel>
+        <DockPanel Grid.Row="2" Margin="10 0">
+            <TextBlock Text="{Binding InfoText}" VerticalAlignment="Center" HorizontalAlignment="Stretch" ></TextBlock>
         </DockPanel>
 
 

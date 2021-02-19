@@ -12,7 +12,7 @@ namespace ESO_LangEditorGUI.Views
     public partial class ImportTranslateDB : Window
     {
 
-        private ParseLangFile parseLangFile = new ParseLangFile();
+        private LangFileParser parseLangFile = new LangFileParser();
 
         public ImportTranslateDB()
         {

@@ -33,7 +33,8 @@ namespace ESO_LangEditorGUI.ViewModels
         public MainMenuListViewModel()
         {
             //WindowLink("ESO_LangEditorGUI.Views.ExportTranslate").Show();
-            
+
+            string windowNamespace = "ESO_LangEditorGUI.Views.";
 
             TopMenu = new ObservableCollection<MenuItemContent>
             {
@@ -45,13 +46,13 @@ namespace ESO_LangEditorGUI.ViewModels
                         { 
                             Header = "导入翻译文本",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = "ESO_LangEditorGUI.Views.ImportTranslateDB",
+                            CommandParameter = windowNamespace + "ImportTranslateDB",
                         },
                         new MenuItemContent 
                         { 
                             Header = "CSV和Lua与数据库对比",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = "ESO_LangEditorGUI.Views.CompareWithDBWindow",
+                            CommandParameter = windowNamespace + "CompareWithDBWindow",
                         }
                     }
 
@@ -64,7 +65,7 @@ namespace ESO_LangEditorGUI.ViewModels
                         { 
                             Header = "导出已翻译内容",                                        //菜单标题
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),      //菜单Command 打开窗口
-                            CommandParameter = "ESO_LangEditorGUI.Views.ExportTranslate",  //窗口名 - 必须包含命名空间
+                            CommandParameter = windowNamespace + "ExportTranslate",  //窗口名 - 必须包含命名空间
                         }
                     }
 
@@ -88,7 +89,7 @@ namespace ESO_LangEditorGUI.ViewModels
                         new MenuItemContent {
                             Header = "一键发布", 
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand), 
-                            CommandParameter = "ESO_LangEditorGUI.Views.PackToRelase"
+                            CommandParameter = windowNamespace + "PackToRelase"
                         }
                     }
 

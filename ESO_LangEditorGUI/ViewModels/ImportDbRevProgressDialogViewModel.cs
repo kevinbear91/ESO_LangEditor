@@ -263,7 +263,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private void DatabaseZipExtractAndImport(string filename)
         {
             List<string> fileList = new List<string>();
-            ParseLangFile parseLangFile = new ParseLangFile();
+            LangFileParser parseLangFile = new LangFileParser();
 
             using (ZipArchive archive = ZipFile.OpenRead(filename))
             {
