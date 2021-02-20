@@ -226,7 +226,7 @@ namespace ESO_LangEditorGUI.Views.UserControls
                     new LangtextEditor(GetSeletedItems()).Show();
                     break;
                 case LangDataGridContextMenu.SearchAndReplace:
-                    new TextEditor_SearchReplace(_selectedItems).Show();
+                    new SearchReplaceWindow(GetSeletedItems()).Show();
                     break;
 
                     //LangDataGridContextMenu.SearchAndReplace => "查找替换",

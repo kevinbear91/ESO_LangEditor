@@ -24,6 +24,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private LangTextDto _selectedItem;
         private List<LangTextDto> _selectedItems;
         private ObservableCollection<LangTextDto> _gridData;
+        private LangTextDto _gridSelectedItem;
         private bool _isExportSelectedItems;
         private bool _exportEnabled = false;
 
@@ -61,6 +62,12 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             get { return _gridData; }
             set { SetProperty(ref _gridData, value); }
+        }
+
+        public LangTextDto GridSelectedItem
+        {
+            get { return _gridSelectedItem; }
+            set { SetProperty(ref _gridSelectedItem, value); }
         }
 
         public bool IsExportSelectedItems 

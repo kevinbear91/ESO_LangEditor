@@ -155,12 +155,14 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             if (LangTextZh != CurrentLangText.TextZh)
             {
+                var time = DateTime.Now;
+                time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Kind);
                 var langtextUpdateZh = new LangTextForUpdateZhDto
                 {
                     Id = CurrentLangText.Id,
                     TextZh = LangTextZh,
                     IsTranslated = 1,
-                    ZnLastModifyTimestamp = DateTime.Now,
+                    ZhLastModifyTimestamp = time,
                     UserId = App.LangConfig.UserGuid
                 };
 
@@ -174,11 +176,6 @@ namespace ESO_LangEditorGUI.ViewModels
                     {
                         var removeitem = GridData.Single(l => l.Id == CurrentLangText.Id);
                         GridData.Remove(removeitem);
-
-                        //if (_currentSelectedIndex > 0)
-                        //    _currentSelectedIndex = _currentSelectedIndex - 1;
-                        //else
-                        //    _currentSelectedIndex = 0;
 
 
                         SetCurrentItemFromList(GridData.ElementAtOrDefault(0));

@@ -15,7 +15,6 @@ namespace ESO_LangEditor.Core.Entities
         //[ForeignKey("UserId")]
         //public User User { get; set; }
 
-
         public Guid ReviewerId { get; set; }
 
         public DateTime ReviewTimestamp { get; set; }

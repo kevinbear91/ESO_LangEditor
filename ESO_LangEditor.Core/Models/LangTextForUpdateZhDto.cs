@@ -12,7 +12,7 @@ namespace ESO_LangEditor.Core.Models
 
         public byte IsTranslated { get; set; }
 
-        public DateTime ZnLastModifyTimestamp { get; set; }
+        public DateTime ZhLastModifyTimestamp { get; set; }
 
         public Guid UserId { get; set; }
     }

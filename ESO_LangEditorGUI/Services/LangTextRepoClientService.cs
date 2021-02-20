@@ -117,12 +117,14 @@ namespace ESO_LangEditorGUI.Services
         public async Task<bool> UpdateLangtextZh(LangTextForUpdateZhDto langtextDto)
         {
             int saveCount = 0;
+            //Debug.WriteLine("ID:{0}, zh: {1}, modifytimer: {2}", langtextDto.Id, langtextDto.TextZh, langtextDto.ZhLastModifyTimestamp);
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                var lang = _mapper.Map<LangText>(langtextDto);
+                var langtext = await db.Langtexts.FindAsync(langtextDto.Id);
+                _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
 
-                db.Langtexts.Update(lang);
+                db.Langtexts.Update(langtext);
                 saveCount = await db.SaveChangesAsync();
                 db.Dispose();
             }
@@ -130,7 +132,7 @@ namespace ESO_LangEditorGUI.Services
             return saveCount > 0;
         }
 
-        public async Task<bool> UpdateLangtextZh(List<LangTextForUpdateZhDto> langtextDto)
+        public async Task<bool> UpdateLangtextZh(List<LangTextDto> langtextDto)
         {
             int saveCount = 0;
 

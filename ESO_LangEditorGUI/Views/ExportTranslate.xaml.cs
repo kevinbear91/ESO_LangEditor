@@ -16,6 +16,9 @@ namespace ESO_LangEditorGUI.Views
             InitializeComponent();
             AddHandler(UC_LangDataGrid.DataGridSelectionChangedEvent,
                new RoutedEventHandler(DataGridSelectionChangedEvent));
+
+            var vm = DataContext as ExportTranslateViewModel;
+            vm.OnRequestClose += (s, e) => Close();
         }
 
         private void DataGridSelectionChangedEvent(object sender, RoutedEventArgs e)
@@ -27,12 +30,6 @@ namespace ESO_LangEditorGUI.Views
 
             vm.SelectedItems = langtextList;
             vm.SelectedInfo = langtextList.Count.ToString();
-            vm.OnRequestClose += (s, e) => this.Close();
-        }
-
-        private void Cancel_Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
         
     }

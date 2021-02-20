@@ -7,7 +7,10 @@
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ESO_LangEditorGUI.Views.UserControls"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
+             TextElement.FontSize="14"
              d:DesignHeight="220" d:DesignWidth="350">
     <Grid Margin="16">
 
@@ -22,8 +25,8 @@
                      IsIndeterminate="{Binding ProgressbarDisplay}"
                      Value="0" />
         <StackPanel Grid.Row="1">
-            <TextBlock  Margin="0 16 0 0" Text="{Binding CurrentExcuteText}" TextAlignment="Center" HorizontalAlignment="Center" FontSize="14"></TextBlock>
-            <TextBlock  Margin="0 16 0 0" Text="{Binding DownloadSpeed}" HorizontalAlignment="Center" FontSize="14"></TextBlock>
+            <TextBlock  Margin="0 16 0 0" Text="{Binding CurrentExcuteText, FallbackValue='CurrentExcuteText'}" TextAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock  Margin="0 16 0 0" Text="{Binding DownloadSpeed, FallbackValue='DownloadSpeed'}" HorizontalAlignment="Center" />
             <Button Margin="0 16 0 0" Content="关闭窗口" Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{x:Static wpf:DialogHost.CloseDialogCommand}" IsEnabled="{Binding CloseButtonEnable}" Visibility="{Binding CloseButtonVisibility}" Cursor="Hand" />
         </StackPanel>
