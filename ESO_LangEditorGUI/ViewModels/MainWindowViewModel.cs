@@ -21,6 +21,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace ESO_LangEditorGUI.ViewModels
 {
@@ -35,8 +36,8 @@ namespace ESO_LangEditorGUI.ViewModels
         private Visibility _progessbarVisibility;
         private string _keyword;
         private ObservableCollection<LangTextDto> _gridData;
-        private LangTextDto _gridSelectedItem;
-        private List<LangTextDto> _gridSelectedItems;
+        private ClientConnectStatus _connectStatus;
+
 
 
         public UC_LangDataGrid LangDataGrid { get; set; }
@@ -103,6 +104,13 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _gridData, value); }
         }
 
+        public ClientConnectStatus ConnectStatus
+        {
+            get { return _connectStatus; }
+            set { SetProperty(ref _connectStatus, value); }
+        }
+
+
         public LangTextDto GridSelectedItem { get; set; }
 
         public List<LangTextDto> GridSelectedItems { get; set; }
@@ -118,25 +126,32 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             LoadMainView();
             GridData = new ObservableCollection<LangTextDto>();
-
+            
             //_langTextSearch = new LangTextSearchService(App.RepoClient, App.Mapper);
 
             _ea = ea;
-
             _ea.GetEvent<LangtextPostToMainDataGrid>().Subscribe(LangtextDataReceived);
             _ea.GetEvent<MainDataGridSelectedItemsToMainWindowVM>().Subscribe(LangtextDataSelected);
             _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Subscribe(ShowMessageQueueWithString);
             _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Subscribe(CloseDrawerHost);
+            _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
+            _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
 
+
+            //ConnectStatus = ClientConnectStatus.Login;
             //_ea.GetEvent<DataGridSelectedItemCount>().Subscribe(DataGridSelectedCount);
 
             //_mainWindow.RootDialogWindow.Loaded += RootDialogWindow_Loaded;
             //
 
-
             //ExportToLangCommand = new ExportToFileCommand(this);
+        }
+
+        private void UpdateProgressInfo(string str)
+        {
+            ProgressInfo = str;
         }
 
         public void DataGridSelectedCount(List<LangTextDto> langtextList)
@@ -149,28 +164,32 @@ namespace ESO_LangEditorGUI.ViewModels
             //SelectedInfo = "已选择 " + obj.Count + " 项";
         }
 
-        //private void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    GuidVaildStartupCheck();
-        //}
+        public void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            GuidVaildStartupCheck();
+        }
 
-        //public void GuidVaildStartupCheck()
-        //{
-        //    if (App.LangConfig.UserGuid == Guid.Empty)
-        //    {
-        //        ShowLoginUC();
-        //    }
-        //    else
-        //    {
-        //        //var startCheck = new StartupConfigCheck(this);
-        //        //startCheck.TryToGetServerRespondAndConfig();
-        //        //App.LangNetworkService = new NetworkService(App.LangConfig, this);
-        //    }
-        //}
+        public void GuidVaildStartupCheck()
+        {
+            var startCheck = new StartupConfigCheck(_ea);
+            startCheck.TryToGetServerRespondAndConfig();
+            //App.LangNetworkService = new NetworkService(App.LangConfig, this);
+
+            //if (App.LangConfig.UserGuid == Guid.Empty)
+            //{
+            //    ShowLoginUC();
+            //}
+            //else
+            //{
+            //    //var startCheck = new StartupConfigCheck(this);
+            //    //startCheck.TryToGetServerRespondAndConfig();
+            //    //App.LangNetworkService = new NetworkService(App.LangConfig, this);
+            //}
+        }
 
         private async void ShowLoginUC()
         {
-            var view = new UC_Login(this);
+            var view = new UC_Login();
 
             //show the dialog
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);

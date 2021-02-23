@@ -1,5 +1,4 @@
-﻿using ESO_LangEditorGUI.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -9,23 +8,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ESO_LangEditorGUI.Views.UserControls
+namespace ESO_LangEditorGUI.Views
 {
     /// <summary>
-    /// UC_Login.xaml 的交互逻辑
+    /// UserProfileSetting.xaml 的交互逻辑
     /// </summary>
-    public partial class UC_Login : UserControl
+    public partial class UserProfileSetting : Window
     {
-        public UC_Login()
+        public UserProfileSetting()
         {
             InitializeComponent();
-
-            var _vm = DataContext as LoginViewModel;
-            _vm.Load(userPassword);
         }
-
     }
 }

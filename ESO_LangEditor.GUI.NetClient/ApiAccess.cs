@@ -34,6 +34,7 @@ namespace ESO_LangEditor.GUI.NetClient
             };
         }
 
+
         public async Task<TokenDto> GetLoginToken(LoginUserDto loginUser)
         {
             //HttpContent content;

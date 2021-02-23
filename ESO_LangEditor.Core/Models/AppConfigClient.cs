@@ -19,6 +19,7 @@ namespace ESO_LangEditor.Core.Models
         public string UserAuthToken { get; set; }
         public string UserRefreshToken { get; set; }
         public Guid UserGuid { get; set; }
+        public string UserName { get; set; }  
 
         public AppConfigClient()
         {
@@ -46,6 +47,7 @@ namespace ESO_LangEditor.Core.Models
             UserAuthToken = "";
             UserRefreshToken = "";
             UserGuid = Guid.Empty;
+            UserName = "";
         }
         private static readonly string CONFIG_FILE = "LangConfig.json";
 

@@ -66,9 +66,10 @@ namespace ESO_LangEditor.API.Controllers
             //var result = await _signInManager.PasswordSignInAsync(
             //        loginUser.UserName, loginUser.Password, true, false);
 
-            var user = await _userManager.FindByNameAsync(loginUser.UserName);
+            //var user = await _userManager.FindByNameAsync(loginUser.UserName);
+            var user = await _userManager.FindByIdAsync(loginUser.UserID.ToString());
 
-            if(user == null)
+            if (user == null)
             {
                 return Unauthorized();
             }

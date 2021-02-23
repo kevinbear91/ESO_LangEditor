@@ -140,6 +140,7 @@ namespace ESO_LangEditorGUI
             //throw new NotImplementedException();
             ViewModelLocationProvider.Register<MainWindowSearchbar, MainWindowSearchbarViewModel>();
             ViewModelLocationProvider.Register<MainMenu, MainMenuListViewModel>();
+            ViewModelLocationProvider.Register<UC_Login, LoginViewModel>();
         }
 
         protected override Window CreateShell()

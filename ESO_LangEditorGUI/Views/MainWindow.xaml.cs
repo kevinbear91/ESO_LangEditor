@@ -16,8 +16,6 @@ namespace ESO_LangEditorGUI.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-
-
         public MainWindow()
         {
             InitializeComponent();
@@ -32,6 +30,8 @@ namespace ESO_LangEditorGUI.Views
 
             var vm = DataContext as MainWindowViewModel;
             vm.CloseDrawerHostEvent += (s, e) => this.CloseDrawerHostEvent();
+            RootDialogWindow.Loaded += vm.RootDialogWindow_Loaded;
+
         }
 
         private void DataGridSelectionChangedEvent(object sender, RoutedEventArgs e)

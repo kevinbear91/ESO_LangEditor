@@ -31,7 +31,6 @@ namespace ESO_LangEditorGUI.ViewModels
         private readonly LangTextRepoClientService _langTextSearch = new LangTextRepoClientService();
         public ICommand ExportTranslateCommand => new ExcuteViewModelMethod(ExportTranslatedListAsync);
         public event EventHandler OnRequestClose;
-        public event RoutedEventHandler CloseMainWindowDrawerHost;
         IEventAggregator _ea;
 
         public string SearchResultInfo

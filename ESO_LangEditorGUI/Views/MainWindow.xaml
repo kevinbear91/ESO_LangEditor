@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="{Binding WindowTitle, FallbackValue='WindowTitle 绑定失败'}" Height="800" Width="1200" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500" Tag="Mainwindow">
+        Title="{Binding WindowTitle, FallbackValue='WindowTitle'}" Height="800" Width="1200" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500" Tag="Mainwindow" >
 
     <materialDesign:DialogHost Name="RootDialogWindow"
         Identifier="RootDialog"
@@ -38,26 +38,78 @@
                                 <!--<ColumnDefinition Width="100" />-->
                             </Grid.ColumnDefinitions>
 
+                            <!--<materialDesign:Badged  Margin="0,7,0,0" BadgeColorZoneMode="PrimaryDark" BadgeBackground="{Binding BadgeColor}">
+                                --><!--<materialDesign:Badged.Style>
+                                    <Style TargetType="materialDesign:Badged">
+                                        <Setter Property="Badge" Value="{materialDesign:PackIcon CloudSync}" />
+
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding StatusType}" Value="true">
+                                                <Setter Property="Badge" Value="{materialDesign:PackIcon CloudAlert}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+
+
+                                    </Style>
+                                </materialDesign:Badged.Style>--><!--
+                                <materialDesign:Badged.ToolTip>
+                                    <TextBlock Text="{Binding TipInfo}" />
+                                </materialDesign:Badged.ToolTip>
+                                
+                            </materialDesign:Badged>-->
+                            
+                            <Button 
+                                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                                    Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                    CommandParameter="{x:Static Dock.Top}"
+                                    Height="50" Width="50" Cursor="Hand" Background="#FF3F51B5" >
+                                <Image Source="../photomode_29122020_205522_1.jpg" Stretch="Fill" />
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Connecting">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF15DA39" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="-1" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Login">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF15DA39" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Logout">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF898989" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="ConnectError">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFDA1577" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Logout">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF898989" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="SyncData">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFF0A912" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="-1" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Updating">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFF012E6" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="-1" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
 
                             <!--<ToggleButton Grid.Column="0" Style="{StaticResource MaterialDesignFlatToggleButton}"
                               IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}" Checked="ToggleButton_Checked" >
                                 <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" Foreground="White" />
                             </ToggleButton>-->
 
-                            <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
-                                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                                    materialDesign:ButtonProgressAssist.Value="-1"
-                                    materialDesign:ButtonProgressAssist.IndicatorForeground="#e65100"
-                                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
-                                    Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
-                                    CommandParameter="{x:Static Dock.Top}"
-                                    Height="40" Width="40" Cursor="Hand" Background="#FF3F51B5" >
-                                <Image Source="../photomode_29122020_205522_1.jpg" Stretch="Fill" />
-                            </Button>
-
-
                             <ucd:MainWindowSearchbar Grid.Column="1" x:Name="searchBar" />
-
                         </Grid>
                     </DockPanel>
                 </materialDesign:ColorZone>
@@ -83,27 +135,18 @@
                     </StatusBar.ItemsPanel>
 
                     <StatusBarItem Grid.Column="0">
-                        <TextBlock x:Name="textBlock_Info" Canvas.Left="10" TextWrapping="Wrap" Text="{Binding SearchInfo, FallbackValue='textBlock_Info - SearchInfo 绑定失败'}" Width="230"/>
+                        <TextBlock x:Name="textBlock_Info" TextWrapping="Wrap" Text="{Binding SearchInfo, FallbackValue='textBlock_Info - SearchInfo'}" Width="230"/>
                     </StatusBarItem>
                     <Separator Grid.Column="1" />
                     <StatusBarItem Grid.Column="2">
-                        <TextBlock x:Name="textBlock_SelectionInfo" Canvas.Left="240" TextWrapping="Wrap" 
-                               Text="{Binding SelectedInfo, FallbackValue='textBlock_SelectionInfo - SelectedInfo 绑定失败'}" Width="230" />
+                        <TextBlock x:Name="textBlock_SelectionInfo" TextWrapping="Wrap" 
+                               Text="{Binding SelectedInfo, FallbackValue='textBlock_SelectionInfo - SelectedInfo'}" Width="230" />
                     </StatusBarItem>
                     <Separator Grid.Column="3" />
                     <StatusBarItem Grid.Column="4">
-                        <DockPanel>
-                            <TextBlock x:Name="textBlock_ProgressInfo" DockPanel.Dock="Left" TextWrapping="Wrap" 
-                               Text="{Binding ProgressInfo}" Width="200" />
-                            <!--<ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
-                                     IsIndeterminate="True"
-                                     Height="15"
-                                     Value="60" DockPanel.Dock="Right"  
-                                     Visibility="{Binding ProgressbarVisibility}" />-->
-                        </DockPanel>
+                        <TextBlock x:Name="textBlock_ProgressInfo" TextWrapping="Wrap" 
+                               Text="{Binding ProgressInfo, FallbackValue='ProgressInfo'}" Width="200" />
                     </StatusBarItem>
-
-
 
                 </StatusBar>
                 <materialDesign:Snackbar MessageQueue="{Binding MainWindowMessageQueue}"

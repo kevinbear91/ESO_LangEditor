@@ -110,6 +110,13 @@ namespace ESO_LangEditorGUI.ViewModels
                 },
                 new MenuItemContent
                 {
+                    Header="资料修改", 
+                    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                    CommandParameter = windowNamespace + "UserProfileSetting",
+
+                },
+                new MenuItemContent
+                {
                     Header="帮助", ChildMenuItems=new ObservableCollection<MenuItemContent>
                     {
                         new MenuItemContent { Header = "使用说明" }

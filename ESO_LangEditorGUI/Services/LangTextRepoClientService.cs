@@ -181,6 +181,20 @@ namespace ESO_LangEditorGUI.Services
             return saveCount > 0;
         }
 
+        public async Task<int> GetLangtextRevNumber()
+        {
+            int langtextRev = 0;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+               var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
+                langtextRev = langtextRevNumber.LangTextRev;
+                db.Dispose();
+            }
+
+            return langtextRev;
+        }
+
 
         private static string GetKeywordWithPostion(SearchPostion searchPostion, string keyWord)
         {
