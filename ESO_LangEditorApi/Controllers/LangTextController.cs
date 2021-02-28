@@ -6,9 +6,11 @@ using ESO_LangEditor.EFCore.DataRepositories;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,12 +23,13 @@ namespace ESO_LangEditor.API.Controllers
         //public ILangTextRepository LangTextRepository { get; }
         public IRepositoryWrapper RepositoryWrapper { get; }
         public IMapper Mapper { get; }
+        private UserManager<User> _userManager;
 
-
-        public LangTextController(IRepositoryWrapper repositoryWrapper, IMapper mapper)
+        public LangTextController(IRepositoryWrapper repositoryWrapper, IMapper mapper, UserManager<User> userManager)
         {
             RepositoryWrapper = repositoryWrapper;
             Mapper = mapper;
+            _userManager = userManager;
         }
         
         public async Task<ActionResult<IEnumerable<LangText>>> GetLangTextAllAsync()
@@ -39,11 +42,10 @@ namespace ESO_LangEditor.API.Controllers
         [Authorize(Roles = "editor")]
         //[AllowAnonymous]
         [HttpGet("{langtextGuid}")]
-        public async Task<ActionResult<IEnumerable<LangTextDto>>> GetLangTextByGuidAsync(Guid langtextGuid)
+        public async Task<ActionResult<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
-            var langtextDto = Mapper.Map<List<LangTextDto>>(langtext);
-
+            var langtextDto = Mapper.Map<LangTextDto>(langtext);
 
             if (langtext == null)
             {
@@ -128,12 +130,18 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        //[Authorize(Roles = "Editor")]
-        [HttpPut("{langtextID}/user/{userId}")]
-        public async Task<ActionResult> UpdateLangtextZHAsync(Guid langtextID, Guid userId, LangTextForUpdateZhDto langTextForUpdateZh)
+        [Authorize(Roles = "editor")]
+        [HttpPut("{langtextID}")]
+        public async Task<ActionResult> UpdateLangtextZHAsync(LangTextForUpdateZhDto langTextForUpdateZh)
         {
-            var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
+            //var userId = _userManager.GetUserId(HttpContext.User);
 
+            //if (userId != langTextForUpdateZh.UserId.ToString())
+            //{
+            //    return BadRequest("用户不匹配");
+            //}
+
+            var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langTextForUpdateZh.Id);
 
             if (langtext == null)
             {
@@ -141,7 +149,7 @@ namespace ESO_LangEditor.API.Controllers
             }
 
             //Check if langtext already in Review.
-            if (await RepositoryWrapper.LangTextReviewRepo.GetByIdAsync(langtextID) != null)
+            if (await RepositoryWrapper.LangTextReviewRepo.GetByIdAsync(langTextForUpdateZh.Id) != null)
             {
                 return BadRequest("当前文本已待审核。");
                 //throw new Exception("当前文本已待审核。");
@@ -149,8 +157,6 @@ namespace ESO_LangEditor.API.Controllers
 
             var langtextReview = Mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.ZhChanged;
-            //langtext.ReviewerId = userId;
-            //langtext.ReviewTimestamp = DateTime.Now;
 
             Mapper.Map(langTextForUpdateZh, langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 

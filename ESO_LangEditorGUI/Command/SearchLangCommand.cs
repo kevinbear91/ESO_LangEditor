@@ -22,7 +22,7 @@ namespace ESO_LangEditorGUI.Command
         private readonly SearchLangText search = new SearchLangText();
         private readonly LangTextRepository _localSearch = new LangTextRepository();
         private readonly MainWindowSearchbarViewModel _mainView;
-        private ApiLangtext apiLangtext = new ApiLangtext();
+        private LangtextNetService apiLangtext = new LangtextNetService();
 
         private LangTextRepoClientService _langTextSearch;
 

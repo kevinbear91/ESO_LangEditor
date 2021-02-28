@@ -100,8 +100,8 @@ namespace ESO_LangEditor.API.Controllers
             var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    //new Claim(claims., Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    //new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
                 };
 
             claims.AddRange(userClaims);

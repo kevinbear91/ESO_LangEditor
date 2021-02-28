@@ -5,6 +5,7 @@ using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services;
+using ESO_LangEditorGUI.Services.AccessServer;
 using ESO_LangEditorGUI.Views;
 using ESO_LangEditorGUI.Views.UserControls;
 using MaterialDesignThemes.Wpf;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -37,25 +39,15 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _keyword;
         private ObservableCollection<LangTextDto> _gridData;
         private ClientConnectStatus _connectStatus;
-
-
-
-        public UC_LangDataGrid LangDataGrid { get; set; }
-
-        public DataGridViewModel LangDataGridView { get; }
+        private AccountService _accountService;
+        private string _avatarPath = App.WorkingDirectory + "/_tmp/avatar.jpg";
 
         public ICommand MainviewCommand { get; }
-
         public ICommand SearchLangCommand { get; }
-
         public ICommand ExportToLangCommand { get; }
-
         //public ICommand RunDialogCommand => new LangOpenDialogCommand(ExecuteRunDialog);
-
         public ICommand OpenDoalogCommand => new LangOpenDialogCommand(ExportToLang);
-
         //public ICommand DataGridDoubleClickCommand => new LangOpenDialogCommand(OpenLangEditor);
-
         public ExcuteViewModelMethod ExportLuaToStrCommand => new ExcuteViewModelMethod(ExportLuaToStr);
 
 
@@ -110,6 +102,11 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _connectStatus, value); }
         }
 
+        public string AvatarPath
+        {
+            get { return _avatarPath; }
+            //set { SetProperty(ref _connectStatus, value); }
+        }
 
         public LangTextDto GridSelectedItem { get; set; }
 
@@ -136,9 +133,13 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Subscribe(CloseDrawerHost);
             _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
             _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
+            _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
+            _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadLangtextZhUpdate) ;
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
+            _accountService = new AccountService(_ea);
 
+            Debug.WriteLine(AvatarPath);
 
             //ConnectStatus = ClientConnectStatus.Login;
             //_ea.GetEvent<DataGridSelectedItemCount>().Subscribe(DataGridSelectedCount);
@@ -147,6 +148,20 @@ namespace ESO_LangEditorGUI.ViewModels
             //
 
             //ExportToLangCommand = new ExportToFileCommand(this);
+        }
+
+        private void ChangeConnectStatus(ClientConnectStatus connectStatus)
+        {
+            ConnectStatus = connectStatus;
+        }
+
+        private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextForUpdateZhDto)
+        {
+            LangtextNetService apiLangtext = new LangtextNetService();
+            var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDto, App.LangConfig.UserAuthToken);
+            
+            MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
+
         }
 
         private void UpdateProgressInfo(string str)
@@ -169,10 +184,12 @@ namespace ESO_LangEditorGUI.ViewModels
             GuidVaildStartupCheck();
         }
 
-        public void GuidVaildStartupCheck()
+        public async Task GuidVaildStartupCheck()
         {
             var startCheck = new StartupConfigCheck(_ea);
-            startCheck.TryToGetServerRespondAndConfig();
+            await startCheck.TryToGetServerRespondAndConfig();
+
+            _accountService.LoginCheck();
             //App.LangNetworkService = new NetworkService(App.LangConfig, this);
 
             //if (App.LangConfig.UserGuid == Guid.Empty)
@@ -189,7 +206,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private async void ShowLoginUC()
         {
-            var view = new UC_Login();
+            var view = new UC_Login(_accountService);
 
             //show the dialog
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);

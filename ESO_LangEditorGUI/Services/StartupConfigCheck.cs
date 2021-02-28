@@ -1,4 +1,5 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services.AccessServer;
@@ -29,7 +30,7 @@ namespace ESO_LangEditorGUI.Services
             _startupNetwork = new StartupNetCheck();
         }
 
-        public async void TryToGetServerRespondAndConfig()
+        public async Task TryToGetServerRespondAndConfig()
         {
             //StartupNetCheck startupNetwork = new StartupNetCheck();
 
@@ -37,6 +38,7 @@ namespace ESO_LangEditorGUI.Services
             try
             {
                 _ea.GetEvent<ConnectProgressString>().Publish("正在读取服务器版本数据……");
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Connecting);
                 string result = await _startupNetwork.GetServerRespondAndConfig(App.ServerPath + "/AppConfig.json");
 
                 var options = new JsonSerializerOptions
@@ -47,16 +49,16 @@ namespace ESO_LangEditorGUI.Services
                 //_ea.GetEvent<ConnectProgressString>().Publish("正在读取服务器版本数据……");
                 //_mainWindowViewModel.ProgressInfo = "正在读取服务器版本数据……";
                 App.LangConfigServer = JsonSerializer.Deserialize<AppConfigServer>(result, options);
-                CompareServerConfig();
+                await CompareServerConfig();
 
-                _ea.GetEvent<ConnectProgressString>().Publish("正在登录……");
-                var userService = new AccountService();
-                userService.DecodeTokenToGetUserName("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYmV2aXMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImNjOTM3MzhjLWE5ZjQtNDZlMy04ZGRjLWI3OWM3NDlkMzcxYiIsImV4cCI6MTYxMTc2MDE4OSwiaXNzIjoiZGVtb19pc3N1ZXIiLCJhdWQiOiJkZW1vX2F1ZGllbmNlIn0.TQ-B19oGPB6O4oYrYy8DTCCvRLGeqaZFSD_SsnubMDo");
+                
+                //var userService = new AccountService();
+                //userService.DecodeTokenToGetUserName("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYmV2aXMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImNjOTM3MzhjLWE5ZjQtNDZlMy04ZGRjLWI3OWM3NDlkMzcxYiIsImV4cCI6MTYxMTc2MDE4OSwiaXNzIjoiZGVtb19pc3N1ZXIiLCJhdWQiOiJkZW1vX2F1ZGllbmNlIn0.TQ-B19oGPB6O4oYrYy8DTCCvRLGeqaZFSD_SsnubMDo");
 
 
                 //if (App.LangConfig.UserRefreshToken != "" & App.LangConfig.UserRefreshToken != "")
                 //{
-                //    var userService = new UserService();
+                //    var userService = new AccountService();
                 //    userService.LoginByToken();
                 //}
 
@@ -97,16 +99,16 @@ namespace ESO_LangEditorGUI.Services
             catch (HttpRequestException)
             {
                 _ea.GetEvent<ConnectProgressString>().Publish("连接服务器失败");
-                //_mainWindowViewModel.ProgressInfo = "连接服务器失败";
-                //_mainWindowViewModel.ProgressbarVisibility = Visibility.Collapsed;
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
             }
         }
 
 
-        public async void CompareServerConfig()
+        public async Task CompareServerConfig()
         {
+            
             if (App.LangConfig.LangUpdaterVersion == App.LangConfigServer.LangUpdaterVersion
-                & App.LangConfig.LangUpdaterDllSha256 == App.LangConfigServer.LangUpdaterDllSha256)
+                && App.LangConfig.LangUpdaterDllSha256 == App.LangConfigServer.LangUpdaterDllSha256)
             {
                 if (App.LangConfig.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
                 {
@@ -179,7 +181,6 @@ namespace ESO_LangEditorGUI.Services
 
         private async Task DownloadUpdaterAsync()
         {
-            //_mainWindowViewModel.ProgressInfo = "正在下载更新器……";
             _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
 
             await _startupNetwork.DownloadUpdater(App.ServerPath + App.LangConfigServer.LangUpdaterPackPath);
@@ -187,20 +188,13 @@ namespace ESO_LangEditorGUI.Services
 
         }
 
-        //void DelegateUpdaterDownloadComplete(object s, AsyncCompletedEventArgs e)
-        //{
-        //    HashAndUnzipUpdaterPack();
-        //}
-
         private void HashAndUnzipUpdaterPack()
         {
-            //_mainWindowViewModel.ProgressInfo = "下载完成！";
             _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
             Debug.WriteLine("下载完成！");
             Task.Delay(1000);
             if (GetFileExistAndSha256("UpdaterPack.zip", App.LangConfigServer.LangUpdaterPackSha256))
             {
-                //_mainWindowViewModel.ProgressInfo = "SHA256校验通过，准备解压文件。";
                 _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
                 Debug.WriteLine("SHA256校验通过，准备解压文件。");
                 ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
@@ -212,7 +206,6 @@ namespace ESO_LangEditorGUI.Services
             }
             else
                 _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
-            //_mainWindowViewModel.ProgressInfo = "校验SHA256失败！";
 
         }
 

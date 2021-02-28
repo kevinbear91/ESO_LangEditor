@@ -186,7 +186,7 @@ namespace ESO_LangEditorGUI.ViewModels
                         OnRequestClose(this, new EventArgs());
                         _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！" 
                             + "需重新搜索才会刷新表格。");
-
+                        _ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
                     }
                    
                 }

@@ -34,6 +34,7 @@
                         <Setter Property="Header" Value="{Binding Path=Header}"/>
                         <Setter Property="Command" Value="{Binding Path=Command}"/>
                         <Setter Property="CommandParameter" Value="{Binding Path=CommandParameter}"/>
+                        <Setter Property="Visibility" Value="{Binding Path=Visible}"/>
                     </Style>
                     <HierarchicalDataTemplate 
                      DataType="{x:Type local1:MenuItemContent}"

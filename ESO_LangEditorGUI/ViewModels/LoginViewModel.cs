@@ -20,6 +20,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private Guid _userGuid;
         private string _userName;
         private PasswordBox _passwordBox;
+        private AccountService _accountService;
 
         public ICommand SumbitCommand { get; }
 
@@ -42,9 +43,10 @@ namespace ESO_LangEditorGUI.ViewModels
             SumbitCommand = new SaveConfigCommand(SaveGuid);
         }
 
-        public void Load(PasswordBox passwordBox)
+        public void Load(PasswordBox passwordBox, AccountService accountService)
         {
             _passwordBox = passwordBox;
+            _accountService = accountService;
         }
 
 
@@ -70,12 +72,14 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             try
             {
-                var userService = new AccountService();
-                userService.Login(new LoginUserDto
+                var loginSuccess = await _accountService.Login(new LoginUserDto
                 {
                     UserID = App.LangConfig.UserGuid,
                     Password = _passwordBox.Password,
                 });
+
+                if (loginSuccess)
+                    DialogHost.CloseDialogCommand.Execute(null, null);
             }
             catch(Exception ex)
             {

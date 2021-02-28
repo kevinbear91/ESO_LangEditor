@@ -1,4 +1,5 @@
-﻿using ESO_LangEditorGUI.ViewModels;
+﻿using ESO_LangEditorGUI.Services.AccessServer;
+using ESO_LangEditorGUI.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,12 +20,12 @@ namespace ESO_LangEditorGUI.Views.UserControls
     /// </summary>
     public partial class UC_Login : UserControl
     {
-        public UC_Login()
+        public UC_Login(AccountService accountService)
         {
             InitializeComponent();
 
             var _vm = DataContext as LoginViewModel;
-            _vm.Load(userPassword);
+            _vm.Load(userPassword, accountService);
         }
 
     }
