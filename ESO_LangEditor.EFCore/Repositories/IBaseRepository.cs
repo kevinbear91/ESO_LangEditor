@@ -10,6 +10,7 @@ namespace ESO_LangEditor.EFCore.Repositories
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
+        Task<IEnumerable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression);
         void Create(T entity);
         void CreateList(List<T> entity);
         void Update(T entity);

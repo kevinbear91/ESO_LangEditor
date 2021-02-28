@@ -6,6 +6,9 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +22,8 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _networkInfo;
         private ObservableCollection<LangTextForReviewDto> _gridData;
         private List<LangTextForReviewDto> _gridSelectedItems;
-        private ObservableCollection<Dictionary<Guid, string>> _userList;
+        private ObservableCollection<UserInClientDto> _userList;
+        private UserInClientDto _selectedUser;
         private bool _isReviewSelectedItems;
         private LangtextNetService _langtextNetService = new LangtextNetService();
 
@@ -54,10 +58,16 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _gridSelectedItems, value); }
         }
 
-        public ObservableCollection<Dictionary<Guid, string>> UserList
+        public ObservableCollection<UserInClientDto> UserList
         {
             get { return _userList; }
             set { SetProperty(ref _userList, value); }
+        }
+
+        public UserInClientDto SelectedUser
+        {
+            get { return _selectedUser; }
+            set { SetProperty(ref _selectedUser, value); }
         }
 
         public bool IsReviewSelectedItems
@@ -66,7 +76,7 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _isReviewSelectedItems, value); }
         }
 
-        public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewItems);
+        public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewUserList);
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
 
@@ -78,7 +88,7 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea = ea;
         }
 
-        public async void QueryReviewItems(object o)
+        public async void QueryReviewItemsBySelectedUser(object o)
         {
             var token = App.LangConfig.UserAuthToken;
             GridData = null;
@@ -86,7 +96,14 @@ namespace ESO_LangEditorGUI.ViewModels
 
             try
             {
-                var list = await _langtextNetService.GetLangtextInReviewAllAsync(token);
+                var list = await _langtextNetService.GetLangtextInReviewAsync(SelectedUser.Id.ToString(), token);
+
+                if(list == null && list.Count == 0)
+                {
+                    NetworkInfo = "读取完成，无待审核条目";
+                }
+
+
                 GridData = new ObservableCollection<LangTextForReviewDto>(list);
                 SearchResultInfo = GridData.Count.ToString();
                 NetworkInfo = "读取完成";
@@ -98,8 +115,64 @@ namespace ESO_LangEditorGUI.ViewModels
 
         }
 
+        public async void QueryReviewUserList(object o)
+        {
+            var token = App.LangConfig.UserAuthToken;
+            UserList = null;
+            NetworkInfo = "正在尝试读取……";
+            var userDtoList = new List<UserInClientDto>();
+
+            try
+            {
+                var list = await _langtextNetService.GetUsersInReviewAllAsync(token);
+                
+                foreach(var user in list)
+                {
+                    userDtoList.Add(new UserInClientDto{ Id = user, UserNickName = "Bevis"});
+                }
+                UserList = new ObservableCollection<UserInClientDto>(userDtoList);
+
+                //GridData = new ObservableCollection<LangTextForReviewDto>(list);
+                //SearchResultInfo = GridData.Count.ToString();
+                NetworkInfo = "读取完成";
+            }
+            catch (HttpRequestException ex)
+            {
+                NetworkInfo = ex.Message;
+            }
+
+        }
+
         public async void SubmitApproveItemsToServer(object o)
         {
+            var token = App.LangConfig.UserAuthToken;
+            NetworkInfo = "正在上传并等待服务器执行……";
+
+            List<Guid> langIdList = GridSelectedItems.Select(lang => lang.Id).ToList();
+
+            Debug.WriteLine("langIdList count: " + langIdList.Count);
+
+            try
+            {
+                var respondCode = await _langtextNetService.PutReviewListIdAsync(langIdList, token);
+
+                if (respondCode == HttpStatusCode.OK)
+                {
+                    foreach(var selected in GridSelectedItems)
+                    {
+                        GridData.Remove(selected);
+                    }
+                    NetworkInfo = "执行完成";
+                }
+
+
+                //NetworkInfo = "读取完成";
+            }
+            catch (HttpRequestException ex)
+            {
+                NetworkInfo = ex.Message;
+            }
+
 
         }
 

@@ -56,7 +56,7 @@ namespace ESO_LangEditorGUI.Views.UserControls
             if (tag == "LangtextReviewWindow")
             {
                 _selectedItems = datagrid.SelectedItems.OfType<LangTextForReviewDto>().ToList();
-                
+                MakeSelectedItemToEventArgs(_selectedItems);
             }
         }
 

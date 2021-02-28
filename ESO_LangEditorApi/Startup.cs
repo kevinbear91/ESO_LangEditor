@@ -1,4 +1,5 @@
 using AutoMapper;
+using ESO_LangEditor.API.Filters;
 using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.EFCore;
@@ -39,6 +40,8 @@ namespace ESO_LangEditorApi
         {
             services.AddMvc(config =>
             {
+                config.Filters.Add<JsonExceptionFilter>();
+
                 config.EnableEndpointRouting = false;
                 //config.Filters.Add<JsonExceptionFilter>();
 

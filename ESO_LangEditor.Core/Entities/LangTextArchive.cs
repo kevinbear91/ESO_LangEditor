@@ -18,6 +18,6 @@ namespace ESO_LangEditor.Core.Entities
 
         public DateTime ArchiveTimestamp { get; set; }
 
-        public ReviewReason ArchiveReasonFor { get; set; }
+        public ReviewReason ReasonFor { get; set; }
     }
 }

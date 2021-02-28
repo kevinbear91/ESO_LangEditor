@@ -1,8 +1,10 @@
-﻿using ESO_LangEditorGUI.EventAggres;
+﻿using ESO_LangEditor.Core.Models;
+using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.ViewModels;
 using ESO_LangEditorGUI.Views.UserControls;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,6 +38,20 @@ namespace ESO_LangEditorGUI.Views
 
             vm.GridSelectedItems = langtextList;
             vm.SelectedInfo = langtextList.Count.ToString();
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var vm = DataContext as LangTextReviewWindowViewModel;
+            var selecteditem = (UserInClientDto)UserListBox.SelectedItem;
+
+            if (selecteditem != null)
+            {
+                vm.SelectedUser = selecteditem;
+                vm.QueryReviewItemsBySelectedUser(sender);
+            }
+
+            
         }
     }
 }

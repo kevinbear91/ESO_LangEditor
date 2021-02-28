@@ -50,9 +50,16 @@
 
         <StackPanel Grid.Column="0" Grid.Row="1">
             <ScrollViewer>
-                <ListView ItemsSource="{Binding UserList }" >
-                    <ListViewItem Content="{Binding Value}" />
-                </ListView>
+                <ListBox x:Name="UserListBox" ItemsSource="{Binding UserList}"
+                         SelectionChanged="ListBox_SelectionChanged" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Path=UserNickName}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </ScrollViewer>
         </StackPanel>
 

@@ -142,6 +142,73 @@ namespace ESO_LangEditor.GUI.NetClient
 
         }
 
+        public async Task<HttpStatusCode> PutReviewListIdAsync(List<Guid> langIdList, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            //List<LangTextForReviewDto> respondedList = null;
+
+            var content = SerializeDataToHttpContent(langIdList);
+
+            HttpResponseMessage response = await client.PutAsync(
+                "api/langtext/review", content);
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    var responseContent = response.Content.ReadAsStringAsync().Result;
+            //    respondedList = JsonSerializer.Deserialize<List<LangTextForReviewDto>>(responseContent, _jsonOption);
+            //}
+
+            //Debug.WriteLine(respondedList);
+
+            return response.StatusCode;
+
+        }
+
+        public async Task<List<LangTextForReviewDto>> GetLangtextInReviewAsync(string userGuid, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            List<LangTextForReviewDto> respondedList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/langtext/review/user/" + userGuid);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<List<LangTextForReviewDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(respondedList);
+
+            return respondedList;
+
+        }
+
+        public async Task<List<Guid>> GetUsersInReviewAllAsync(string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            List<Guid> respondedList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/langtext/review/users");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<List<Guid>>(responseContent, _jsonOption);
+            }
+
+            return respondedList;
+
+        }
+
         private HttpContent SerializeDataToHttpContent(object data)
         {
             var myContent = JsonSerializer.SerializeToUtf8Bytes(data);

@@ -13,19 +13,19 @@ namespace ESO_LangEditor.API.Helpers
         public LangTextMappingProfile()
         {
             CreateMap<LangText, LangTextDto>();
+            CreateMap<LangText, LangTextReview>();
+            CreateMap<LangText, LangTextArchive>();
             CreateMap<LangTextForCreationDto, LangText>();
             CreateMap<LangTextForUpdateZhDto, LangText>();
             CreateMap<LangTextForUpdateZhDto, LangTextReview>();
             CreateMap<LangTextForUpdateEnDto, LangTextReview>();
-            CreateMap<User, UserDto>();
-            CreateMap<UserProfileModifyBySelfDto, User>();
             CreateMap<LangTextReview, LangText>();
-            CreateMap<LangText, LangTextReview>();
-            CreateMap<LangText, LangTextArchive>();
+            CreateMap<LangTextReview, LangTextForReviewDto>();
             CreateMap<LangTextReview, LangTextArchive>();
             CreateMap<LangTextRevisedDto, LangTextRevised>();
             CreateMap<LangTextRevNumberDto, LangTextRevNumber>();
-
+            CreateMap<User, UserDto>();
+            CreateMap<UserProfileModifyBySelfDto, User>();
         }
     }
 }

@@ -37,6 +37,11 @@ namespace ESO_LangEditor.EFCore.Repositories
             return Task.FromResult(DbContext.Set<T>().Where(expression).AsEnumerable());
         }
 
+        public Task<IEnumerable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression)
+        {
+            return Task.FromResult(DbContext.Set<T>().Select(expression).Distinct().AsEnumerable());
+        }
+
         public async Task<bool> SaveAsync()
         {
             return await DbContext.SaveChangesAsync() > 0;
@@ -73,6 +78,7 @@ namespace ESO_LangEditor.EFCore.Repositories
             DbContext.Set<T>().RemoveRange(entity);
         }
 
+        
     }
 
 }
