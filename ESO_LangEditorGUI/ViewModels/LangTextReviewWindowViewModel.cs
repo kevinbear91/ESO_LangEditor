@@ -21,9 +21,9 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _selectedInfo;
         private string _networkInfo;
         private ObservableCollection<LangTextForReviewDto> _gridData;
-        private List<LangTextForReviewDto> _gridSelectedItems;
         private ObservableCollection<UserInClientDto> _userList;
         private UserInClientDto _selectedUser;
+        private List<LangTextForReviewDto> _gridSelectedItems;
         private bool _isReviewSelectedItems;
         private LangtextNetService _langtextNetService = new LangtextNetService();
 
@@ -75,7 +75,6 @@ namespace ESO_LangEditorGUI.ViewModels
             get { return _isReviewSelectedItems; }
             set { SetProperty(ref _isReviewSelectedItems, value); }
         }
-
         public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewUserList);
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
@@ -98,11 +97,10 @@ namespace ESO_LangEditorGUI.ViewModels
             {
                 var list = await _langtextNetService.GetLangtextInReviewAsync(SelectedUser.Id.ToString(), token);
 
-                if(list == null && list.Count == 0)
+                if (list == null && list.Count == 0)
                 {
                     NetworkInfo = "读取完成，无待审核条目";
                 }
-
 
                 GridData = new ObservableCollection<LangTextForReviewDto>(list);
                 SearchResultInfo = GridData.Count.ToString();
