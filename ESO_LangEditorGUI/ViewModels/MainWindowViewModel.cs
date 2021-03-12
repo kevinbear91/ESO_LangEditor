@@ -40,7 +40,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private ObservableCollection<LangTextDto> _gridData;
         private ClientConnectStatus _connectStatus;
         private AccountService _accountService;
-        private string _avatarPath = App.WorkingDirectory + "/_tmp/avatar.jpg";
+        private string _avatarPath = App.UserAvatarPath;
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
@@ -134,7 +134,8 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
             _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
-            _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadLangtextZhUpdate) ;
+            _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
+            _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
             _accountService = new AccountService(_ea);
@@ -148,6 +149,11 @@ namespace ESO_LangEditorGUI.ViewModels
             //
 
             //ExportToLangCommand = new ExportToFileCommand(this);
+        }
+
+        private void OpenUserProfileSettingWindow()
+        {
+            new UserProfileSetting().Show();
         }
 
         private void ChangeConnectStatus(ClientConnectStatus connectStatus)

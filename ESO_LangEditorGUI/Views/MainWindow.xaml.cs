@@ -31,6 +31,7 @@ namespace ESO_LangEditorGUI.Views
             var vm = DataContext as MainWindowViewModel;
             vm.CloseDrawerHostEvent += (s, e) => this.CloseDrawerHostEvent();
             RootDialogWindow.Loaded += vm.RootDialogWindow_Loaded;
+            //RootDialogWindow.IsOpen = true;
 
         }
 

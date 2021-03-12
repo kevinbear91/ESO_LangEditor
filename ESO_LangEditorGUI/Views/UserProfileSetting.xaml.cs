@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESO_LangEditorGUI.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,6 +21,10 @@ namespace ESO_LangEditorGUI.Views
         public UserProfileSetting()
         {
             InitializeComponent();
+
+            var vm = DataContext as UserProfileSettingViewModel;
+            vm.Load(PasswordChange, PasswordConfirm);
+            vm.UserProfileSettingWindow = this;
         }
     }
 }

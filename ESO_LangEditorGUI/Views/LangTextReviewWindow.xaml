@@ -34,10 +34,10 @@
                     <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItems}">
                         <materialDesign:PackIcon Kind="CheckBold" />
                     </Button>
-                    <Separator />
+                    <!--<Separator />
                     <Button ToolTip="提交审核拒绝条目" Command="{Binding SubmitDenyItems}">
                         <materialDesign:PackIcon Kind="Close" />
-                    </Button>
+                    </Button>-->
                     <Separator />
                     <CheckBox x:Name="ExportSelectedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
                               Content="只审核已选择文本" 

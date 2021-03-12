@@ -2,6 +2,7 @@
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.EventAggres;
+using ESO_LangEditorGUI.Views;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Convert;
 
 namespace ESO_LangEditorGUI.Services.AccessServer
 {
@@ -69,8 +71,46 @@ namespace ESO_LangEditorGUI.Services.AccessServer
 
                 return false;
             }
-            
                 
+        }
+
+        public async Task<bool> LoginFirstTime(LoginUserDto loginUserDto)
+        {
+            ApiAccess apiclient = new ApiAccess();
+
+            try
+            {
+                var tokenDto = await apiclient.FirstTimeLogin(loginUserDto);
+
+                if (tokenDto != null)
+                {
+                    //SaveToken(tokenDto);
+                    App.LangConfig.UserAuthToken = tokenDto.AuthToken;
+                    App.LangConfig.UserRefreshToken = tokenDto.RefreshToken;
+                    _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Login);
+                    _ea.GetEvent<ConnectProgressString>().Publish("登录成功");
+                    var role = GetUserRoleFromToken(tokenDto.AuthToken);
+
+                    if (role.Contains("InitUser"))
+                    {
+                        _ea.GetEvent<InitUserRequired>().Publish();
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
+
+                return false;
+            }
+
         }
 
         public async void LoginByToken()
@@ -100,10 +140,65 @@ namespace ESO_LangEditorGUI.Services.AccessServer
             }
             catch(HttpRequestException ex)
             {
+                //if (ex.Message == "Response status code does not indicate success: 400 (Bad Request).")
+                //{
+                //    new UserProfileSetting().Show();
+                //}
+                
                 _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
             }
             
+        }
+
+        public async Task<bool> UserInfoInit(UserInfoChangeDto userInfoChangeDto)
+        {
+            ApiAccess apiclient = new ApiAccess();
+
+            try
+            {
+                return await apiclient.UserProfileInit(userInfoChangeDto, App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
+            }
+            return false;
+        }
+
+        public async Task<bool> UserInfoChange(UserInfoChangeDto userInfoChangeDto)
+        {
+            ApiAccess apiclient = new ApiAccess();
+
+            try
+            {
+                return await apiclient.UserProfileChange(userInfoChangeDto, App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
+            }
+            return false;
+        }
+
+        public async Task<bool> UserAvatarUpload(string filepath)
+        {
+            ApiAccess apiclient = new ApiAccess();
+
+            try
+            {
+                return await apiclient.UploadUserAvatar(filepath, 
+                    App.LangConfig.UserGuid.ToString(), 
+                    App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
+            }
+            return false;
         }
 
         public List<string> GetUserRoleFromToken(string token)

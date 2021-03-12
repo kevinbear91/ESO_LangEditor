@@ -1,5 +1,7 @@
-﻿using ESO_LangEditor.Core.EnumTypes;
+﻿using AutoMapper;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
 using ESO_LangEditorGUI.Views;
@@ -11,6 +13,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -36,6 +40,9 @@ namespace ESO_LangEditorGUI.ViewModels
         private List<LangTextDto> _removedList;
         private Dictionary<string, LangTextDto> _removedDict;
         private ObservableCollection<LangTextDto> _gridData;
+        private IMapper _mapper;
+        private LangtextNetService _langtextNetService;
+        private string _selectedKey;
 
         public string UpdateVersionText
         {
@@ -140,6 +147,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public ExcuteViewModelMethod OpenFileCommand => new ExcuteViewModelMethod(OpenFileWindow);
         public ExcuteViewModelMethod CompareListSelecteCommand => new ExcuteViewModelMethod(SelecteOption);
         public ExcuteViewModelMethod SaveToDbCommand => new ExcuteViewModelMethod(SaveChanges);
+        public ExcuteViewModelMethod SaveToServerCommand => new ExcuteViewModelMethod(UploadResultToServer);
 
         //public Dictionary<string, LangTextDto> DbDict { get; set; }
         //public Dictionary<string, LangTextDto> CsvDict { get; set; }
@@ -157,6 +165,8 @@ namespace ESO_LangEditorGUI.ViewModels
             //CompareListSelecteCommand.IsExecuting = true;
 
             UpdatedVersionInputEnable = true;
+            _mapper = App.Mapper;
+            _langtextNetService = new LangtextNetService();
         }
 
         public void PathTooltip()
@@ -228,6 +238,115 @@ namespace ESO_LangEditorGUI.ViewModels
 
             
         }
+
+        public void UploadResultToServer(object o)
+        {
+
+            switch (_selectedKey)
+            {
+                case"Added":
+                    MakeAddedListToServer();
+                    break;
+                case "Changed":
+                    MakeEnChangedListToServer();
+                    break;
+                case "Removed":
+                    MakeDeletedListToServer();
+                    break;
+            }
+                
+        }
+
+        private async void MakeAddedListToServer()
+        {
+            List<LangTextForCreationDto> langTextForCreationDtos;
+            if (Added.Count >= 1)
+            {
+                langTextForCreationDtos = _mapper.Map<List<LangTextForCreationDto>>(Added);
+
+                try
+                {
+                    InfoText = "正在上传新增文本，等待服务器处理并返回结果中……";
+                    var respondCode = await _langtextNetService.CreateLangtextListAsync(langTextForCreationDtos, 
+                        App.LangConfig.UserAuthToken);
+
+                    if (respondCode == HttpStatusCode.OK)
+                    {
+                        InfoText = "新增文本上传成功";
+                    }
+                    else
+                    {
+                        InfoText = "新增文本上传失败，" + respondCode.ToString();
+                    }
+                }
+                catch(HttpRequestException ex)
+                {
+                    InfoText = ex.Message;
+                }
+            }
+
+        }
+
+        private async void MakeEnChangedListToServer()
+        {
+            List<LangTextForUpdateEnDto> langTextForUpdateEnDtos;
+            if (Changed.Count >= 1)
+            {
+                langTextForUpdateEnDtos = _mapper.Map<List<LangTextForUpdateEnDto>>(Changed);
+
+                try
+                {
+                    InfoText = "正在上传英文变化文本，等待服务器处理并返回结果中……";
+                    var respondCode = await _langtextNetService.UpdateLangtextEnList(langTextForUpdateEnDtos,
+                        App.LangConfig.UserAuthToken);
+
+                    if (respondCode == HttpStatusCode.OK)
+                    {
+                        InfoText = "英文变化文本上传成功";
+                    }
+                    else
+                    {
+                        InfoText = "英文变化文本上传失败，" + respondCode.ToString();
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    InfoText = ex.Message;
+                }
+            }
+
+        }
+
+        private async void MakeDeletedListToServer()
+        {
+            List<Guid> langTextForDeletedList;
+            if (RemovedList.Count >= 1)
+            {
+                langTextForDeletedList = RemovedList.Select(lang => lang.Id).ToList();
+
+                try
+                {
+                    InfoText = "正在上传删除列表，等待服务器处理并返回结果中……";
+                    var respondCode = await _langtextNetService.DeleteLangtextListAsync(langTextForDeletedList,
+                        App.LangConfig.UserAuthToken);
+
+                    if (respondCode == HttpStatusCode.OK)
+                    {
+                        InfoText = "删除列表上传成功";
+                    }
+                    else
+                    {
+                        InfoText = "删除列表上传失败，" + respondCode.ToString();
+                    }
+                }
+                catch (HttpRequestException ex)
+                {
+                    InfoText = ex.Message;
+                }
+            }
+
+        }
+
 
         private void OpenFileWindow(object o)
         {
@@ -373,14 +492,17 @@ namespace ESO_LangEditorGUI.ViewModels
             switch (selectedKey)
             {
                 case "Added":
+                    _selectedKey = "Added";
                     if (Added != null)
                         GridData = new ObservableCollection<LangTextDto>(Added);
                     break;
                 case "Changed":
+                    _selectedKey = "Changed";
                     if (Changed != null)
                         GridData = new ObservableCollection<LangTextDto>(Changed);
                     break;
                 case "Removed":
+                    _selectedKey = "Removed";
                     if (RemovedList != null)
                         GridData = new ObservableCollection<LangTextDto>(RemovedList);
                     break;

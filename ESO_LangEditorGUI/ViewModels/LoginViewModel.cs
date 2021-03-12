@@ -1,8 +1,10 @@
 ﻿using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.Command;
+using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services.AccessServer;
 using MaterialDesignThemes.Wpf;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -37,8 +39,11 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _userName, value); }
         }
 
-        public LoginViewModel()
+        IEventAggregator _ea;
+
+        public LoginViewModel(IEventAggregator ea)
         {
+            _ea = ea;
             UserGuid = GetGuid();
             SumbitCommand = new SaveConfigCommand(SaveGuid);
         }
@@ -72,14 +77,35 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             try
             {
-                var loginSuccess = await _accountService.Login(new LoginUserDto
+                if (App.LangConfig.UserAuthToken == "" 
+                    && App.LangConfig.UserRefreshToken == ""
+                    && App.LangConfig.UserName == "")
                 {
-                    UserID = App.LangConfig.UserGuid,
-                    Password = _passwordBox.Password,
-                });
+                    var loginSuccess = await _accountService.LoginFirstTime(new LoginUserDto
+                    {
+                        UserID = App.LangConfig.UserGuid,
+                        RefreshToken = _passwordBox.Password,
+                    });
 
-                if (loginSuccess)
-                    DialogHost.CloseDialogCommand.Execute(null, null);
+                    if (loginSuccess)
+                    {
+                        //_ea.GetEvent<InitUserRequired>().Publish();
+                        DialogHost.CloseDialogCommand.Execute(null, null);
+                    }
+                        
+                }
+                else
+                {
+                    var loginSuccess = await _accountService.Login(new LoginUserDto
+                    {
+                        UserID = App.LangConfig.UserGuid,
+                        Password = _passwordBox.Password,
+                    });
+
+                    if (loginSuccess)
+                        DialogHost.CloseDialogCommand.Execute(null, null);
+                }
+                
             }
             catch(Exception ex)
             {

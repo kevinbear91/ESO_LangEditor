@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -54,12 +55,14 @@ namespace ESO_LangEditor.GUI.NetClient
             
         }
 
-        public async Task<TokenDto> GetRefreshedTokenByCurrentToken(TokenDto token)
+        public async Task<TokenDto> FirstTimeLogin(LoginUserDto loginUser)
         {
-            var content = SerializeDataToHttpContent(token);
+            //HttpContent content;
+
+            var content = SerializeDataToHttpContent(loginUser);
 
             HttpResponseMessage response = await client.PostAsync(
-                "auth/refresh", content);
+                "api/account/FirstTimeLogin", content);
             response.EnsureSuccessStatusCode();
 
             var responseContent = response.Content.ReadAsStringAsync().Result;
@@ -71,6 +74,82 @@ namespace ESO_LangEditor.GUI.NetClient
 
         }
 
+        public async Task<TokenDto> GetRefreshedTokenByCurrentToken(TokenDto token)
+        {
+            var content = SerializeDataToHttpContent(token);
+
+            HttpResponseMessage response = await client.PostAsync(
+                "auth/refresh", content);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);
+
+            Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
+
+            return json;
+
+        }
+
+        public async Task<bool> UserProfileInit(UserInfoChangeDto userInfoChangeDto,string token)
+        {
+            //HttpContent content;
+
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var content = SerializeDataToHttpContent(userInfoChangeDto);
+
+            HttpResponseMessage response = await client.PostAsync(
+                "api/account/infoinit", content);
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+
+        }
+
+        public async Task<bool> UserProfileChange(UserInfoChangeDto userInfoChangeDto, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var content = SerializeDataToHttpContent(userInfoChangeDto);
+
+            HttpResponseMessage response = await client.PostAsync(
+                "api/account/infochange", content);
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+
+        }
+
+        public async Task<bool> UploadUserAvatar(string filePath, string userId, string token)
+        {
+            //HttpContent content;
+
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            //var content = SerializeDataToHttpContent(userInfoChangeDto);
+
+            var byteContent = new ByteArrayContent(File.ReadAllBytes(filePath));
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+
+            HttpResponseMessage response = await client.PostAsync(
+                "api/account/" + userId + "/avatar", byteContent);
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+
+            //var responseContent = response.Content.ReadAsStringAsync().Result;
+            //var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);
+
+            //Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
+
+            //return json;
+
+        }
 
 
         private HttpContent SerializeDataToHttpContent(object data)

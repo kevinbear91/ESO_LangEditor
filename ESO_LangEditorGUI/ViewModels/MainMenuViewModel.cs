@@ -19,11 +19,18 @@ namespace ESO_LangEditorGUI.ViewModels
         private MenuItem _mainMenuList;
         private List<string> _roleList = new List<string>();
         private ObservableCollection<MenuItemContent> _topMenu;
+        private string _userAvatarPath = App.UserAvatarPath;
 
         public ObservableCollection<MenuItemContent> TopMenu
         {
             get { return _topMenu; }
             set { SetProperty(ref _topMenu, value); }
+        }
+
+        public string UserAvatarPath
+        {
+            get { return _userAvatarPath; }
+            set { SetProperty(ref _userAvatarPath, value); }
         }
 
         IEventAggregator _ea;

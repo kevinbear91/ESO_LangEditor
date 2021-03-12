@@ -1,13 +1,18 @@
 ﻿using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -22,15 +27,17 @@ namespace ESO_LangEditor.API.Controllers
         private SignInManager<User> _signInManager;
         private RoleManager<Role> _roleManager;
         private ITokenService _tokenService;
+        private IWebHostEnvironment _webHostEnvironment;
 
         public AccountController(UserManager<User> userManager,
           SignInManager<User> signInManager, ITokenService tokenService,
-          RoleManager<Role> roleManager)
+          RoleManager<Role> roleManager, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost("register", Name = nameof(AddUserAsync))]
@@ -50,6 +57,7 @@ namespace ESO_LangEditor.API.Controllers
 
                 await _userManager.AddToRoleAsync(user, "Editor");
                 return Ok();
+                
             }
             else
             {
@@ -78,6 +86,11 @@ namespace ESO_LangEditor.API.Controllers
             if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
                 return Unauthorized();
+            }
+
+            if (user.UserName == null && user.UserNickName == null)
+            {
+                return BadRequest(CustomRespondCode.InitAccountRequired);
             }
 
             //await _userManager.GetRolesAsync(user)
@@ -133,6 +146,62 @@ namespace ESO_LangEditor.API.Controllers
             //return View(model);
         }
 
+        [HttpPost("FirstTimeLogin", Name = nameof(FirstTimeLogin))]
+        public async Task<IActionResult> FirstTimeLogin(LoginUserDto loginUser)
+        {
+            var user = await _userManager.FindByIdAsync(loginUser.UserID.ToString());
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            if (user.PasswordHash == null 
+                && user.UserNickName == null
+                && user.RefreshToken == loginUser.RefreshToken)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(user);
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                foreach (var roleItem in userRoles)
+                {
+                    userClaims.Add(new Claim(ClaimTypes.Role, roleItem));
+                }
+
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    //new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
+                };
+
+                claims.AddRange(userClaims);
+
+                //var claims = new List<Claim>
+                //{
+                //    new Claim(ClaimTypes.Name, loginUser.UserName),
+                //    new Claim(ClaimTypes., loginUser.UserName),
+                //    //new Claim(ClaimTypes.Role, await _userManager.GetRolesAsync(user))
+                //};
+                var authToken = _tokenService.GenerateAccessToken(claims);
+                var refreshToken = _tokenService.GenerateRefreshToken();
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpireTime = DateTime.Now.AddDays(7);
+                //userContext.SaveChanges();
+
+                await _userManager.UpdateAsync(user);
+
+                return Ok(new TokenDto
+                {
+                    AuthToken = authToken,
+                    RefreshToken = refreshToken
+                });
+            }
+
+            return BadRequest();
+
+        }
+
         [HttpPost]
         public async Task<IActionResult> LogoutAsync()
         {
@@ -141,6 +210,170 @@ namespace ESO_LangEditor.API.Controllers
             return Ok();
             //return RedirectToAction("index"，"home");
         }
+
+        [Authorize]
+        [HttpPost("infochange")]
+        public async Task<IActionResult> UserChangeInfoAsync(UserInfoChangeDto userInfoChangeDto)
+        {
+            var user = await _userManager.FindByIdAsync(userInfoChangeDto.UserID.ToString());
+            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+
+            if (user == null || userIdFromToken != user.Id.ToString())
+            {
+                return Unauthorized();
+            }
+
+            if(user.UserName != userInfoChangeDto.UserName && !string.IsNullOrWhiteSpace(userInfoChangeDto.UserName))
+            {
+                user.UserName = userInfoChangeDto.UserName;
+            }
+
+            if (user.UserNickName != userInfoChangeDto.UserNickName && !string.IsNullOrWhiteSpace(userInfoChangeDto.UserNickName))
+            {
+                user.UserNickName = userInfoChangeDto.UserNickName;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    return BadRequest(error);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(userInfoChangeDto.NewPassword))
+            {
+                var PwChangeresult = await _userManager.ChangePasswordAsync(user,
+                    userInfoChangeDto.OldPassword,
+                    userInfoChangeDto.NewPassword);
+
+                if (PwChangeresult.Succeeded)
+                {
+                    return Ok();
+                }
+                foreach (var error in result.Errors)
+                {
+                    return BadRequest(error);
+                }
+            }
+
+            return Ok();
+            
+        }
+
+        [Authorize]
+        [HttpPost("infoinit")]
+        public async Task<IActionResult> UserInitInfoAsync(UserInfoChangeDto userInfoChangeDto)
+        {
+            var user = await _userManager.FindByIdAsync(userInfoChangeDto.UserID.ToString());
+            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+
+            if (user == null || userIdFromToken != user.Id.ToString())
+            {
+                return Unauthorized();
+            }
+
+            user.UserNickName = userInfoChangeDto.UserNickName;
+            //user.UserName = userInfoChangeDto.UserName;
+
+            var setNameResult = await _userManager.SetUserNameAsync(user, userInfoChangeDto.UserName);
+
+            if (!setNameResult.Succeeded)
+            {
+                foreach (var error in setNameResult.Errors)
+                {
+                    Debug.WriteLine("UserName error: " + error);
+                    return BadRequest(error);
+                }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    Debug.WriteLine("Update User error: " + error);
+                    return BadRequest(error);
+                }
+            }
+
+            var resultForPw = await _userManager.AddPasswordAsync(user, userInfoChangeDto.NewPassword);
+
+            if (!resultForPw.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    Debug.WriteLine(error);
+                    return BadRequest(error);
+                }
+                //return Ok();
+            }
+
+            if(await _userManager.IsInRoleAsync(user, "InitUser"))
+            {
+                await _userManager.RemoveFromRoleAsync(user, "InitUser");
+            }
+
+            return Ok();
+
+        }
+
+        [Authorize]
+        [HttpPost("{userGuid}/avatar")]
+        public async Task<IActionResult> UserUploadAvatarAsync(Guid userGuid, [FromForm] IFormFile avatar)
+        {
+            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+            var user = await _userManager.FindByIdAsync(userIdFromToken);
+            
+            if (user == null && userIdFromToken != userGuid.ToString())
+            {
+                return Unauthorized();
+            }
+
+            //string uniqueFileName = null;
+
+            if (avatar.Length > 512 * 1024) // 512 * 1024 = 512 KB
+            {
+                return BadRequest();
+            }
+
+            string uploadsFolder = Path.Combine(_webHostEnvironment.ContentRootPath, "images");
+            string uniqueFileName = user.UserName + "_" + Guid.NewGuid().ToString();
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            Debug.WriteLine("uplpad folder: {0}, filename: {1}, filepath: {2}", uploadsFolder, uniqueFileName, filePath);
+
+            avatar.CopyTo(new FileStream(filePath, FileMode.Create));
+
+            if(!System.IO.File.Exists(filePath))
+            {
+                return BadRequest();
+            }
+
+            user.UserAvatarPath = uniqueFileName;
+            await _userManager.UpdateAsync(user);
+
+            return Ok();
+            
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> InitUserByGuidAsync(Guid userGuid)
+        //{
+        //    var user = await _userManager.FindByIdAsync(userGuid.ToString());
+
+        //    if (user.PasswordHash.Length < 8 && user.UserName == "" && user.UserNickName == "")
+        //    {
+        //        return BadRequest("InitUser");
+        //    }
+
+
+        //    return Ok();
+        //    //return RedirectToAction("index"，"home");
+        //}
 
     }
 }

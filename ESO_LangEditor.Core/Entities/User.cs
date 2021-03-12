@@ -10,6 +10,7 @@ namespace ESO_LangEditor.Core.Entities
     {
         [StringLength(20)]
         public string UserNickName { get; set; }
+        public string UserAvatarPath { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpireTime { get; set; }
     }

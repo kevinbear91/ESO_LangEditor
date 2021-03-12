@@ -8,12 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Views\photomode_29122020_205522_1.jpg" />
+    <Compile Remove="Command\Export\**" />
+    <Compile Remove="Models\**" />
+    <Compile Remove="Services\LangException\**" />
+    <EmbeddedResource Remove="Command\Export\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Services\LangException\**" />
+    <None Remove="Command\Export\**" />
+    <None Remove="Models\**" />
+    <None Remove="Services\LangException\**" />
+    <Page Remove="Command\Export\**" />
+    <Page Remove="Models\**" />
+    <Page Remove="Services\LangException\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.10" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
@@ -58,16 +69,6 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Command\Export\" />
-    <Folder Include="Models\" />
-    <Folder Include="Services\LangException\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Views\photomode_29122020_205522_1.jpg" />
   </ItemGroup>
 
 </Project>

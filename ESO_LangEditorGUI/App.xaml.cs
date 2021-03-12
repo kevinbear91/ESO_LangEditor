@@ -42,6 +42,7 @@ namespace ESO_LangEditorGUI
         public static string ServerPath;
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
+        public static string UserAvatarPath { get; set; }
 
         //public static readonly LangtextClientDbContext LangtextClientDb;
         public static readonly IMapper Mapper;
@@ -87,6 +88,15 @@ namespace ESO_LangEditorGUI
                     ServerPath = server.ServerURL;
             }
 
+            var avatarPath = WorkingDirectory + "/_tmp/" + LangConfig.UserAvatarFileName;
+            if (File.Exists(avatarPath))
+            {
+                UserAvatarPath = avatarPath;
+            }
+            else
+            {
+                UserAvatarPath = WorkingDirectory + "/Data/TempAvatar.png";
+            }
             
 
             

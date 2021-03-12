@@ -71,7 +71,14 @@ namespace ESO_LangEditorApi
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<ITokenService, TokenService>();
 
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 8;
+            })
                 .AddEntityFrameworkStores<LangtextApiDbContext>()
                 .AddDefaultTokenProviders();
 
@@ -110,6 +117,7 @@ namespace ESO_LangEditorApi
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
+            env.ContentRootPath = AppContext.BaseDirectory;
 
 
         }

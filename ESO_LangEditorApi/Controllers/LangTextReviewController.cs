@@ -101,7 +101,7 @@ namespace ESO_LangEditor.API.Controllers
             }
 
             langtextReview.ReviewerId = new Guid(userId);      //Set reviewer ID.
-            langtextReview.ReviewTimestamp = DateTime.Now;  //Set review timestamp.
+            langtextReview.ReviewTimestamp = DateTime.UtcNow;  //Set review timestamp.
 
             var langtext = Mapper.Map<LangTextReview, LangText>(langtextReview);
 
@@ -169,7 +169,7 @@ namespace ESO_LangEditor.API.Controllers
                 if (langtextReview != null)
                 {
                     langtextReview.ReviewerId = new Guid(userId);       //Set reviewer ID.
-                    langtextReview.ReviewTimestamp = DateTime.Now;      //Set review timestamp.
+                    langtextReview.ReviewTimestamp = DateTime.UtcNow;      //Set review timestamp.
 
                     var langtext = Mapper.Map<LangTextReview, LangText>(langtextReview);
                     var langtextArchive = Mapper.Map<LangTextReview, LangTextArchive>(langtextReview);
@@ -233,7 +233,7 @@ namespace ESO_LangEditor.API.Controllers
                 if (langArchive.ReasonFor != ReviewReason.Deleted)
                     langArchive.Id = new Guid();
 
-                langArchive.ArchiveTimestamp = DateTime.Now;
+                langArchive.ArchiveTimestamp = DateTime.UtcNow;
                 
                 return langArchive;
             }
@@ -290,7 +290,7 @@ namespace ESO_LangEditor.API.Controllers
             //var langtext = Mapper.Map<LangTextReview, LangText>(langTextReview);
 
             var langtextArchive = Mapper.Map<LangTextReview, LangTextArchive>(langTextReview);
-            langtextArchive.ArchiveTimestamp = DateTime.Now;
+            langtextArchive.ArchiveTimestamp = DateTime.UtcNow;
             if (langtextArchive.ReasonFor != ReviewReason.Deleted)
                 langtextArchive.Id = new Guid();
 

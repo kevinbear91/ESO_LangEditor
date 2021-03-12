@@ -23,7 +23,7 @@
                                     Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                                     CommandParameter="{x:Static Dock.Top}"
                                     Height="40" Width="40" Cursor="Hand" >
-                <Image Source="../photomode_29122020_205522_1.jpg" Stretch="Fill" />
+                <Image Source="{Binding UserAvatarPath}" Stretch="Fill" />
             </Button>
 
 

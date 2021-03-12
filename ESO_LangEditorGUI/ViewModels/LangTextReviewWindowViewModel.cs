@@ -24,20 +24,19 @@ namespace ESO_LangEditorGUI.ViewModels
         private ObservableCollection<UserInClientDto> _userList;
         private UserInClientDto _selectedUser;
         private List<LangTextForReviewDto> _gridSelectedItems;
-        private bool _isReviewSelectedItems;
+        private bool _isReviewSelectedItems = true;
         private LangtextNetService _langtextNetService = new LangtextNetService();
 
         public string SearchResultInfo
         {
             get { return _searchResultInfo; }
             set { SetProperty(ref _searchResultInfo, "查询到 " + value + " 条文本"); }
-            //set { _searchInfo = "查询到 " + value + " 条文本"; ; NotifyPropertyChanged(); }
         }
 
         public string SelectedInfo
         {
             get { return _selectedInfo; }
-            set { SetProperty(ref _selectedInfo, value); }
+            set { SetProperty(ref _selectedInfo, "已选择 " + value + " 条文本"); }
         }
 
         public string NetworkInfo
@@ -81,7 +80,6 @@ namespace ESO_LangEditorGUI.ViewModels
 
         IEventAggregator _ea;
         
-
         public LangTextReviewWindowViewModel(IEventAggregator ea)
         {
             _ea = ea;
@@ -101,16 +99,17 @@ namespace ESO_LangEditorGUI.ViewModels
                 {
                     NetworkInfo = "读取完成，无待审核条目";
                 }
-
-                GridData = new ObservableCollection<LangTextForReviewDto>(list);
-                SearchResultInfo = GridData.Count.ToString();
-                NetworkInfo = "读取完成";
+                else
+                {
+                    GridData = new ObservableCollection<LangTextForReviewDto>(list);
+                    SearchResultInfo = GridData.Count.ToString();
+                    NetworkInfo = "读取完成";
+                }
             }
             catch(HttpRequestException ex)
             {
                 NetworkInfo = ex.Message;
             }
-
         }
 
         public async void QueryReviewUserList(object o)
@@ -129,9 +128,6 @@ namespace ESO_LangEditorGUI.ViewModels
                     userDtoList.Add(new UserInClientDto{ Id = user, UserNickName = "Bevis"});
                 }
                 UserList = new ObservableCollection<UserInClientDto>(userDtoList);
-
-                //GridData = new ObservableCollection<LangTextForReviewDto>(list);
-                //SearchResultInfo = GridData.Count.ToString();
                 NetworkInfo = "读取完成";
             }
             catch (HttpRequestException ex)
@@ -146,8 +142,19 @@ namespace ESO_LangEditorGUI.ViewModels
             var token = App.LangConfig.UserAuthToken;
             NetworkInfo = "正在上传并等待服务器执行……";
 
-            List<Guid> langIdList = GridSelectedItems.Select(lang => lang.Id).ToList();
+            List<Guid> langIdList;
+            List<LangTextForReviewDto> langTextForReviewDtos;
 
+            if (IsReviewSelectedItems)
+            {
+                langTextForReviewDtos = GridSelectedItems;
+            }
+            else
+            {
+                langTextForReviewDtos = GridData.ToList();
+            }
+
+            langIdList = langTextForReviewDtos.Select(lang => lang.Id).ToList();
             Debug.WriteLine("langIdList count: " + langIdList.Count);
 
             try
@@ -156,22 +163,17 @@ namespace ESO_LangEditorGUI.ViewModels
 
                 if (respondCode == HttpStatusCode.OK)
                 {
-                    foreach(var selected in GridSelectedItems)
+                    foreach(var selected in langTextForReviewDtos)
                     {
                         GridData.Remove(selected);
                     }
                     NetworkInfo = "执行完成";
                 }
-
-
-                //NetworkInfo = "读取完成";
             }
             catch (HttpRequestException ex)
             {
                 NetworkInfo = ex.Message;
             }
-
-
         }
 
         public async void SubmitDenyItemsToServer(object o)

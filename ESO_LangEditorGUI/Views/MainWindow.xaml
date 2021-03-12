@@ -16,12 +16,13 @@
         Identifier="RootDialog"
         DialogTheme="Inherit"
         SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        
         <materialDesign:DrawerHost TopDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHostMainWindow" >
             <materialDesign:DrawerHost.TopDrawerContent>
                 <ucd:MainMenu />
-
             </materialDesign:DrawerHost.TopDrawerContent>
 
+            
             <Grid Background="#FFEEEEEE">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="100"/>
@@ -38,33 +39,12 @@
                                 <!--<ColumnDefinition Width="100" />-->
                             </Grid.ColumnDefinitions>
 
-                            <!--<materialDesign:Badged  Margin="0,7,0,0" BadgeColorZoneMode="PrimaryDark" BadgeBackground="{Binding BadgeColor}">
-                                --><!--<materialDesign:Badged.Style>
-                                    <Style TargetType="materialDesign:Badged">
-                                        <Setter Property="Badge" Value="{materialDesign:PackIcon CloudSync}" />
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding StatusType}" Value="true">
-                                                <Setter Property="Badge" Value="{materialDesign:PackIcon CloudAlert}" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-
-
-                                    </Style>
-                                </materialDesign:Badged.Style>--><!--
-                                <materialDesign:Badged.ToolTip>
-                                    <TextBlock Text="{Binding TipInfo}" />
-                                </materialDesign:Badged.ToolTip>
-                                
-                            </materialDesign:Badged>-->
-                            
-                            <Button 
-                                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                            <Button materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
                                     Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
                                     CommandParameter="{x:Static Dock.Top}"
                                     Height="50" Width="50" Cursor="Hand" Background="#FF3F51B5" >
-                                
+
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
                                         <Style.Triggers>
@@ -84,7 +64,7 @@
                                                 <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFDA1577" />
                                                 <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
                                             </DataTrigger>
-                                            
+
                                             <DataTrigger Binding="{Binding ConnectStatus}" Value="Logout">
                                                 <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF898989" />
                                                 <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
@@ -104,22 +84,18 @@
                                 <Image Source="{Binding AvatarPath}" />
                             </Button>
 
-
-                            <!--<ToggleButton Grid.Column="0" Style="{StaticResource MaterialDesignFlatToggleButton}"
-                              IsChecked="{Binding IsTopDrawerOpen, ElementName=DrawerHost}" Checked="ToggleButton_Checked" >
-                                <materialDesign:PackIcon Kind="Menu" Height="30" Width="30" Foreground="White" />
-                            </ToggleButton>-->
-
                             <ucd:MainWindowSearchbar Grid.Column="1" x:Name="searchBar" />
                         </Grid>
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <DockPanel Grid.Row="1" >
-                    <!--<ucd:LangtextEditor />-->
                     <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent" />
                 </DockPanel>
 
-                <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0">
+                <materialDesign:Snackbar MessageQueue="{Binding MainWindowMessageQueue}"
+                                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+
+                <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0" Panel.ZIndex="995">
                     <StatusBar.ItemsPanel>
                         <ItemsPanelTemplate>
                             <Grid>
@@ -150,8 +126,7 @@
                     </StatusBarItem>
 
                 </StatusBar>
-                <materialDesign:Snackbar MessageQueue="{Binding MainWindowMessageQueue}"
-                                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+                
 
             </Grid>
         </materialDesign:DrawerHost>

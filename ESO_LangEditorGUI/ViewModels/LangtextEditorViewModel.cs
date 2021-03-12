@@ -155,8 +155,8 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             if (LangTextZh != CurrentLangText.TextZh)
             {
-                var time = DateTime.Now;
-                time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Kind);
+                var time = DateTime.UtcNow;
+                //time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Kind);
                 var langtextUpdateZh = new LangTextForUpdateZhDto
                 {
                     Id = CurrentLangText.Id,
