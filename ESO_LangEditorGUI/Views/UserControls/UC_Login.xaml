@@ -48,7 +48,7 @@
         
         
         
-        <Button x:Name="button" Content="提交"  Grid.Row="1" Command="{Binding SumbitCommand}" Margin="0 10 0 20" >
+        <Button x:Name="button" Content="提交"  Grid.Row="1" Command="{Binding SumbitCommand}" Margin="0 10 0 20" Cursor="Hand" >
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Style.Triggers>

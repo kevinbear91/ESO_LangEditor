@@ -55,7 +55,19 @@ namespace ESO_LangEditorGUI.Command
             }
             else
             {
-                result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword, _searchBarVM.SelectedSearchTextType, _searchBarVM.SelectedSearchPostion);
+                if (_searchBarVM.DoubleKeyWordSearch)
+                {
+                    result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword, _searchBarVM.KeywordSecond,
+                        _searchBarVM.SelectedSearchTextType, _searchBarVM.SelectedSearchTextTypeSecond,
+                        _searchBarVM.SelectedSearchPostion);
+                }
+                else
+                {
+                    result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword, 
+                        _searchBarVM.SelectedSearchTextType,
+                        _searchBarVM.SelectedSearchPostion);
+                }    
+                
             }
             SendLangText(result);
             //_langDatagrid.LangDataGridDC.GridData = result;

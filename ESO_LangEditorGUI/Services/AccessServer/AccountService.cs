@@ -87,9 +87,14 @@ namespace ESO_LangEditorGUI.Services.AccessServer
                     //SaveToken(tokenDto);
                     App.LangConfig.UserAuthToken = tokenDto.AuthToken;
                     App.LangConfig.UserRefreshToken = tokenDto.RefreshToken;
+                    
                     _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Login);
                     _ea.GetEvent<ConnectProgressString>().Publish("登录成功");
                     var role = GetUserRoleFromToken(tokenDto.AuthToken);
+
+                    var config = App.LangConfig;
+                    config.UserName = GetUserNameFromToken(tokenDto.AuthToken);
+                    AppConfigClient.Save(config);
 
                     if (role.Contains("InitUser"))
                     {
@@ -149,6 +154,90 @@ namespace ESO_LangEditorGUI.Services.AccessServer
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
             }
             
+        }
+
+        public async Task<List<UserInClientDto>> GetUserList()
+        {
+            ApiAccess apiclient = new ApiAccess();
+            List<UserInClientDto> users = null;
+
+            try
+            {
+                users = await apiclient.GetUserList(App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+            }
+            return users;
+        }
+
+        public async Task<List<string>> GetUserRoleList(Guid userId)
+        {
+            ApiAccess apiclient = new ApiAccess();
+            List<string> roles = null;
+
+            try
+            {
+                roles = await apiclient.GetUserRoleList(userId, App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+            }
+
+            return roles;
+        }
+
+        public async Task<UserDto> AddUser(UserDto userDto)
+        {
+            ApiAccess apiclient = new ApiAccess();
+            //var userDto = new UserDto();
+
+            try
+            {
+                userDto = await apiclient.AddUser(userDto, App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+            }
+
+            return userDto;
+        }
+
+        public async Task<bool> ModifyUserRoles(Guid userId, List<string> roles)
+        {
+            ApiAccess apiclient = new ApiAccess();
+            bool result = false;
+
+            try
+            {
+                result = await apiclient.ModifyUserRoles(userId, roles, App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+            }
+
+            return result;
+        }
+
+        public async Task<bool> AddRole(string role)
+        {
+            ApiAccess apiclient = new ApiAccess();
+            bool result = false;
+
+            try
+            {
+                result = await apiclient.AddUserRole(role, App.LangConfig.UserAuthToken);
+            }
+            catch (HttpRequestException ex)
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
+            }
+
+            return result;
         }
 
         public async Task<bool> UserInfoInit(UserInfoChangeDto userInfoChangeDto)

@@ -100,7 +100,7 @@ namespace ESO_LangEditorGUI.ViewModels
             var regex = new Regex(@"(?=.*[0-9])(?=.*[a-zA-Z])(?=([\x21-\x7e]+)[^a-zA-Z0-9]).{8,30}", RegexOptions.IgnorePatternWhitespace);
             List<string> roleList = _accountService.GetUserRoleFromToken(App.LangConfig.UserAuthToken);
 
-            if (!string.IsNullOrEmpty(_passwordBox.Password))
+            if (!string.IsNullOrEmpty(_passwordBox.Password) || roleList.Contains("InitUser"))
             {
                 if (_passwordBox.Password != _passwordBoxConfirm.Password)
                 {
@@ -147,7 +147,7 @@ namespace ESO_LangEditorGUI.ViewModels
                     {
                         _passwordBox.Clear();
                         _passwordBoxConfirm.Clear();
-                        SubmitProgress = "密码必须大于8位小于30位，包含数字与特殊符号！";
+                        SubmitProgress = "密码必须大于8位小于30位，包含数字、英文字母与特殊符号！";
                     }
                 }
             }

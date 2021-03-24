@@ -8,6 +8,7 @@ using ESO_LangEditorGUI.Views;
 using ESO_LangEditorGUI.Views.UserControls;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
@@ -48,12 +49,13 @@ namespace ESO_LangEditorGUI
         public static readonly IMapper Mapper;
         //public static readonly IRepositoryWrapperClient RepoClient;
         public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
-
+        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
 
         static App()
         {
             DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
                 .UseSqlite(@"Data Source=Data/LangData_v4.db")
+                .UseLoggerFactory(MyLoggerFactory)
                 .Options;
 
             //LangtextClientDb = new LangtextClientDbContext(contextOptions);
@@ -151,6 +153,7 @@ namespace ESO_LangEditorGUI
             ViewModelLocationProvider.Register<MainWindowSearchbar, MainWindowSearchbarViewModel>();
             ViewModelLocationProvider.Register<MainMenu, MainMenuListViewModel>();
             ViewModelLocationProvider.Register<UC_Login, LoginViewModel>();
+            ViewModelLocationProvider.Register<ImportDbRevProgressDialog, ImportDbRevProgressDialogViewModel>();
         }
 
         protected override Window CreateShell()

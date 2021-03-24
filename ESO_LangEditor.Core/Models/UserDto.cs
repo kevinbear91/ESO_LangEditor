@@ -9,6 +9,7 @@ namespace ESO_LangEditor.Core.Models
         public Guid ID { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public string RefreshToken { get; set; }
 
     }
 }

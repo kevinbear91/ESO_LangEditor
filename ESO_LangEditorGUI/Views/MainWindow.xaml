@@ -30,7 +30,7 @@
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
-                <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Height="90">
+                <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Height="110">
                     <DockPanel MinWidth="780">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -43,7 +43,7 @@
                                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
                                     Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
                                     CommandParameter="{x:Static Dock.Top}"
-                                    Height="50" Width="50" Cursor="Hand" Background="#FF3F51B5" >
+                                    Height="50" Width="50" Cursor="Hand" Background="#FF3F51B5" VerticalAlignment="Top" >
 
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">

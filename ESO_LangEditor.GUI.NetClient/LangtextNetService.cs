@@ -55,6 +55,35 @@ namespace ESO_LangEditor.GUI.NetClient
 
         }
 
+        public async Task<List<LangTextDto>> GetLangtextByGuidListAsync(List<Guid> langtextGuids, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            List<LangTextDto> respondedList = null;
+
+            var content = SerializeDataToHttpContent(langtextGuids);
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(client.BaseAddress + "api/langtext/list"),
+                Content = content,
+            };
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(respondedList);
+
+            return respondedList;
+
+        }
+
         public async Task<List<LangTextDto>> GetLangtextFromArchiveAsync(string langtextGuid, string token)
         {
             client.DefaultRequestHeaders.Authorization =
@@ -183,6 +212,20 @@ namespace ESO_LangEditor.GUI.NetClient
 
         }
 
+        public async Task<HttpStatusCode> UpdateLangtextZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDto, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var content = SerializeDataToHttpContent(langTextForUpdateZhDto);
+
+            HttpResponseMessage response = await client.PutAsync(
+                "api/langtext/zh/list", content);
+
+            return response.StatusCode;
+
+        }
+
         public async Task<HttpStatusCode> UpdateLangtextEnList(List<LangTextForUpdateEnDto> langTextForUpdateEnDtos, string token)
         {
             client.DefaultRequestHeaders.Authorization =
@@ -241,6 +284,46 @@ namespace ESO_LangEditor.GUI.NetClient
             {
                 var responseContent = response.Content.ReadAsStringAsync().Result;
                 respondedList = JsonSerializer.Deserialize<List<Guid>>(responseContent, _jsonOption);
+            }
+
+            return respondedList;
+
+        }
+
+
+        public async Task<int> GetLangTextRevisedNumberAsync(string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            int respondedList = 0;
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/revnumber");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<int>(responseContent, _jsonOption);
+            }
+
+            return respondedList;
+
+        }
+
+
+        public async Task<List<LangTextRevisedDto>> GetLangTextRevisedDtosAsync(int id, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            List<LangTextRevisedDto> respondedList = null;
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/revnumber/" + id);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<List<LangTextRevisedDto>>(responseContent, _jsonOption);
             }
 
             return respondedList;

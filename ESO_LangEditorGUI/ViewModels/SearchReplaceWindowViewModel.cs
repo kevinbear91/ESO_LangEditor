@@ -96,7 +96,7 @@ namespace ESO_LangEditorGUI.ViewModels
                     {
                         ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
 
-                        if(await _langTextRepository.UpdateLangtextZh(ReplacedList))
+                        if(await _langTextRepository.UpdateLangtexts(ReplacedList))
                             MessageBox.Show("替换完成！");
                         else
                             MessageBox.Show("替换失败！");

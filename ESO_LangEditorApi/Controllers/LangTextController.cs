@@ -57,6 +57,40 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        [Authorize(Roles = "editor")]
+        [HttpGet("list")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextByGuidListAsync(List<Guid> langtextGuids)
+        {
+            List<LangText> langTexts = new List<LangText>();
+
+            foreach(var id in langtextGuids)
+            {
+                var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(id);
+
+                if (langtext != null)
+                {
+                    langTexts.Add(langtext);
+                }
+            }
+
+            var langtextsDto = Mapper.Map<List<LangTextDto>>(langTexts);
+
+            return langtextsDto;
+
+            //var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
+            //var langtextDto = Mapper.Map<LangTextDto>(langtext);
+
+            //if (langtext == null)
+            //{
+            //    return NotFound();
+            //}
+            //else
+            //{
+            //    return langtextDto;
+            //}
+
+        }
+
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<ActionResult> CreateLangtextAsync(Guid userId, LangTextForCreationDto langTextForCreation)
@@ -233,7 +267,7 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "editor")]
-        [HttpPut("zh")]
+        [HttpPut("zh/list")]
         public async Task<ActionResult> UpdateLangtextZhListAsync(List<LangTextForUpdateZhDto> langTextForUpdateZhList)
         {
             var userId = _userManager.GetUserId(HttpContext.User);

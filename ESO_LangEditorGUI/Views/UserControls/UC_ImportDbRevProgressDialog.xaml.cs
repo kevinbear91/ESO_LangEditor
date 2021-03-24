@@ -19,13 +19,13 @@ namespace ESO_LangEditorGUI.Views.UserControls
     /// </summary>
     public partial class ImportDbRevProgressDialog : UserControl
     {
-        public ImportDbRevProgressDialogViewModel DataContent { get; }
+        //public ImportDbRevProgressDialogViewModel DataContent { get; }
 
-        public ImportDbRevProgressDialog(bool isDbRev)
+        public ImportDbRevProgressDialog()
         {
             InitializeComponent();
 
-            DataContext = new ImportDbRevProgressDialogViewModel(isDbRev);
+            //DataContext = new ImportDbRevProgressDialogViewModel(isDbRev);
         }
 
     }

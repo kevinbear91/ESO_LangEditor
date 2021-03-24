@@ -25,6 +25,7 @@ namespace ESO_LangEditor.API.Helpers
             CreateMap<LangTextRevisedDto, LangTextRevised>();
             CreateMap<LangTextRevNumberDto, LangTextRevNumber>();
             CreateMap<User, UserDto>();
+            CreateMap<User, UserInClientDto>();
             CreateMap<UserProfileModifyBySelfDto, User>();
         }
     }

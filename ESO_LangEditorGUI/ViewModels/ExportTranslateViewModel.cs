@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services;
@@ -27,9 +28,12 @@ namespace ESO_LangEditorGUI.ViewModels
         private LangTextDto _gridSelectedItem;
         private bool _isExportSelectedItems;
         private bool _exportEnabled = false;
+        private bool _isNotUpdatedItems;
 
         private readonly LangTextRepoClientService _langTextSearch = new LangTextRepoClientService();
         public ICommand ExportTranslateCommand => new ExcuteViewModelMethod(ExportTranslatedListAsync);
+        public ICommand QueryNotUpdatedLangTextCommand => new ExcuteViewModelMethod(QueryNotUpdatedLangtextAsync);
+
         public event EventHandler OnRequestClose;
         IEventAggregator _ea;
 
@@ -81,6 +85,12 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _exportEnabled, value); }
         }
 
+        public bool IsNotUpdatedItems
+        {
+            get { return _isNotUpdatedItems; }
+            set { SetProperty(ref _isNotUpdatedItems, value); }
+        }
+
         public ExportTranslateViewModel(IEventAggregator ea)
         {
             _ea = ea;
@@ -98,36 +108,85 @@ namespace ESO_LangEditorGUI.ViewModels
                 ExportEnabled = true;
         }
 
+        private async void QueryNotUpdatedLangtextAsync(object obj)
+        {
+            var translatedList = await _langTextSearch.GetLangTextByConditionAsync("2", SearchTextType.TranslateStatus, SearchPostion.Full);
+            GridData = new ObservableCollection<LangTextDto>(translatedList);
+            SearchResultInfo = GridData.Count.ToString();
+            if (GridData.Count >= 1)
+                ExportEnabled = true;
+        }
+
 
         public async void ExportTranslatedListAsync(object o)
         {
             ExportEnabled = false;
 
-            ExportDbToFile exporter = new ExportDbToFile();
-            string path;
-            List<LangTextDto> list;
-
-            if (IsExportSelectedItems)
+            if (IsNotUpdatedItems)
             {
-                list = SelectedItems;
+                var _mapper = App.Mapper;
+                var _langTextRepoClient = new LangTextRepoClientService();
+                var _langTextNetServer = new LangtextNetService();
+                var updateList = _mapper.Map<List<LangTextForUpdateZhDto>>(GridData.ToList());
+                var code = await _langTextNetServer.UpdateLangtextZh(updateList, App.LangConfig.UserAuthToken);
+
+                if (code == System.Net.HttpStatusCode.OK ||
+                code == System.Net.HttpStatusCode.Accepted ||
+                code == System.Net.HttpStatusCode.Created)
+                {
+
+                    foreach(var lang in updateList)
+                    {
+                        lang.IsTranslated = 3;
+                    }
+
+                    if(await _langTextRepoClient.UpdateLangtextZh(updateList))
+                    {
+                        OnRequestClose(this, new EventArgs());
+                        _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本已上传至服务器");
+                    }
+                    else
+                    {
+                        MessageBox.Show("保存翻译列表状态出错！");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("文本上传至服务器时出错！错误码：" + code);
+                }
+                
             }
             else
             {
-                list = GridData.ToList();
+                ExportDbToFile exporter = new ExportDbToFile();
+                string path;
+                List<LangTextDto> list;
+
+                if (IsExportSelectedItems)
+                {
+                    list = SelectedItems;
+                }
+                else
+                {
+                    list = GridData.ToList();
+                }
+
+                path = exporter.ExportLangTextsAsJson(list, LangChangeType.ChangedZH);
+
+                if (await _langTextSearch.UpdateTranslateStatus(list))
+                {
+                    OnRequestClose(this, new EventArgs());
+                    _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
+                    _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本保存路径：" + path);
+                }
+                else
+                {
+                    MessageBox.Show("保存翻译列表状态出错！");
+                }
             }
 
-            path = exporter.ExportLangTextsAsJson(list, LangChangeType.ChangedZH);
-
-            if (await _langTextSearch.UpdateTranslateStatus(list))
-            {
-                OnRequestClose(this, new EventArgs());
-                _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
-                _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本保存路径：" + path);
-            }
-            else
-            {
-                MessageBox.Show("保存翻译列表状态出错！");
-            }
+            
             
         }
     }

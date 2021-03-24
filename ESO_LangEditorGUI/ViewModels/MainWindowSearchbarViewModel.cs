@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditorGUI.Command;
+using ESO_LangEditorGUI.EventAggres;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -22,11 +23,9 @@ namespace ESO_LangEditorGUI.ViewModels
         private SearchTextType _selectedSearchTextTypeSecond;
         private string _keyword;
         private string _keywordSecond;
-        private int _mainSearchBarWidth = 550;
-        private int _secondSearchBarWidth = 500;
-        private Visibility _secondComboxAndSearchBarVisibility = Visibility.Collapsed;
-        private bool _secondComboxAndSearchBarEnable = false;
-
+        private bool _doubleKeyWordSearch;
+        private bool _serverSideSearch;
+        private ClientConnectStatus _connectStatus;
 
         public ICommand SearchLangCommand { get; }
 
@@ -51,7 +50,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public SearchTextType SelectedSearchTextType 
         {
             get { return _selectedSearchTextType; }
-            set { SetProperty(ref _selectedSearchTextType, value); SetSecondOptionVisiable(); }
+            set { SetProperty(ref _selectedSearchTextType, value); }
         }
 
         public SearchTextType SelectedSearchTextTypeSecond
@@ -72,64 +71,40 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _keywordSecond, value); }
         }
 
-        public int MainSearchBarWidth
+        public bool DoubleKeyWordSearch
         {
-            get { return _mainSearchBarWidth; }
-            set { SetProperty(ref _mainSearchBarWidth, value); }
+            get { return _doubleKeyWordSearch; }
+            set { SetProperty(ref _doubleKeyWordSearch, value); }
         }
 
-        public int SecondSearchBarWidth
+        public bool ServerSideSearch
         {
-            get { return _secondSearchBarWidth; }
-            set { SetProperty(ref _secondSearchBarWidth, value); }
+            get { return _serverSideSearch; }
+            set { SetProperty(ref _serverSideSearch, value); }
         }
 
-        public Visibility SecondComboxAndSearchBarVisibility
+        public ClientConnectStatus ConnectStatus
         {
-            get { return _secondComboxAndSearchBarVisibility; }
-            set { SetProperty(ref _secondComboxAndSearchBarVisibility, value); }
+            get { return _connectStatus; }
+            set { SetProperty(ref _connectStatus, value); }
         }
 
-        public bool SecondComboxAndSearchBarEnable
-        {
-            get { return _secondComboxAndSearchBarEnable; }
-            set { SetProperty(ref _secondComboxAndSearchBarEnable, value); }
-        }
-
-
-        private void SetSecondOptionVisiable()
-        {
-
-            if (CanShowSecondOption())
-            {
-                MainSearchBarWidth = 300;
-                SecondComboxAndSearchBarVisibility = Visibility.Visible;
-                SecondComboxAndSearchBarEnable = true;
-            }
-            else
-            {
-                MainSearchBarWidth = 550;
-                SecondComboxAndSearchBarVisibility = Visibility.Collapsed;
-                SecondComboxAndSearchBarEnable = false;
-            }
-
-        }
-
-
-        private bool CanShowSecondOption()
-        {
-
-            if (SelectedSearchTextType == SearchTextType.Type)
-                return true;
-
-            return false;
-
-        }
+        IEventAggregator _ea;
 
         public MainWindowSearchbarViewModel(IEventAggregator ea)
         {
+            _ea = ea;
             SearchLangCommand = new SearchLangCommand(this, ea);
+
+            _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
         }
+
+        private void ChangeConnectStatus(ClientConnectStatus obj)
+        {
+            ConnectStatus = obj;
+        }
+
+
 
 
         //protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")

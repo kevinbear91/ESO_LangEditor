@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="文本编辑" Height="450" Width="800" WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner" Tag="LangtextEditor">
+        Title="文本编辑" Height="450" Width="800" WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" Tag="LangtextEditor">
     <Grid Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -56,7 +56,7 @@
         <GroupBox Header="中文" Grid.Row="1" Grid.Column="1"  >
             <ScrollViewer VerticalScrollBarVisibility="Auto"
                       Margin="20,0,0,8">
-                <TextBox x:Name="textBox_ZH" Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" BorderBrush="#FFABADB3" />
+                <TextBox x:Name="textBox_ZH" Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" BorderBrush="#FFABADB3" Cursor="IBeam" />
             </ScrollViewer>
         </GroupBox>
 

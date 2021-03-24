@@ -46,7 +46,7 @@
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" >
                 <TextBox x:Name="UserName_Textbox" materialDesign:HintAssist.Hint="用户名"
                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                       VerticalAlignment="Center" Width="150" >
+                       VerticalAlignment="Center" Width="150" Cursor="IBeam" >
                     <TextBox.Text>
                         <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>

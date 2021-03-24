@@ -136,6 +136,7 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
             _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
             _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
+            _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
             _accountService = new AccountService(_ea);
@@ -164,8 +165,17 @@ namespace ESO_LangEditorGUI.ViewModels
         private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextForUpdateZhDto)
         {
             LangtextNetService apiLangtext = new LangtextNetService();
+            LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
             var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDto, App.LangConfig.UserAuthToken);
             
+            if (code == System.Net.HttpStatusCode.OK || 
+                code == System.Net.HttpStatusCode.Accepted ||
+                code == System.Net.HttpStatusCode.Created)
+            {
+                langTextForUpdateZhDto.IsTranslated = 3;
+                await langTextRepoClient.UpdateLangtextZh(langTextForUpdateZhDto);
+            }
+
             MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
 
         }
@@ -220,7 +230,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public async void ShowImportDbRevUC(bool isDbRev)
         {
-            var view = new ImportDbRevProgressDialog(isDbRev);
+            var view = new ImportDbRevProgressDialog();
 
             //show the dialog
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
@@ -290,6 +300,7 @@ namespace ESO_LangEditorGUI.ViewModels
                 GridData.Clear();
 
             GridData.AddRange(langtexList);
+            SearchInfo = langtexList.Count.ToString();
         }
 
         private void ShowMessageQueueWithString(string str)

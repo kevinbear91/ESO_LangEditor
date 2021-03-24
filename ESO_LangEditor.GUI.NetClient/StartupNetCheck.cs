@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.NetClient
@@ -11,21 +13,29 @@ namespace ESO_LangEditor.GUI.NetClient
     public class StartupNetCheck
     {
         private readonly HttpClient client;
+        private JsonSerializerOptions _jsonOption;
 
         public StartupNetCheck()
         {
             client = new HttpClient();
+
+            _jsonOption = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
         }
 
-        public async Task<string> GetServerRespondAndConfig(string path)
+        public async Task<AppConfigServer> GetServerRespondAndConfig(string path)
         {
             //AppConfigServer appConfigServer = null;
-            string result = null;
+            AppConfigServer result = null;
 
             HttpResponseMessage response = await client.GetAsync(path);
             if (response.IsSuccessStatusCode)
             {
-               result = response.Content.ReadAsStringAsync().Result;
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
             }
             
             return result;

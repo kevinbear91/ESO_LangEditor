@@ -24,7 +24,7 @@ namespace ESO_LangEditorGUI.Services
             _mapper = App.Mapper; // mapper;
         }
 
-        public async Task<IEnumerable<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
+        public async Task<LangTextDto> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             LangText langtext;
 
@@ -34,7 +34,7 @@ namespace ESO_LangEditorGUI.Services
                 db.Dispose();
             }
 
-            var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
+            var langtextDto = _mapper.Map<LangTextDto>(langtext);
             return langtextDto;
         }
 
@@ -57,6 +57,36 @@ namespace ESO_LangEditorGUI.Services
                     //SearchTextType.ByUser => throw new NotImplementedException(),
                     _ => await db.Langtexts.Where(d => EF.Functions.Like(d.TextEn, searchPosAndWord)).ToListAsync(),
                 };
+
+                db.Dispose();
+            }
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
+            return langtextDto;
+        }
+
+        public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2, 
+            SearchTextType searchType, SearchTextType searchType2, 
+            SearchPostion searchPostion)
+        {
+
+            var firstType = GetSearchTypeToStringRaw(searchType);
+            var secondType = GetSearchTypeToStringRaw(searchType2);
+            string searchPosAndWord = GetKeywordWithPostion(searchPostion, keyWord2);
+
+            List <LangText> langtext;
+
+            Debug.WriteLine("Key1: {0}, Key2: {1}, fT: {2}, sT: {3}.", keyWord, searchPosAndWord, firstType, secondType);
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                //0 = firstType, 1 = keyWord, 2 = secondType, 3 = searchPosAndWord.
+                var query = await db.Langtexts.FromSqlRaw("SELECT * FROM Langtexts WHERE " + firstType 
+                    + " = " + keyWord 
+                    + " AND " + secondType 
+                    + " Like '" + searchPosAndWord + "'").ToListAsync();
+
+                langtext = query;
 
                 db.Dispose();
             }
@@ -132,7 +162,29 @@ namespace ESO_LangEditorGUI.Services
             return saveCount > 0;
         }
 
-        public async Task<bool> UpdateLangtextZh(List<LangTextDto> langtextDto)
+        public async Task<bool> UpdateLangtextZh(List<LangTextForUpdateZhDto> langtextDto)
+        {
+            int saveCount = 0;
+            //Debug.WriteLine("ID:{0}, zh: {1}, modifytimer: {2}", langtextDto.Id, langtextDto.TextZh, langtextDto.ZhLastModifyTimestamp);
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                foreach(var lang in langtextDto)
+                {
+                    var langtext = await db.Langtexts.FindAsync(lang.Id);
+                    _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+
+                    db.Langtexts.Update(langtext);
+                }
+                
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
+        }
+
+        public async Task<bool> UpdateLangtexts(List<LangTextDto> langtextDto)
         {
             int saveCount = 0;
 
@@ -195,6 +247,24 @@ namespace ESO_LangEditorGUI.Services
             return langtextRev;
         }
 
+        private string GetSearchTypeToStringRaw(SearchTextType searchTextType)
+        {
+
+            string rawString = searchTextType switch
+            {
+                SearchTextType.Guid => "Id",
+                SearchTextType.UniqueID => "TextId",
+                SearchTextType.Type => "IdType",
+                SearchTextType.TextEnglish => "TextEn",
+                SearchTextType.TextChineseS => "TextZh",
+                SearchTextType.TranslateStatus => "IsTranslated",
+                SearchTextType.UpdateStatus => "UpdateStats",
+                //SearchTextType.ReviewStatus => ""
+                SearchTextType.ByUser => "UserId",
+                _ => "TextEn",
+            };
+            return rawString;
+        }
 
         private static string GetKeywordWithPostion(SearchPostion searchPostion, string keyWord)
         {

@@ -27,7 +27,11 @@
                         <materialDesign:PackIcon Kind="ExportVariant" />
                     </Button>
                     <Separator />
-                    <CheckBox x:Name="ExportSelectedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" Content="导出已选择文本" IsChecked="{Binding IsExportSelectedItems}" />
+                    <CheckBox x:Name="ExportSelectedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
+                              Content="仅已选择文本" IsChecked="{Binding IsExportSelectedItems}" />
+                    <Separator />
+                    <CheckBox x:Name="UpdateTranslatedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
+                              Content="查询未上传文本" IsChecked="{Binding IsNotUpdatedItems}" />
 
                 </ToolBar>
             </ToolBarTray>

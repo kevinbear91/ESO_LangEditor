@@ -46,7 +46,7 @@ namespace ESO_LangEditor.GUI.NetClient
                 "api/account/login", content);
             response.EnsureSuccessStatusCode();
 
-            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var responseContent = await response.Content.ReadAsStringAsync();
             var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);
 
             Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
@@ -65,7 +65,7 @@ namespace ESO_LangEditor.GUI.NetClient
                 "api/account/FirstTimeLogin", content);
             response.EnsureSuccessStatusCode();
 
-            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var responseContent = await response.Content.ReadAsStringAsync();
             var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);
 
             Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
@@ -83,7 +83,7 @@ namespace ESO_LangEditor.GUI.NetClient
 
             response.EnsureSuccessStatusCode();
 
-            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var responseContent = await response.Content.ReadAsStringAsync();
             var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);
 
             Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
@@ -92,7 +92,98 @@ namespace ESO_LangEditor.GUI.NetClient
 
         }
 
-        public async Task<bool> UserProfileInit(UserInfoChangeDto userInfoChangeDto,string token)
+        public async Task<List<UserInClientDto>> GetUserList(string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/account/users");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var json = JsonSerializer.Deserialize<List<UserInClientDto>>(responseContent, _jsonOption);
+
+            //Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
+
+            return json;
+
+        }
+
+        public async Task<List<string>> GetUserRoleList(Guid userId, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/account/" + userId.ToString() + "/roles");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var json = JsonSerializer.Deserialize<List<string>>(responseContent, _jsonOption);
+
+            //Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
+
+            return json;
+
+        }
+
+        public async Task<bool> ModifyUserRoles(Guid userId, List<string> roles, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var content = SerializeDataToHttpContent(roles);
+
+            HttpResponseMessage response = await client.PostAsync(
+                "api/admin/" + userId.ToString() + "/roles", content);
+
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+
+        }
+
+        public async Task<bool> AddUserRole(string role, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            var content = SerializeDataToHttpContent(role);
+
+            HttpResponseMessage response = await client.PostAsync(
+                "api/admin/role", content);
+
+            response.EnsureSuccessStatusCode();
+
+            return response.IsSuccessStatusCode;
+
+        }
+
+        public async Task<UserDto> AddUser(UserDto user, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            //var user = new UserDto { UserName = username };
+
+            var content = SerializeDataToHttpContent(user);
+
+            HttpResponseMessage response = await client.PostAsync(
+                "api/admin/register", content);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var json = JsonSerializer.Deserialize<UserDto>(responseContent, _jsonOption);
+
+            return json;
+
+        }
+
+        public async Task<bool> UserProfileInit(UserInfoChangeDto userInfoChangeDto, string token)
         {
             //HttpContent content;
 

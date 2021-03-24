@@ -1,4 +1,5 @@
-﻿using ESO_LangEditor.API.Services;
+﻿using AutoMapper;
+using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -28,19 +29,21 @@ namespace ESO_LangEditor.API.Controllers
         private RoleManager<Role> _roleManager;
         private ITokenService _tokenService;
         private IWebHostEnvironment _webHostEnvironment;
+        private IMapper _mapper;
 
         public AccountController(UserManager<User> userManager,
           SignInManager<User> signInManager, ITokenService tokenService,
-          RoleManager<Role> roleManager, IWebHostEnvironment webHostEnvironment)
+          RoleManager<Role> roleManager, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;
             _roleManager = roleManager;
+            _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpPost("register", Name = nameof(AddUserAsync))]
+        [HttpPost("register")]
         public async Task<IActionResult> AddUserAsync(RegisterUser registerUser)
         {
             var user = new User
@@ -275,6 +278,11 @@ namespace ESO_LangEditor.API.Controllers
                 return Unauthorized();
             }
 
+            if (string.IsNullOrEmpty(userInfoChangeDto.NewPassword))
+            {
+                return Unauthorized();
+            }
+
             user.UserNickName = userInfoChangeDto.UserNickName;
             //user.UserName = userInfoChangeDto.UserName;
 
@@ -312,9 +320,12 @@ namespace ESO_LangEditor.API.Controllers
                 //return Ok();
             }
 
-            if(await _userManager.IsInRoleAsync(user, "InitUser"))
+            var userAfterSetting = await _userManager.FindByIdAsync(userInfoChangeDto.UserID.ToString());
+
+            if (await _userManager.IsInRoleAsync(userAfterSetting, "InitUser"))
             {
-                await _userManager.RemoveFromRoleAsync(user, "InitUser");
+                await _userManager.RemoveFromRoleAsync(userAfterSetting, "InitUser");
+                await _userManager.AddToRoleAsync(userAfterSetting, "Editor");
             }
 
             return Ok();
@@ -358,6 +369,39 @@ namespace ESO_LangEditor.API.Controllers
 
             return Ok();
             
+        }
+
+        [HttpGet("users")]
+        public async Task<ActionResult<List<UserInClientDto>>> GetUsersAsync()
+        {
+            //var user = new User
+            //{
+            //    UserName = registerUser.UserName,
+            //    Email = registerUser.Email,
+
+            //};
+
+            var users = await Task.Run(() => _userManager.Users.ToList());
+            var userClientDto = _mapper.Map<List<UserInClientDto>>(users);
+
+            return userClientDto;
+
+        }
+
+        [HttpGet("{userGuid}/roles")]
+        public async Task<ActionResult<List<string>>> GetUserRolesAsync(string userGuid)
+        {
+
+            var user = await _userManager.FindByIdAsync(userGuid);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            List<string> roles = (List<string>)await _userManager.GetRolesAsync(user);
+
+            return roles;
         }
 
         //[HttpPost]
