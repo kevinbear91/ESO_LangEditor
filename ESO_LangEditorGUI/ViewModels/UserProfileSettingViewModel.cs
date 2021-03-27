@@ -23,6 +23,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _userName = App.LangConfig.UserName;
         private string _userGuid = "GUID：" + App.LangConfig.UserGuid.ToString();
         private string _nickName;
+        private string _esoId;
         private string _submitProgress;
         private bool _waitingResult = false;
         private bool _FirstTimeInit = false;
@@ -53,6 +54,12 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             get { return _nickName; }
             set { SetProperty(ref _nickName, value); }
+        }
+
+        public string EsoId
+        {
+            get { return _esoId; }
+            set { SetProperty(ref _esoId, value); }
         }
 
         public string SubmitProgress
@@ -119,7 +126,8 @@ namespace ESO_LangEditorGUI.ViewModels
                                 NewPassword = _passwordBox.Password,
                                 UserID = App.LangConfig.UserGuid,
                                 UserName = UserName,
-                                UserNickName = NickName
+                                UserNickName = NickName,
+                                UserEsoId = EsoId,
                             });
                         }
                         else
@@ -130,7 +138,8 @@ namespace ESO_LangEditorGUI.ViewModels
                                 NewPassword = _passwordBox.Password,
                                 UserID = App.LangConfig.UserGuid,
                                 UserName = UserName,
-                                UserNickName = NickName
+                                UserNickName = NickName,
+                                UserEsoId = EsoId,
                             });
                         }
 

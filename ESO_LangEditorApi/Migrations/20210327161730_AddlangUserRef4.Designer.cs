@@ -3,15 +3,17 @@ using System;
 using ESO_LangEditor.EFCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ESO_LangEditor.API.Migrations
 {
     [DbContext(typeof(LangtextApiDbContext))]
-    partial class LangtextApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210327161730_AddlangUserRef4")]
+    partial class AddlangUserRef4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

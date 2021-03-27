@@ -12,8 +12,6 @@ namespace ESO_LangEditor.Core.Entities
         [Key]
         public Guid Id { get; set; }
 
-        public Guid ReviewerId { get; set; }
-
         public DateTime ReviewTimestamp { get; set; }
 
         public DateTime ArchiveTimestamp { get; set; }

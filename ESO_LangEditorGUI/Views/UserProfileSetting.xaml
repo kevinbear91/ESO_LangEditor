@@ -37,16 +37,12 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" >
+            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" >
                 <TextBox x:Name="UserName_Textbox" materialDesign:HintAssist.Hint="用户名"
                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                       VerticalAlignment="Center" Width="150" Cursor="IBeam" >
+                       VerticalAlignment="Center" Width="150" Cursor="IBeam" Margin="0,10,0,10" >
                     <TextBox.Text>
                         <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
@@ -55,12 +51,10 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-            </StackPanel>
 
-            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
                 <TextBox x:Name="NickName_Textbox" materialDesign:HintAssist.Hint="昵称"
                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                       VerticalAlignment="Center" Width="150" >
+                       VerticalAlignment="Center" Width="150" Margin="0,10,0,10" >
                     <TextBox.Text>
                         <Binding Path="NickName" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
@@ -69,27 +63,27 @@
                         </Binding>
                     </TextBox.Text>
                 </TextBox>
-            </StackPanel>
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" >
+                <TextBox x:Name="EsoId_Textbox" materialDesign:HintAssist.Hint="ESO @ID, 不要输入@"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       VerticalAlignment="Center" Width="150" Margin="0,10,0,10" 
+                       Text="{Binding EsoId}"  />
+
+
                 <PasswordBox x:Name="PasswordChange" materialDesign:HintAssist.Hint="密码修改 (不改请留空)"
                              materialDesign:HintAssist.Foreground="Green"
                              materialDesign:TextFieldAssist.UnderlineBrush="Green"
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
-                             VerticalAlignment="Center" Width="150" />
-            </StackPanel>
-            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" >
-                <!--<TextBlock Text="block2" />-->
+                             VerticalAlignment="Center" Width="150" Margin="0,10,0,10" />
+
                 <PasswordBox x:Name="PasswordConfirm" materialDesign:HintAssist.Hint="密码确认 (不改请留空)"
                              materialDesign:HintAssist.Foreground="Green"
                              materialDesign:TextFieldAssist.UnderlineBrush="Green"
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
-                             VerticalAlignment="Center" Width="150" />
-            </StackPanel>
+                             VerticalAlignment="Center" Width="150" Margin="0,10,0,10" />
 
-            <StackPanel Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Center">
                 <Button x:Name="Save" Content="提交修改"
-                        Width="150"
+                        Width="150" Margin="0,20,0,10"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
                         materialDesign:ButtonProgressAssist.IsIndeterminate="False" 
                         Command="{Binding UploadInfoCommand}" Cursor="Hand" >
@@ -111,8 +105,24 @@
                         </Style>
                     </Button.Style>
                 </Button>
-                <!--<TextBlock Text="{Binding SubmitProgress, FallbackValue='SubmitProgress'}" Margin="0,10,0,0" HorizontalAlignment="Center" />-->
             </StackPanel>
+
+            <!--<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" >
+                
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" >
+                
+            </StackPanel>
+            <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" >
+                --><!--<TextBlock Text="block2" />--><!--
+                
+            </StackPanel>
+
+            <StackPanel Grid.Row="4" Orientation="Vertical" HorizontalAlignment="Center">
+                
+                --><!--<TextBlock Text="{Binding SubmitProgress, FallbackValue='SubmitProgress'}" Margin="0,10,0,0" HorizontalAlignment="Center" />--><!--
+            </StackPanel>-->
         </Grid>
     </Grid>
 </Window>

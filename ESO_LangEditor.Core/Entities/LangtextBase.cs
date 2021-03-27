@@ -1,6 +1,7 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ESO_LangEditor.Core.Entities
@@ -38,5 +39,11 @@ namespace ESO_LangEditor.Core.Entities
         public DateTime ZhLastModifyTimestamp { get; set; }
 
         public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
+        public User UserForModify { get; set; }
+
+        public Guid ReviewerId { get; set; }
+        [ForeignKey("ReviewerId")]
+        public User UserForReview { get; set; }
     }
 }

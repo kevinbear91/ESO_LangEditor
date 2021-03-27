@@ -9,6 +9,7 @@ namespace ESO_LangEditor.Core.Models
         public Guid UserID { get; set; }
         public string UserName { get; set; }
         public string UserNickName { get; set; }
+        public string UserEsoId { get; set; }
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
         public string NewPasswordConfirm { get; set; }
