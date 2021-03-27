@@ -146,7 +146,7 @@ namespace ESO_LangEditorGUI.ViewModels
                             Header = "用户角色编辑",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "UserRoleEditor",
-                            //Visible = RoleToVisibility("Admin"),
+                            Visible = RoleToVisibility("Admin"),
                         },
 
                         new MenuItemContent { Header = "服务器线路" , ChildMenuItems=new ObservableCollection<MenuItemContent>

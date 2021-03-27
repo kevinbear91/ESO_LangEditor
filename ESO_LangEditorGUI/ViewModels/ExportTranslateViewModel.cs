@@ -32,7 +32,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private readonly LangTextRepoClientService _langTextSearch = new LangTextRepoClientService();
         public ICommand ExportTranslateCommand => new ExcuteViewModelMethod(ExportTranslatedListAsync);
-        public ICommand QueryNotUpdatedLangTextCommand => new ExcuteViewModelMethod(QueryNotUpdatedLangtextAsync);
+        public ICommand QueryNotUpdatedLangTextCommand => new ExcuteViewModelMethod(UpdateTranslatedItems_checkBox);
 
         public event EventHandler OnRequestClose;
         IEventAggregator _ea;
@@ -99,7 +99,21 @@ namespace ESO_LangEditorGUI.ViewModels
 
         }
 
-        private async void GetTranslatedLangtextList()
+        private async void UpdateTranslatedItems_checkBox(object obj)
+        {
+            bool ischecked = (bool)obj;
+
+            if (ischecked)
+            {
+                await QueryNotUpdatedLangtextAsync();
+            }
+            else
+            {
+                await GetTranslatedLangtextList();
+            }
+        }
+
+        private async Task GetTranslatedLangtextList()
         {
             var translatedList = await _langTextSearch.GetLangTextByConditionAsync("1", SearchTextType.TranslateStatus, SearchPostion.Full);
             GridData = new ObservableCollection<LangTextDto>(translatedList);
@@ -108,7 +122,7 @@ namespace ESO_LangEditorGUI.ViewModels
                 ExportEnabled = true;
         }
 
-        private async void QueryNotUpdatedLangtextAsync(object obj)
+        public async Task QueryNotUpdatedLangtextAsync()
         {
             var translatedList = await _langTextSearch.GetLangTextByConditionAsync("2", SearchTextType.TranslateStatus, SearchPostion.Full);
             GridData = new ObservableCollection<LangTextDto>(translatedList);

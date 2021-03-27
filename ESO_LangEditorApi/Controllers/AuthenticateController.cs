@@ -23,9 +23,9 @@ namespace ESO_LangEditor.API.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        public IConfiguration Configuration { get; }
-        public RoleManager<Role> RoleManager { get; }
-        public UserManager<User> UserManager { get; }
+        private IConfiguration _configuration;
+        private RoleManager<Role> _roleManager;
+        private UserManager<User> _userManager;
         private IRepositoryWrapper _repositoryWrapper;
         private SignInManager<User> _signInManager;
         private ITokenService _tokenService;
@@ -34,11 +34,11 @@ namespace ESO_LangEditor.API.Controllers
             IConfiguration configuration, SignInManager<User> signInManager, ITokenService tokenService,
             IRepositoryWrapper repositoryWrapper)
         {
-            UserManager = userManager;
-            RoleManager = roleManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _repositoryWrapper = repositoryWrapper;
-            Configuration = configuration;
+            _configuration = configuration;
             _tokenService = tokenService;
         }
 
@@ -96,7 +96,7 @@ namespace ESO_LangEditor.API.Controllers
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
 
             //var user = userContext.LoginModels.SingleOrDefault(u => u.UserName == username);
-            var user = await UserManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(username);
 
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpireTime <= DateTime.Now)
             {
@@ -106,7 +106,7 @@ namespace ESO_LangEditor.API.Controllers
             var newRefreshToken = _tokenService.GenerateRefreshToken();
             user.RefreshToken = newRefreshToken;
 
-            await UserManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
             return new ObjectResult(new
             {
@@ -120,10 +120,10 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<ActionResult> RevokeToken()
         {
             var username = User.Identity.Name;
-            var user = await UserManager.FindByNameAsync(username);
+            var user = await _userManager.FindByNameAsync(username);
             if (user == null) return BadRequest();
             user.RefreshToken = null;
-            await UserManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
             return NoContent();
         }
 

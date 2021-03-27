@@ -31,7 +31,9 @@
                               Content="仅已选择文本" IsChecked="{Binding IsExportSelectedItems}" />
                     <Separator />
                     <CheckBox x:Name="UpdateTranslatedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
-                              Content="查询未上传文本" IsChecked="{Binding IsNotUpdatedItems}" />
+                              Content="查询未上传文本" IsChecked="{Binding IsNotUpdatedItems}" 
+                              Command="{Binding QueryNotUpdatedLangTextCommand}" 
+                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
 
                 </ToolBar>
             </ToolBarTray>

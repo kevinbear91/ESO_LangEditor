@@ -135,6 +135,7 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
             _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
+            _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
             _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
 
@@ -174,6 +175,27 @@ namespace ESO_LangEditorGUI.ViewModels
             {
                 langTextForUpdateZhDto.IsTranslated = 3;
                 await langTextRepoClient.UpdateLangtextZh(langTextForUpdateZhDto);
+            }
+
+            MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
+
+        }
+
+        private async void UploadLangtextZhUpdate(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
+        {
+            LangtextNetService apiLangtext = new LangtextNetService();
+            LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
+            var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDtoList, App.LangConfig.UserAuthToken);
+
+            if (code == System.Net.HttpStatusCode.OK ||
+                code == System.Net.HttpStatusCode.Accepted ||
+                code == System.Net.HttpStatusCode.Created)
+            {
+                foreach(var lang in langTextForUpdateZhDtoList)
+                {
+                    lang.IsTranslated = 3;
+                }
+                await langTextRepoClient.UpdateLangtextZh(langTextForUpdateZhDtoList);
             }
 
             MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());

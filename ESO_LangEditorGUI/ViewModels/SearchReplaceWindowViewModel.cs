@@ -1,7 +1,9 @@
 ﻿using ESO_LangEditor.Core.Models;
 using ESO_LangEditorGUI.Command;
+using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services;
 using ESO_LangEditorGUI.Views.UserControls;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -67,6 +69,12 @@ namespace ESO_LangEditorGUI.ViewModels
         private LangTextRepoClientService _langTextRepository = new LangTextRepoClientService();
         public ICommand GetMatchCommand => new ExcuteViewModelMethod(SearchIfMatch);
         public ICommand SaveSearchResultCommand => new ExcuteViewModelMethod(ReplaceTextListAsync);
+        IEventAggregator _ea;
+
+        public SearchReplaceWindowViewModel(IEventAggregator ea)
+        {
+            _ea = ea;
+        }
 
 
         public void Load(List<LangTextDto> langTextDtos)
@@ -97,9 +105,19 @@ namespace ESO_LangEditorGUI.ViewModels
                         ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
 
                         if(await _langTextRepository.UpdateLangtexts(ReplacedList))
+                        {
+                            var _mapper = App.Mapper;
+
+                            var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
+                            _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
                             MessageBox.Show("替换完成！");
+                        }
+                            
                         else
+                        {
                             MessageBox.Show("替换失败！");
+                        }
+                            
                     }
                     else
                     {

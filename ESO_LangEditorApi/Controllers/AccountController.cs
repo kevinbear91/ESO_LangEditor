@@ -351,7 +351,7 @@ namespace ESO_LangEditor.API.Controllers
                 return BadRequest();
             }
 
-            string uploadsFolder = Path.Combine(_webHostEnvironment.ContentRootPath, "images");
+            string uploadsFolder = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwwroot/images");
             string uniqueFileName = user.UserName + "_" + Guid.NewGuid().ToString();
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 

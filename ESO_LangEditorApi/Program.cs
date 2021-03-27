@@ -42,7 +42,7 @@ namespace ESO_LangEditorApi
             .ConfigureLogging(logging =>
             {
                 logging.ClearProviders();
-                logging.SetMinimumLevel(LogLevel.Trace);
+                logging.SetMinimumLevel(LogLevel.Error);
             })
             .UseNLog();  // NLog: Setup NLog for Dependency injection;
     }

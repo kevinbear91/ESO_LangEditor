@@ -124,21 +124,20 @@ namespace ESO_LangEditorGUI.ViewModels
 
             if (CurrentLangText.EnLastModifyTimestamp > CurrentLangText.ZhLastModifyTimestamp)
             {
-                if (CurrentLangText.IsTranslated == 1 || CurrentLangText.IsTranslated == 2)
-                    resultWord = "英文已修改， 翻译可能不匹配。";
-                else
-                    resultWord = "待译。";
+                resultWord = "英文已修改， 翻译可能不匹配或待译。";
             }
             else
             {
-                if (CurrentLangText.IsTranslated == 1 || CurrentLangText.IsTranslated == 2)
+                if (CurrentLangText.IsTranslated != 0)
+                {
                     resultWord = "英文修改后已翻译。";
+                }
                 else
+                {
                     resultWord = "文本可能为初始化内容。";
+                }
             }
-
             return resultWord;
-
         }
 
         private string GetVersionName()

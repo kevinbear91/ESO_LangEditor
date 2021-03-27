@@ -31,6 +31,5 @@ namespace ESO_LangEditorGUI.Views
             vm.SelectedItems = langtextList;
             vm.SelectedInfo = langtextList.Count.ToString();
         }
-        
     }
 }

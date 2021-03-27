@@ -14,18 +14,18 @@ namespace ESO_LangEditor.API.Controllers
     [ApiController]
     public class LangTextArchiveController : ControllerBase
     {
-        public IRepositoryWrapper RepositoryWrapper { get; }
-        public IMapper Mapper { get; }
+        private IRepositoryWrapper _repositoryWrapper;
+        private IMapper _mapper;
 
         public LangTextArchiveController(IRepositoryWrapper repositoryWrapper, IMapper mapper)
         {
-            RepositoryWrapper = repositoryWrapper;
-            Mapper = mapper;
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
         }
 
         public async Task<ActionResult<IEnumerable<LangTextArchive>>> GetLangTextAllAsync()
         {
-            var langtextList = await RepositoryWrapper.LangTextArchiveRepo.GetAllAsync();
+            var langtextList = await _repositoryWrapper.LangTextArchiveRepo.GetAllAsync();
 
             return langtextList.ToList();
         }
@@ -34,7 +34,7 @@ namespace ESO_LangEditor.API.Controllers
         [HttpGet("{langtextGuid}")]
         public async Task<ActionResult<LangTextArchive>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
-            var langtext = await RepositoryWrapper.LangTextArchiveRepo.GetByIdAsync(langtextGuid);
+            var langtext = await _repositoryWrapper.LangTextArchiveRepo.GetByIdAsync(langtextGuid);
 
             if (langtext == null)
             {

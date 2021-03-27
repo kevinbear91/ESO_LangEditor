@@ -21,20 +21,20 @@ namespace ESO_LangEditor.API.Controllers
     public class LangTextController : ControllerBase
     {
         //public ILangTextRepository LangTextRepository { get; }
-        public IRepositoryWrapper RepositoryWrapper { get; }
-        public IMapper Mapper { get; }
+        private IRepositoryWrapper _repositoryWrapper;
+        private IMapper _mapper;
         private UserManager<User> _userManager;
 
         public LangTextController(IRepositoryWrapper repositoryWrapper, IMapper mapper, UserManager<User> userManager)
         {
-            RepositoryWrapper = repositoryWrapper;
-            Mapper = mapper;
+            _repositoryWrapper = repositoryWrapper;
+            _mapper = mapper;
             _userManager = userManager;
         }
         
         public async Task<ActionResult<IEnumerable<LangText>>> GetLangTextAllAsync()
         {
-            var langtextList = await RepositoryWrapper.LangTextRepo.GetAllAsync();
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetAllAsync();
 
             return langtextList.ToList();
         }
@@ -43,8 +43,8 @@ namespace ESO_LangEditor.API.Controllers
         [HttpGet("{langtextGuid}")]
         public async Task<ActionResult<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
-            var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
-            var langtextDto = Mapper.Map<LangTextDto>(langtext);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
+            var langtextDto = _mapper.Map<LangTextDto>(langtext);
 
             if (langtext == null)
             {
@@ -65,7 +65,7 @@ namespace ESO_LangEditor.API.Controllers
 
             foreach(var id in langtextGuids)
             {
-                var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(id);
+                var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(id);
 
                 if (langtext != null)
                 {
@@ -73,7 +73,7 @@ namespace ESO_LangEditor.API.Controllers
                 }
             }
 
-            var langtextsDto = Mapper.Map<List<LangTextDto>>(langTexts);
+            var langtextsDto = _mapper.Map<List<LangTextDto>>(langTexts);
 
             return langtextsDto;
 
@@ -97,7 +97,7 @@ namespace ESO_LangEditor.API.Controllers
         {
 
             //var langtext = Mapper.Map<LangText>(langTextForCreation);
-            var langtext = Mapper.Map<LangTextReview>(langTextForCreation);
+            var langtext = _mapper.Map<LangTextReview>(langTextForCreation);
 
             //RepositoryWrapper.LangTextRepo.Create(langtext);
 
@@ -105,9 +105,9 @@ namespace ESO_LangEditor.API.Controllers
             langtext.ReviewerId = userId;
             langtext.ReviewTimestamp = DateTime.UtcNow;
 
-            RepositoryWrapper.LangTextReviewRepo.Create(langtext);
+            _repositoryWrapper.LangTextReviewRepo.Create(langtext);
 
-            if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
                 throw new Exception("创建资源langtext失败");
             }
@@ -124,7 +124,7 @@ namespace ESO_LangEditor.API.Controllers
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             //var langtext = Mapper.Map<LangText>(langTextForCreation);
-            var langtexts = Mapper.Map<List<LangTextReview>>(langTextForCreation);
+            var langtexts = _mapper.Map<List<LangTextReview>>(langTextForCreation);
 
             foreach(var lang in langtexts)
             {
@@ -133,9 +133,9 @@ namespace ESO_LangEditor.API.Controllers
                 lang.ReasonFor = ReviewReason.NewAdded;
             }
 
-            RepositoryWrapper.LangTextReviewRepo.CreateList(langtexts);
+            _repositoryWrapper.LangTextReviewRepo.CreateList(langtexts);
 
-            if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
                 throw new Exception("创建审核资源langtext失败");
             }
@@ -149,20 +149,20 @@ namespace ESO_LangEditor.API.Controllers
         [HttpDelete("{langtextID}")]
         public async Task<ActionResult> DeleteLangTextAsync(Guid langtextID)
         {
-            var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
 
             if (langtext == null)
             {
                 return NotFound();
             }
             //Check if langtext already in Review.
-            if (await RepositoryWrapper.LangTextReviewRepo.GetByIdAsync(langtextID) != null)
+            if (await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langtextID) != null)
             {
                 return BadRequest("当前文本已待审核。");
                 //throw new Exception("当前文本已待审核。");
             }
 
-            var langtextReview = Mapper.Map<LangTextReview>(langtext);
+            var langtextReview = _mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.Deleted;
             //langtext.ReviewerId = userId;
             //langtext.ReviewTimestamp = DateTime.Now;
@@ -170,9 +170,9 @@ namespace ESO_LangEditor.API.Controllers
             //Mapper.Map(langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 
             //Move to ReviewRepo wating for review.
-            RepositoryWrapper.LangTextReviewRepo.Create(langtextReview);
+            _repositoryWrapper.LangTextReviewRepo.Create(langtextReview);
 
-            if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
                 throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
             }
@@ -190,11 +190,11 @@ namespace ESO_LangEditor.API.Controllers
 
             foreach (var id in langtextIds)
             {
-                var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(id);
+                var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(id);
 
                 if (langtext != null)
                 {
-                    var langtextToReview = Mapper.Map<LangTextReview>(langtext);
+                    var langtextToReview = _mapper.Map<LangTextReview>(langtext);
 
                     langtextToReview.UserId = new Guid(userId);
                     langtextToReview.ReasonFor = ReviewReason.Deleted;
@@ -204,9 +204,9 @@ namespace ESO_LangEditor.API.Controllers
                 }
             }
 
-            RepositoryWrapper.LangTextReviewRepo.CreateList(langTexts);
+            _repositoryWrapper.LangTextReviewRepo.CreateList(langTexts);
 
-            if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
                 throw new Exception("加入审核表失败");
             }
@@ -222,7 +222,7 @@ namespace ESO_LangEditor.API.Controllers
             var userId = _userManager.GetUserId(HttpContext.User);
             Guid userIdinGuid = new Guid(userId);
 
-            var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langTextForUpdateZh.Id);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langTextForUpdateZh.Id);
 
             if (langtext == null)
             {
@@ -230,7 +230,7 @@ namespace ESO_LangEditor.API.Controllers
             }
 
             //Check if langtext already in Review.
-            var langtextInReview = await RepositoryWrapper.LangTextReviewRepo.GetByIdAsync(langTextForUpdateZh.Id);
+            var langtextInReview = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langTextForUpdateZh.Id);
 
             if (langtextInReview != null)   //检查是否存在于审核表中
             {
@@ -241,23 +241,23 @@ namespace ESO_LangEditor.API.Controllers
                 else
                 {
                     //为否则更新当前待审核文本
-                    Mapper.Map(langTextForUpdateZh, langtextInReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
+                    _mapper.Map(langTextForUpdateZh, langtextInReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 
-                    RepositoryWrapper.LangTextReviewRepo.Update(langtextInReview);  //Update ReviewRepo wating for review.
+                    _repositoryWrapper.LangTextReviewRepo.Update(langtextInReview);  //Update ReviewRepo wating for review.
                 }
             }
             else //如果不在审核表内
             {
                 //创建待审核文本
-                Mapper.Map(langTextForUpdateZh, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+                _mapper.Map(langTextForUpdateZh, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
 
-                var langtextReview = Mapper.Map<LangTextReview>(langtext);
+                var langtextReview = _mapper.Map<LangTextReview>(langtext);
                 langtextReview.ReasonFor = ReviewReason.ZhChanged;
 
-                RepositoryWrapper.LangTextReviewRepo.Create(langtextReview);    //Move to ReviewRepo wating for review.
+                _repositoryWrapper.LangTextReviewRepo.Create(langtextReview);    //Move to ReviewRepo wating for review.
             }
 
-            if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
                 throw new Exception("加入审核表失败");
             }
@@ -280,8 +280,8 @@ namespace ESO_LangEditor.API.Controllers
 
             foreach(var lang in langTextForUpdateZhList)
             {
-                var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(lang.Id);
-                var langtextInReview = await RepositoryWrapper.LangTextReviewRepo.GetByIdAsync(lang.Id);
+                var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(lang.Id);
+                var langtextInReview = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(lang.Id);
 
                 if (lang != null)
                 {
@@ -292,8 +292,8 @@ namespace ESO_LangEditor.API.Controllers
                 {
                     if (userIdinGuid == langtextInReview.UserId)    //如果用户ID与文本用户ID相同
                     {
-                        Mapper.Map(lang, langtextInReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
-                        RepositoryWrapper.LangTextReviewRepo.Update(langtextInReview);  //Update ReviewRepo wating for review.                                                           
+                        _mapper.Map(lang, langtextInReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
+                        _repositoryWrapper.LangTextReviewRepo.Update(langtextInReview);  //Update ReviewRepo wating for review.                                                           
                     }
                     else  
                     {
@@ -304,16 +304,16 @@ namespace ESO_LangEditor.API.Controllers
                 else //如果不在审核表内
                 {
                     //创建待审核文本
-                    Mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+                    _mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
 
-                    var langtextReview = Mapper.Map<LangTextReview>(langtext);
+                    var langtextReview = _mapper.Map<LangTextReview>(langtext);
                     langtextReview.ReasonFor = ReviewReason.ZhChanged;
 
-                    RepositoryWrapper.LangTextReviewRepo.Create(langtextReview);    //Move to ReviewRepo wating for review.
+                    _repositoryWrapper.LangTextReviewRepo.Create(langtextReview);    //Move to ReviewRepo wating for review.
                 }
             }
 
-            if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
                 throw new Exception("加入审核表失败");
             }
@@ -332,23 +332,23 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<ActionResult> UpdateLangtextEnAsync(Guid langtextID, LangTextForUpdateEnDto langTextForUpdateEn)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
 
             if (langtext == null)
             {
                 return NotFound();
             }
-            Mapper.Map(langTextForUpdateEn, langtext, typeof(LangTextForUpdateEnDto), typeof(LangText));
+            _mapper.Map(langTextForUpdateEn, langtext, typeof(LangTextForUpdateEnDto), typeof(LangText));
 
-            var langtextReview = Mapper.Map<LangTextReview>(langtext);
+            var langtextReview = _mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.EnChanged;
             langtextReview.UserId = new Guid(userId);
             langtextReview.EnLastModifyTimestamp = DateTime.UtcNow;
 
             //Move to ReviewRepo wating for review.
-            RepositoryWrapper.LangTextReviewRepo.Create(langtextReview);
+            _repositoryWrapper.LangTextReviewRepo.Create(langtextReview);
 
-            if (!await RepositoryWrapper.LangTextRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
                 throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
             }
@@ -365,7 +365,7 @@ namespace ESO_LangEditor.API.Controllers
 
             foreach (var enChanged in langTextForUpdateEns)
             {
-                var langtext = await RepositoryWrapper.LangTextRepo.GetByIdAsync(enChanged.Id);
+                var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(enChanged.Id);
 
                 if (langtext != null)
                 {
@@ -374,16 +374,16 @@ namespace ESO_LangEditor.API.Controllers
                     langtext.EnLastModifyTimestamp = DateTime.UtcNow;
                     langtext.UpdateStats = enChanged.UpdateStats;
 
-                    var langtextReview = Mapper.Map<LangTextReview>(langtext);
+                    var langtextReview = _mapper.Map<LangTextReview>(langtext);
                     langtextReview.ReasonFor = ReviewReason.EnChanged;
 
                     langTexts.Add(langtextReview);
                 }
             }
             //Move to ReviewRepo wating for review.
-            RepositoryWrapper.LangTextReviewRepo.CreateList(langTexts);
+            _repositoryWrapper.LangTextReviewRepo.CreateList(langTexts);
 
-            if (!await RepositoryWrapper.LangTextRepo.SaveAsync())
+            if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
                 throw new Exception("加入审核表失败");
             }

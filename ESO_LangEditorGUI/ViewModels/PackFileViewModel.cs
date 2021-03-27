@@ -1,4 +1,5 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
 using ESO_LangEditorGUI.Views;
@@ -19,8 +20,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _addonVersion;
         private string _apiVersion;
         private bool _buttonprogress;
-        //private List<FilePaths> _copyFilePaths;
-        //private List<FilePaths> _filePaths;
+        private static PackLangVersion AddonVersionConfig;
 
         private PackToRelase _packToRelaseWindow;
 
@@ -56,6 +56,11 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             //exportToFileCommand = new ExportToFileCommand();
             _packToRelaseWindow = packToRelaseWindow;
+
+            AddonVersionConfig = PackLangVersion.Load();
+
+            AddonVersion = AddonVersionConfig.AddonVersion;
+            ApiVersion = AddonVersionConfig.AddonApiVersion;
         }
 
         //private void Pack_button_Click()
@@ -91,6 +96,10 @@ namespace ESO_LangEditorGUI.ViewModels
             _packToRelaseWindow.Pack_button.IsEnabled = false;
 
             await Task.Run(() => packfile.ProcessFiles());
+
+            AddonVersionConfig.AddonVersion = AddonVersion;
+            AddonVersionConfig.AddonApiVersion = ApiVersion;
+            PackLangVersion.Save(AddonVersionConfig);
 
             ButtonProgress = false;
             _packToRelaseWindow.Pack_button.IsEnabled = true;
