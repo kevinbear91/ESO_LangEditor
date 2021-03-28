@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace ESO_LangEditorDatabaseModifier.Model.v4
@@ -37,5 +38,11 @@ namespace ESO_LangEditorDatabaseModifier.Model.v4
         public DateTime ZhLastModifyTimestamp { get; set; }
 
         public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
+        public UserInClient UserForModify { get; set; }
+
+        public Guid ReviewerId { get; set; }
+        [ForeignKey("ReviewerId")]
+        public UserInClient UserForReview { get; set; }
     }
 }

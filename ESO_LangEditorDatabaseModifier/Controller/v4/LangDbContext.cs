@@ -10,6 +10,7 @@ namespace ESO_LangEditorDatabaseModifier.Controller.v4
     {
         public DbSet<LangText> Langtexts { get; set; }
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
+        public DbSet<UserInClient> Users { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(@"Data Source=Data/LangData_v4.db");

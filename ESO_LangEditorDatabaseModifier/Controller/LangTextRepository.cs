@@ -70,6 +70,37 @@ namespace ESO_LangEditorDatabaseModifier.Controller
 
             Debug.WriteLine("Save Done!");
         }
+        public void AddUsersToV4(List<UserInClient> v4UserList)
+        {
+
+            using (var db = new LangDbContextV4())
+            {
+                db.Database.EnsureCreated();
+                db.AddRange(v4UserList);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save Done!");
+        }
+        public UserInClient GetUsersToV4(Guid v4UserId)
+        {
+            using (var db = new LangDbContextV4())
+            {
+                return db.Users.Find(v4UserId);
+            }
+            
+            
+        }
+
+        public Dictionary<Guid, UserInClient> GetUserAllToV4()
+        {
+            using (var db = new LangDbContextV4())
+            {
+                return db.Users.ToDictionary(u => u.Id);
+            }
+
+
+        }
 
     }
 }
