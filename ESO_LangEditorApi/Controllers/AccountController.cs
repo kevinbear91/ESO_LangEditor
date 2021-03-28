@@ -43,32 +43,45 @@ namespace ESO_LangEditor.API.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> AddUserAsync(RegisterUser registerUser)
-        {
-            var user = new User
-            {
-                UserName = registerUser.UserName,
-                Email = registerUser.Email,
+        //[HttpPost("register")]
+        //public async Task<IActionResult> AddUserAsync(RegisterUser registerUser)
+        //{
+        //    //if (_userManager.Users.Count() >= 1)
+        //    //{
+        //    //    return BadRequest();
+        //    //}
 
-            };
+        //    var user = new User
+        //    {
+        //        Id = new Guid("8475B578-80F4-4ED0-AE41-C32A45D6D9E6"),
+        //        UserName = registerUser.UserName,
+        //        Email = registerUser.Email,
+        //    };
 
-            IdentityResult result = await _userManager.CreateAsync(user, registerUser.Password);
+        //    IdentityResult result = await _userManager.CreateAsync(user, registerUser.Password);
 
-            if (result.Succeeded)
-            {
+        //    if (result.Succeeded)
+        //    {
+        //        List<string> roles = new List<string>
+        //        {
+        //            "Editor",
+        //            "Reviewer",
+        //            "Admin",
+        //            "Creater"
+        //        };
+        //        var userCreated = await _userManager.FindByIdAsync(user.Id.ToString());
 
-                await _userManager.AddToRoleAsync(user, "Editor");
-                return Ok();
+        //        await _userManager.AddToRolesAsync(userCreated, roles);
+        //        return Ok();
                 
-            }
-            else
-            {
-                ModelState.AddModelError("Error", result.Errors.FirstOrDefault()?.Description);
-                return BadRequest(ModelState);
-            }
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("Error", result.Errors.FirstOrDefault()?.Description);
+        //        return BadRequest(ModelState);
+        //    }
 
-        }
+        //}
 
         [HttpPost("login", Name = nameof(Login))]
         public async Task<IActionResult> Login(LoginUserDto loginUser)

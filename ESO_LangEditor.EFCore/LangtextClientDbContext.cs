@@ -15,6 +15,7 @@ namespace ESO_LangEditor.EFCore
 
         public DbSet<LangText> Langtexts { get; set; }
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
+        public DbSet<UserInClient> Users { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{

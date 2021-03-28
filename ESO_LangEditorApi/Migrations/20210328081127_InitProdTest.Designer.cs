@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ESO_LangEditor.API.Migrations
 {
     [DbContext(typeof(LangtextApiDbContext))]
-    [Migration("20210114170057_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20210328081127_InitProdTest")]
+    partial class InitProdTest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,6 +65,10 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ReviewerId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Langtexts");
                 });
 
@@ -89,6 +93,9 @@ namespace ESO_LangEditor.API.Migrations
                     b.Property<byte>("LangTextType")
                         .HasColumnType("smallint");
 
+                    b.Property<int>("ReasonFor")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("ReviewTimestamp")
                         .HasColumnType("timestamp without time zone");
 
@@ -115,7 +122,26 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ReviewerId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("LangtextArchive");
+                });
+
+            modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangTextRevNumber", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("LangTextRev")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LangtextRevNumber");
                 });
 
             modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangTextReview", b =>
@@ -136,6 +162,9 @@ namespace ESO_LangEditor.API.Migrations
                     b.Property<byte>("LangTextType")
                         .HasColumnType("smallint");
 
+                    b.Property<int>("ReasonFor")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("ReviewTimestamp")
                         .HasColumnType("timestamp without time zone");
 
@@ -162,7 +191,32 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ReviewerId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("LangtextReview");
+                });
+
+            modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangTextRevised", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("LangTextRevNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("LangtextID")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ReasonFor")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LangtextRevised");
                 });
 
             modelBuilder.Entity("ESO_LangEditor.Core.Entities.Role", b =>
@@ -190,6 +244,38 @@ namespace ESO_LangEditor.API.Migrations
                         .HasName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("f3eb66da-8481-4cf7-9afc-f55fe1089ff4"),
+                            ConcurrencyStamp = "09133d05-3d2f-4c20-956c-7c77d89bcbb8",
+                            Name = "InitUser"
+                        },
+                        new
+                        {
+                            Id = new Guid("bee2ce3d-ee28-49c5-ab49-23a1f522ab6f"),
+                            ConcurrencyStamp = "50bd0f33-3050-4a2b-aa56-acc2a998fe15",
+                            Name = "Editor"
+                        },
+                        new
+                        {
+                            Id = new Guid("94cb5476-9d89-4cb0-b9ac-c8b93169580a"),
+                            ConcurrencyStamp = "9f49bdde-38e5-4466-afca-67843f31fc28",
+                            Name = "Reviewer"
+                        },
+                        new
+                        {
+                            Id = new Guid("0f4f6491-e2a0-49d0-9334-fe05dd4a7bba"),
+                            ConcurrencyStamp = "b3f05ba0-4cc9-41cd-b625-f635f4430507",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("91c03833-f7c1-4a59-9563-451a6cffc183"),
+                            ConcurrencyStamp = "b51cc952-1a28-4d41-92eb-9eca14b661fb",
+                            Name = "Creater"
+                        });
                 });
 
             modelBuilder.Entity("ESO_LangEditor.Core.Entities.User", b =>
@@ -211,6 +297,9 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<int>("InReviewCount")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -235,15 +324,38 @@ namespace ESO_LangEditor.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("RefreshTokenExpireTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("RemovedCount")
+                        .HasColumnType("integer");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
+
+                    b.Property<int>("TranslatedCount")
+                        .HasColumnType("integer");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("UserAvatarPath")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserEsoId")
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
+
                     b.Property<string>("UserName")
                         .HasColumnType("character varying(256)")
                         .HasMaxLength(256);
+
+                    b.Property<string>("UserNickName")
+                        .HasColumnType("character varying(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("Id");
 
@@ -356,6 +468,51 @@ namespace ESO_LangEditor.API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangText", b =>
+                {
+                    b.HasOne("ESO_LangEditor.Core.Entities.User", "UserForReview")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ESO_LangEditor.Core.Entities.User", "UserForModify")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangTextArchive", b =>
+                {
+                    b.HasOne("ESO_LangEditor.Core.Entities.User", "UserForReview")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ESO_LangEditor.Core.Entities.User", "UserForModify")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangTextReview", b =>
+                {
+                    b.HasOne("ESO_LangEditor.Core.Entities.User", "UserForReview")
+                        .WithMany()
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ESO_LangEditor.Core.Entities.User", "UserForModify")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

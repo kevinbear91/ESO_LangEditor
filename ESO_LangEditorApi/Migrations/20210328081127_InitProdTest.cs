@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ESO_LangEditor.API.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class InitProdTest : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,15 @@ namespace ESO_LangEditor.API.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    UserNickName = table.Column<string>(maxLength: 20, nullable: true),
+                    UserEsoId = table.Column<string>(maxLength: 20, nullable: true),
+                    UserAvatarPath = table.Column<string>(nullable: true),
+                    TranslatedCount = table.Column<int>(nullable: false),
+                    InReviewCount = table.Column<int>(nullable: false),
+                    RemovedCount = table.Column<int>(nullable: false),
+                    RefreshToken = table.Column<string>(nullable: true),
+                    RefreshTokenExpireTime = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,73 +56,31 @@ namespace ESO_LangEditor.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LangtextArchive",
+                name: "LangtextRevised",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TextId = table.Column<string>(nullable: true),
-                    IdType = table.Column<int>(nullable: false),
-                    TextEn = table.Column<string>(nullable: true),
-                    TextZh = table.Column<string>(nullable: true),
-                    LangTextType = table.Column<byte>(nullable: false),
-                    IsTranslated = table.Column<byte>(nullable: false),
-                    UpdateStats = table.Column<string>(nullable: true),
-                    EnLastModifyTimestamp = table.Column<DateTime>(nullable: false),
-                    ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ReviewerId = table.Column<Guid>(nullable: false),
-                    ReviewTimestamp = table.Column<DateTime>(nullable: false),
-                    ArchiveTimestamp = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LangtextID = table.Column<Guid>(nullable: false),
+                    LangTextRevNumber = table.Column<int>(nullable: false),
+                    ReasonFor = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LangtextArchive", x => x.Id);
+                    table.PrimaryKey("PK_LangtextRevised", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "LangtextReview",
+                name: "LangtextRevNumber",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    TextId = table.Column<string>(nullable: true),
-                    IdType = table.Column<int>(nullable: false),
-                    TextEn = table.Column<string>(nullable: true),
-                    TextZh = table.Column<string>(nullable: true),
-                    LangTextType = table.Column<byte>(nullable: false),
-                    IsTranslated = table.Column<byte>(nullable: false),
-                    UpdateStats = table.Column<string>(nullable: true),
-                    EnLastModifyTimestamp = table.Column<DateTime>(nullable: false),
-                    ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ReviewerId = table.Column<Guid>(nullable: false),
-                    ReviewTimestamp = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    LangTextRev = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LangtextReview", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Langtexts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    TextId = table.Column<string>(nullable: true),
-                    IdType = table.Column<int>(nullable: false),
-                    TextEn = table.Column<string>(nullable: true),
-                    TextZh = table.Column<string>(nullable: true),
-                    LangTextType = table.Column<byte>(nullable: false),
-                    IsTranslated = table.Column<byte>(nullable: false),
-                    UpdateStats = table.Column<string>(nullable: true),
-                    EnLastModifyTimestamp = table.Column<DateTime>(nullable: false),
-                    ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ReviewerId = table.Column<Guid>(nullable: false),
-                    ReviewTimestamp = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Langtexts", x => x.Id);
+                    table.PrimaryKey("PK_LangtextRevNumber", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,6 +189,126 @@ namespace ESO_LangEditor.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "LangtextArchive",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    TextId = table.Column<string>(nullable: true),
+                    IdType = table.Column<int>(nullable: false),
+                    TextEn = table.Column<string>(nullable: true),
+                    TextZh = table.Column<string>(nullable: true),
+                    LangTextType = table.Column<byte>(nullable: false),
+                    IsTranslated = table.Column<byte>(nullable: false),
+                    UpdateStats = table.Column<string>(nullable: true),
+                    EnLastModifyTimestamp = table.Column<DateTime>(nullable: false),
+                    ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    ReviewerId = table.Column<Guid>(nullable: false),
+                    ReviewTimestamp = table.Column<DateTime>(nullable: false),
+                    ArchiveTimestamp = table.Column<DateTime>(nullable: false),
+                    ReasonFor = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LangtextArchive", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LangtextArchive_AspNetUsers_ReviewerId",
+                        column: x => x.ReviewerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LangtextArchive_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LangtextReview",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    TextId = table.Column<string>(nullable: true),
+                    IdType = table.Column<int>(nullable: false),
+                    TextEn = table.Column<string>(nullable: true),
+                    TextZh = table.Column<string>(nullable: true),
+                    LangTextType = table.Column<byte>(nullable: false),
+                    IsTranslated = table.Column<byte>(nullable: false),
+                    UpdateStats = table.Column<string>(nullable: true),
+                    EnLastModifyTimestamp = table.Column<DateTime>(nullable: false),
+                    ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    ReviewerId = table.Column<Guid>(nullable: false),
+                    ReviewTimestamp = table.Column<DateTime>(nullable: false),
+                    ReasonFor = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LangtextReview", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LangtextReview_AspNetUsers_ReviewerId",
+                        column: x => x.ReviewerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LangtextReview_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Langtexts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    TextId = table.Column<string>(nullable: true),
+                    IdType = table.Column<int>(nullable: false),
+                    TextEn = table.Column<string>(nullable: true),
+                    TextZh = table.Column<string>(nullable: true),
+                    LangTextType = table.Column<byte>(nullable: false),
+                    IsTranslated = table.Column<byte>(nullable: false),
+                    UpdateStats = table.Column<string>(nullable: true),
+                    EnLastModifyTimestamp = table.Column<DateTime>(nullable: false),
+                    ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    ReviewerId = table.Column<Guid>(nullable: false),
+                    ReviewTimestamp = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Langtexts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Langtexts_AspNetUsers_ReviewerId",
+                        column: x => x.ReviewerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Langtexts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("f3eb66da-8481-4cf7-9afc-f55fe1089ff4"), "09133d05-3d2f-4c20-956c-7c77d89bcbb8", "InitUser", null },
+                    { new Guid("bee2ce3d-ee28-49c5-ab49-23a1f522ab6f"), "50bd0f33-3050-4a2b-aa56-acc2a998fe15", "Editor", null },
+                    { new Guid("94cb5476-9d89-4cb0-b9ac-c8b93169580a"), "9f49bdde-38e5-4466-afca-67843f31fc28", "Reviewer", null },
+                    { new Guid("0f4f6491-e2a0-49d0-9334-fe05dd4a7bba"), "b3f05ba0-4cc9-41cd-b625-f635f4430507", "Admin", null },
+                    { new Guid("91c03833-f7c1-4a59-9563-451a6cffc183"), "b51cc952-1a28-4d41-92eb-9eca14b661fb", "Creater", null }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -259,6 +345,36 @@ namespace ESO_LangEditor.API.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LangtextArchive_ReviewerId",
+                table: "LangtextArchive",
+                column: "ReviewerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LangtextArchive_UserId",
+                table: "LangtextArchive",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LangtextReview_ReviewerId",
+                table: "LangtextReview",
+                column: "ReviewerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LangtextReview_UserId",
+                table: "LangtextReview",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Langtexts_ReviewerId",
+                table: "Langtexts",
+                column: "ReviewerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Langtexts_UserId",
+                table: "Langtexts",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -283,6 +399,12 @@ namespace ESO_LangEditor.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "LangtextReview");
+
+            migrationBuilder.DropTable(
+                name: "LangtextRevised");
+
+            migrationBuilder.DropTable(
+                name: "LangtextRevNumber");
 
             migrationBuilder.DropTable(
                 name: "Langtexts");
