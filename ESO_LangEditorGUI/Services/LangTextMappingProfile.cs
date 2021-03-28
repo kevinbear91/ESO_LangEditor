@@ -11,17 +11,17 @@ namespace ESO_LangEditorGUI.Services
     {
         public LangTextMappingProfile()
         {
-            CreateMap<LangText, LangTextDto>();
-            CreateMap<LangTextDto, LangText>();
-            CreateMap<LangTextForCreationDto, LangText>();
-            CreateMap<LangTextForUpdateZhDto, LangText>();
+            CreateMap<LangTextClient, LangTextDto>();
+            CreateMap<LangTextDto, LangTextClient>();
+            CreateMap<LangTextForCreationDto, LangTextClient>();
+            CreateMap<LangTextForUpdateZhDto, LangTextClient>();
             CreateMap<LangTextForUpdateZhDto, LangTextReview>();
             CreateMap<LangTextForUpdateEnDto, LangTextReview>();
             CreateMap<User, UserDto>();
             CreateMap<UserProfileModifyBySelfDto, User>();
-            CreateMap<LangTextReview, LangText>();
-            CreateMap<LangText, LangTextReview>();
-            CreateMap<LangText, LangTextArchive>();
+            CreateMap<LangTextReview, LangTextClient>();
+            CreateMap<LangTextClient, LangTextReview>();
+            CreateMap<LangTextClient, LangTextArchive>();
             CreateMap<LangTextReview, LangTextArchive>();
             CreateMap<LangTextRevisedDto, LangTextRevised>();
             CreateMap<LangTextRevNumberDto, LangTextRevNumber>();

@@ -8,7 +8,7 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
 {
     public class RepositoryWrapperClient : IRepositoryWrapperClient
     {
-        private readonly ILangTextRepository _langtextRepository = null;
+        private readonly ILangTextClientRepository _langtextRepository = null;
         private readonly ILangTextRevNumberRepository _langTextRevNumberRepository = null;
         private readonly IUserInClientRepository _userInClientRepository = null;
 
@@ -16,7 +16,7 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
 
         public ILangTextRevNumberRepository LangTextRevNumberRepo => _langTextRevNumberRepository ?? new LangTextRevNumberRepository(LangtextClientDbContext);
 
-        public ILangTextRepository LangTextRepo => _langtextRepository ?? new LangTextRepositoryClient(LangtextClientDbContext);
+        public ILangTextClientRepository LangTextRepo => _langtextRepository ?? new LangTextRepositoryClient(LangtextClientDbContext);
 
         public IUserInClientRepository UserInClientRePo => _userInClientRepository ?? new UserInClientRepository(LangtextClientDbContext);
 

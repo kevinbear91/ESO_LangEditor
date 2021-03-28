@@ -33,7 +33,6 @@ namespace ESO_LangEditorGUI
     /// </summary>
     public partial class App : PrismApplication
     {
-        public static HttpClient ApiClient { get; set; }
         public static bool OnlineMode { get; set; }
         public static IDCatalog iDCatalog = new IDCatalog();
         public static GameVersion gameUpdateVersionName = new GameVersion();
@@ -44,10 +43,7 @@ namespace ESO_LangEditorGUI
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
         public static string UserAvatarPath { get; set; }
-
-        //public static readonly LangtextClientDbContext LangtextClientDb;
         public static readonly IMapper Mapper;
-        //public static readonly IRepositoryWrapperClient RepoClient;
         public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
         public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
 
@@ -58,10 +54,6 @@ namespace ESO_LangEditorGUI
                 .UseLoggerFactory(MyLoggerFactory)
                 .Options;
 
-            //LangtextClientDb = new LangtextClientDbContext(contextOptions);
-            //DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
-            //    .UseSqlite(@"Data Source=Data/LangData_v4.db");
-
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<LangTextMappingProfile>();
@@ -69,7 +61,6 @@ namespace ESO_LangEditorGUI
 
             Mapper = new Mapper(config);
 
-            //RepoClient = new RepositoryWrapperClient(LangtextClientDb);
         }
 
         public void App_Startup(object sender, StartupEventArgs e)
@@ -99,28 +90,6 @@ namespace ESO_LangEditorGUI
             {
                 UserAvatarPath = WorkingDirectory + "/Data/TempAvatar.png";
             }
-            
-
-            
-
-            
-
-
-            //ServiceCollection services = new ServiceCollection();
-            //ConfigureServices(services);
-
-            //InitializeClient();
-            //RegisterDependencies();
-
-
-            //HandshakeJson handshake = new HandshakeJson();
-            //HandshakeJson.Save(handshake);
-
-
-            //LangNetworkService.CompareServerConfig();
-
-            //var startupNetCheck = new StartupNetHandShake(LangConfig);
-
 
 
             //var dbCheck = new StartupDBCheck(@"Data\LangData_v3.db", @"Data\LangData_v3.update");
@@ -144,7 +113,6 @@ namespace ESO_LangEditorGUI
             //    MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
             //new MainWindow().Show();
-            OnlineMode = false;
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -161,23 +129,6 @@ namespace ESO_LangEditorGUI
             var w = Container.Resolve<MainWindow>();
             return w;
         }
-
-        //protected override Window CreateShell()
-        //{
-        //    var w = Container.Resolve<MainWindow>();
-        //    return w;
-        //}
-
-
-        //private void ConfigureServices(IServiceCollection services)
-        //{
-        //    services.AddDbContext<LangtextClientDbContext>(options =>
-        //    {
-        //        options.UseSqlite(@"Data Source=Data/LangData_v3.db");
-        //    });
-        //    //services.AddScoped<IRepositoryWrapperClient, RepositoryWrapperClient>();
-
-        //}
 
     }
     

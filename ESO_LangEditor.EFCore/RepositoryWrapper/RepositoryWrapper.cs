@@ -15,7 +15,7 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
 
         public LangtextApiDbContext LangtextApiDbContext { get; }
 
-        public ILangTextRepository LangTextRepo => _langtextRepository ?? new MockLangtextRepository(LangtextApiDbContext);
+        public ILangTextRepository LangTextRepo => _langtextRepository ?? new LangTextRepository(LangtextApiDbContext);
 
         public ILangTextReviewRepository LangTextReviewRepo => _langtextReviewRepository ?? new LangTextReivewRepository(LangtextApiDbContext);
 

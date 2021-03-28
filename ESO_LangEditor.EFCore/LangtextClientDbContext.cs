@@ -13,7 +13,7 @@ namespace ESO_LangEditor.EFCore
             
         }
 
-        public DbSet<LangText> Langtexts { get; set; }
+        public DbSet<LangTextClient> Langtexts { get; set; }
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
         public DbSet<UserInClient> Users { get; set; }
 

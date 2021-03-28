@@ -26,7 +26,7 @@ namespace ESO_LangEditorGUI.Services
 
         public async Task<LangTextDto> GetLangTextByGuidAsync(Guid langtextGuid)
         {
-            LangText langtext;
+            LangTextClient langtext;
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
@@ -41,7 +41,7 @@ namespace ESO_LangEditorGUI.Services
         public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, SearchTextType searchType, SearchPostion searchPostion)
         {
             string searchPosAndWord = GetKeywordWithPostion(searchPostion, keyWord);
-            List<LangText> langtext;
+            List<LangTextClient> langtext;
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
@@ -74,7 +74,7 @@ namespace ESO_LangEditorGUI.Services
             var secondType = GetSearchTypeToStringRaw(searchType2);
             string searchPosAndWord = GetKeywordWithPostion(searchPostion, keyWord2);
 
-            List <LangText> langtext;
+            List <LangTextClient> langtext;
 
             Debug.WriteLine("Key1: {0}, Key2: {1}, fT: {2}, sT: {3}.", keyWord, searchPosAndWord, firstType, secondType);
 
@@ -97,7 +97,7 @@ namespace ESO_LangEditorGUI.Services
 
         public async Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync()
         {
-            List<LangText> langtext;
+            List<LangTextClient> langtext;
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
@@ -113,7 +113,7 @@ namespace ESO_LangEditorGUI.Services
         }
 
 
-        public async Task<bool> AddLangtexts(List<LangText> langtextDto)
+        public async Task<bool> AddLangtexts(List<LangTextClient> langtextDto)
         {
             int saveCount = 0;
 
@@ -131,7 +131,7 @@ namespace ESO_LangEditorGUI.Services
         {
             int saveCount = 0;
 
-            var lang = _mapper.Map<List<LangText>>(langtextDto);
+            var lang = _mapper.Map<List<LangTextClient>>(langtextDto);
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
@@ -152,7 +152,7 @@ namespace ESO_LangEditorGUI.Services
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 var langtext = await db.Langtexts.FindAsync(langtextDto.Id);
-                _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+                _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangTextClient));
 
                 db.Langtexts.Update(langtext);
                 saveCount = await db.SaveChangesAsync();
@@ -172,7 +172,7 @@ namespace ESO_LangEditorGUI.Services
                 foreach(var lang in langtextDto)
                 {
                     var langtext = await db.Langtexts.FindAsync(lang.Id);
-                    _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+                    _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangTextClient));
 
                     db.Langtexts.Update(langtext);
                 }
@@ -190,7 +190,7 @@ namespace ESO_LangEditorGUI.Services
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                var lang = _mapper.Map<List<LangText>>(langtextDto);
+                var lang = _mapper.Map<List<LangTextClient>>(langtextDto);
 
                 db.Langtexts.UpdateRange(lang);
                 saveCount = await db.SaveChangesAsync();
@@ -207,7 +207,7 @@ namespace ESO_LangEditorGUI.Services
             {
                 langtext.IsTranslated = 2;
             }
-            var lang = _mapper.Map<List<LangText>>(langtexts);
+            var lang = _mapper.Map<List<LangTextClient>>(langtexts);
 
             using(var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
@@ -219,7 +219,7 @@ namespace ESO_LangEditorGUI.Services
             return saveCount > 0;
         }
 
-        public async Task<bool> DeleteLangtexts(List<LangText> langtextDto)
+        public async Task<bool> DeleteLangtexts(List<LangTextClient> langtextDto)
         {
             int saveCount = 0;
 

@@ -168,18 +168,18 @@ namespace ESO_LangEditorGUI.Services
 
             if (added.Count >= 1)
             {
-                var langtexts = _mapper.Map<List<LangText>>(added);
+                var langtexts = _mapper.Map<List<LangTextClient>>(added);
                 await _langTextRepoClient.AddLangtexts(langtexts);
             }
 
             if (deleted.Count >= 1)
             {
-                List<LangText> langtextForDelete = new List<LangText>();
+                List<LangTextClient> langtextForDelete = new List<LangTextClient>();
 
                 foreach (var id in deleted)
                 {
                     var langtextDto = await _langTextRepoClient.GetLangTextByGuidAsync(id);
-                    var langtext = _mapper.Map<LangText>(langtextDto);
+                    var langtext = _mapper.Map<LangTextClient>(langtextDto);
                     langtextForDelete.Add(langtext);
                 }
                 await _langTextRepoClient.DeleteLangtexts(langtextForDelete);

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ESO_LangEditor.EFCore.DataRepositories
 {
-    public class LangTextRepositoryClient : BaseRepository<LangText, Guid>, ILangTextRepository
+    public class LangTextRepositoryClient : BaseRepository<LangTextClient, Guid>, ILangTextClientRepository
     {
         public LangTextRepositoryClient(DbContext dbcontext) : base(dbcontext)
         {

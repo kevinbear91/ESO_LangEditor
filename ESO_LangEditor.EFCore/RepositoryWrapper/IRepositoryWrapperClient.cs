@@ -7,7 +7,7 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
 {
     public interface IRepositoryWrapperClient
     {
-        ILangTextRepository LangTextRepo { get; }
+        ILangTextClientRepository LangTextRepo { get; }
         ILangTextRevNumberRepository LangTextRevNumberRepo { get; }
         IUserInClientRepository UserInClientRePo { get; }
     }
