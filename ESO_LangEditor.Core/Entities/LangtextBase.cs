@@ -45,5 +45,8 @@ namespace ESO_LangEditor.Core.Entities
         public Guid ReviewerId { get; set; }
         [ForeignKey("ReviewerId")]
         public User UserForReview { get; set; }
+
+        //文本修订号
+        public int Revised { get; set; }
     }
 }

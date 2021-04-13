@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,10 +31,13 @@ namespace ESO_LangEditor.API.Controllers
         private ITokenService _tokenService;
         private IWebHostEnvironment _webHostEnvironment;
         private IMapper _mapper;
+        private ILogger<AccountController> _logger;
+        private string _loggerMessage;
 
         public AccountController(UserManager<User> userManager,
           SignInManager<User> signInManager, ITokenService tokenService,
-          RoleManager<Role> roleManager, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+          RoleManager<Role> roleManager, IMapper mapper, IWebHostEnvironment webHostEnvironment,
+          ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -41,6 +45,7 @@ namespace ESO_LangEditor.API.Controllers
             _roleManager = roleManager;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         //[HttpPost("register")]
@@ -86,21 +91,20 @@ namespace ESO_LangEditor.API.Controllers
         [HttpPost("login", Name = nameof(Login))]
         public async Task<IActionResult> Login(LoginUserDto loginUser)
         {
-
-            //var result = await _signInManager.PasswordSignInAsync(
-            //        loginUser.UserName, loginUser.Password, true, false);
-
-            //var user = await _userManager.FindByNameAsync(loginUser.UserName);
             var user = await _userManager.FindByIdAsync(loginUser.UserID.ToString());
 
             if (user == null)
             {
+                _loggerMessage = "Can't find user, From client UserID: " + loginUser.UserID.ToString();
+                _logger.LogInformation(_loggerMessage);
                 return Unauthorized();
             }
 
 
             if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
+                _loggerMessage = "User Password not match! UserID: " + loginUser.UserID.ToString();
+                _logger.LogInformation(_loggerMessage);
                 return Unauthorized();
             }
 
@@ -109,16 +113,8 @@ namespace ESO_LangEditor.API.Controllers
                 return BadRequest(CustomRespondCode.InitAccountRequired);
             }
 
-            //await _userManager.GetRolesAsync(user)
-
-
-            //if (!result.Succeeded)
-            //{
-            //    //return RedirectToAction("index"，"home");
-            //    return BadRequest();
-            //}
-
-            var userClaims = await _userManager.GetClaimsAsync(user);
+            List<Claim> userClaims = new List<Claim>();
+            //var userClaims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
             foreach (var roleItem in userRoles)
@@ -135,12 +131,6 @@ namespace ESO_LangEditor.API.Controllers
 
             claims.AddRange(userClaims);
 
-            //var claims = new List<Claim>
-            //{
-            //    new Claim(ClaimTypes.Name, loginUser.UserName),
-            //    new Claim(ClaimTypes., loginUser.UserName),
-            //    //new Claim(ClaimTypes.Role, await _userManager.GetRolesAsync(user))
-            //};
             var authToken = _tokenService.GenerateAccessToken(claims);
             var refreshToken = _tokenService.GenerateRefreshToken();
             user.RefreshToken = refreshToken;
@@ -169,11 +159,12 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user == null)
             {
+                _loggerMessage = "User first time login null, UserID: " + loginUser.UserID.ToString();
+                _logger.LogInformation(_loggerMessage);
                 return Unauthorized();
             }
 
             if (user.PasswordHash == null 
-                && user.UserNickName == null
                 && user.RefreshToken == loginUser.RefreshToken)
             {
                 var userClaims = await _userManager.GetClaimsAsync(user);
@@ -213,7 +204,8 @@ namespace ESO_LangEditor.API.Controllers
                     RefreshToken = refreshToken
                 });
             }
-
+            _loggerMessage = "User first time login failed, UserID: " + loginUser.UserID.ToString();
+            _logger.LogInformation(_loggerMessage);
             return BadRequest();
 
         }
@@ -225,6 +217,68 @@ namespace ESO_LangEditor.API.Controllers
 
             return Ok();
             //return RedirectToAction("index"，"home");
+        }
+
+        [HttpPost("refresh", Name = nameof(RefreshToken))]
+        public async Task<ActionResult> RefreshToken(TokenDto tokenDto)
+        {
+            if (tokenDto is null)
+            {
+                return BadRequest("Invalid client request");
+            }
+            string authToken = tokenDto.AuthToken;
+            string refreshToken = tokenDto.RefreshToken;
+            var principal = _tokenService.GetPrincipalFromExpiredToken(authToken);
+            var username = principal.Identity.Name; //this is mapped to the Name claim by default
+
+            //var user = userContext.LoginModels.SingleOrDefault(u => u.UserName == username);
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpireTime <= DateTime.Now)
+            {
+                return BadRequest("Invalid client request");
+            }
+
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            foreach (var roleItem in userRoles)
+            {
+                userClaims.Add(new Claim(ClaimTypes.Role, roleItem));
+            }
+
+            var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                    //new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
+                };
+
+            claims.AddRange(userClaims);
+
+            var newAuthTokenToken = _tokenService.GenerateAccessToken(claims);
+            var newRefreshToken = _tokenService.GenerateRefreshToken();
+            user.RefreshToken = newRefreshToken;
+
+            await _userManager.UpdateAsync(user);
+
+            return new ObjectResult(new
+            {
+                authToken = newAuthTokenToken,
+                refreshToken = newRefreshToken
+            });
+        }
+
+        [Authorize]
+        [HttpPost("revoke", Name = nameof(RevokeToken))]
+        public async Task<ActionResult> RevokeToken()
+        {
+            var username = User.Identity.Name;
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
+            user.RefreshToken = null;
+            await _userManager.UpdateAsync(user);
+            return NoContent();
         }
 
         [Authorize]
@@ -306,6 +360,9 @@ namespace ESO_LangEditor.API.Controllers
                 foreach (var error in setNameResult.Errors)
                 {
                     Debug.WriteLine("UserName error: " + error);
+                    _loggerMessage = "User Set UserName Failed, UserID: " + userInfoChangeDto.UserID.ToString() 
+                        + ", Error: " + error;
+                    _logger.LogError(_loggerMessage);
                     return BadRequest(error);
                 }
             }
@@ -317,6 +374,9 @@ namespace ESO_LangEditor.API.Controllers
                 foreach (var error in result.Errors)
                 {
                     Debug.WriteLine("Update User error: " + error);
+                    _loggerMessage = "User update info Failed, UserID: " + userInfoChangeDto.UserID.ToString()
+                        + ", Error: " + error;
+                    _logger.LogError(_loggerMessage);
                     return BadRequest(error);
                 }
             }
@@ -328,6 +388,9 @@ namespace ESO_LangEditor.API.Controllers
                 foreach (var error in result.Errors)
                 {
                     Debug.WriteLine(error);
+                    _loggerMessage = "User update password Failed, UserID: " + userInfoChangeDto.UserID.ToString()
+                        + ", Error: " + error;
+                    _logger.LogError(_loggerMessage);
                     return BadRequest(error);
                 }
                 //return Ok();
@@ -351,7 +414,8 @@ namespace ESO_LangEditor.API.Controllers
         {
             var userIdFromToken = _userManager.GetUserId(HttpContext.User);
             var user = await _userManager.FindByIdAsync(userIdFromToken);
-            
+            var file = avatar;
+
             if (user == null && userIdFromToken != userGuid.ToString())
             {
                 return Unauthorized();
@@ -359,7 +423,7 @@ namespace ESO_LangEditor.API.Controllers
 
             //string uniqueFileName = null;
 
-            if (avatar.Length > 512 * 1024) // 512 * 1024 = 512 KB
+            if (file == null || file.Length > 512 * 1024) // 512 * 1024 = 512 KB
             {
                 return BadRequest();
             }
@@ -370,10 +434,13 @@ namespace ESO_LangEditor.API.Controllers
 
             Debug.WriteLine("uplpad folder: {0}, filename: {1}, filepath: {2}", uploadsFolder, uniqueFileName, filePath);
 
-            avatar.CopyTo(new FileStream(filePath, FileMode.Create));
+            file.CopyTo(new FileStream(filePath, FileMode.Create));
 
             if(!System.IO.File.Exists(filePath))
             {
+                _loggerMessage = "User uoload avatar Failed, UserID: " + userIdFromToken
+                        + ", FilePath: " + filePath;
+                _logger.LogError(_loggerMessage);
                 return BadRequest();
             }
 
@@ -384,6 +451,7 @@ namespace ESO_LangEditor.API.Controllers
             
         }
 
+        [Authorize]
         [HttpGet("users")]
         public async Task<ActionResult<List<UserInClientDto>>> GetUsersAsync()
         {
@@ -401,6 +469,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("{userGuid}/roles")]
         public async Task<ActionResult<List<string>>> GetUserRolesAsync(string userGuid)
         {

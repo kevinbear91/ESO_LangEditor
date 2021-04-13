@@ -8,6 +8,8 @@ using Prism.Events;
 using ESO_LangEditorGUI.Views.UserControls;
 using ESO_LangEditorGUI.EventAggres;
 using System.Windows.Controls;
+using System.ComponentModel;
+using ESO_LangEditor.Core.Models;
 
 namespace ESO_LangEditorGUI.Views
 {
@@ -32,6 +34,7 @@ namespace ESO_LangEditorGUI.Views
             vm.CloseDrawerHostEvent += (s, e) => this.CloseDrawerHostEvent();
             RootDialogWindow.Loaded += vm.RootDialogWindow_Loaded;
             //RootDialogWindow.IsOpen = true;
+            vm.OnRequestClose += (s, e) => this.Close();
 
         }
 
@@ -58,6 +61,25 @@ namespace ESO_LangEditorGUI.Views
         private void CloseDrawerHostEvent()
         {
             DrawerHostMainWindow.IsTopDrawerOpen = false;
+        }
+
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            var config = App.LangConfig;
+            AppConfigClient.Save(config);
+
+            if (App.LangConfig.AppSetting.IsAskToExit)
+            {
+                base.OnClosing(e);
+                MessageBoxResult result = MessageBox.Show("确定要退出？", "关闭确认", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                e.Cancel = result == MessageBoxResult.Cancel;
+            }
+            else
+            {
+                base.OnClosing(e);
+            }
+
         }
 
         private void Sample2_DialogHost_OnDialogClosing(object sender, DialogClosingEventArgs eventArgs)

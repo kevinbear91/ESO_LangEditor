@@ -19,13 +19,9 @@ namespace ESO_LangEditorGUI.Views.UserControls
     /// </summary>
     public partial class ProgressDialog : UserControl
     {
-        public ProgressDialogViewModel DataContent { get; } = new ProgressDialogViewModel();
-
         public ProgressDialog()
         {
             InitializeComponent();
-
-            DataContext = DataContent;
         }
 
     }

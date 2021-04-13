@@ -16,7 +16,7 @@ namespace ESO_LangEditor.API.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.10")
+                .HasAnnotation("ProductVersion", "3.1.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("ESO_LangEditor.Core.Entities.LangText", b =>
@@ -42,6 +42,9 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.Property<Guid>("ReviewerId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Revised")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TextEn")
                         .HasColumnType("text");
@@ -99,6 +102,9 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.Property<Guid>("ReviewerId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Revised")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TextEn")
                         .HasColumnType("text");
@@ -168,6 +174,9 @@ namespace ESO_LangEditor.API.Migrations
 
                     b.Property<Guid>("ReviewerId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Revised")
+                        .HasColumnType("integer");
 
                     b.Property<string>("TextEn")
                         .HasColumnType("text");
@@ -246,33 +255,38 @@ namespace ESO_LangEditor.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("f3eb66da-8481-4cf7-9afc-f55fe1089ff4"),
-                            ConcurrencyStamp = "09133d05-3d2f-4c20-956c-7c77d89bcbb8",
-                            Name = "InitUser"
+                            Id = new Guid("52ffbdd2-784c-47fd-b0a8-954c19d1dc0e"),
+                            ConcurrencyStamp = "e0c069e3-b1fc-4c2c-afca-229a5452c076",
+                            Name = "InitUser",
+                            NormalizedName = "INITUSER"
                         },
                         new
                         {
-                            Id = new Guid("bee2ce3d-ee28-49c5-ab49-23a1f522ab6f"),
-                            ConcurrencyStamp = "50bd0f33-3050-4a2b-aa56-acc2a998fe15",
-                            Name = "Editor"
+                            Id = new Guid("22bd81fb-f232-48b7-a36d-97ed7fe9776a"),
+                            ConcurrencyStamp = "3a6c3f86-6b4c-4660-afea-54bf599c2504",
+                            Name = "Editor",
+                            NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = new Guid("94cb5476-9d89-4cb0-b9ac-c8b93169580a"),
-                            ConcurrencyStamp = "9f49bdde-38e5-4466-afca-67843f31fc28",
-                            Name = "Reviewer"
+                            Id = new Guid("cf29c56b-07b6-4a56-b1dc-ba680676a416"),
+                            ConcurrencyStamp = "498b1e83-19e2-4b3f-921d-8cb357855c69",
+                            Name = "Reviewer",
+                            NormalizedName = "REVIEWER"
                         },
                         new
                         {
-                            Id = new Guid("0f4f6491-e2a0-49d0-9334-fe05dd4a7bba"),
-                            ConcurrencyStamp = "b3f05ba0-4cc9-41cd-b625-f635f4430507",
-                            Name = "Admin"
+                            Id = new Guid("38f07190-d0e7-426d-9dbf-9435f6d96f67"),
+                            ConcurrencyStamp = "e877b2dd-c7b2-4458-9a36-7351b7c73731",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("91c03833-f7c1-4a59-9563-451a6cffc183"),
-                            ConcurrencyStamp = "b51cc952-1a28-4d41-92eb-9eca14b661fb",
-                            Name = "Creater"
+                            Id = new Guid("11d9aa1e-b9d3-4fea-ab6a-16c8380e30b1"),
+                            ConcurrencyStamp = "473e7648-d500-4d3e-8260-c2c7d658ef82",
+                            Name = "Creater",
+                            NormalizedName = "CREATER"
                         });
                 });
 

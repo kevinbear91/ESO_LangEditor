@@ -28,6 +28,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private bool _waitingResult = false;
         private bool _FirstTimeInit = false;
         private string _userAvatarPath = App.UserAvatarPath;
+        private UserInClientDto _userDto;
 
         private PasswordBox _passwordBox;
         private PasswordBox _passwordBoxConfirm;
@@ -80,6 +81,30 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _userAvatarPath, value); }
         }
 
+        public string UserTranslatedInt
+        {
+            get { return "翻译了 " + _userDto.TranslatedCount + " 条"; }
+            //set { SetProperty(ref _userAvatarPath, value); }
+        }
+
+        public string UserInReviewInt
+        {
+            get { return "待通过 " + _userDto.InReviewCount + " 条"; }
+            //set { SetProperty(ref _userAvatarPath, value); }
+        }
+
+        public string UserRemovedInt
+        {
+            get { return "被移除了 " + _userDto.RemovedCount + " 条"; }
+            //set { SetProperty(ref _userAvatarPath, value); }
+        }
+
+        public UserInClientDto UserDto
+        {
+            get { return _userDto; }
+            set { SetProperty(ref _userDto, value); }
+        }
+
         IEventAggregator _ea;
 
 
@@ -87,6 +112,7 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             _ea = ea;
             _ea.GetEvent<ConnectProgressString>().Subscribe(ConnectStatus);
+            UserDto = App.User;
         }
 
         private void ConnectStatus(string str)
@@ -148,6 +174,11 @@ namespace ESO_LangEditorGUI.ViewModels
 
                         if (isSuccessed)
                         {
+                            var config = App.LangConfig;
+                            config.UserAuthToken = "";
+                            config.UserRefreshToken = "";
+                            AppConfigClient.Save(config);
+
                             WaitingResult = false;
                             SubmitProgress = "修改成功，请退出工具用密码重新登录！";
                         }

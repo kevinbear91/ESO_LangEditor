@@ -8,5 +8,9 @@ namespace ESO_LangEditor.Core.Models
     {
         public Guid Id { get; set; }
         public string UserNickName { get; set; }
+        public string UserAvatarPath { get; set; }
+        public int TranslatedCount { get; set; }
+        public int InReviewCount { get; set; }
+        public int RemovedCount { get; set; }
     }
 }

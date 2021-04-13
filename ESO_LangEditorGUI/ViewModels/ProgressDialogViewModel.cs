@@ -52,7 +52,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private async void ExportLangAsync(object o)
         {
-            var _langTextRepository = new LangTextRepository();
+            var _langTextRepository = new LangTextRepoClientService();
             var _thirdPartSerices = new ThirdPartSerices();
             var exportDbToFile = new ExportDbToFile();
 

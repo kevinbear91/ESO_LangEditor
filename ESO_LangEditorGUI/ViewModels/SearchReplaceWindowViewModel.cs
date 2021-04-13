@@ -1,4 +1,5 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services;
@@ -102,12 +103,13 @@ namespace ESO_LangEditorGUI.ViewModels
 
                     if (_resultList != null && _resultList.Count > 0)
                     {
+                        var _mapper = App.Mapper;
+
                         ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
+                        var replacedListToEnity = _mapper.Map<List<LangTextClient>>(ReplacedList);
 
-                        if(await _langTextRepository.UpdateLangtexts(ReplacedList))
+                        if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
                         {
-                            var _mapper = App.Mapper;
-
                             var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
                             _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
                             MessageBox.Show("替换完成！");

@@ -7,9 +7,9 @@ using System.Text;
 
 namespace ESO_LangEditor.Core.Entities
 {
-    public class LangTextClient : LangtextBase
+    public class LangTextClient : LangtextBaseClient
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public Guid Id { get; set; }
         public DateTime ReviewTimestamp { get; set; }
     }

@@ -27,13 +27,14 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _userName;
         private string _newUserInfo;
         private Guid _newUserId;
+        private Guid _UserGuid;
         private bool _isEnabledGuid;
 
         private List<string> _roles = new List<string>
         {
             "InitUser",
             "Editor",
-            "Reivewer",
+            "Reviewer",
             "Admin",
             "Creater",
         };
@@ -86,6 +87,12 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _newUserId, value); }
         }
 
+        public Guid UserGuid
+        {
+            get { return _UserGuid; }
+            set { SetProperty(ref _UserGuid, value); }
+        }
+
         public bool IsEnabledGuid
         {
             get { return _isEnabledGuid; }
@@ -95,8 +102,9 @@ namespace ESO_LangEditorGUI.ViewModels
         //public ICommand SelectedUser => new ExcuteViewModelMethod(GetRolesBySelectedUser);
         public ICommand GetUserListCommand => new ExcuteViewModelMethod(GetUserList);
         public ICommand UpdateUserRolesCommand => new ExcuteViewModelMethod(UpdateUserRoles);
-        public ICommand AddUserRole => new ExcuteViewModelMethod(AddNewRole);
-        public ICommand AddUser => new ExcuteViewModelMethod(AddNewUser);
+        public ICommand AddUserRoleCommand => new ExcuteViewModelMethod(AddNewRole);
+        public ICommand AddUserCommand => new ExcuteViewModelMethod(AddNewUser);
+        public ICommand InitUserCommand => new ExcuteViewModelMethod(InitUser);
 
         IEventAggregator _ea;
 
@@ -145,7 +153,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
             foreach(var role in RoleList)
             {
-                if (role.IsSelected & !_roleListFromServer.Contains(role.Content.ToString()))
+                if (role.IsSelected /*& !_roleListFromServer.Contains(role.Content.ToString())*/)
                 {
                     selectedRoles.Add(role.Content.ToString());
                     Debug.WriteLine(role.Content);
@@ -184,6 +192,18 @@ namespace ESO_LangEditorGUI.ViewModels
                 };
 
                 var userDto = await _accountService.AddUser(newUserDto);
+
+                NewUserInfo = userDto.ID + "\n" + userDto.UserName + "\n" + userDto.RefreshToken;
+            }
+
+        }
+
+        private async void InitUser(object obj)
+        {
+            Debug.WriteLine(UserGuid);
+            if (!string.IsNullOrWhiteSpace(UserGuid.ToString()))
+            {
+                var userDto = await _accountService.InitUser(UserGuid);
 
                 NewUserInfo = userDto.ID + "\n" + userDto.UserName + "\n" + userDto.RefreshToken;
             }

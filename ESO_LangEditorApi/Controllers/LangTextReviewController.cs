@@ -3,8 +3,10 @@ using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,15 +22,19 @@ namespace ESO_LangEditor.API.Controllers
         private IRepositoryWrapper _repositoryWrapper;
         private IMapper _mapper;
         private UserManager<User> _userManager;
+        private ILogger<LangTextReviewController> _logger;
+        private string _loggerMessage;
 
-        public LangTextReviewController(IRepositoryWrapper repositoryWrapper, IMapper mapper, UserManager<User> userManager)
+        public LangTextReviewController(IRepositoryWrapper repositoryWrapper, IMapper mapper, UserManager<User> userManager,
+            ILogger<LangTextReviewController> logger)
         {
             _repositoryWrapper = repositoryWrapper;
             _mapper = mapper;
             _userManager = userManager;
+            _logger = logger;
         }
 
-        //[Authorize(Roles = "Reivewer")]
+        [Authorize(Roles = "Reviewer")]
         public async Task<ActionResult<IEnumerable<LangTextReview>>> GetLangTextAllAsync()
         {
             var langtextList = await _repositoryWrapper.LangTextReviewRepo.GetAllAsync();
@@ -36,7 +42,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextList.ToList();
         }
 
-        //[Authorize(Roles = "Reivewer")]
+        [Authorize(Roles = "Reviewer")]
         //[AllowAnonymous]
         [HttpGet("{langtextGuid}")]
         public async Task<ActionResult<LangTextReview>> GetLangTextByGuidAsync(Guid langtextGuid)
@@ -54,6 +60,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        [Authorize(Roles = "Editor")]
         [HttpGet("user/{userGuid}")]
         public async Task<ActionResult<IEnumerable<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid)
         {
@@ -62,6 +69,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
+                _loggerMessage = "Get Langtext in review by user faild, langtext not found, User: " + userGuid;
+                _logger.LogError(_loggerMessage);
                 return NotFound();
             }
             else
@@ -72,6 +81,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        [Authorize(Roles = "Editor")]
         [HttpGet("users")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetReviewUserListAsync()
         {
@@ -79,6 +89,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
+                _loggerMessage = "Get Langtext in review user list not found! ";
+                _logger.LogError(_loggerMessage);
                 return NotFound();
             }
             else
@@ -88,7 +100,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-
+        [Authorize(Roles = "Reviewer")]
         [HttpGet("{langtextGuid}")]
         public async Task<ActionResult> ReviewLangTextAsync(Guid langtextGuid)
         {
@@ -97,6 +109,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtextReview == null)
             {
+                _loggerMessage = "Pass Langtext in review not found, lang id: " + langtextGuid.ToString();
+                _logger.LogError(_loggerMessage);
                 return NotFound();
             }
 
@@ -123,6 +137,10 @@ namespace ESO_LangEditor.API.Controllers
                     _repositoryWrapper.LangTextRepo.Delete(langtext);
                     break;
                 case 0:
+                    _loggerMessage = "Pass Langtext in review Error, lang id: " + langtextGuid.ToString() 
+                        + ", Reason: " + langtextReview.ReasonFor
+                        + ", User: " + userId;
+                    _logger.LogError(_loggerMessage);
                     throw new Exception("闹呢？除了增改删还有啥？langtextID: " + langtextGuid.ToString()
                         + "用户ID：" + userId.ToString());
             }
@@ -133,6 +151,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
+                _loggerMessage = "Pass Langtext in review failed, lang id: " + langtextGuid.ToString()
+                        + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("审核资源 LangtextID: "+ langtextGuid.ToString() + " 失败。" +
                     "操作人：" + userId.ToString() + "。");
             }
@@ -152,6 +173,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        [Authorize(Roles = "Reviewer")]
         [HttpPut()]
         public async Task<ActionResult> ReviewLangTextAsync(List<Guid> langtextIdList)
         {
@@ -160,6 +182,7 @@ namespace ESO_LangEditor.API.Controllers
             List<LangTextRevisedDto> langTextRevisedDtos = new List<LangTextRevisedDto>();  //建立步进状态DTO列表
             var LangtextRevNumberCurrent = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(1); //查询获取新的步进号
             LangtextRevNumberCurrent.LangTextRev++;
+            int revisedNumber = LangtextRevNumberCurrent.LangTextRev;
 
             foreach (var id in langtextIdList)
             {
@@ -170,6 +193,7 @@ namespace ESO_LangEditor.API.Controllers
                 {
                     langtextReview.ReviewerId = new Guid(userId);       //Set reviewer ID.
                     langtextReview.ReviewTimestamp = DateTime.UtcNow;      //Set review timestamp.
+                    langtextReview.Revised = revisedNumber;
 
                     var langtext = _mapper.Map<LangTextReview, LangText>(langtextReview);
                     var langtextArchive = _mapper.Map<LangTextReview, LangTextArchive>(langtextReview);
@@ -198,6 +222,10 @@ namespace ESO_LangEditor.API.Controllers
                             langTextRevisedDtos.Add(MakeLangtextRevisedDto(LangtextRevNumberCurrent, langtextReview));
                             break;
                         case 0: //如果枚举出错
+                            _loggerMessage = "Pass Langtext in review failed, lang id: " + langtextReview.Id.ToString()
+                                + ", Reason: " + langtextReview.ReasonFor
+                                + ", User: " + userId;
+                            _logger.LogError(_loggerMessage);
                             throw new Exception("闹呢？除了增改删还有啥？langtextID: "
                                 + langtextReview.Id.ToString()
                                 + "用户ID：" + userId.ToString());
@@ -211,6 +239,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
+                _loggerMessage = "Pass Langtext in review failed, lang count: " + langtextIdList.Count
+                                + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("审核资源失败。" + "操作人：" + userId.ToString() + "。");
             }
             else
@@ -231,7 +262,7 @@ namespace ESO_LangEditor.API.Controllers
             static LangTextArchive MakeReivewToLangtextArchive(LangTextArchive langArchive)
             {
                 if (langArchive.ReasonFor != ReviewReason.Deleted)
-                    langArchive.Id = new Guid();
+                    langArchive.Id = Guid.NewGuid();
 
                 langArchive.ArchiveTimestamp = DateTime.UtcNow;
                 
@@ -292,7 +323,7 @@ namespace ESO_LangEditor.API.Controllers
             var langtextArchive = _mapper.Map<LangTextReview, LangTextArchive>(langTextReview);
             langtextArchive.ArchiveTimestamp = DateTime.UtcNow;
             if (langtextArchive.ReasonFor != ReviewReason.Deleted)
-                langtextArchive.Id = new Guid();
+                langtextArchive.Id = Guid.NewGuid();
 
             //Move review langtext to archive.
             _repositoryWrapper.LangTextArchiveRepo.Create(langtextArchive);
@@ -312,6 +343,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextArchiveRepo.SaveAsync())
             {
+                _loggerMessage = "Pass Langtext in review to archive failed, lang count: " + langTextArchive.Count
+                                + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("归档资源 失败。" +
                     "操作人：" + userId.ToString() + "。");
             }
@@ -335,6 +369,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRevisedRepo.SaveAsync())
             {
+                _loggerMessage = "Pass Langtext in review for revised failed, lang id: " + langtextId.ToString();
+                _logger.LogError(_loggerMessage);
+
                 throw new Exception("步进资源 LangtextID: " + langtextId.ToString() + " 失败。");
             }
 
@@ -351,6 +388,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync())
             {
+                _loggerMessage = "Update revised number failed, revised number: " + newRevNumber.ToString();
+                _logger.LogError(_loggerMessage);
                 throw new Exception("步进号 " + newRevNumber.ToString() + " 更新失败。");
             }
 
@@ -371,6 +410,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRevisedRepo.SaveAsync())
             {
+                _loggerMessage = "Update revised number failed, revised number: " + RevNumber.ToString();
+                _logger.LogError(_loggerMessage);
                 throw new Exception("步进资源失败。");
             }
 
@@ -385,6 +426,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync())
             {
+                _loggerMessage = "Update revised number failed, Rev number: " + RevNumber.LangTextRev.ToString();
+                _logger.LogError(_loggerMessage);
                 throw new Exception("步进号 " + RevNumber.LangTextRev.ToString() + " 更新失败。");
             }
 

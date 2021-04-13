@@ -36,15 +36,9 @@ namespace ESO_LangEditor.API.Services
                 expires: DateTime.Now.AddMinutes(10),
                 signingCredentials: signCredential);
 
-
             var tokenString = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-            return tokenString;
 
-            //return Ok(new
-            //{
-            //    token = new JwtSecurityTokenHandler().WriteToken(jwtToken),
-            //    expiration = TimeZoneInfo.ConvertTimeFromUtc(jwtToken.ValidTo, TimeZoneInfo.Local)
-            //});
+            return tokenString;
         }
 
         public string GenerateRefreshToken()

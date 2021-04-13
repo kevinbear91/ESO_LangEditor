@@ -152,52 +152,64 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private async void SaveCurrentToDb(object o)
         {
-            if (LangTextZh != CurrentLangText.TextZh)
+            var user = await _langTextRepoClient.GetUserInClient(App.LangConfig.UserGuid);
+
+            if(user == null)
             {
-                var time = DateTime.UtcNow;
-                //time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Kind);
-                var langtextUpdateZh = new LangTextForUpdateZhDto
+                MessageBox.Show("用户无效，保存失败！");
+            }
+            else
+            {
+                if (LangTextZh != CurrentLangText.TextZh)
                 {
-                    Id = CurrentLangText.Id,
-                    TextZh = LangTextZh,
-                    IsTranslated = 1,
-                    ZhLastModifyTimestamp = time,
-                    UserId = App.LangConfig.UserGuid
-                };
-
-                //Debug.WriteLine("{0},{1}", CurrentLangText.TextZh, CurrentLangText.ZhLastModifyTimestamp);
-
-                if(await _langTextRepoClient.UpdateLangtextZh(langtextUpdateZh))
-                {
-                    CurrentLangText.TextZh = LangTextZh;
-
-                    if (GridData != null && GridData.Count > 1)
+                    var time = DateTime.UtcNow;
+                    //time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Kind);
+                    var langtextUpdateZh = new LangTextForUpdateZhDto
                     {
-                        var removeitem = GridData.Single(l => l.Id == CurrentLangText.Id);
-                        GridData.Remove(removeitem);
+                        Id = CurrentLangText.Id,
+                        TextZh = LangTextZh,
+                        IsTranslated = 1,
+                        ZhLastModifyTimestamp = time,
+                        UserId = user.Id,
+                    };
+
+                    //Debug.WriteLine("{0},{1}", CurrentLangText.TextZh, CurrentLangText.ZhLastModifyTimestamp);
+
+                    if (await _langTextRepoClient.UpdateLangtextZh(langtextUpdateZh))
+                    {
+                        CurrentLangText.TextZh = LangTextZh;
+
+                        if (GridData != null && GridData.Count > 1)
+                        {
+                            var removeitem = GridData.Single(l => l.Id == CurrentLangText.Id);
+                            GridData.Remove(removeitem);
 
 
-                        SetCurrentItemFromList(GridData.ElementAtOrDefault(0));
+                            SetCurrentItemFromList(GridData.ElementAtOrDefault(0));
+
+                        }
+                        else
+                        {
+                            OnRequestClose(this, new EventArgs());
+                            _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！"
+                                + "需重新搜索才会刷新表格。");
+                            _ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
+                        }
 
                     }
                     else
                     {
-                        OnRequestClose(this, new EventArgs());
-                        _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！" 
-                            + "需重新搜索才会刷新表格。");
-                        _ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
+                        MdNotifyContent = "文本保存失败！";
                     }
-                   
                 }
                 else
                 {
-                    MdNotifyContent = "文本保存失败！";
+                    EditorMessageQueue.Enqueue("哦豁，没检测到和原来的文本有什么区别，所以没保存。");
                 }
             }
-            else
-            {
-                EditorMessageQueue.Enqueue("哦豁，没检测到和原来的文本有什么区别，所以没保存。");
-            }
+
+
+            
         }
 
         public void SetCurrentItemFromList(LangTextDto langTextDto)

@@ -16,11 +16,11 @@ namespace ESO_LangEditor.GUI.NetClient
         private readonly HttpClient client;
         private JsonSerializerOptions _jsonOption;
 
-        public LangtextNetService()
+        public LangtextNetService(string serverAddress)
         {
             client = new HttpClient
             {
-                BaseAddress = new Uri("https://localhost:44343/"),
+                BaseAddress = new Uri(serverAddress),
             };
 
             client.DefaultRequestHeaders.Accept.Clear();
@@ -71,6 +71,29 @@ namespace ESO_LangEditor.GUI.NetClient
             };
 
             var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(respondedList);
+
+            return respondedList;
+
+        }
+
+        public async Task<List<LangTextDto>> GetLangtextByRevisedAsync(int langtextRevised, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+            List<LangTextDto> respondedList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuids);
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/langtext/rev/" + langtextRevised);
 
             if (response.IsSuccessStatusCode)
             {
@@ -206,7 +229,7 @@ namespace ESO_LangEditor.GUI.NetClient
             var content = SerializeDataToHttpContent(langTextForUpdateZhDto);
 
             HttpResponseMessage response = await client.PutAsync(
-                "api/langtext/" + langTextForUpdateZhDto.Id, content);
+                "api/langtext/" + langTextForUpdateZhDto.Id + "/zh", content);
 
             return response.StatusCode;
 
@@ -324,6 +347,8 @@ namespace ESO_LangEditor.GUI.NetClient
             {
                 var responseContent = response.Content.ReadAsStringAsync().Result;
                 respondedList = JsonSerializer.Deserialize<List<LangTextRevisedDto>>(responseContent, _jsonOption);
+
+                //Debug.WriteLine(respondedList.Count);
             }
 
             return respondedList;

@@ -15,5 +15,6 @@ namespace ESO_LangEditor.Core.Models
         public DateTime ZhLastModifyTimestamp { get; set; }
 
         public Guid UserId { get; set; }
+
     }
 }

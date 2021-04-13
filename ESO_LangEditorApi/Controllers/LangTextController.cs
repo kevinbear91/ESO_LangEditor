@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,12 +25,16 @@ namespace ESO_LangEditor.API.Controllers
         private IRepositoryWrapper _repositoryWrapper;
         private IMapper _mapper;
         private UserManager<User> _userManager;
+        private ILogger<LangTextController> _logger;
+        private string _loggerMessage;
 
-        public LangTextController(IRepositoryWrapper repositoryWrapper, IMapper mapper, UserManager<User> userManager)
+        public LangTextController(IRepositoryWrapper repositoryWrapper, IMapper mapper, 
+            UserManager<User> userManager, ILogger<LangTextController> logger)
         {
             _repositoryWrapper = repositoryWrapper;
             _mapper = mapper;
             _userManager = userManager;
+            _logger = logger;
         }
         
         public async Task<ActionResult<IEnumerable<LangText>>> GetLangTextAllAsync()
@@ -39,7 +44,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextList.ToList();
         }
 
-        [Authorize(Roles = "editor")]
+        [Authorize(Roles = "Editor")]
         [HttpGet("{langtextGuid}")]
         public async Task<ActionResult<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
@@ -48,6 +53,8 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
+                _loggerMessage = "Langtext not exist, guid: " + langtextGuid;
+                _logger.LogError(_loggerMessage);
                 return NotFound();
             }
             else
@@ -57,7 +64,27 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        [Authorize(Roles = "editor")]
+        [Authorize]
+        [HttpGet("rev/{revisednumber}")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextByRevisedAsync(int revisednumber)
+        {
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByConditionAsync(lang => lang.Revised == revisednumber);
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
+
+            if (langtextDto.Count == 0)
+            {
+                _loggerMessage = "Langtext Revised not exist, number: " + revisednumber;
+                _logger.LogError(_loggerMessage);
+                return NotFound();
+            }
+            else
+            {
+                return langtextDto;
+            }
+
+        }
+
+        [Authorize(Roles = "Editor")]
         [HttpGet("list")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextByGuidListAsync(List<Guid> langtextGuids)
         {
@@ -70,6 +97,11 @@ namespace ESO_LangEditor.API.Controllers
                 if (langtext != null)
                 {
                     langTexts.Add(langtext);
+                }
+                else
+                {
+                    _loggerMessage = "Langtext not exist, guid: " + id;
+                    _logger.LogError(_loggerMessage);
                 }
             }
 
@@ -93,22 +125,28 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<ActionResult> CreateLangtextAsync(Guid userId, LangTextForCreationDto langTextForCreation)
+        public async Task<ActionResult> CreateLangtextAsync(LangTextForCreationDto langTextForCreation)
         {
-
+            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
             //var langtext = Mapper.Map<LangText>(langTextForCreation);
             var langtext = _mapper.Map<LangTextReview>(langTextForCreation);
 
             //RepositoryWrapper.LangTextRepo.Create(langtext);
 
             langtext.ReasonFor = ReviewReason.NewAdded;
-            langtext.ReviewerId = userId;
+            langtext.ReviewerId = new Guid(userIdFromToken);
             langtext.ReviewTimestamp = DateTime.UtcNow;
 
             _repositoryWrapper.LangTextReviewRepo.Create(langtext);
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
+                _loggerMessage = "Langtext create faild, guid: " + langtext.Id 
+                    + ", textId: " + langtext.TextId
+                    + ", textEn: " + langtext.TextEn
+                    + ", User: " + userIdFromToken;
+                _logger.LogError(_loggerMessage);
+
                 throw new Exception("创建资源langtext失败");
             }
 
@@ -137,6 +175,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review list faild, list count: " + langTextForCreation.Count
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("创建审核资源langtext失败");
             }
 
@@ -149,6 +190,7 @@ namespace ESO_LangEditor.API.Controllers
         [HttpDelete("{langtextID}")]
         public async Task<ActionResult> DeleteLangTextAsync(Guid langtextID)
         {
+            var userId = _userManager.GetUserId(HttpContext.User);
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
 
             if (langtext == null)
@@ -164,8 +206,8 @@ namespace ESO_LangEditor.API.Controllers
 
             var langtextReview = _mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.Deleted;
-            //langtext.ReviewerId = userId;
-            //langtext.ReviewTimestamp = DateTime.Now;
+            langtext.ReviewerId = new Guid(userId);
+            langtext.ReviewTimestamp = DateTime.Now;
 
             //Mapper.Map(langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 
@@ -174,10 +216,13 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review fro delete faild, list count: " + langtextID
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
             }
 
-            return NotFound();
+            return Ok();
 
         }
 
@@ -208,6 +253,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review for delete list faild, list count: " + langtextIds.Count
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败");
             }
 
@@ -215,17 +263,23 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        [Authorize(Roles = "editor")]
-        [HttpPut("zh/{langtextID}")]
-        public async Task<ActionResult> UpdateLangtextZhAsync(LangTextForUpdateZhDto langTextForUpdateZh)
+        [Authorize(Roles = "Editor")]
+        [HttpPut("{langtextID}/zh")]
+        public async Task<ActionResult> UpdateLangtextZhAsync(LangTextForUpdateZhDto langTextForUpdateZh, string langtextID)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             Guid userIdinGuid = new Guid(userId);
 
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langTextForUpdateZh.Id);
 
+            //Debug.WriteLine("langDtoId: {0}, langId: {1}, langtextId: {2}", langTextForUpdateZh.Id, langtextID, langtext.Id);
+            _logger.LogInformation("langDtoId: {0}, langId: {1}, langtextId: {2}", langTextForUpdateZh.Id, langtextID, langtext.Id);
+
             if (langtext == null)
             {
+                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langTextForUpdateZh.Id
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 return NotFound();
             }
 
@@ -259,6 +313,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langTextForUpdateZh.Id
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败");
             }
 
@@ -266,7 +323,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        [Authorize(Roles = "editor")]
+        [Authorize(Roles = "Editor")]
         [HttpPut("zh/list")]
         public async Task<ActionResult> UpdateLangtextZhListAsync(List<LangTextForUpdateZhDto> langTextForUpdateZhList)
         {
@@ -315,6 +372,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review for update list faild, langtext count: " + langTextForUpdateZhList.Count
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败");
             }
 
@@ -323,7 +383,7 @@ namespace ESO_LangEditor.API.Controllers
                 return Ok(langTextInReviews);
             }
 
-            return Ok();
+            return BadRequest();
 
         }
 
@@ -350,6 +410,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review for update EN faild, langtext id: " + langtextID.ToString()
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
             }
 
@@ -385,6 +448,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
+                _loggerMessage = "Create Langtext review for update EN list faild, langtext count: " + langTextForUpdateEns.Count
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败");
             }
 

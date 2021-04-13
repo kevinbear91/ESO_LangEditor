@@ -166,7 +166,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
             UpdatedVersionInputEnable = true;
             _mapper = App.Mapper;
-            _langtextNetService = new LangtextNetService();
+            _langtextNetService = new LangtextNetService(App.ServerPath);
         }
 
         public void PathTooltip()

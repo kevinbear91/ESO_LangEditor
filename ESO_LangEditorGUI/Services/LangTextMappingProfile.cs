@@ -15,9 +15,9 @@ namespace ESO_LangEditorGUI.Services
             CreateMap<LangTextDto, LangTextClient>();
             CreateMap<LangTextForCreationDto, LangTextClient>();
             CreateMap<LangTextForUpdateZhDto, LangTextClient>();
-            CreateMap<LangTextForUpdateZhDto, LangTextReview>();
-            CreateMap<LangTextForUpdateEnDto, LangTextReview>();
             CreateMap<User, UserDto>();
+            CreateMap<UserInClient, UserInClientDto>();
+            CreateMap<UserInClientDto, UserInClient>();
             CreateMap<UserProfileModifyBySelfDto, User>();
             CreateMap<LangTextReview, LangTextClient>();
             CreateMap<LangTextClient, LangTextReview>();

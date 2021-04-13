@@ -22,7 +22,7 @@ namespace ESO_LangEditorGUI.Services
         private Dictionary<Guid, ReviewReason> langtextUpdateTypeDict;
         private int RevCompareNum = 0;
         private int TaskCount = 0;
-        private LangtextNetService langtextNetService = new LangtextNetService();
+        private LangtextNetService langtextNetService = new LangtextNetService(App.ServerPath);
         private LangTextRepoClientService _langTextRepoClient = new LangTextRepoClientService();
 
         private List<LangTextDto> langTextDtos = new List<LangTextDto>();
@@ -163,7 +163,8 @@ namespace ESO_LangEditorGUI.Services
         {
             if (changed.Count >= 1)
             {
-                await _langTextRepoClient.UpdateLangtexts(changed);
+                var updatedlang = _mapper.Map<List<LangTextClient>>(changed);
+                await _langTextRepoClient.UpdateLangtexts(updatedlang);
             }
 
             if (added.Count >= 1)
@@ -179,8 +180,8 @@ namespace ESO_LangEditorGUI.Services
                 foreach (var id in deleted)
                 {
                     var langtextDto = await _langTextRepoClient.GetLangTextByGuidAsync(id);
-                    var langtext = _mapper.Map<LangTextClient>(langtextDto);
-                    langtextForDelete.Add(langtext);
+                    //var langtext = _mapper.Map<LangTextClient>(langtextDto);
+                    langtextForDelete.Add(langtextDto);
                 }
                 await _langTextRepoClient.DeleteLangtexts(langtextForDelete);
             }

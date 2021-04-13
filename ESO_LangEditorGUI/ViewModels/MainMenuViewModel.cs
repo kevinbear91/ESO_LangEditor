@@ -1,5 +1,7 @@
-﻿using ESO_LangEditorGUI.Command;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.EventAggres;
+using ESO_LangEditorGUI.Services;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -62,7 +64,6 @@ namespace ESO_LangEditorGUI.ViewModels
             {
                 _roleList = roleList;
                 LoadMemu();
-                Debug.WriteLine("角色列表不相等");
             }
         }
 
@@ -119,7 +120,7 @@ namespace ESO_LangEditorGUI.ViewModels
                         new MenuItemContent
                         {
                             Header = "导出UI Str内容", 
-                            //Command = new ExcuteViewModelMethod(OpenWindowByICommand), 
+                            Command = new ExcuteViewModelMethod(ExportLuaToStr), 
                             //CommandParameter = "ESO_LangEditorGUI.Views.ExportTranslate"
                         },
                         new MenuItemContent {
@@ -139,7 +140,7 @@ namespace ESO_LangEditorGUI.ViewModels
                             Header = "审核待通过文本",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "LangTextReviewWindow",
-                            //Visible = RoleToVisibility("Admin"),
+                            Visible = RoleToVisibility("Editor"),
                         },
 
                         new MenuItemContent {
@@ -149,11 +150,11 @@ namespace ESO_LangEditorGUI.ViewModels
                             Visible = RoleToVisibility("Admin"),
                         },
 
-                        new MenuItemContent { Header = "服务器线路" , ChildMenuItems=new ObservableCollection<MenuItemContent>
-                        {
-                            new MenuItemContent { Header = "IKDC2(IPv4)" },
-                            new MenuItemContent { Header = "IKDC2(IPv6)" }
-                        }},
+                        //new MenuItemContent { Header = "服务器线路" , ChildMenuItems=new ObservableCollection<MenuItemContent>
+                        //{
+                        //    new MenuItemContent { Header = "IKDC2(IPv4)" },
+                        //    new MenuItemContent { Header = "IKDC2(IPv6)" }
+                        //}},
                         //new MenuItemContent {Header="导出UI Str内容" },
                         //new MenuItemContent {Header="一键发布" }
                     }
@@ -190,9 +191,22 @@ namespace ESO_LangEditorGUI.ViewModels
                 return Visibility.Collapsed;
         }
 
-        private async void OpenWindowByICommand(object o)
+        private void OpenWindowByICommand(object o)
         {
-            WindowLink(o.ToString()).Show();
+            var window = WindowLink(o.ToString());
+            window.Owner = Application.Current.MainWindow;
+            window.Show();
+        }
+
+        private async void ExportLuaToStr(object o)
+        {
+            var readDb = new LangTextRepoClientService();
+            var export = new ExportDbToFile();
+
+            var langlua = await readDb.GetLangTextByConditionAsync("100", SearchTextType.Type, SearchPostion.Full);
+            export.ExportLua(langlua);
+
+            MessageBox.Show("导出完成！");
         }
 
     }

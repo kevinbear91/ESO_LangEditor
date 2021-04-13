@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ESO_LangEditor.API.Migrations
 {
-    public partial class InitProdTest : Migration
+    public partial class InitialProdlang : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -205,6 +205,7 @@ namespace ESO_LangEditor.API.Migrations
                     ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
                     ReviewerId = table.Column<Guid>(nullable: false),
+                    Revised = table.Column<int>(nullable: false),
                     ReviewTimestamp = table.Column<DateTime>(nullable: false),
                     ArchiveTimestamp = table.Column<DateTime>(nullable: false),
                     ReasonFor = table.Column<int>(nullable: false)
@@ -242,6 +243,7 @@ namespace ESO_LangEditor.API.Migrations
                     ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
                     ReviewerId = table.Column<Guid>(nullable: false),
+                    Revised = table.Column<int>(nullable: false),
                     ReviewTimestamp = table.Column<DateTime>(nullable: false),
                     ReasonFor = table.Column<int>(nullable: false)
                 },
@@ -278,6 +280,7 @@ namespace ESO_LangEditor.API.Migrations
                     ZhLastModifyTimestamp = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
                     ReviewerId = table.Column<Guid>(nullable: false),
+                    Revised = table.Column<int>(nullable: false),
                     ReviewTimestamp = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -302,11 +305,11 @@ namespace ESO_LangEditor.API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("f3eb66da-8481-4cf7-9afc-f55fe1089ff4"), "09133d05-3d2f-4c20-956c-7c77d89bcbb8", "InitUser", null },
-                    { new Guid("bee2ce3d-ee28-49c5-ab49-23a1f522ab6f"), "50bd0f33-3050-4a2b-aa56-acc2a998fe15", "Editor", null },
-                    { new Guid("94cb5476-9d89-4cb0-b9ac-c8b93169580a"), "9f49bdde-38e5-4466-afca-67843f31fc28", "Reviewer", null },
-                    { new Guid("0f4f6491-e2a0-49d0-9334-fe05dd4a7bba"), "b3f05ba0-4cc9-41cd-b625-f635f4430507", "Admin", null },
-                    { new Guid("91c03833-f7c1-4a59-9563-451a6cffc183"), "b51cc952-1a28-4d41-92eb-9eca14b661fb", "Creater", null }
+                    { new Guid("52ffbdd2-784c-47fd-b0a8-954c19d1dc0e"), "e0c069e3-b1fc-4c2c-afca-229a5452c076", "InitUser", "INITUSER" },
+                    { new Guid("22bd81fb-f232-48b7-a36d-97ed7fe9776a"), "3a6c3f86-6b4c-4660-afea-54bf599c2504", "Editor", "EDITOR" },
+                    { new Guid("cf29c56b-07b6-4a56-b1dc-ba680676a416"), "498b1e83-19e2-4b3f-921d-8cb357855c69", "Reviewer", "REVIEWER" },
+                    { new Guid("38f07190-d0e7-426d-9dbf-9435f6d96f67"), "e877b2dd-c7b2-4458-9a36-7351b7c73731", "Admin", "ADMIN" },
+                    { new Guid("11d9aa1e-b9d3-4fea-ab6a-16c8380e30b1"), "473e7648-d500-4d3e-8260-c2c7d658ef82", "Creater", "CREATER" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,6 +1,8 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.Command;
+using ESO_LangEditorGUI.Services;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -25,7 +27,9 @@ namespace ESO_LangEditorGUI.ViewModels
         private UserInClientDto _selectedUser;
         private List<LangTextForReviewDto> _gridSelectedItems;
         private bool _isReviewSelectedItems = true;
-        private LangtextNetService _langtextNetService = new LangtextNetService();
+        private LangtextNetService _langtextNetService = new LangtextNetService(App.ServerPath);
+        private LangTextRepoClientService _langTextRepoClient = new LangTextRepoClientService();
+        private Dictionary<Guid, UserInClient> _userDict;
 
         public string SearchResultInfo
         {
@@ -119,13 +123,18 @@ namespace ESO_LangEditorGUI.ViewModels
             NetworkInfo = "正在尝试读取……";
             var userDtoList = new List<UserInClientDto>();
 
+            if (_userDict == null)
+            {
+                _userDict = await _langTextRepoClient.GetUsersToDict();
+            }
+
             try
             {
                 var list = await _langtextNetService.GetUsersInReviewAllAsync(token);
                 
                 foreach(var user in list)
                 {
-                    userDtoList.Add(new UserInClientDto{ Id = user, UserNickName = "Bevis"});
+                    userDtoList.Add(new UserInClientDto{ Id = user, UserNickName = _userDict[user].UserNickName });
                 }
                 UserList = new ObservableCollection<UserInClientDto>(userDtoList);
                 NetworkInfo = "读取完成";

@@ -17,12 +17,12 @@ namespace ESO_LangEditor.GUI.NetClient
         private JsonSerializerOptions _jsonOption;
         //private AppConfigClient _configClient;
 
-        public ApiAccess()
+        public ApiAccess(string serverAddress)
         {
             //_configClient = configClient;
 
             client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44343/");
+            client.BaseAddress = new Uri(serverAddress);
 
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -79,7 +79,7 @@ namespace ESO_LangEditor.GUI.NetClient
             var content = SerializeDataToHttpContent(token);
 
             HttpResponseMessage response = await client.PostAsync(
-                "auth/refresh", content);
+                "api/account/refresh", content);
 
             response.EnsureSuccessStatusCode();
 
@@ -183,6 +183,23 @@ namespace ESO_LangEditor.GUI.NetClient
 
         }
 
+        public async Task<UserDto> InitUser(Guid userGuid, string token)
+        {
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await client.GetAsync(
+                "api/admin/init/" + userGuid);
+
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var json = JsonSerializer.Deserialize<UserDto>(responseContent, _jsonOption);
+
+            return json;
+
+        }
+
         public async Task<bool> UserProfileInit(UserInfoChangeDto userInfoChangeDto, string token)
         {
             //HttpContent content;
@@ -232,6 +249,30 @@ namespace ESO_LangEditor.GUI.NetClient
             response.EnsureSuccessStatusCode();
 
             return response.IsSuccessStatusCode;
+
+            //var responseContent = response.Content.ReadAsStringAsync().Result;
+            //var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);
+
+            //Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
+
+            //return json;
+
+        }
+
+        public async Task<Stream> DownloadUserAvatar(string filename, string token)
+        {
+            //HttpContent content;
+            //BitmapImage bitmapImage = new BitmapImage();
+
+            client.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage response = await client.GetAsync("images/" + filename);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStreamAsync();
+
+            //return response.IsSuccessStatusCode;
 
             //var responseContent = response.Content.ReadAsStringAsync().Result;
             //var json = JsonSerializer.Deserialize<TokenDto>(responseContent, _jsonOption);

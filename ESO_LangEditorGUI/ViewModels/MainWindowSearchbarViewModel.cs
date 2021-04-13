@@ -83,6 +83,12 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _serverSideSearch, value); }
         }
 
+        public bool AskExit
+        {
+            get { return App.LangConfig.AppSetting.IsAskToExit; }
+            set { App.LangConfig.AppSetting.IsAskToExit = value; }
+        }
+
         public ClientConnectStatus ConnectStatus
         {
             get { return _connectStatus; }

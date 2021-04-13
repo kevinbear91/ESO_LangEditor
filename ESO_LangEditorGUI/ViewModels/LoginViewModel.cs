@@ -23,8 +23,10 @@ namespace ESO_LangEditorGUI.ViewModels
         private string _userName;
         private PasswordBox _passwordBox;
         private AccountService _accountService;
+        private bool _loginSuccess;
 
         public ICommand SumbitCommand { get; }
+        public ICommand CloseDialogHostCommand { get; }
 
 
         public Guid UserGuid
@@ -39,6 +41,12 @@ namespace ESO_LangEditorGUI.ViewModels
             set { SetProperty(ref _userName, value); }
         }
 
+        public bool LoginSuccess
+        {
+            get { return _loginSuccess; }
+            set { SetProperty(ref _loginSuccess, value); }
+        }
+
         IEventAggregator _ea;
 
         public LoginViewModel(IEventAggregator ea)
@@ -46,6 +54,7 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea = ea;
             UserGuid = GetGuid();
             SumbitCommand = new SaveConfigCommand(SaveGuid);
+            CloseDialogHostCommand = new SaveConfigCommand(CloseDialogHost);
         }
 
         public void Load(PasswordBox passwordBox, AccountService accountService)
@@ -71,6 +80,11 @@ namespace ESO_LangEditorGUI.ViewModels
             //DialogHost.CloseDialogCommand.Execute(null, null);
             //_mainWindowViewModel.GuidVaildStartupCheck();
             
+        }
+
+        private void CloseDialogHost(object o)
+        {
+            DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         private async Task LoginAsync()
@@ -103,7 +117,10 @@ namespace ESO_LangEditorGUI.ViewModels
                     });
 
                     if (loginSuccess)
+                    {
                         DialogHost.CloseDialogCommand.Execute(null, null);
+                    }
+                        
                 }
                 
             }

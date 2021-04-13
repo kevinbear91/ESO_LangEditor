@@ -265,6 +265,10 @@
             </CheckBox.Style>
         </CheckBox>
 
+        <CheckBox x:Name="AskExit" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                  Content="关闭程序时询问" Grid.Row="1" IsChecked="{Binding AskExit}" HorizontalAlignment="Right" >
+        </CheckBox>
+
         <!--<Label x:Name="label" Content="文本：" Margin="40,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>-->
     </Grid>
 </UserControl>

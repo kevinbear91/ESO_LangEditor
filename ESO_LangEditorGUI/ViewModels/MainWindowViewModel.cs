@@ -138,6 +138,7 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
             _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
+            _ea.GetEvent<UserAvatarDownloadCompleteEvent>().Subscribe(UserAvatarDownloadComplete);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
             _accountService = new AccountService(_ea);
@@ -153,6 +154,18 @@ namespace ESO_LangEditorGUI.ViewModels
             //ExportToLangCommand = new ExportToFileCommand(this);
         }
 
+        private void UserAvatarDownloadComplete(string filename)
+        {
+            if (filename == App.UserAvatarPath)
+            {
+                App.UserAvatarPath = filename;
+            }
+
+
+
+            throw new NotImplementedException();
+        }
+
         private void OpenUserProfileSettingWindow()
         {
             new UserProfileSetting().Show();
@@ -163,18 +176,20 @@ namespace ESO_LangEditorGUI.ViewModels
             ConnectStatus = connectStatus;
         }
 
-        private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextForUpdateZhDto)
+        private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextUpdateZhDto)
         {
-            LangtextNetService apiLangtext = new LangtextNetService();
+            LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
             LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
-            var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDto, App.LangConfig.UserAuthToken);
+            var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
+
+            Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
             
             if (code == System.Net.HttpStatusCode.OK || 
                 code == System.Net.HttpStatusCode.Accepted ||
                 code == System.Net.HttpStatusCode.Created)
             {
-                langTextForUpdateZhDto.IsTranslated = 3;
-                await langTextRepoClient.UpdateLangtextZh(langTextForUpdateZhDto);
+                langTextUpdateZhDto.IsTranslated = 3;
+                await langTextRepoClient.UpdateLangtextZh(langTextUpdateZhDto);
             }
 
             MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
@@ -183,7 +198,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         private async void UploadLangtextZhUpdate(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
         {
-            LangtextNetService apiLangtext = new LangtextNetService();
+            LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
             LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
             var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDtoList, App.LangConfig.UserAuthToken);
 
@@ -217,9 +232,9 @@ namespace ESO_LangEditorGUI.ViewModels
             //SelectedInfo = "已选择 " + obj.Count + " 项";
         }
 
-        public void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
+        public async void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            GuidVaildStartupCheck();
+            await GuidVaildStartupCheck();
         }
 
         public async Task GuidVaildStartupCheck()
@@ -227,19 +242,15 @@ namespace ESO_LangEditorGUI.ViewModels
             var startCheck = new StartupConfigCheck(_ea);
             await startCheck.TryToGetServerRespondAndConfig();
 
-            _accountService.LoginCheck();
-            //App.LangNetworkService = new NetworkService(App.LangConfig, this);
+            if (ProgressInfo == "登录成功")
+            {
+                TimerForRefreshToken();
+            }
 
-            //if (App.LangConfig.UserGuid == Guid.Empty)
-            //{
-            //    ShowLoginUC();
-            //}
-            //else
-            //{
-            //    //var startCheck = new StartupConfigCheck(this);
-            //    //startCheck.TryToGetServerRespondAndConfig();
-            //    //App.LangNetworkService = new NetworkService(App.LangConfig, this);
-            //}
+            if (App.UserAvatarPath != App.WorkingDirectory + "/_tmp/" + App.User.UserAvatarPath)
+            {
+
+            }
         }
 
         private async void ShowLoginUC()
@@ -268,6 +279,20 @@ namespace ESO_LangEditorGUI.ViewModels
 
         }
 
+        private async void TimerForRefreshToken()
+        {
+            while (ConnectStatus == ClientConnectStatus.Login)
+            {
+                await Task.Delay(TimeSpan.FromMinutes(10));
+
+                await Task.Run(() =>
+                {
+                     _accountService.LoginByToken();
+                });
+                
+            }
+        }
+
         private async void ExportToLang(object o)
         {
             var view = new ProgressDialog();
@@ -279,7 +304,10 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public async void OpenLangEditor(LangTextDto langtext)
         {
-            var view = new LangtextEditor(langtext);
+            var view = new LangtextEditor(langtext)
+            {
+                Owner = Application.Current.MainWindow
+            };
             view.Show();
 
             //show the dialog
@@ -293,28 +321,23 @@ namespace ESO_LangEditorGUI.ViewModels
             Console.WriteLine("You can intercept the closing event, and cancel here.");
         }
 
-        private void ClosingEventAndSaveConfigHandler(object sender, DialogClosingEventArgs eventArgs)
+
+
+        private async void ExportLuaToStr(object o)
         {
-
-
-            Console.WriteLine("You can intercept the closing event, and cancel here.");
-        }
-
-        private void ExportLuaToStr(object o)
-        {
-            var readDb = new LangTextRepository();
+            var readDb = new LangTextRepoClientService();
             var export = new ExportDbToFile();
 
-            var langlua = readDb.GetAlltLangTexts(1);
+            var langlua = await readDb.GetAlltLangTexts(1);
             export.ExportLua(langlua);
 
             MessageBox.Show("导出完成！");
         }
 
-        private bool CompareDatabaseRev()
-        {
-            return App.LangConfig.DatabaseRev != App.LangConfigServer.LangDatabaseRevised;
-        }
+        //private bool CompareDatabaseRev()
+        //{
+        //    return App.LangConfig.DatabaseRev != App.LangConfigServer.LangDatabaseRevised;
+        //}
 
         private void LangtextDataReceived(List<LangTextDto> langtexList)
         {

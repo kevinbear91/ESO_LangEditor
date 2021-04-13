@@ -52,14 +52,14 @@ namespace ESO_LangEditorGUI.Services
             //}
         }
 
-        private void ExportDbFiles()
+        private async void ExportDbFiles()
         {
-            var readDb = new LangTextRepository();
+            var readDb = new LangTextRepoClientService();
             var export = new ExportDbToFile();
             var tolang = new ThirdPartSerices();
 
-            var langtexts = readDb.GetAlltLangTexts(0);
-            var langlua = readDb.GetAlltLangTexts(1);
+            var langtexts = await readDb.GetAlltLangTexts(0);
+            var langlua = await readDb.GetAlltLangTexts(1);
 
             export.ExportText(langtexts);
             export.ExportLua(langlua);

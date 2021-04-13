@@ -1,4 +1,4 @@
-﻿using ESO_LangEditorModels;
+﻿using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -131,9 +131,9 @@ namespace ESO_LangEditorUpdater
 
         private void UpdateJsonVersion()
         {
-            ConfigJson LangConfig = ConfigJson.Load();
+            AppConfigClient LangConfig = AppConfigClient.Load();
             LangConfig.LangEditorVersion = _langEditorServerVersion;
-            ConfigJson.Save(LangConfig);
+            AppConfigClient.Save(LangConfig);
         }
 
         

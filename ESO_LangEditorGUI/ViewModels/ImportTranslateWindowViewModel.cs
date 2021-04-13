@@ -1,4 +1,6 @@
-﻿using ESO_LangEditor.Core.EnumTypes;
+﻿using AutoMapper;
+using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.Services;
@@ -97,23 +99,28 @@ namespace ESO_LangEditorGUI.ViewModels
             }
         }
 
-        private void ImportDataToDb(JsonFileDto json)
+        private async void ImportDataToDb(JsonFileDto json)
         {
-            var db = new LangTextRepository();
+            var db = new LangTextRepoClientService();
+            IMapper mapper = App.Mapper;
 
             switch (json.ChangeType)
             {
                 case LangChangeType.Added:
-                    db.AddNewLangs(json.LangTexts);
+                    var listForAdd = mapper.Map<List<LangTextClient>>(json.LangTexts);
+                    await db.AddLangtexts(listForAdd);
                     break;
                 case LangChangeType.ChangedEN:
-                    db.UpdateLangsEN(json.LangTexts);
+                    var listForEnChanged = mapper.Map<List<LangTextForUpdateEnDto>>(json.LangTexts);
+                    await db.UpdateLangtextEn(listForEnChanged);
                     break;
                 case LangChangeType.ChangedZH:
-                    db.UpdateLangsZH(json.LangTexts);
+                    var listForZhChanged = mapper.Map<List<LangTextForUpdateZhDto>>(json.LangTexts);
+                    await db.UpdateLangtextZh(listForZhChanged);
                     break;
                 case LangChangeType.Removed:
-                    db.DeleteLangs(json.LangTexts);
+                    var listForDelete = mapper.Map<List<LangTextClient>>(json.LangTexts);
+                    await db.DeleteLangtexts(listForDelete);
                     break;
             }
         }

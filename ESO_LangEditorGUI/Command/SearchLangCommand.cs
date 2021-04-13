@@ -20,9 +20,8 @@ namespace ESO_LangEditorGUI.Command
     public class SearchLangCommand : CommandBaseAsync
     {
         private readonly SearchLangText search = new SearchLangText();
-        private readonly LangTextRepository _localSearch = new LangTextRepository();
         private readonly MainWindowSearchbarViewModel _mainView;
-        private LangtextNetService apiLangtext = new LangtextNetService();
+        private LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
 
         private LangTextRepoClientService _langTextSearch;
 

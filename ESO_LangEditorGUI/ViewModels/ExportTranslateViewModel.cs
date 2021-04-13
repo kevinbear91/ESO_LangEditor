@@ -140,7 +140,7 @@ namespace ESO_LangEditorGUI.ViewModels
             {
                 var _mapper = App.Mapper;
                 var _langTextRepoClient = new LangTextRepoClientService();
-                var _langTextNetServer = new LangtextNetService();
+                var _langTextNetServer = new LangtextNetService(App.ServerPath);
                 var updateList = _mapper.Map<List<LangTextForUpdateZhDto>>(GridData.ToList());
                 var code = await _langTextNetServer.UpdateLangtextZh(updateList, App.LangConfig.UserAuthToken);
 

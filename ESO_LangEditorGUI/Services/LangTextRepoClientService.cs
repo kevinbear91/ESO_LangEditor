@@ -24,7 +24,7 @@ namespace ESO_LangEditorGUI.Services
             _mapper = App.Mapper; // mapper;
         }
 
-        public async Task<LangTextDto> GetLangTextByGuidAsync(Guid langtextGuid)
+        public async Task<LangTextClient> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             LangTextClient langtext;
 
@@ -34,8 +34,8 @@ namespace ESO_LangEditorGUI.Services
                 db.Dispose();
             }
 
-            var langtextDto = _mapper.Map<LangTextDto>(langtext);
-            return langtextDto;
+            //var langtextDto = _mapper.Map<LangTextDto>(langtext);
+            return langtext;
         }
 
         public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, SearchTextType searchType, SearchPostion searchPostion)
@@ -112,6 +112,26 @@ namespace ESO_LangEditorGUI.Services
             return langtextDirct;
         }
 
+        public async Task<List<LangTextDto>> GetAlltLangTexts(int searchType)
+        {
+            List<LangTextClient> listData;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                listData = searchType switch
+                {
+                    0 => await db.Langtexts.Where(d => d.IdType != 100).ToListAsync(),  //搜索游戏内文本
+                    1 => await db.Langtexts.Where(d => d.IdType == 100).ToListAsync(),  //搜索Lua UI文本
+
+                };
+
+                var langtextDto = _mapper.Map<List<LangTextDto>>(listData);
+
+                return langtextDto;
+
+                //return data;
+            }
+        }
+
 
         public async Task<bool> AddLangtexts(List<LangTextClient> langtextDto)
         {
@@ -184,15 +204,15 @@ namespace ESO_LangEditorGUI.Services
             return saveCount > 0;
         }
 
-        public async Task<bool> UpdateLangtexts(List<LangTextDto> langtextDto)
+        public async Task<bool> UpdateLangtexts(List<LangTextClient> langtextDto)
         {
             int saveCount = 0;
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                var lang = _mapper.Map<List<LangTextClient>>(langtextDto);
+                //var lang = _mapper.Map<List<LangTextClient>>(langtextDto);
 
-                db.Langtexts.UpdateRange(lang);
+                db.Langtexts.UpdateRange(langtextDto);
                 saveCount = await db.SaveChangesAsync();
                 db.Dispose();
             }
@@ -246,6 +266,68 @@ namespace ESO_LangEditorGUI.Services
 
             return langtextRev;
         }
+
+        public async Task UpdateRevNumber(int number)
+        {
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
+                langtextRevNumber.LangTextRev = number;
+                db.LangtextRevNumber.Update(langtextRevNumber);
+                await db.SaveChangesAsync();
+                db.Dispose();
+            }
+        }
+
+        public async Task<UserInClient> GetUserInClient(Guid userId)
+        {
+            UserInClient user;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                user = await db.Users.FindAsync(userId);
+                db.Dispose();
+            }
+
+            return user;
+        }
+
+        public List<UserInClient> GetUsers()
+        {
+            List<UserInClient> user;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                user = db.Users.ToList();
+                db.Dispose();
+            }
+
+            return user;
+        }
+
+        public async Task<Dictionary<Guid, UserInClient>> GetUsersToDict()
+        {
+            Dictionary<Guid, UserInClient> user;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                user = await db.Users.ToDictionaryAsync(u => u.Id);
+                db.Dispose();
+            }
+
+            return user;
+        }
+
+        public async Task<bool> UpdateUsers(List<UserInClient> users)
+        {
+            int saveCount = 0;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                db.Users.UpdateRange(users);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+
+            return saveCount > 0;
+        }
+
 
         private string GetSearchTypeToStringRaw(SearchTextType searchTextType)
         {

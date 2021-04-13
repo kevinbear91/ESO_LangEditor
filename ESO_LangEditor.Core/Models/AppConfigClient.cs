@@ -14,13 +14,13 @@ namespace ESO_LangEditor.Core.Models
         public string LangUpdaterVersion { get; set; }
         public List<ServerNameDto> LangServerList { get; set; }
         public string DefaultServerName { get; set; }
-        public int DatabaseRev { get; set; }
         public int LangDatabaseVersion { get; set; }
         public string UserAuthToken { get; set; }
         public string UserRefreshToken { get; set; }
         public Guid UserGuid { get; set; }
         public string UserName { get; set; }
-        public string UserAvatarFileName { get; set; }
+        public string UserAvatarPath { get; set; }
+        public AppSettingClient AppSetting { get; set; }
 
         public AppConfigClient()
         {
@@ -43,13 +43,13 @@ namespace ESO_LangEditor.Core.Models
                 ServerType = "Ipv6"
             });
             DefaultServerName = "LangEditor-IKDC2-v4";
-            DatabaseRev = 25;
             LangDatabaseVersion = 1;
             UserAuthToken = "";
             UserRefreshToken = "";
             UserGuid = Guid.Empty;
             UserName = "";
-            UserAvatarFileName = "";
+            UserAvatarPath = "";
+            AppSetting = new AppSettingClient { IsAskToExit = true, };
         }
         private static readonly string CONFIG_FILE = "LangConfig.json";
 
