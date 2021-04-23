@@ -239,13 +239,19 @@ namespace ESO_LangEditorGUI.Services
             return saveCount > 0;
         }
 
-        public async Task<bool> DeleteLangtexts(List<LangTextClient> langtextDto)
+        public async Task<bool> DeleteLangtexts(List<Guid> langtextId)
         {
             int saveCount = 0;
+            var langToDelete = new List<LangTextClient>();
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                db.Langtexts.RemoveRange(langtextDto);
+                foreach(var id in langtextId)
+                {
+                    var lang = await db.Langtexts.FindAsync(id);
+                    langToDelete.Add(lang);
+                }
+                db.Langtexts.RemoveRange(langToDelete);
                 saveCount = await db.SaveChangesAsync();
                 db.Dispose();
             }

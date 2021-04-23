@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -63,6 +64,12 @@ namespace ESO_LangEditorGUI.Services
                 
                 if (result != null)
                 {
+                    App.LangConfigServer = result;
+
+                    await CompareUpdaterVersion();
+
+                    CompareEditorVersion();
+
                     if (App.LangConfig.UserAuthToken != "" & App.LangConfig.UserRefreshToken != "")
                     {
                         var userService = new AccountService(_ea);
@@ -74,7 +81,6 @@ namespace ESO_LangEditorGUI.Services
                         _ea.GetEvent<LoginRequiretEvent>().Publish();
                     }
 
-                    App.LangConfigServer = result;
                 }
 
                 //var userService = new AccountService();
@@ -97,9 +103,6 @@ namespace ESO_LangEditorGUI.Services
                 Debug.WriteLine("Server RevNumber: {0}", _RevNumberServer);
                 if (_RevNumberServer != 0)
                 {
-                    await CompareUpdaterVersion();
-
-                    CompareEditorVersion();
 
                     await CompareDatabaseVersion();
 
@@ -380,7 +383,7 @@ namespace ESO_LangEditorGUI.Services
                         {
                             foreach (var rev in langRevisedDto)
                             {
-                                Debug.WriteLine("Rev Number: ", rev.LangTextRevNumber);
+                                //Debug.WriteLine("Rev Number: ", rev.LangTextRevNumber);
                                 //if (rev.ReasonFor == ReviewReason.Deleted)
                                 //{
                                 //    langtextDeletedDict.Add(rev.LangtextID, rev.ReasonFor);
@@ -400,55 +403,66 @@ namespace ESO_LangEditorGUI.Services
                             _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("正在获取服务器文本");
                             //查询langtext的步进编号
                             var currentRevLangDto = await _langtextNet.GetLangtextByRevisedAsync(revised, App.LangConfig.UserAuthToken);
-                            Debug.WriteLine("langtext from server count: {0}", currentRevLangDto.Count);
-
-                            if (langtextAddedDict.Count >= 1)
+                            if (currentRevLangDto != null)
                             {
-                                List<LangTextClient> newLangtexts = new List<LangTextClient>();
-                                _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并新增文本列表(" + i + "/" + RevCount + ")");
-                                _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("正在应用到数据库……");
-                                foreach (var lang in currentRevLangDto)
-                                {
+                                Debug.WriteLine("langtext from server count: {0}", currentRevLangDto.Count);
 
-                                    if (langtextAddedDict.ContainsKey(lang.Id))
+                                if (langtextAddedDict.Count >= 1)
+                                {
+                                    List<LangTextClient> newLangtexts = new List<LangTextClient>();
+                                    List<LangTextDto> tempList = new List<LangTextDto>();
+                                    _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并新增文本列表(" + i + "/" + RevCount + ")");
+                                    _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("正在应用到数据库……");
+                                    foreach (var lang in currentRevLangDto)
                                     {
-                                        newLangtexts.Add(_mapper.Map<LangTextClient>(lang));
+                                        if (langtextAddedDict.ContainsKey(lang.Id))
+                                        {
+                                            var langclient = _mapper.Map<LangTextClient>(lang);
+                                            newLangtexts.Add(langclient);
+                                            tempList.Add(lang);
+                                        }
+                                    }
+
+                                    foreach (var lang in tempList)
+                                    {
                                         currentRevLangDto.Remove(lang);
                                     }
+                                    await _langTextRepo.AddLangtexts(newLangtexts); //应用新增文本
                                 }
-                                await _langTextRepo.AddLangtexts(newLangtexts); //应用新增文本
-                            }
 
-                            if (currentRevLangDto != null && currentRevLangDto.Count >= 1)
-                            {
-                                _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并更新文本列表(" + i + "/" + RevCount + ")");
-                                var langtextToUpdateList = new List<LangTextClient>();
-                                foreach (var lang in currentRevLangDto)
+                                if (currentRevLangDto != null && currentRevLangDto.Count >= 1)
                                 {
-                                    var langtext = await _langTextRepo.GetLangTextByGuidAsync(lang.Id);
-                                    _mapper.Map(lang, langtext, typeof(LangTextDto), typeof(LangTextClient));
-                                    langtextToUpdateList.Add(langtext);
-                                }
+                                    _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并更新文本列表(" + i + "/" + RevCount + ")");
+                                    var langtextToUpdateList = new List<LangTextClient>();
+                                    foreach (var lang in currentRevLangDto)
+                                    {
+                                        var langtext = await _langTextRepo.GetLangTextByGuidAsync(lang.Id);
+                                        _mapper.Map(lang, langtext, typeof(LangTextDto), typeof(LangTextClient));
+                                        langtextToUpdateList.Add(langtext);
+                                    }
 
-                                //var updatedlang = _mapper.Map<List<LangTextClient>>(currentRevLangDto);
-                                await _langTextRepo.UpdateLangtexts(langtextToUpdateList);   //应用修改文本
+                                    //var updatedlang = _mapper.Map<List<LangTextClient>>(currentRevLangDto);
+                                    await _langTextRepo.UpdateLangtexts(langtextToUpdateList);   //应用修改文本
+                                }
                             }
 
                             if (langtextDeletedDict.Count >= 1)
                             {
                                 _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并应用删除文本列表(" + i + "/" + RevCount + ")");
-                                var deletedlangList = new List<LangTextClient>();
+                                //var deletedlangList = new List<LangTextClient>();
 
-                                foreach (var langId in langtextDeletedDict)
-                                {
-                                    var lang = await _langTextRepo.GetLangTextByGuidAsync(langId.Key);
+                                await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()); //应用删除文本
 
-                                    if (lang != null)
-                                    {
-                                        deletedlangList.Add(lang);
-                                    }
-                                }
-                                await _langTextRepo.DeleteLangtexts(deletedlangList);   //应用删除文本
+                                //foreach (var langId in langtextDeletedDict)
+                                //{
+                                //    var lang = await _langTextRepo.GetLangTextByGuidAsync(langId.Key);
+
+                                //    if (lang != null)
+                                //    {
+                                //        deletedlangList.Add(lang);
+                                //    }
+                                //}
+                                //await _langTextRepo.DeleteLangtexts(deletedlangList);   
                             }
                             await _langTextRepo.UpdateRevNumber(revised);   //更新步进号
                             revised++;
@@ -540,8 +554,8 @@ namespace ESO_LangEditorGUI.Services
                     await db.UpdateLangtextZh(listForZhChanged);
                     break;
                 case LangChangeType.Removed:
-                    var listForDelete = mapper.Map<List<LangTextClient>>(json.LangTexts);
-                    await db.DeleteLangtexts(listForDelete);
+                    //var listForDelete = mapper.Map<List<LangTextClient>>(json.LangTexts);
+                    //await db.DeleteLangtexts(json.LangTexts.);
                     break;
             }
         }

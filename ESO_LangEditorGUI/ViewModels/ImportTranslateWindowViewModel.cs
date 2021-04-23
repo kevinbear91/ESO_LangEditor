@@ -120,7 +120,7 @@ namespace ESO_LangEditorGUI.ViewModels
                     break;
                 case LangChangeType.Removed:
                     var listForDelete = mapper.Map<List<LangTextClient>>(json.LangTexts);
-                    await db.DeleteLangtexts(listForDelete);
+                    //await db.DeleteLangtexts(listForDelete);
                     break;
             }
         }

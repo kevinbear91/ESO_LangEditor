@@ -11,10 +11,12 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -148,6 +150,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public ExcuteViewModelMethod CompareListSelecteCommand => new ExcuteViewModelMethod(SelecteOption);
         public ExcuteViewModelMethod SaveToDbCommand => new ExcuteViewModelMethod(SaveChanges);
         public ExcuteViewModelMethod SaveToServerCommand => new ExcuteViewModelMethod(UploadResultToServer);
+        public ExcuteViewModelMethod CompareFilesCommand => new ExcuteViewModelMethod(CompreWithDb);
 
         //public Dictionary<string, LangTextDto> DbDict { get; set; }
         //public Dictionary<string, LangTextDto> CsvDict { get; set; }
@@ -162,9 +165,11 @@ namespace ESO_LangEditorGUI.ViewModels
 
             FileList = new List<string>();
             SaveToDbCommand.IsExecuting = true;
+            SaveToServerCommand.IsExecuting = true;
             //CompareListSelecteCommand.IsExecuting = true;
 
             UpdatedVersionInputEnable = true;
+            GridData = new ObservableCollection<LangTextDto>();
             _mapper = App.Mapper;
             _langtextNetService = new LangtextNetService(App.ServerPath);
         }
@@ -218,7 +223,8 @@ namespace ESO_LangEditorGUI.ViewModels
 
                     if (IsAdminGuid())
                     {
-                        saveFileToDisk.ExportLangTextsAsJson(Changed, LangChangeType.ChangedEN);
+                        var filename = saveFileToDisk.ExportLangTextsAsJson(Changed, LangChangeType.ChangedEN);
+                        Debug.WriteLine(filename);
                     }
                 }
 
@@ -229,7 +235,8 @@ namespace ESO_LangEditorGUI.ViewModels
 
                     if (IsAdminGuid())
                     {
-                        saveFileToDisk.ExportLangTextsAsJson(RemovedList, LangChangeType.Removed);
+                        var filename = saveFileToDisk.ExportLangTextsAsJson(RemovedList, LangChangeType.Removed);
+                        Debug.WriteLine(filename);
                     }
                 }
 
@@ -241,7 +248,7 @@ namespace ESO_LangEditorGUI.ViewModels
 
         public void UploadResultToServer(object o)
         {
-
+            Debug.WriteLine("Upload: " + _selectedKey);
             switch (_selectedKey)
             {
                 case"Added":
@@ -365,7 +372,7 @@ namespace ESO_LangEditorGUI.ViewModels
                     {
                         FileCount = FileList.Count.ToString();
                         PathTooltip();
-                        CompreWithDb();
+                        //CompreWithDb();
                     }
                 }
                 else
@@ -376,17 +383,23 @@ namespace ESO_LangEditorGUI.ViewModels
             }
         }
 
-        private async void CompreWithDb()
+        private async void CompreWithDb(object o)
         {
             OpenFileCommand.IsExecuting = true;      //禁用浏览文件窗口按钮
+            SaveToDbCommand.IsExecuting = true;
+            SaveToServerCommand.IsExecuting = true;
+            UpdatedVersionInputEnable = false;
+            CompareFilesCommand.IsExecuting = true;
 
             var langfileParser = new LangFileParser();
             var luaList = new List<string>();
 
             Dictionary<string, LangTextDto> fileContent = new Dictionary<string, LangTextDto>();
+            InfoText = "正在读取数据库……";
 
             var DbDict = await Task.Run(() => _langTextRepository.GetAlltLangTextsDictionaryAsync());
 
+            InfoText = "正在分析文件……";
             foreach (var file in FileList)
             {
                 if (file.EndsWith(".lua"))
@@ -411,6 +424,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public void CompareDicts(Dictionary<string, LangTextDto> dbDict, Dictionary<string, LangTextDto> csvDict)
         {
             Debug.WriteLine("开始比较。");
+            InfoText = "正在对比……";
 
             var _first = dbDict;
             var _second = csvDict;
@@ -448,6 +462,9 @@ namespace ESO_LangEditorGUI.ViewModels
                             LangTextType = firstValue.LangTextType,
                             UserId = App.LangConfig.UserGuid,
                             //review = 2,
+                            ReviewerId = firstValue.ReviewerId,
+                            ReviewTimestamp = firstValue.ZhLastModifyTimestamp,
+                            Revised = firstValue.Revised,
                         });
                         RemovedDict.Remove(other.Key);
                     }
@@ -467,6 +484,9 @@ namespace ESO_LangEditorGUI.ViewModels
                         ZhLastModifyTimestamp = DateTime.Now,
                         LangTextType = other.Value.LangTextType,
                         UserId = App.LangConfig.UserGuid,
+                        ReviewerId = App.LangConfig.UserGuid,
+                        ReviewTimestamp = DateTime.Now,
+                        Revised = 0,
                     });
                     RemovedDict.Remove(other.Key);
                 }
@@ -479,32 +499,49 @@ namespace ESO_LangEditorGUI.ViewModels
             RemovedTag = RemovedList.Count.ToString();
 
             SaveToDbCommand.IsExecuting = false;        //启用保存按钮
+
+            Debug.WriteLine("Added Line: {0}", Added.Count);
+            Debug.WriteLine("Changed Line: {0}", Changed.Count);
+            Debug.WriteLine("Removed Line: {0}", RemovedList.Count);
+            InfoText = "对比完成！";
         }
 
         public void SelecteOption(object parameter)
         {
-            string selectedKey = parameter as string;
+            _selectedKey = parameter as string;
             //var datagrid = _compareWindowViewModel.LangDataGrid.LangDataGridDC;
 
-            if (GridData != null)
-                GridData = null;
+            if (GridData.Count > 0)
+                GridData.Clear();
 
-            switch (selectedKey)
+
+            //Debug.WriteLine("Selected Key: " + selectedKey);
+
+            switch (_selectedKey)
             {
                 case "Added":
-                    _selectedKey = "Added";
-                    if (Added != null)
-                        GridData = new ObservableCollection<LangTextDto>(Added);
+                    Debug.WriteLine("Selected: " + _selectedKey);
+                    GridData.AddRange(Added);
+                    if (Added.Count > 1)
+                    {
+                        SaveToServerCommand.IsExecuting = false;
+                    }
                     break;
                 case "Changed":
-                    _selectedKey = "Changed";
-                    if (Changed != null)
-                        GridData = new ObservableCollection<LangTextDto>(Changed);
+                    Debug.WriteLine("Selected: " + _selectedKey);
+                    GridData.AddRange(Changed);
+                    if (Changed.Count > 1)
+                    {
+                        SaveToServerCommand.IsExecuting = false;
+                    }
                     break;
                 case "Removed":
-                    _selectedKey = "Removed";
-                    if (RemovedList != null)
-                        GridData = new ObservableCollection<LangTextDto>(RemovedList);
+                    Debug.WriteLine("Selected: " + _selectedKey);
+                    GridData.AddRange(RemovedList);
+                    if (RemovedList.Count > 1)
+                    {
+                        SaveToServerCommand.IsExecuting = false;
+                    }
                     break;
             }
         }

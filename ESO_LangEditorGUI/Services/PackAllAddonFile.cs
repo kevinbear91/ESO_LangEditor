@@ -15,6 +15,8 @@ namespace ESO_LangEditorGUI.Services
     {
         private string _addonVersion;
         private string _apiVersion;
+        private string _addonVersionInt;
+        private string _updateLog;
         private CHSorCHT _chsOrChtListSelected;
         private List<FilePaths> _copyFilePaths;
         private List<FilePaths> _filePaths;
@@ -25,6 +27,8 @@ namespace ESO_LangEditorGUI.Services
         {
             _addonVersion = packFileViewModel.AddonVersion;
             _apiVersion = packFileViewModel.ApiVersion;
+            _addonVersionInt = packFileViewModel.AddonVersionInt;
+            _updateLog = packFileViewModel.UpdateLog;
             _chsOrChtListSelected = packFileViewModel.ChsOrChtListSelected;
         }
 
@@ -72,6 +76,7 @@ namespace ESO_LangEditorGUI.Services
                 tolang.ConvertTxTtoLang(true);
                 tolang.LuaStrToCHT();
             }
+
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
@@ -113,7 +118,8 @@ namespace ESO_LangEditorGUI.Services
 
             modifyText = modifyText.Replace("{EsoZhVersion}", _addonVersion);
             modifyText = modifyText.Replace("{EsoApiVersion}", _apiVersion);
-
+            modifyText = modifyText.Replace("{EsoZhVersionInt}", _addonVersionInt);
+            modifyText = modifyText.Replace("{UpdateLog}", _updateLog);
 
             using (var sw = new StreamWriter(outputPath))
             {
@@ -145,6 +151,12 @@ namespace ESO_LangEditorGUI.Services
                 {
                     SourcePath = @"Resources\" + esozhPath + @"\EsoUI\lang\en_pregame.str",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\en_pregame.str",
+                },
+
+                new FilePaths
+                {
+                    SourcePath = @"Resources\" + esozhPath + @"\EsoZH\EsoZH.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\EsoZH.lua",
                 },
                 //new FilePaths
                 //{

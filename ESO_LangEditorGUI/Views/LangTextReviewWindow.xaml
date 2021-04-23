@@ -63,9 +63,12 @@
             </ScrollViewer>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="1">
+        <DockPanel Grid.Column="1" Grid.Row="1">
             <UserControls:UC_LangDataGridForReview />
-        </StackPanel>
+        </DockPanel>
+        <!--<StackPanel Grid.Column="1" Grid.Row="1">
+            <UserControls:UC_LangDataGridForReview />
+        </StackPanel>-->
 
         <StatusBar Grid.Row="2" Grid.ColumnSpan="2" VerticalContentAlignment="Bottom">
             <StatusBar.ItemsPanel>

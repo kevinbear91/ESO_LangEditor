@@ -15,7 +15,7 @@ namespace ESO_LangEditor.Core.EnumTypes
         Type = 3,
         [Description("英文")]
         TextEnglish = 4,
-        [Description("译文")]
+        [Description("中文")]
         TextChineseS = 5,
         //[Description("搜译文")]
         //TextVersion = 6,

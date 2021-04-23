@@ -183,7 +183,7 @@ namespace ESO_LangEditorGUI.Services
                     //var langtext = _mapper.Map<LangTextClient>(langtextDto);
                     langtextForDelete.Add(langtextDto);
                 }
-                await _langTextRepoClient.DeleteLangtexts(langtextForDelete);
+                //await _langTextRepoClient.DeleteLangtexts(langtextForDelete);
             }
         }
 

@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="对比文本" Height="450" Width="530" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="White">
+        Title="对比文本" Height="450" Width="530" ResizeMode="CanResize" WindowStartupLocation="CenterOwner" Background="White">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>
@@ -49,7 +49,7 @@
                 </TextBox.Text>
             </TextBox>
 
-            <Button x:Name="SaveToDB_Button"  Command="{Binding SaveToDbCommand}" Margin="20 0">
+            <Button x:Name="Compare_Button"  Command="{Binding CompareFilesCommand}" Margin="20 0">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                         <Style.Triggers>
@@ -59,19 +59,14 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
+                <materialDesign:PackIcon Kind="FileCompare" Width="24" Height="24" />
+            </Button>
+
+            <Button x:Name="SaveToDB_Button"  Command="{Binding SaveToDbCommand}" Margin="20 0">
                 <materialDesign:PackIcon Kind="ContentSaveOutline" Width="24" Height="24" />
             </Button>
 
             <Button x:Name="SaveToServer_Button"  Command="{Binding SaveToServerCommand}" Margin="20 0" >
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=VersionInput_textBox}" Value="True">
-                                <Setter Property="IsEnabled" Value="False" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
                 <materialDesign:PackIcon Kind="CloudUploadOutline" Width="24" Height="24" />
             </Button>
 
@@ -102,11 +97,9 @@
                                  Content="{Binding RemovedTag, FallbackValue='移除'}"  />
                 </StackPanel>
 
-                <StackPanel Grid.Row="1">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <uc:UC_LangDataGrid />
-                    </ScrollViewer>
-                </StackPanel>
+                <DockPanel Grid.Row="1">
+                    <uc:UC_LangDataGrid />
+                </DockPanel>
             </Grid>
 
         </GroupBox>

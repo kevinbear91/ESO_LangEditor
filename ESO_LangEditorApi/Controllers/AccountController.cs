@@ -409,12 +409,13 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize]
+        [Consumes("multipart/form-data", "image/jpg", "image/png")]
         [HttpPost("{userGuid}/avatar")]
-        public async Task<IActionResult> UserUploadAvatarAsync(Guid userGuid, [FromForm] IFormFile avatar)
+        public async Task<IActionResult> UserUploadAvatarAsync(Guid userGuid, IFormFile avatar)
         {
             var userIdFromToken = _userManager.GetUserId(HttpContext.User);
             var user = await _userManager.FindByIdAsync(userIdFromToken);
-            var file = avatar;
+            //var file = avatar;
 
             if (user == null && userIdFromToken != userGuid.ToString())
             {
@@ -422,19 +423,25 @@ namespace ESO_LangEditor.API.Controllers
             }
 
             //string uniqueFileName = null;
-
-            if (file == null || file.Length > 512 * 1024) // 512 * 1024 = 512 KB
-            {
-                return BadRequest();
-            }
-
-            string uploadsFolder = Path.Combine(_webHostEnvironment.ContentRootPath, "wwwwroot/images");
-            string uniqueFileName = user.UserName + "_" + Guid.NewGuid().ToString();
+            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+            string uniqueFileName = user.UserName + "_" + Guid.NewGuid().ToString() + ".jpg";
             string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+            string filePathTemp = Path.GetTempFileName();
 
             Debug.WriteLine("uplpad folder: {0}, filename: {1}, filepath: {2}", uploadsFolder, uniqueFileName, filePath);
 
-            file.CopyTo(new FileStream(filePath, FileMode.Create));
+            using (var stream = System.IO.File.Create(filePathTemp))
+            {
+                await avatar.CopyToAsync(stream);
+            }
+
+            if (avatar.Length > 512 * 1024) // 512 * 1024 = 512 KB
+            {
+                System.IO.File.Delete(filePathTemp);
+                return BadRequest();
+            }
+
+            avatar.CopyTo(new FileStream(filePath, FileMode.Create));
 
             if(!System.IO.File.Exists(filePath))
             {
@@ -446,6 +453,7 @@ namespace ESO_LangEditor.API.Controllers
 
             user.UserAvatarPath = uniqueFileName;
             await _userManager.UpdateAsync(user);
+            System.IO.File.Delete(filePathTemp);
 
             return Ok();
             

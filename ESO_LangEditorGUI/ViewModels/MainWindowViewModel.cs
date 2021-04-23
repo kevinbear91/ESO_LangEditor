@@ -41,6 +41,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private ClientConnectStatus _connectStatus;
         private AccountService _accountService;
         private string _avatarPath = App.UserAvatarPath;
+        private bool firstTime = true;
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
@@ -139,6 +140,7 @@ namespace ESO_LangEditorGUI.ViewModels
             _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
             _ea.GetEvent<UserAvatarDownloadCompleteEvent>().Subscribe(UserAvatarDownloadComplete);
+            _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
             _accountService = new AccountService(_ea);
@@ -154,16 +156,22 @@ namespace ESO_LangEditorGUI.ViewModels
             //ExportToLangCommand = new ExportToFileCommand(this);
         }
 
+        private void UserLogout()
+        {
+            App.LangConfig.UserAuthToken = "";
+            App.LangConfig.UserRefreshToken = "";
+            AppConfigClient config = App.LangConfig;
+            AppConfigClient.Save(config);
+
+            ConnectStatus = ClientConnectStatus.Logout;
+        }
+
         private void UserAvatarDownloadComplete(string filename)
         {
             if (filename == App.UserAvatarPath)
             {
                 App.UserAvatarPath = filename;
             }
-
-
-
-            throw new NotImplementedException();
         }
 
         private void OpenUserProfileSettingWindow()
@@ -171,9 +179,31 @@ namespace ESO_LangEditorGUI.ViewModels
             new UserProfileSetting().Show();
         }
 
-        private void ChangeConnectStatus(ClientConnectStatus connectStatus)
+        private async void ChangeConnectStatus(ClientConnectStatus connectStatus)
         {
             ConnectStatus = connectStatus;
+
+            if (connectStatus == ClientConnectStatus.Login && firstTime)
+            {
+                TimerForRefreshToken();
+                var avatarPath = App.WorkingDirectory + "/_tmp/" + App.User.UserAvatarPath;
+                Debug.WriteLine("avatar path : {0}", avatarPath);
+
+                if (App.UserAvatarPath != avatarPath)
+                {
+                    //var filename = App.User.UserAvatarPath;
+                    Debug.WriteLine("download avatar file: {0}", App.User.UserAvatarPath);
+
+                    await _accountService.UserAvatarDownload(App.User);
+
+                    App.LangConfig.UserAvatarPath = App.User.UserAvatarPath;
+                    AppConfigClient config = App.LangConfig;
+                    AppConfigClient.Save(config);
+
+                }
+
+                firstTime = false;
+            }
         }
 
         private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextUpdateZhDto)
@@ -242,15 +272,9 @@ namespace ESO_LangEditorGUI.ViewModels
             var startCheck = new StartupConfigCheck(_ea);
             await startCheck.TryToGetServerRespondAndConfig();
 
-            if (ProgressInfo == "登录成功")
-            {
-                TimerForRefreshToken();
-            }
+            
 
-            if (App.UserAvatarPath != App.WorkingDirectory + "/_tmp/" + App.User.UserAvatarPath)
-            {
-
-            }
+            
         }
 
         private async void ShowLoginUC()

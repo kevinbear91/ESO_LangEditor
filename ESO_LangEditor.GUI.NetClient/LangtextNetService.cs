@@ -270,7 +270,7 @@ namespace ESO_LangEditor.GUI.NetClient
             var content = SerializeDataToHttpContent(langTextForCreationDtos);
 
             HttpResponseMessage response = await client.PostAsync(
-                "api/langtext", content);
+                "api/langtext/new/list", content);
 
             return response.StatusCode;
         }

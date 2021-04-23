@@ -7,8 +7,6 @@ namespace ESO_LangEditor.Core.Models
 {
     public class LangTextForCreationDto : LangTextDto
     {
-        public Guid ReviewerId { get; set; }
-        public DateTime ReviewTimestamp { get; set; }
         public ReviewReason ReasonFor { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace ESO_LangEditor.API.Helpers
             CreateMap<LangText, LangTextArchive>();
             CreateMap<LangTextForCreationDto, LangText>();
             CreateMap<LangTextForUpdateZhDto, LangText>();
+            CreateMap<LangTextForCreationDto, LangTextReview>();
             CreateMap<LangTextForUpdateZhDto, LangTextReview>();
             CreateMap<LangTextForUpdateEnDto, LangTextReview>();
             CreateMap<LangTextReview, LangText>();

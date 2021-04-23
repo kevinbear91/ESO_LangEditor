@@ -7,14 +7,86 @@
         xmlns:local="clr-namespace:ESO_LangEditorGUI.Views" 
         xmlns:local1="clr-namespace:ESO_LangEditorGUI.Converter"
         mc:Ignorable="d"
-        Title="一键打包" Height="318" Width="214" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="">
+        Title="一键打包" Height="318" Width="514" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*" />
-            <RowDefinition Height="30*" />
-            <RowDefinition Height="20*" />
+            <RowDefinition Height="75*" />
+            <RowDefinition Height="26*" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,16">
+        <WrapPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBox x:Name="EsoZhVersion" materialDesign:HintAssist.Hint="汉化版本号" 
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 TextWrapping="Wrap" Width="120" Height="40" Margin="30 10 0 0" HorizontalAlignment="Center" >
+                <TextBox.Text>
+                    <Binding Path="AddonVersion" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
+                                                            xmlns:services="clr-namespace:ESO_LangEditorGUI.Services" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+
+            </TextBox>
+            <TextBox x:Name="APIversion_textBox" materialDesign:HintAssist.Hint="API版本" 
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 HorizontalAlignment="Center" Width="120" Height="40" Margin="30 10 0 0"
+                 TextWrapping="Wrap" >
+                <TextBox.Text>
+                    <Binding Path="ApiVersion" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
+                                                            xmlns:services="clr-namespace:ESO_LangEditorGUI.Services" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBox x:Name="AddonIntversion_textBox" materialDesign:HintAssist.Hint="插件内部版本Int" 
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 HorizontalAlignment="Center" Width="120" Height="40" Margin="30 10 0 0"
+                 TextWrapping="Wrap" Cursor="IBeam" >
+                <TextBox.Text>
+                    <Binding Path="AddonVersionInt" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
+                                                            xmlns:services="clr-namespace:ESO_LangEditorGUI.Services" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <ComboBox x:Name="CHSorCHT_comboBox" 
+                  ItemsSource="{Binding ChsOrChtList}" 
+                  SelectedItem="{Binding ChsOrChtListSelected, Mode=TwoWay}"
+                  SelectedIndex="0" Margin="30 10 0 0"
+                  HorizontalAlignment="Center" Width="120" Height="27">
+
+                <ComboBox.Resources>
+                    <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+                </ComboBox.Resources>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <TextBox x:Name="UpdateLog_textBox" materialDesign:HintAssist.Hint="更新日志" 
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 HorizontalAlignment="Center" Width="300" Height="120" Margin="30 30 0 0"
+                 TextWrapping="Wrap" Cursor="IBeam" >
+                <TextBox.Text>
+                    <Binding Path="UpdateLog" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
+                                                            xmlns:services="clr-namespace:ESO_LangEditorGUI.Services" />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+        </WrapPanel>
+        <!--<StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,16">
             <TextBox x:Name="EsoZhVersion" materialDesign:HintAssist.Hint="汉化版本号" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  TextWrapping="Wrap" Width="120" Height="40" Margin="0 10 0 0" HorizontalAlignment="Center" >
@@ -41,27 +113,11 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-        </StackPanel>
+        </StackPanel>-->
 
-        <ComboBox x:Name="CHSorCHT_comboBox" 
-                  Grid.Row="1"
-                  ItemsSource="{Binding ChsOrChtList}" 
-                  SelectedItem="{Binding ChsOrChtListSelected, Mode=TwoWay}"
-                  SelectedIndex="0"
-                  HorizontalAlignment="Center" 
-                  VerticalAlignment="Top" Width="120" Margin="0,10,0,0" Height="27">
 
-            <ComboBox.Resources>
-                <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
-            </ComboBox.Resources>
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
 
-        <Button x:Name="Pack_button" Grid.Row="2" Content="一键导出"
+        <Button x:Name="Pack_button" Grid.Row="1" Content="一键导出"
                 Margin="0,10,0,0"
                 materialDesign:ButtonProgressAssist.Value="-1"
                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
@@ -82,6 +138,7 @@
                 </Style>
             </Button.Style>
 
-        </Button> 
+        </Button>
+
     </Grid>
 </Window>

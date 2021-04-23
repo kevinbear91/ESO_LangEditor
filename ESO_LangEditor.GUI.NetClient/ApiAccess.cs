@@ -235,17 +235,23 @@ namespace ESO_LangEditor.GUI.NetClient
         public async Task<bool> UploadUserAvatar(string filePath, string userId, string token)
         {
             //HttpContent content;
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("image/jpeg"));
 
             client.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", token);
 
-            //var content = SerializeDataToHttpContent(userInfoChangeDto);
 
+            var filename = System.IO.Path.GetFileName(filePath);
             var byteContent = new ByteArrayContent(File.ReadAllBytes(filePath));
-            byteContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            //byteContent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            var content = new MultipartFormDataContent
+            {
+                { byteContent, "avatar", filename }
+            };
 
             HttpResponseMessage response = await client.PostAsync(
-                "api/account/" + userId + "/avatar", byteContent);
+                "api/account/" + userId + "/avatar", content);
             response.EnsureSuccessStatusCode();
 
             return response.IsSuccessStatusCode;

@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using NLog.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -119,7 +120,7 @@ namespace ESO_LangEditorApi
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
-            env.ContentRootPath = AppContext.BaseDirectory;
+            
 
 
         }

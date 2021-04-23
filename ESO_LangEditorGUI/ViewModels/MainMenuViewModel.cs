@@ -1,4 +1,5 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditorGUI.Command;
 using ESO_LangEditorGUI.EventAggres;
 using ESO_LangEditorGUI.Services;
@@ -103,14 +104,7 @@ namespace ESO_LangEditorGUI.ViewModels
                             Header = "导出已翻译内容",                                        //菜单标题
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),      //菜单Command 打开窗口
                             CommandParameter = windowNamespace + "ExportTranslate",  //窗口名 - 必须包含命名空间
-                        }
-                    }
-
-                },
-                new MenuItemContent
-                {
-                    Header="高级", ChildMenuItems=new ObservableCollection<MenuItemContent>
-                    {
+                        },
                         new MenuItemContent
                         {
                             Header = "导出文本至.lang", 
@@ -119,9 +113,23 @@ namespace ESO_LangEditorGUI.ViewModels
                         },
                         new MenuItemContent
                         {
-                            Header = "导出UI Str内容", 
+                            Header = "导出UI Str内容",
                             Command = new ExcuteViewModelMethod(ExportLuaToStr), 
                             //CommandParameter = "ESO_LangEditorGUI.Views.ExportTranslate"
+                        },
+                    }
+
+                },
+                new MenuItemContent
+                {
+                    Header="高级", ChildMenuItems=new ObservableCollection<MenuItemContent>
+                    {
+                        
+                        new MenuItemContent {
+                            Header = "审核待通过文本",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "LangTextReviewWindow",
+                            Visible = RoleToVisibility("Editor"),
                         },
                         new MenuItemContent {
                             Header = "一键发布",
@@ -134,20 +142,25 @@ namespace ESO_LangEditorGUI.ViewModels
                 },
                 new MenuItemContent
                 {
-                    Header="网络", ChildMenuItems=new ObservableCollection<MenuItemContent>
+                    Header="用户", ChildMenuItems=new ObservableCollection<MenuItemContent>
                     {
-                        new MenuItemContent {
-                            Header = "审核待通过文本",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "LangTextReviewWindow",
-                            Visible = RoleToVisibility("Editor"),
-                        },
-
                         new MenuItemContent {
                             Header = "用户角色编辑",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "UserRoleEditor",
                             Visible = RoleToVisibility("Admin"),
+                        },
+                        new MenuItemContent {
+                            Header="资料修改",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "UserProfileSetting",
+                        },
+
+                        new MenuItemContent {
+                            Header = "登出",
+                            Command = new ExcuteViewModelMethod(LogoutByICommand),
+                            //CommandParameter = windowNamespace + "UserRoleEditor",
+                            //Visible = RoleToVisibility("Admin"),
                         },
 
                         //new MenuItemContent { Header = "服务器线路" , ChildMenuItems=new ObservableCollection<MenuItemContent>
@@ -160,18 +173,23 @@ namespace ESO_LangEditorGUI.ViewModels
                     }
 
                 },
-                new MenuItemContent
-                {
-                    Header="资料修改",
-                    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                    CommandParameter = windowNamespace + "UserProfileSetting",
+                //new MenuItemContent
+                //{
+                //    Header="资料修改",
+                //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //    CommandParameter = windowNamespace + "UserProfileSetting",
 
-                },
+                //},
                 new MenuItemContent
                 {
                     Header="帮助", ChildMenuItems=new ObservableCollection<MenuItemContent>
                     {
-                        new MenuItemContent { Header = "使用说明" }
+                        new MenuItemContent 
+                        { 
+                            Header = "使用说明", 
+                            Command = new ExcuteViewModelMethod(GoToSite), 
+                            CommandParameter = "https://langeditor-doc.bevisbear.com" 
+                        }
                     }
 
                 },
@@ -198,6 +216,11 @@ namespace ESO_LangEditorGUI.ViewModels
             window.Show();
         }
 
+        private void LogoutByICommand(object o)
+        {
+            _ea.GetEvent<LogoutEvent>().Publish();
+        }
+
         private async void ExportLuaToStr(object o)
         {
             var readDb = new LangTextRepoClientService();
@@ -207,6 +230,18 @@ namespace ESO_LangEditorGUI.ViewModels
             export.ExportLua(langlua);
 
             MessageBox.Show("导出完成！");
+        }
+
+        public static void GoToSite(object urlo)
+        {
+            string url = urlo as string;
+            //System.Diagnostics.Process.Start(url);
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = url,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
 
     }

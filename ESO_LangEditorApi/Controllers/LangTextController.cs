@@ -157,7 +157,8 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost]
+        [DisableRequestSizeLimit]
+        [HttpPost("new/list")]
         public async Task<ActionResult> CreateLangtextListAsync(List<LangTextForCreationDto> langTextForCreation)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
