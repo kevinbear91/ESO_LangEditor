@@ -1,4 +1,5 @@
 ﻿using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.NetClient;
 using ESO_LangEditorGUI.Command;
@@ -14,6 +15,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ESO_LangEditorGUI.ViewModels
 {
@@ -26,10 +28,12 @@ namespace ESO_LangEditorGUI.ViewModels
         private ObservableCollection<UserInClientDto> _userList;
         private UserInClientDto _selectedUser;
         private List<LangTextForReviewDto> _gridSelectedItems;
+        private LangTextForReviewDto _gridSelectedItem;
         private bool _isReviewSelectedItems = true;
         private LangtextNetService _langtextNetService = new LangtextNetService(App.ServerPath);
         private LangTextRepoClientService _langTextRepoClient = new LangTextRepoClientService();
         private Dictionary<Guid, UserInClient> _userDict;
+        private string _selectedItemInfo;
 
         public string SearchResultInfo
         {
@@ -78,6 +82,19 @@ namespace ESO_LangEditorGUI.ViewModels
             get { return _isReviewSelectedItems; }
             set { SetProperty(ref _isReviewSelectedItems, value); }
         }
+
+        public string SelectedItemInfo
+        {
+            get { return _selectedItemInfo; }
+            set { SetProperty(ref _selectedItemInfo, value); }
+        }
+
+        public LangTextForReviewDto GridSelectedItem 
+        {
+            get { return _gridSelectedItem; }
+            set { SetProperty(ref _gridSelectedItem, value); }
+        }
+
         public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewUserList);
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
@@ -188,6 +205,39 @@ namespace ESO_LangEditorGUI.ViewModels
         public async void SubmitDenyItemsToServer(object o)
         {
 
+        }
+
+        public async void SetSelectedItemInfo()
+        {
+            var localOldLang = await FindLangtext();
+            string localOldTextZh;
+
+            if (localOldLang != null)
+            {
+                localOldTextZh = "修改前中文(本地)：" + localOldLang.TextZh;
+            }
+            else
+            {
+                localOldTextZh = "当前文本不存在于本地数据库。";
+            }
+
+
+            SelectedItemInfo = "文本唯一ID：" + GridSelectedItem.TextId
+                + "\n" + "文本类型：(" + GridSelectedItem.IdType + ")" + App.iDCatalog.GetCategory(GridSelectedItem.IdType)
+                + "\n" + "英文：" + GridSelectedItem.TextEn
+                + "\n" + "中文：" + GridSelectedItem.TextZh
+                + "\n" + localOldTextZh;
+        }
+
+        public async Task<LangTextClient> FindLangtext()
+        {
+            LangTextClient lang = new LangTextClient();
+
+            if (GridSelectedItem.ReasonFor != ReviewReason.NewAdded)
+            {
+                lang = await _langTextRepoClient.GetLangTextByGuidAsync(GridSelectedItem.Id);
+            }
+            return lang;
         }
 
 

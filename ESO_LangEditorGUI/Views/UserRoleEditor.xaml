@@ -9,7 +9,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="用户角色编辑" Height="600" Width="600">
+        Title="用户角色编辑" Height="600" Width="600" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="93*" />
@@ -20,22 +20,17 @@
             <RowDefinition  />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Margin="0,10,0,10"  >
-            
-                <ListBox x:Name="UserListBox" SelectionChanged="ListBox_SelectionChanged" 
-                         ItemsSource="{Binding UserList}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Path=UserNickName}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            
-
-
-        </StackPanel>
+        <ListBox x:Name="UserListBox" SelectionChanged="ListBox_SelectionChanged" 
+                         ItemsSource="{Binding UserList}"
+                         Grid.Column="0" Margin="0,10,0,10" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=UserNickName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <Grid Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>

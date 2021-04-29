@@ -11,7 +11,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="搜索与替换" Height="350" Width="550" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen">
+        Title="搜索与替换" Height="350" Width="550" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition/>

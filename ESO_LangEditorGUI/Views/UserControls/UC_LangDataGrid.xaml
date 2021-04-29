@@ -29,6 +29,7 @@
                 <materialDesign:DataGridTextColumn Binding="{Binding EnLastModifyTimestamp}" Header="最后修改日期(英文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding ZhLastModifyTimestamp}" Header="最后修改日期(中文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding UserId}" Header="用户" Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="Collapsed"/>
             </DataGrid.Columns>
         </DataGrid>
         

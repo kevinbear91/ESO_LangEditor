@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="导出翻译文本" Height="410" Width="600" Background="#FFEEEEEE" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" Tag="ExportTranslateWindow">
+        Title="导出翻译文本" Height="410" Width="600" Background="#FFEEEEEE" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner" Tag="ExportTranslateWindow">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>

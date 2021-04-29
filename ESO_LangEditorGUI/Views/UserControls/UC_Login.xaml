@@ -12,8 +12,9 @@
              d:DesignHeight="350" d:DesignWidth="400">
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="15*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="11*"/>
             <!--<RowDefinition />-->
         </Grid.RowDefinitions>
 
@@ -45,8 +46,11 @@
                          HorizontalAlignment="Center" Width="300" Height="40" Margin="0 20 0 20" Cursor="IBeam" />
 
         </StackPanel>
+        <StackPanel Grid.Row="1">
+            <CheckBox IsChecked="{Binding IsFirstime}"  Content="首次登录" HorizontalAlignment="Center" />
+        </StackPanel>
 
-        <Button x:Name="button" Content="提交"  Grid.Row="1" Command="{Binding SumbitCommand}" Margin="0 10 0 20" Cursor="Hand" VerticalAlignment="Top" >
+        <Button x:Name="button" Content="提交"  Grid.Row="2" Command="{Binding SumbitCommand}" Margin="0,10,0,0" Cursor="Hand" VerticalAlignment="Top" Height="32" >
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Style.Triggers>
@@ -58,7 +62,7 @@
             </Button.Style>
         </Button>
 
-        <Button x:Name="Close_button" Content="关闭"  Grid.Row="1" Command="{Binding CloseDialogHostCommand}" Margin="0 10 0 20" >
+        <Button x:Name="Close_button" Content="关闭"  Grid.Row="2" Command="{Binding CloseDialogHostCommand}" Margin="0,25,0,64" >
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter Property="IsEnabled" Value="False" />

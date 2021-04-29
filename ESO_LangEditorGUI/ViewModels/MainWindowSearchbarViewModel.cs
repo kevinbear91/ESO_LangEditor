@@ -100,7 +100,7 @@ namespace ESO_LangEditorGUI.ViewModels
         public MainWindowSearchbarViewModel(IEventAggregator ea)
         {
             _ea = ea;
-            SearchLangCommand = new SearchLangCommand(this, ea);
+            SearchLangCommand = new SearchLangCommand(ea);
 
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
         }

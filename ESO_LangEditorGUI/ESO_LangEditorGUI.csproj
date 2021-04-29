@@ -49,9 +49,6 @@
     <Compile Update="Views\UserControls\UC_ImportDbRevProgressDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\UserControls\UC_LangDataGridForReview.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -65,10 +62,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\UserControls\UC_ImportDbRevProgressDialog.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="Views\UserControls\UC_LangDataGridForReview.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

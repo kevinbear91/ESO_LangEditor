@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
@@ -186,23 +187,41 @@ namespace ESO_LangEditorGUI.ViewModels
             if (connectStatus == ClientConnectStatus.Login && firstTime)
             {
                 TimerForRefreshToken();
-                var avatarPath = App.WorkingDirectory + "/_tmp/" + App.User.UserAvatarPath;
-                Debug.WriteLine("avatar path : {0}", avatarPath);
-
-                if (App.UserAvatarPath != avatarPath)
+                
+                if (App.User.UserAvatarPath != null && App.User.UserAvatarPath != "")
                 {
-                    //var filename = App.User.UserAvatarPath;
-                    Debug.WriteLine("download avatar file: {0}", App.User.UserAvatarPath);
+                    if(!Directory.Exists(App.WorkingDirectory + "/_tmp"))
+                    {
+                        Directory.CreateDirectory(App.WorkingDirectory + "/_tmp");
+                    }
 
-                    await _accountService.UserAvatarDownload(App.User);
+                    var avatarPath = App.WorkingDirectory + "/_tmp/" + App.User.UserAvatarPath;
+                    Debug.WriteLine("avatar path : {0}" + avatarPath);
 
-                    App.LangConfig.UserAvatarPath = App.User.UserAvatarPath;
-                    AppConfigClient config = App.LangConfig;
-                    AppConfigClient.Save(config);
+                    if (App.UserAvatarPath != avatarPath)
+                    {
+                        //var filename = App.User.UserAvatarPath;
+                        Debug.WriteLine("download avatar file: {0}", App.User.UserAvatarPath);
 
+                        await _accountService.UserAvatarDownload(App.User);
+
+                        App.LangConfig.UserAvatarPath = App.User.UserAvatarPath;
+                        AppConfigClient config = App.LangConfig;
+                        AppConfigClient.Save(config);
+
+                    }
                 }
 
                 firstTime = false;
+            }
+
+            if(connectStatus == ClientConnectStatus.Login)
+            {
+                App.OnlineMode = true;
+            }
+            else
+            {
+                App.OnlineMode = false;
             }
         }
 

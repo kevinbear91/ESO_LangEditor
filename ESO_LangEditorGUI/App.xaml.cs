@@ -92,6 +92,8 @@ namespace ESO_LangEditorGUI
                 UserAvatarPath = WorkingDirectory + "/Data/TempAvatar.png";
             }
 
+            //App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
+
 
             //var dbCheck = new StartupDBCheck(@"Data\LangData_v3.db", @"Data\LangData_v3.update");
 
@@ -114,6 +116,11 @@ namespace ESO_LangEditorGUI
             //    MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             //}
             //new MainWindow().Show();
+        }
+
+        private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.Exception.Message);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

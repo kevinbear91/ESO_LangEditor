@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ESO_LangEditorGUI.Views" 
         xmlns:local1="clr-namespace:ESO_LangEditorGUI.Converter"
         mc:Ignorable="d"
-        Title="一键打包" Height="318" Width="514" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Cursor="">
+        Title="一键打包" Height="318" Width="514" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Cursor="">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="75*" />

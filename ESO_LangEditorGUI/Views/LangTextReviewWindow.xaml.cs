@@ -25,7 +25,7 @@ namespace ESO_LangEditorGUI.Views
         public LangTextReviewWindow()
         {
             InitializeComponent();
-            AddHandler(UC_LangDataGridForReview.DataGridSelectionChangedEvent,
+            AddHandler(UC_LangDataGrid.DataGridSelectionChangedEvent,
                new RoutedEventHandler(DataGridSelectionChangedEvent));
         }
 
@@ -38,6 +38,7 @@ namespace ESO_LangEditorGUI.Views
 
             vm.GridSelectedItems = langtextList;
             vm.SelectedInfo = langtextList.Count.ToString();
+            vm.SetSelectedItemInfo();
         }
 
         private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

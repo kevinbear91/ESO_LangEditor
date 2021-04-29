@@ -25,8 +25,8 @@ namespace ESO_LangEditorGUI.Services
             //Task.Delay(2000);
             //string strValue = Convert.ToString(value);
 
-            //if (string.IsNullOrWhiteSpace((string)value))
-            //    return new ValidationResult(false, "不支持全局搜索，请输入文本。");
+            if (string.IsNullOrWhiteSpace((string)value))
+                return new ValidationResult(false, "不支持全局搜索，请输入文本。");
 
             bool canConvert = false;
 

@@ -149,10 +149,13 @@ namespace ESO_LangEditorGUI.ViewModels
             Debug.WriteLine(keyword);
 
             if (isOnlyMatchWord)
+            {
                 pattern = @"\b" + keyword + @"\b";
+            }
             else
+            {
                 pattern = keyword;
-
+            }
             return pattern;
         }
 

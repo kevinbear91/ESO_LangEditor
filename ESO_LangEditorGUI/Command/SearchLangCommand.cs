@@ -20,7 +20,6 @@ namespace ESO_LangEditorGUI.Command
     public class SearchLangCommand : CommandBaseAsync
     {
         private readonly SearchLangText search = new SearchLangText();
-        private readonly MainWindowSearchbarViewModel _mainView;
         private LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
 
         private LangTextRepoClientService _langTextSearch;
@@ -28,10 +27,8 @@ namespace ESO_LangEditorGUI.Command
         public DelegateCommand SendLangtextDto { get; private set; }
         IEventAggregator _ea;
 
-        public SearchLangCommand(MainWindowSearchbarViewModel mainView, IEventAggregator ea)
+        public SearchLangCommand(IEventAggregator ea)
         {
-            //_mainView = mainView;
-
             _ea = ea;
             _langTextSearch = new LangTextRepoClientService();
         }
@@ -44,31 +41,41 @@ namespace ESO_LangEditorGUI.Command
 
             List<LangTextDto> result;
 
-            if (App.OnlineMode)
+            if(string.IsNullOrWhiteSpace(_searchBarVM.Keyword))
             {
-                result = apiLangtext.GetLangtextAsync(_mainView.Keyword, App.LangConfig.UserAuthToken).Result;
-
-                //result.Add();
-
-                result = await search.GetLangTexts(_mainView.SelectedSearchPostion, _mainView.SelectedSearchTextType, _mainView.Keyword);
+                MessageBox.Show("不支持全局搜索，请输入关键字！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             else
             {
-                if (_searchBarVM.DoubleKeyWordSearch)
+                if (_searchBarVM.ServerSideSearch)
                 {
-                    result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword, _searchBarVM.KeywordSecond,
-                        _searchBarVM.SelectedSearchTextType, _searchBarVM.SelectedSearchTextTypeSecond,
-                        _searchBarVM.SelectedSearchPostion);
+                    result = apiLangtext.GetLangtextAsync(_searchBarVM.Keyword, App.LangConfig.UserAuthToken).Result;
+
+                    //result.Add();
+
+                    //result = await search.GetLangTexts(_searchBarVM.SelectedSearchPostion, _searchBarVM.SelectedSearchTextType, _searchBarVM.Keyword);
                 }
                 else
                 {
-                    result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword, 
-                        _searchBarVM.SelectedSearchTextType,
-                        _searchBarVM.SelectedSearchPostion);
-                }    
+                    if (_searchBarVM.DoubleKeyWordSearch)
+                    {
+                        result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword, _searchBarVM.KeywordSecond,
+                            _searchBarVM.SelectedSearchTextType, _searchBarVM.SelectedSearchTextTypeSecond,
+                            _searchBarVM.SelectedSearchPostion);
+                    }
+                    else
+                    {
+                        result = await _langTextSearch.GetLangTextByConditionAsync(_searchBarVM.Keyword,
+                            _searchBarVM.SelectedSearchTextType,
+                            _searchBarVM.SelectedSearchPostion);
+                    }
+
+                }
+                SendLangText(result);
                 
             }
-            SendLangText(result);
+
+            
             //_langDatagrid.LangDataGridDC.GridData = result;
             //_mainView.SearchInfo = result.Count.ToString();
         }

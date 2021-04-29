@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="用户资料设置" Height="400" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="用户资料设置" Height="400" Width="600" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Grid Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />

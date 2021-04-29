@@ -14,8 +14,7 @@
 
     <materialDesign:DialogHost Name="RootDialogWindow"
         Identifier="RootDialog"
-        DialogTheme="Inherit"
-        SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        DialogTheme="Inherit">
         
         <materialDesign:DrawerHost TopDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHostMainWindow" >
             <materialDesign:DrawerHost.TopDrawerContent>

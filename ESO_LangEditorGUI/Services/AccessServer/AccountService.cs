@@ -147,11 +147,11 @@ namespace ESO_LangEditorGUI.Services.AccessServer
             }
             catch(HttpRequestException ex)
             {
-                //if (ex.Message == "Response status code does not indicate success: 400 (Bad Request).")
-                //{
-                //    new UserProfileSetting().Show();
-                //}
-                
+                if (ex.Message == "Response status code does not indicate success: 400 (Bad Request).")
+                {
+                    _ea.GetEvent<LoginRequiretEvent>().Publish();
+                }
+
                 _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
             }
@@ -324,6 +324,7 @@ namespace ESO_LangEditorGUI.Services.AccessServer
                         App.WorkingDirectory + "/_tmp/" + user.UserAvatarPath);
                     client.DownloadFileCompleted += (s, e) => _ea.GetEvent<UserAvatarDownloadCompleteEvent>().Publish(user.UserAvatarPath);
                     
+                    client.Dispose();
                 }
 
             }

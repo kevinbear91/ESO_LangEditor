@@ -10,15 +10,16 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="文本审核窗口" Height="450" Width="800" Tag="LangtextReviewWindow">
+        Title="文本审核窗口" Height="650" Width="800" Tag="LangtextReviewWindow" WindowStartupLocation="CenterOwner" >
     <Grid Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="13*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="83*" />
-            <RowDefinition Height="352*" />
+            <RowDefinition Height="67*" />
+            <RowDefinition Height="361*" />
+            <RowDefinition Height="167*"/>
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
@@ -48,29 +49,27 @@
             </ToolBarTray>
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.Row="1">
-            <ScrollViewer>
-                <ListBox x:Name="UserListBox" ItemsSource="{Binding UserList}"
-                         SelectionChanged="ListBox_SelectionChanged" >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBlock Text="{Binding Path=UserNickName}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </ScrollViewer>
-        </StackPanel>
+        <ListBox x:Name="UserListBox" ItemsSource="{Binding UserList}"
+                         SelectionChanged="ListBox_SelectionChanged" 
+                         Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" Margin="0,0,0,40" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=UserNickName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-        <DockPanel Grid.Column="1" Grid.Row="1">
-            <UserControls:UC_LangDataGridForReview />
+        <DockPanel Grid.Column="1" Grid.Row="1" >
+            <UserControls:UC_LangDataGrid DataGridSelectChanged="DataGridSelectionChangedEvent" />
         </DockPanel>
-        <!--<StackPanel Grid.Column="1" Grid.Row="1">
-            <UserControls:UC_LangDataGridForReview />
-        </StackPanel>-->
+        <ScrollViewer Grid.Column="1" Grid.Row="2">
+            <TextBlock Text="{Binding SelectedItemInfo, FallbackValue=SelectedItemInfo}" Margin="10,20,0,0" TextWrapping="Wrap" />
+        </ScrollViewer>
 
-        <StatusBar Grid.Row="2" Grid.ColumnSpan="2" VerticalContentAlignment="Bottom">
+
+        <StatusBar Grid.Row="3" Grid.ColumnSpan="2" VerticalContentAlignment="Bottom">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>

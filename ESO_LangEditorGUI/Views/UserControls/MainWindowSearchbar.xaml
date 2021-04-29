@@ -231,7 +231,7 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding SecondComboxAndSearchBarEnable}" Value="True" />
+                                
                                 <Condition Binding="{Binding Path=(Validation.HasError), ElementName=SearchTextBox2}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="IsEnabled" Value="False" />

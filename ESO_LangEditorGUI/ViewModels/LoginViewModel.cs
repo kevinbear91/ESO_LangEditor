@@ -24,6 +24,7 @@ namespace ESO_LangEditorGUI.ViewModels
         private PasswordBox _passwordBox;
         private AccountService _accountService;
         private bool _loginSuccess;
+        private bool _isFirstime;
 
         public ICommand SumbitCommand { get; }
         public ICommand CloseDialogHostCommand { get; }
@@ -45,6 +46,12 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             get { return _loginSuccess; }
             set { SetProperty(ref _loginSuccess, value); }
+        }
+
+        public bool IsFirstime
+        {
+            get { return _isFirstime; }
+            set { SetProperty(ref _isFirstime, value); }
         }
 
         IEventAggregator _ea;
@@ -91,9 +98,7 @@ namespace ESO_LangEditorGUI.ViewModels
         {
             try
             {
-                if (App.LangConfig.UserAuthToken == "" 
-                    && App.LangConfig.UserRefreshToken == ""
-                    && App.LangConfig.UserName == "")
+                if (IsFirstime)
                 {
                     var loginSuccess = await _accountService.LoginFirstTime(new LoginUserDto
                     {

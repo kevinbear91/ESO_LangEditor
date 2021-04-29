@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -28,6 +29,7 @@ namespace ESO_LangEditorGUI.Views.UserControls
         public ContextMenu _rowRightClickMenu = new ContextMenu();
         private LangTextDto _selectedItem;
         private List<LangTextDto> _selectedItems;
+        private List<LangTextForReviewDto> _selectedItemsForReview;
 
         private EnumDescriptionConverter _enumDescriptionConverter = new EnumDescriptionConverter();
 
@@ -38,7 +40,7 @@ namespace ESO_LangEditorGUI.Views.UserControls
             get { return Enum.GetValues(typeof(LangDataGridContextMenu)).Cast<LangDataGridContextMenu>(); }
             //set { _searchPostion =  }
         }
-
+        
 
 
         public UC_LangDataGrid()
@@ -46,8 +48,19 @@ namespace ESO_LangEditorGUI.Views.UserControls
             InitializeComponent();
             //LangDataGridCommand = new LangDataGridCommand(this);
 
+            Loaded += UC_LangDataGrid_Loaded;
         }
 
+        private void UC_LangDataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var column in LangDataGrid.Columns)
+            {
+                if (column.Header.ToString() == "变更原因" && GetDataGridInWindowTag() == "LangtextReviewWindow")
+                {
+                    column.Visibility = Visibility.Visible;
+                }
+            }
+        }
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -100,6 +113,11 @@ namespace ESO_LangEditorGUI.Views.UserControls
                 _selectedItems = datagrid.SelectedItems.OfType<LangTextDto>().ToList();
                 MakeSelectedItemToEventArgs(_selectedItems);
             }
+            else if (tag == "LangtextReviewWindow")
+            {
+                _selectedItemsForReview = datagrid.SelectedItems.OfType<LangTextForReviewDto>().ToList();
+                MakeSelectedItemToEventArgs(_selectedItemsForReview);
+            }
         }
 
 
@@ -140,14 +158,30 @@ namespace ESO_LangEditorGUI.Views.UserControls
             {
                 foreach (var column in LangDataGrid.Columns)
                 {
-                    var menuItem = new MenuItem
+                    MenuItem menuItem;
+                    if (GetDataGridInWindowTag() != "LangtextReviewWindow" && column.Header.ToString() == "变更原因")
                     {
-                        Header = column.Header.ToString(),
-                        IsChecked = column.Visibility == Visibility.Visible,
-                        IsCheckable = true,
-                        // Don't allow user to hide all columns
-                        IsEnabled = visibleColumns > 1 || column.Visibility != Visibility.Visible
-                    };
+                        menuItem = new MenuItem
+                        {
+                            Header = column.Header.ToString(),
+                            IsChecked = column.Visibility == Visibility.Visible,
+                            IsCheckable = false,
+                            // Don't allow user to hide all columns
+                            IsEnabled = false
+                        };
+                    }
+                    else
+                    {
+                        menuItem = new MenuItem
+                        {
+                            Header = column.Header.ToString(),
+                            IsChecked = column.Visibility == Visibility.Visible,
+                            IsCheckable = true,
+                            // Don't allow user to hide all columns
+                            IsEnabled = visibleColumns > 1 || column.Visibility != Visibility.Visible
+                        };
+                    }
+                    
                     // Bind events
                     menuItem.Checked += (object a, RoutedEventArgs ea)
                         => column.Visibility = Visibility.Visible;
@@ -167,6 +201,11 @@ namespace ESO_LangEditorGUI.Views.UserControls
                     else
                     {
                         item.IsEnabled = true;
+                    }
+
+                    if (GetDataGridInWindowTag() != "LangtextReviewWindow" && item.Header.ToString() == "变更原因")
+                    {
+                        item.IsEnabled = false;
                     }
                 }
             }
@@ -285,6 +324,12 @@ namespace ESO_LangEditorGUI.Views.UserControls
             this.RaiseEvent(args);
         }
 
+        private void MakeSelectedItemToEventArgs(List<LangTextForReviewDto> langtextList)
+        {
+            DataGridReviewSelectedChangedEventArgs args = new DataGridReviewSelectedChangedEventArgs(DataGridSelectionChangedEvent, langtextList);
+            this.RaiseEvent(args);
+        }
+
         private void MakeDouleClickSelectedItemToEventArgs(LangTextDto langtext)
         {
             DataGridSelectedItemEventArgs args = new DataGridSelectedItemEventArgs(DataGridDoubleClick, langtext);
@@ -295,6 +340,12 @@ namespace ESO_LangEditorGUI.Views.UserControls
             DataGridSelectedItemEventArgs args = new DataGridSelectedItemEventArgs(DataGridSelectionChangedEvent, langtext);
             this.RaiseEvent(args);
         }
+
+        //private void MakeSelectedItemToReviewEventArgs(LangTextForReviewDto langtext)
+        //{
+        //    DataGridSelectedItemReviewEventArgs args = new DataGridSelectedItemReviewEventArgs(DataGridSelectionChangedEvent, langtext);
+        //    this.RaiseEvent(args);
+        //}
 
 
 

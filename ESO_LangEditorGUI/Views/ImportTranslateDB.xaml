@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ESO_LangEditorGUI.Views" xmlns:uc="clr-namespace:ESO_LangEditorGUI.Views.UserControls"
         mc:Ignorable="d"
-        Title="导入翻译" Height="350" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="导入翻译" Height="350" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30*"/>

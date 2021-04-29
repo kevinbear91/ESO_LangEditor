@@ -453,16 +453,6 @@ namespace ESO_LangEditorGUI.Services
 
                                 await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()); //应用删除文本
 
-                                //foreach (var langId in langtextDeletedDict)
-                                //{
-                                //    var lang = await _langTextRepo.GetLangTextByGuidAsync(langId.Key);
-
-                                //    if (lang != null)
-                                //    {
-                                //        deletedlangList.Add(lang);
-                                //    }
-                                //}
-                                //await _langTextRepo.DeleteLangtexts(deletedlangList);   
                             }
                             await _langTextRepo.UpdateRevNumber(revised);   //更新步进号
                             revised++;
