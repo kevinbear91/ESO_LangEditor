@@ -5,6 +5,7 @@ using ESO_LangEditor.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -25,15 +26,18 @@ namespace ESO_LangEditor.API.Controllers
         private IMapper _mapper;
         private ILogger<AdminController> _logger;
         private string _loggerMessage;
+        private IConfiguration _configuration;
 
         public AdminController(RoleManager<Role> roleManager, UserManager<User> userManager, 
-            IMapper mapper, ITokenService tokenService, ILogger<AdminController> logger)
+            IMapper mapper, ITokenService tokenService, ILogger<AdminController> logger,
+            IConfiguration configuration)
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [Authorize(Roles = "Admin")]
@@ -69,8 +73,17 @@ namespace ESO_LangEditor.API.Controllers
         {
             var user = await _userManager.FindByIdAsync(userGuid);
             var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
             if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var adminSetting = _configuration.GetSection("Admin:Setting");
+            string createrId = adminSetting["Creater"];
+
+            if (user.Id == new Guid(createrId) && userIdFromToken != createrId)
             {
                 return BadRequest();
             }

@@ -1,12 +1,16 @@
-﻿<Window x:Class="ESO_LangEditorGUI.Views.ImportTranslateDB"
+﻿<Window x:Class="ESO_LangEditorGUI.Views.ImportTranslate"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ESO_LangEditorGUI.Views" xmlns:uc="clr-namespace:ESO_LangEditorGUI.Views.UserControls"
+        xmlns:local="clr-namespace:ESO_LangEditorGUI.Views"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        xmlns:uc="clr-namespace:ESO_LangEditorGUI.Views.UserControls"
+        TextElement.FontSize="14"
         mc:Ignorable="d"
-        Title="导入翻译" Height="350" Width="700" Background="#FFEEEEEE" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
-    <Grid>
+        Title="导入翻译" Height="350" Width="700"  ResizeMode="NoResize" Tag="ImportTranslateWindow" WindowStartupLocation="CenterOwner">
+    <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="30*"/>
             <RowDefinition Height="117*"/>
@@ -17,7 +21,7 @@
                     Command="{Binding OpenFileCommand}" 
                     CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}}" />
             <Button x:Name="ImportToDB_button" Content="导入" Canvas.Left="130" Width="75" Canvas.Top="15" 
-                    Command="{Binding ImportTraslate}" Cursor="Hand" />
+                    Command="{Binding ImportTraslate}" />
             <CheckBox x:Name="ImportAll_Checkbox" Content="导入全部文件" IsChecked="{Binding ImportAllFileCheckbox}" Canvas.Left="240" Canvas.Top="30"/>
 
         </Canvas>
@@ -36,21 +40,10 @@
             </ListBox>-->
 
             <ListBox Name="FileViewer" ItemsSource="{Binding FileList}"
-                     Width="140" SelectionChanged="FileViewer_SelectionChanged" SelectedItem="{Binding SelectedItemFilePath}" >
+                     Width="140" SelectionChanged="FileViewer_SelectionChanged" 
+                     SelectedItem="{Binding SelectedItemFilePath}" />
 
-                <ListBox.ItemTemplate >
-                    <DataTemplate >
-                        <TextBlock Text="{Binding Value}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-
-
-            </ListBox>
-
-
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Canvas.Left="174" >
-                <uc:UC_LangDataGrid DockPanel.Dock="Right" />
-            </ScrollViewer>
+            <uc:UC_LangDataGrid DockPanel.Dock="Right" />
         </DockPanel>
 
         <!--<Canvas  Grid.Row="1" Margin="0,0,0,5">

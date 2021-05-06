@@ -328,7 +328,7 @@ namespace ESO_LangEditorGUI.Services.AccessServer
                 }
 
             }
-            catch (HttpRequestException ex)
+            catch (WebException ex)
             {
                 _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
             }

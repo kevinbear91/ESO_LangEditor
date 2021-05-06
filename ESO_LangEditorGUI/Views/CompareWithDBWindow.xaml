@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="对比文本" Height="450" Width="530" ResizeMode="CanResize" WindowStartupLocation="CenterOwner" Background="White">
+        Title="对比文本" Height="450" Width="530" ResizeMode="CanResize" Tag="CompareWithDbWindow" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="65"/>

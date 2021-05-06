@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ESO_LangEditor.API.Migrations
 {
-    public partial class InitialProdlang : Migration
+    public partial class InitialCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -305,11 +305,11 @@ namespace ESO_LangEditor.API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("52ffbdd2-784c-47fd-b0a8-954c19d1dc0e"), "e0c069e3-b1fc-4c2c-afca-229a5452c076", "InitUser", "INITUSER" },
-                    { new Guid("22bd81fb-f232-48b7-a36d-97ed7fe9776a"), "3a6c3f86-6b4c-4660-afea-54bf599c2504", "Editor", "EDITOR" },
-                    { new Guid("cf29c56b-07b6-4a56-b1dc-ba680676a416"), "498b1e83-19e2-4b3f-921d-8cb357855c69", "Reviewer", "REVIEWER" },
-                    { new Guid("38f07190-d0e7-426d-9dbf-9435f6d96f67"), "e877b2dd-c7b2-4458-9a36-7351b7c73731", "Admin", "ADMIN" },
-                    { new Guid("11d9aa1e-b9d3-4fea-ab6a-16c8380e30b1"), "473e7648-d500-4d3e-8260-c2c7d658ef82", "Creater", "CREATER" }
+                    { new Guid("b6f21761-6c8d-4e15-8f6a-9bd08c930d97"), "e9f31f36-22de-4029-8f40-5b84e4459324", "InitUser", "INITUSER" },
+                    { new Guid("ea7e3901-4aa4-466b-8037-4925ce756fbd"), "021460b3-50a2-4cfd-9bb8-2b35276eac84", "Editor", "EDITOR" },
+                    { new Guid("bb7383b9-aeec-4cd5-b695-c34437069c65"), "3a81e390-9f17-45b9-a994-82343765b9ca", "Reviewer", "REVIEWER" },
+                    { new Guid("8ed126e3-86ee-4e0c-b251-1fe3acb6e9d9"), "1dd548d7-f177-478e-bdfc-86b9034c6f62", "Admin", "ADMIN" },
+                    { new Guid("367187f5-d112-4b80-b915-6a640f563d18"), "2f8c4a7e-5956-42a2-94cb-6f877f792220", "Creater", "CREATER" }
                 });
 
             migrationBuilder.CreateIndex(

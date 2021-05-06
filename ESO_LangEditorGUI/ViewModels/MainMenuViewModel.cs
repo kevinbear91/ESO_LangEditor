@@ -83,7 +83,7 @@ namespace ESO_LangEditorGUI.ViewModels
                         {
                             Header = "导入翻译文本",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "ImportTranslateDB",
+                            CommandParameter = windowNamespace + "ImportTranslate",
                         },
                         new MenuItemContent
                         {

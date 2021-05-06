@@ -82,7 +82,7 @@ namespace ESO_LangEditorGUI.Services
             {
                 //0 = firstType, 1 = keyWord, 2 = secondType, 3 = searchPosAndWord.
                 var query = await db.Langtexts.FromSqlRaw("SELECT * FROM Langtexts WHERE " + firstType 
-                    + " = " + keyWord 
+                    + " = " + "'" + keyWord + "'"
                     + " AND " + secondType 
                     + " Like '" + searchPosAndWord + "'").ToListAsync();
 
@@ -192,7 +192,7 @@ namespace ESO_LangEditorGUI.Services
                 foreach(var lang in langtextDto)
                 {
                     var langtext = await db.Langtexts.FindAsync(lang.Id);
-                    _mapper.Map(langtextDto, langtext, typeof(LangTextForUpdateZhDto), typeof(LangTextClient));
+                    _mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangTextClient));
 
                     db.Langtexts.Update(langtext);
                 }

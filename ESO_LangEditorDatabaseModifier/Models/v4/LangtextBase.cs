@@ -44,5 +44,8 @@ namespace ESO_LangEditorDatabaseModifier.Model.v4
         public Guid ReviewerId { get; set; }
         [ForeignKey("ReviewerId")]
         public UserInClient UserForReview { get; set; }
+
+        //文本修订号
+        public int Revised { get; set; }
     }
 }

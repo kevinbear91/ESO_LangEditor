@@ -24,9 +24,20 @@ namespace ESO_LangEditorDatabaseModifier
 
             _langTextsv3 = _langTextRepository.GeAlltLangTexts_v3();
 
-            
+            List<UserInClient> users = new List<UserInClient>
+            {
+                new UserInClient
+                {
+                    Id = new Guid(""),
+                    UserNickName = "",
+                    InReviewCount = 0,
+                    RemovedCount = 0,
+                    TranslatedCount = 0,
+                    UserAvatarPath = "",
+                },
+            };
 
-            //_langTextRepository.AddUsersToV4(users);
+            _langTextRepository.AddUsersToV4(users);
 
            
 
@@ -58,13 +69,14 @@ namespace ESO_LangEditorDatabaseModifier
                         TextEn = langv3.TextEn,
                         TextZh = langv3.TextZh,
                         LangTextType = (Model.v4.LangType)langv3.LangLuaType,
-                        IsTranslated = (byte)langv3.IsTranslated,
+                        IsTranslated = (byte)3,
                         UpdateStats = langv3.UpdateStats,
                         EnLastModifyTimestamp = langv3.EnLastModifyTimestamp,
                         ZhLastModifyTimestamp = langv3.ZhLastModifyTimestamp,
                         UserId = user1.Id,
                         ReviewerId = user1.Id,
                         ReviewTimestamp = DateTime.Now,
+                        Revised = 0,
                     });
 
                 }

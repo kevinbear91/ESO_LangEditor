@@ -55,7 +55,7 @@
     <Page Update="Views\ExportTranslate.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\ImportTranslateDB.xaml">
+    <Page Update="Views\ImportTranslate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PackToRelase.xaml">

@@ -1,4 +1,5 @@
-﻿using ESO_LangEditorDatabaseModifier.Controller.v2;
+﻿using ESO_LangEditorDatabaseModifier.Controller.Server;
+using ESO_LangEditorDatabaseModifier.Controller.v2;
 using ESO_LangEditorDatabaseModifier.Controller.v3;
 using ESO_LangEditorDatabaseModifier.Controller.v4;
 using ESO_LangEditorDatabaseModifier.Model.v2;
@@ -40,6 +41,16 @@ namespace ESO_LangEditorDatabaseModifier.Controller
             using (var db = new LangDbContextV3())
             {
                 return db.LangData.ToList();
+
+                //return data;
+            }
+        }
+
+        public List<LangText> GeAlltLangTexts_v4()
+        {
+            using (var db = new LangDbContextV4())
+            {
+                return db.Langtexts.ToList();
 
                 //return data;
             }
@@ -88,8 +99,6 @@ namespace ESO_LangEditorDatabaseModifier.Controller
             {
                 return db.Users.Find(v4UserId);
             }
-            
-            
         }
 
         public Dictionary<Guid, UserInClient> GetUserAllToV4()
@@ -99,8 +108,39 @@ namespace ESO_LangEditorDatabaseModifier.Controller
                 return db.Users.ToDictionary(u => u.Id);
             }
 
+        }
+
+        public Dictionary<Guid, ESO_LangEditor.Core.Entities.User> GetUserAllFromServer()
+        {
+            using (var db = new LangServerDbContext())
+            {
+                return db.Users.ToDictionary(u => u.Id);
+            }
 
         }
 
+        public void AddUsersToServer(List<ESO_LangEditor.Core.Entities.User> ServerUserList)
+        {
+
+            using (var db = new LangServerDbContext())
+            {
+                db.AddRange(ServerUserList);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save User Done!");
+        }
+
+        public void AddLangTextsToServer(List<ESO_LangEditor.Core.Entities.LangText> ServerLangTextList)
+        {
+
+            using (var db = new LangServerDbContext())
+            {
+                db.AddRange(ServerLangTextList);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save User Done!");
+        }
     }
 }

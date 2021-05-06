@@ -210,30 +210,42 @@ namespace ESO_LangEditorGUI.ViewModels
         public async void SetSelectedItemInfo()
         {
             var localOldLang = await FindLangtext();
-            string localOldTextZh;
+            string localOldTextZh = "读取本地修改前文本出错！";
 
-            if (localOldLang != null)
+            if (GridSelectedItem != null)
             {
-                localOldTextZh = "修改前中文(本地)：" + localOldLang.TextZh;
-            }
-            else
-            {
-                localOldTextZh = "当前文本不存在于本地数据库。";
-            }
+                if (GridSelectedItem.ReasonFor == ReviewReason.ZhChanged 
+                    || GridSelectedItem.ReasonFor == ReviewReason.Deleted)
+                {
+                    localOldTextZh = "修改前中文(本地)：" + localOldLang.TextZh;
+                }
 
+                if (GridSelectedItem.ReasonFor == ReviewReason.EnChanged)
+                {
+                    localOldTextZh = "修改前英文(本地)：" + localOldLang.TextEn;
+                }
 
-            SelectedItemInfo = "文本唯一ID：" + GridSelectedItem.TextId
+                SelectedItemInfo = "文本唯一ID：" + GridSelectedItem.TextId
                 + "\n" + "文本类型：(" + GridSelectedItem.IdType + ")" + App.iDCatalog.GetCategory(GridSelectedItem.IdType)
                 + "\n" + "英文：" + GridSelectedItem.TextEn
                 + "\n" + "中文：" + GridSelectedItem.TextZh
                 + "\n" + localOldTextZh;
+
+            }
+            else
+            {
+                localOldTextZh = "当前文本不存在于本地数据库。";
+                SelectedItemInfo = localOldTextZh;
+            }
+
+
         }
 
         public async Task<LangTextClient> FindLangtext()
         {
             LangTextClient lang = new LangTextClient();
 
-            if (GridSelectedItem.ReasonFor != ReviewReason.NewAdded)
+            if (GridSelectedItem != null && GridSelectedItem.ReasonFor != ReviewReason.NewAdded)
             {
                 lang = await _langTextRepoClient.GetLangTextByGuidAsync(GridSelectedItem.Id);
             }

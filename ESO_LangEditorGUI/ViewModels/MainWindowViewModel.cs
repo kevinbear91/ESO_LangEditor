@@ -203,6 +203,7 @@ namespace ESO_LangEditorGUI.ViewModels
                         //var filename = App.User.UserAvatarPath;
                         Debug.WriteLine("download avatar file: {0}", App.User.UserAvatarPath);
 
+                        
                         await _accountService.UserAvatarDownload(App.User);
 
                         App.LangConfig.UserAvatarPath = App.User.UserAvatarPath;
