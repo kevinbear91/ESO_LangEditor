@@ -259,6 +259,7 @@ namespace ESO_LangEditor.API.Controllers
             var newAuthTokenToken = _tokenService.GenerateAccessToken(claims);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
             user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpireTime = DateTime.Now.AddDays(30);
 
             await _userManager.UpdateAsync(user);
 
@@ -453,10 +454,8 @@ namespace ESO_LangEditor.API.Controllers
 
             user.UserAvatarPath = uniqueFileName;
             await _userManager.UpdateAsync(user);
-            System.IO.File.Delete(filePathTemp);
 
             return Ok();
-            
         }
 
         [Authorize]

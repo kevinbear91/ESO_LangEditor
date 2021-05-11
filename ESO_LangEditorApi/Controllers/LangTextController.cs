@@ -274,7 +274,7 @@ namespace ESO_LangEditor.API.Controllers
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langTextForUpdateZh.Id);
 
             //Debug.WriteLine("langDtoId: {0}, langId: {1}, langtextId: {2}", langTextForUpdateZh.Id, langtextID, langtext.Id);
-            _logger.LogInformation("langDtoId: {0}, langId: {1}, langtextId: {2}", langTextForUpdateZh.Id, langtextID, langtext.Id);
+            _logger.LogInformation("langtextId: {0}", langtext.Id);
 
             if (langtext == null)
             {
@@ -379,13 +379,7 @@ namespace ESO_LangEditor.API.Controllers
                 throw new Exception("加入审核表失败");
             }
 
-            if (langTextInReviews.Count >= 1)
-            {
-                return Ok(langTextInReviews);
-            }
-
-            return BadRequest();
-
+            return Ok();
         }
 
         [Authorize(Roles = "Admin")]
