@@ -1,0 +1,122 @@
+﻿<Window x:Class="ESO_LangEditor.GUI.Views.LangtextEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d"
+        TextElement.FontSize="14"
+        Title="文本编辑" Height="450" Width="800" WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner" Tag="LangtextEditor">
+    <Grid Background="#FFEEEEEE">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"  />
+            <RowDefinition Height="323*" MaxHeight="350"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="89*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
+            <ToolBarTray Margin="0,5,0,5" Width="800">
+                <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
+                          VerticalAlignment="Center" ToolBarTray.IsLocked="True">
+
+                    <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}">
+                        <materialDesign:PackIcon Kind="ContentSave" />
+                    </Button>
+                    <Separator />
+                    <!--<Button Command="Cut" ToolTip="Cut" ToolBar.OverflowMode="AsNeeded">
+                        <materialDesign:PackIcon Kind="ContentCut" />
+                    </Button>-->
+
+                </ToolBar>
+            </ToolBarTray>
+
+            <!--<Button x:Name="button_save" Content="保存" Margin="10 0 20 0" Command="{Binding LangEditorSaveButton}" CommandParameter="{Binding ElementName=textBox_ZH}" Cursor="Hand"  />
+            <Button x:Name="button_cancel" Content="取消" Margin="20 0 20 0" Click="Button_cancel_Click" Cursor="Hand" />-->
+        </StackPanel>
+
+
+        <GroupBox Header="英文" Grid.Row="1" Grid.Column="0" >
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,0,0,8" 
+                      CanContentScroll="True" >
+                <TextBox x:Name="textBox_EN" Text="{Binding Path=CurrentLangText.TextEn, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap" IsReadOnly="true" />
+            </ScrollViewer>
+        </GroupBox>
+
+
+        <GroupBox Header="中文" Grid.Row="1" Grid.Column="1"  >
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      Margin="20,0,0,8">
+                <TextBox x:Name="textBox_ZH" Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" BorderBrush="#FFABADB3" />
+            </ScrollViewer>
+        </GroupBox>
+
+
+        <TextBlock x:Name="textblock_information" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" 
+                       Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" Grid.ColumnSpan="2" />
+
+        <GridSplitter Grid.Row="2" Grid.ColumnSpan="2"
+                      x:Name="GridMover"
+                      Height="2" HorizontalAlignment="Stretch" 
+                      Visibility="{Binding DataListVisbility}"
+                      ResizeDirection="Rows" 
+                      Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />
+
+        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                        Margin="0,8,0,16" Grid.Row="3" Grid.ColumnSpan="2">
+            <ScrollViewer 
+                          Visibility="{Binding DataListVisbility}" 
+                          VerticalScrollBarVisibility="Auto" >
+                <uc:UC_LangDataGrid />
+            </ScrollViewer>
+        </StackPanel>
+
+        <materialDesign:Snackbar MessageQueue="{Binding EditorMessageQueue}"
+                                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+
+        <!--<Expander Header="待编辑列表" Grid.Row="3" Grid.ColumnSpan="2" IsExpanded="False">
+            <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                        Margin="24,8,24,16">
+                <ScrollViewer 
+                          Visibility="{Binding DataListVisbility}" 
+                          Margin="10,5,10,5" 
+                          VerticalScrollBarVisibility="Auto" >
+                    --><!--<uc:UC_LangDataGrid />--><!--
+                </ScrollViewer>
+            </StackPanel>
+        </Expander>-->
+
+        <!--<Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
+            <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" Cursor="Hand" />-->
+
+
+        <!--<Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">
+            
+        </Canvas>-->
+
+        <!--<GridSplitter Grid.Row="1" Grid.ColumnSpan="2"
+                      x:Name="GridMover"
+                      Height="2" HorizontalAlignment="Stretch" 
+                      ResizeDirection="Rows" 
+                      Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />-->
+
+
+
+
+        <!--<materialDesign:Snackbar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                 MessageQueue="{materialDesign:MessageQueue}"
+                                 x:Name="Snackbar_SaveInfo" HorizontalAlignment="Left" Margin="256,0,0,8" Height="0" Width="288">
+            <materialDesign:SnackbarMessage Content="{Binding MdNotifyContent}"
+                                            ActionContent="ACCENT" />
+        </materialDesign:Snackbar>-->
+    </Grid>
+</Window>

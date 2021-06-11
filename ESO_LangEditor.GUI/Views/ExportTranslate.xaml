@@ -1,0 +1,69 @@
+﻿<Window x:Class="ESO_LangEditor.GUI.Views.ExportTranslate"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uc="clr-namespace:ESO_LangEditor.GUI.Views.UserControls" 
+        xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d"
+        TextElement.FontSize="14"
+        Title="导出翻译文本" Height="410" Width="600" Background="#FFEEEEEE" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner" Tag="ExportTranslateWindow">
+    <Grid Background="#FFEEEEEE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,6" >
+            <ToolBarTray Margin="0,5,0,5" >
+                <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
+                          VerticalAlignment="Center" ToolBarTray.IsLocked="True">
+
+                    <Button ToolTip="Export" Command="{Binding ExportTranslateCommand}" IsEnabled="{Binding ExportEnabled}">
+                        <materialDesign:PackIcon Kind="ExportVariant" />
+                    </Button>
+                    <Separator />
+                    <CheckBox x:Name="ExportSelectedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
+                              Content="仅已选择文本" IsChecked="{Binding IsExportSelectedItems}" />
+                    <Separator />
+                    <CheckBox x:Name="UpdateTranslatedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
+                              Content="查询未上传文本" IsChecked="{Binding IsNotUpdatedItems}" 
+                              Command="{Binding QueryNotUpdatedLangTextCommand}" 
+                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+
+                </ToolBar>
+            </ToolBarTray>
+        </StackPanel>
+
+        <uc:UC_LangDataGrid Grid.Row="1" Grid.RowSpan="2" />
+
+        <StatusBar Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,8,10,9">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="230*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="230*"/>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+
+            <StatusBarItem Grid.Column="0">
+                <TextBlock x:Name="textBlock_Info"  TextWrapping="Wrap" Text="{Binding SearchResultInfo}" />
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="textBlock_SelectionInfo"  TextWrapping="Wrap" Text="{Binding SelectedInfo}"  />
+            </StatusBarItem>
+            <Separator Grid.Column="3" />
+        </StatusBar>
+    </Grid>
+</Window>

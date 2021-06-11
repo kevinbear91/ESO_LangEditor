@@ -1,0 +1,133 @@
+﻿<Window xmlns:View="clr-namespace:ESO_LangEditor.GUI.Views"  
+        x:Class="ESO_LangEditor.GUI.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:ucd="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d"
+        TextElement.FontSize="14"
+        Title="{Binding WindowTitle, FallbackValue='WindowTitle'}" Height="800" Width="1200" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterScreen" MinWidth="820" MinHeight="500" Tag="Mainwindow" >
+
+    <materialDesign:DialogHost Name="RootDialogWindow"
+        Identifier="RootDialog"
+        DialogTheme="Inherit">
+        
+        <materialDesign:DrawerHost TopDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHostMainWindow" >
+            <materialDesign:DrawerHost.TopDrawerContent>
+                <ucd:MainMenu />
+            </materialDesign:DrawerHost.TopDrawerContent>
+
+            
+            <Grid Background="#FFEEEEEE">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+
+                <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Height="110">
+                    <DockPanel MinWidth="780">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="60" />
+                                <ColumnDefinition />
+                                <!--<ColumnDefinition Width="100" />-->
+                            </Grid.ColumnDefinitions>
+
+                            <Button materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                                    Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                                    CommandParameter="{x:Static Dock.Top}"
+                                    Height="50" Width="50" Cursor="Hand" Background="#FF3F51B5" VerticalAlignment="Top" >
+
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Connecting">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF15DA39" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="-1" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Login">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF15DA39" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Logout">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF898989" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="ConnectError">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFDA1577" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Logout">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FF898989" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="100" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="SyncData">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFF0A912" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="-1" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ConnectStatus}" Value="Updating">
+                                                <Setter Property="materialDesign:ButtonProgressAssist.IndicatorForeground" Value="#FFF012E6" />
+                                                <Setter Property="materialDesign:ButtonProgressAssist.Value" Value="-1" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+
+                                    </Style>
+                                </Button.Style>
+                                <Image Source="{Binding AvatarPath}" />
+                            </Button>
+
+                            <ucd:MainWindowSearchbar Grid.Column="1" x:Name="searchBar" />
+                        </Grid>
+                    </DockPanel>
+                </materialDesign:ColorZone>
+                <DockPanel Grid.Row="1" >
+                    <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent" />
+                </DockPanel>
+
+                <materialDesign:Snackbar MessageQueue="{Binding MainWindowMessageQueue}"
+                                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+
+                <StatusBar Height="23" Grid.Row="2" VerticalContentAlignment="Bottom" Margin="10,0,10,0" Panel.ZIndex="995">
+                    <StatusBar.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="230*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="230*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="230*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </ItemsPanelTemplate>
+                    </StatusBar.ItemsPanel>
+
+                    <StatusBarItem Grid.Column="0">
+                        <TextBlock x:Name="textBlock_Info" TextWrapping="Wrap" Text="{Binding SearchInfo, FallbackValue='textBlock_Info - SearchInfo'}" Width="230"/>
+                    </StatusBarItem>
+                    <Separator Grid.Column="1" />
+                    <StatusBarItem Grid.Column="2">
+                        <TextBlock x:Name="textBlock_SelectionInfo" TextWrapping="Wrap" 
+                               Text="{Binding SelectedInfo, FallbackValue='textBlock_SelectionInfo - SelectedInfo'}" Width="230" />
+                    </StatusBarItem>
+                    <Separator Grid.Column="3" />
+                    <StatusBarItem Grid.Column="4">
+                        <TextBlock x:Name="textBlock_ProgressInfo" TextWrapping="Wrap" 
+                               Text="{Binding ProgressInfo, FallbackValue='ProgressInfo'}" />
+                    </StatusBarItem>
+
+                </StatusBar>
+                
+
+            </Grid>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+</Window>

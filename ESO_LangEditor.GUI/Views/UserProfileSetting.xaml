@@ -1,0 +1,126 @@
+﻿<Window x:Class="ESO_LangEditor.GUI.Views.UserProfileSetting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views"
+        xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d"
+        TextElement.FontSize="14"
+        Title="用户资料设置" Height="400" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Grid Background="#FFEEEEEE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TabControl Height="270" VerticalAlignment="Center" Style="{StaticResource MaterialDesignNavigatilRailTabControl}" 
+                    TabStripPlacement="Top" materialDesign:ColorZoneAssist.Mode="PrimaryMid" 
+                    materialDesign:ShadowAssist.ShadowDepth="Depth1">
+            <TabItem Header="信息" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+                <StackPanel Orientation="Vertical" Background="#FFEEEEEE" >
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                               Text="{Binding UserGuid, FallbackValue='UserGuid'}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,20,0,0" />
+                    <TextBlock  Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                Text="成就信息" HorizontalAlignment="Center" Margin="0,15,0,0"/>
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                               Text="{Binding UserTranslatedInt, FallbackValue='UserTranslatedInt'}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                               Text="{Binding UserInReviewInt, FallbackValue='UserInReviewInt'}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" />
+                    <TextBlock Style="{StaticResource MaterialDesignTextBlock}"
+                               Text="{Binding UserRemovedInt, FallbackValue='UserRemovedInt'}" TextWrapping="Wrap" HorizontalAlignment="Center" Margin="0,5,0,0" />
+                    </StackPanel>
+            </TabItem>
+            <TabItem Header="常规" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+                <StackPanel Background="#FFEEEEEE">
+                    <TextBox x:Name="UserName_Textbox" materialDesign:HintAssist.Hint="用户名"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       VerticalAlignment="Center" Width="200" Cursor="IBeam" Margin="0,10,0,10" >
+                        <TextBox.Text>
+                            <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBox x:Name="NickName_Textbox" materialDesign:HintAssist.Hint="昵称"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       VerticalAlignment="Center" Width="200" Margin="0,10,0,10" Cursor="IBeam" >
+                        <TextBox.Text>
+                            <Binding Path="NickName" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBox x:Name="EsoId_Textbox" materialDesign:HintAssist.Hint="ESO @ID, 不要输入@"
+                       Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                       VerticalAlignment="Center" Width="200" Margin="0,10,0,10" 
+                       Text="{Binding EsoId}" Cursor="IBeam"  />
+                    
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="密码" Style="{StaticResource MaterialDesignNavigationRailTabItem}">
+                <StackPanel Background="#FFEEEEEE">
+                    <PasswordBox x:Name="PasswordCurrently" materialDesign:HintAssist.Hint="当前密码"
+                             materialDesign:HintAssist.Foreground="Green"
+                             materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
+                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" />
+
+                    <PasswordBox x:Name="PasswordChange" materialDesign:HintAssist.Hint="新密码"
+                             materialDesign:HintAssist.Foreground="Green"
+                             materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
+                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" />
+
+                    <PasswordBox x:Name="PasswordConfirm" materialDesign:HintAssist.Hint="新密码确认"
+                             materialDesign:HintAssist.Foreground="Green"
+                             materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
+                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center" Height="62" >
+            <Button x:Name="Save" Content="提交修改"
+                        Width="200" Margin="0,20,0,10"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="False" 
+                        Command="{Binding UploadInfoCommand}" Cursor="Hand" >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding WaitingResult}" Value="True">
+                                <Setter Property="materialDesign:ButtonProgressAssist.IsIndicatorVisible" Value="True" />
+                                <Setter Property="materialDesign:ButtonProgressAssist.IsIndeterminate" Value="True" />
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=UserName_Textbox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=NickName_Textbox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+
+
+        </StackPanel>
+
+
+
+
+    </Grid>
+</Window>
