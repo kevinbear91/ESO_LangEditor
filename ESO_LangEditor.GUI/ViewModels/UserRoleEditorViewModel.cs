@@ -1,6 +1,4 @@
 ﻿using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient;
-using ESO_LangEditor.GUI;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services.AccessServer;
@@ -14,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ESO_LangEditor.GUI.Services;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -144,11 +143,11 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         IEventAggregator _ea;
 
-        public UserRoleEditorViewModel(IEventAggregator ea)
+        public UserRoleEditorViewModel(IEventAggregator ea, UserAccess userAccess)
         {
             _ea = ea;
             _accountService = new AccountService(_ea);
-            _userService = new UserAccess(App.ServerPath);
+            _userService = userAccess;
 
             _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressSting);
 

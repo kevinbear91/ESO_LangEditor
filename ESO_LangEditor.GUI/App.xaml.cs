@@ -7,8 +7,7 @@ using ESO_LangEditor.GUI.ViewModels;
 using ESO_LangEditor.GUI.Views;
 using ESO_LangEditor.GUI.Views.UserControls;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using NLog;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
@@ -38,29 +37,26 @@ namespace ESO_LangEditor.GUI
         public static GameVersion gameUpdateVersionName = new GameVersion();
         public static AppConfigClient LangConfig;
         public static AppConfigServer LangConfigServer;
-        public static StartupConfigCheck LangNetworkService;
+        //public static StartupConfigCheck LangNetworkService;
         public static UserInClientDto User;
         public static string ServerPath;
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
-        public static string UserAvatarPath { get; set; }
-        public static readonly IMapper Mapper;
+        public static HttpClient HttpClient;
+
         public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
-        public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
+        //public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
 
         static App()
         {
             DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
                 .UseSqlite(@"Data Source=Data/LangData_v4.db")
-                .UseLoggerFactory(MyLoggerFactory)
+                //.UseLoggerFactory(MyLoggerFactory)
                 .Options;
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<LangTextMappingProfile>();
-            });
+            
 
-            Mapper = new Mapper(config);
+            //Mapper = new Mapper(config);
 
         }
 
@@ -82,15 +78,24 @@ namespace ESO_LangEditor.GUI
                     ServerPath = server.ServerURL;
             }
 
-            var avatarPath = WorkingDirectory + "/_tmp/" + LangConfig.UserAvatarPath;
-            if (File.Exists(avatarPath))
+            HttpClient = new HttpClient
             {
-                UserAvatarPath = avatarPath;
-            }
-            else
-            {
-                UserAvatarPath = WorkingDirectory + "/Data/TempAvatar.png";
-            }
+                BaseAddress = new Uri(ServerPath),
+            };
+
+            HttpClient.DefaultRequestHeaders.Accept.Clear();
+            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
+
+            //var avatarPath = WorkingDirectory + "/_tmp/" + LangConfig.UserAvatarPath;
+            //if (File.Exists(avatarPath))
+            //{
+            //    UserAvatarPath = avatarPath;
+            //}
+            //else
+            //{
+            //    UserAvatarPath = WorkingDirectory + "/Data/TempAvatar.png";
+            //}
 
             //App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 
@@ -125,7 +130,35 @@ namespace ESO_LangEditor.GUI
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //throw new NotImplementedException();
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<LangTextMappingProfile>();
+            });
+
+            //Mapper = new Mapper(config);
+
+
+            //Network service register
+            //containerRegistry.RegisterSingleton<HttpClient, HttpClientSingleton>();
+
+            var factory = new NLog.Extensions.Logging.NLogLoggerFactory();
+            Microsoft.Extensions.Logging.ILogger logger = factory.CreateLogger("");
+
+            containerRegistry.RegisterInstance<Microsoft.Extensions.Logging.ILogger>(logger);
+
+            // 从集合Container中获取ILogger对象
+            var log = Container.Resolve<Microsoft.Extensions.Logging.ILogger>();
+
+            //Services Register
+            containerRegistry.RegisterInstance<IMapper>(new Mapper(config));
+            containerRegistry.RegisterSingleton<ILangTextRepoClient, LangTextRepoClient>();
+            containerRegistry.RegisterSingleton<ILangTextAccess, LangTextAccess>();
+            containerRegistry.RegisterSingleton<IUserAccess, UserAccess>();
+            containerRegistry.RegisterSingleton<ILangFile, LangFile>();
+            containerRegistry.RegisterSingleton<Logger>();
+
+
+            //ViewModel Register;
             ViewModelLocationProvider.Register<MainWindowSearchbar, MainWindowSearchbarViewModel>();
             ViewModelLocationProvider.Register<MainMenu, MainMenuListViewModel>();
             ViewModelLocationProvider.Register<UC_Login, LoginViewModel>();

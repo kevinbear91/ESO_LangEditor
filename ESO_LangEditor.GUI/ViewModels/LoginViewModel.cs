@@ -1,5 +1,5 @@
 ﻿using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services.AccessServer;
@@ -68,6 +68,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             _passwordBox = passwordBox;
             _accountService = accountService;
+            
         }
 
 
@@ -84,9 +85,11 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             LoginAsync();
 
+            SumbitCommand.CanExecute(false);
+
             //DialogHost.CloseDialogCommand.Execute(null, null);
             //_mainWindowViewModel.GuidVaildStartupCheck();
-            
+
         }
 
         private void CloseDialogHost(object o)

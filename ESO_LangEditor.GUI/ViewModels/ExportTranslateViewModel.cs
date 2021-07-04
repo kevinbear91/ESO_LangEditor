@@ -1,6 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
@@ -30,7 +30,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private bool _exportEnabled = false;
         private bool _isNotUpdatedItems;
 
-        private readonly LangTextRepoClientService _langTextSearch = new LangTextRepoClientService();
+        private readonly ILangTextRepoClient _langTextSearch;
         public ICommand ExportTranslateCommand => new ExcuteViewModelMethod(ExportTranslatedListAsync);
         public ICommand QueryNotUpdatedLangTextCommand => new ExcuteViewModelMethod(UpdateTranslatedItems_checkBox);
 
@@ -91,9 +91,10 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _isNotUpdatedItems, value); }
         }
 
-        public ExportTranslateViewModel(IEventAggregator ea)
+        public ExportTranslateViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
+            _langTextSearch = langTextRepoClient;
 
             Task.Run(() => GetTranslatedLangtextList());
 
@@ -134,71 +135,71 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void ExportTranslatedListAsync(object o)
         {
-            ExportEnabled = false;
+            //ExportEnabled = false;
 
-            if (IsNotUpdatedItems)
-            {
-                var _mapper = App.Mapper;
-                var _langTextRepoClient = new LangTextRepoClientService();
-                var _langTextNetServer = new LangtextNetService(App.ServerPath);
-                var updateList = _mapper.Map<List<LangTextForUpdateZhDto>>(GridData.ToList());
-                var code = await _langTextNetServer.UpdateLangtextZh(updateList, App.LangConfig.UserAuthToken);
+            //if (IsNotUpdatedItems)
+            //{
+            //    //var _mapper = App.Mapper;
+            //    //var _langTextRepoClient = new LangTextRepoClientService();
+            //    var _langTextNetServer = new LangtextNetService(App.ServerPath);
+            //    var updateList = _mapper.Map<List<LangTextForUpdateZhDto>>(GridData.ToList());
+            //    var code = await _langTextNetServer.UpdateLangtextZh(updateList, App.LangConfig.UserAuthToken);
 
-                if (code == System.Net.HttpStatusCode.OK ||
-                code == System.Net.HttpStatusCode.Accepted ||
-                code == System.Net.HttpStatusCode.Created)
-                {
+            //    if (code == System.Net.HttpStatusCode.OK ||
+            //    code == System.Net.HttpStatusCode.Accepted ||
+            //    code == System.Net.HttpStatusCode.Created)
+            //    {
 
-                    foreach(var lang in updateList)
-                    {
-                        lang.IsTranslated = 3;
-                    }
+            //        foreach(var lang in updateList)
+            //        {
+            //            lang.IsTranslated = 3;
+            //        }
 
-                    if(await _langTextRepoClient.UpdateLangtextZh(updateList))
-                    {
-                        OnRequestClose(this, new EventArgs());
-                        _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本已上传至服务器");
-                    }
-                    else
-                    {
-                        MessageBox.Show("保存翻译列表状态出错！");
-                    }
+            //        if(await _langTextRepoClient.UpdateLangtextZh(updateList))
+            //        {
+            //            OnRequestClose(this, new EventArgs());
+            //            _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本已上传至服务器");
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("保存翻译列表状态出错！");
+            //        }
 
-                }
-                else
-                {
-                    MessageBox.Show("文本上传至服务器时出错！错误码：" + code);
-                }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("文本上传至服务器时出错！错误码：" + code);
+            //    }
                 
-            }
-            else
-            {
-                ExportDbToFile exporter = new ExportDbToFile();
-                string path;
-                List<LangTextDto> list;
+            //}
+            //else
+            //{
+            //    ExportDbToFile exporter = new ExportDbToFile();
+            //    string path;
+            //    List<LangTextDto> list;
 
-                if (IsExportSelectedItems)
-                {
-                    list = SelectedItems;
-                }
-                else
-                {
-                    list = GridData.ToList();
-                }
+            //    if (IsExportSelectedItems)
+            //    {
+            //        list = SelectedItems;
+            //    }
+            //    else
+            //    {
+            //        list = GridData.ToList();
+            //    }
 
-                path = exporter.ExportLangTextsAsJson(list, LangChangeType.ChangedZH);
+            //    path = exporter.ExportLangTextsAsJson(list, LangChangeType.ChangedZH);
 
-                if (await _langTextSearch.UpdateTranslateStatus(list))
-                {
-                    OnRequestClose(this, new EventArgs());
-                    _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
-                    _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本保存路径：" + path);
-                }
-                else
-                {
-                    MessageBox.Show("保存翻译列表状态出错！");
-                }
-            }
+            //    if (await _langTextSearch.UpdateTranslateStatus(list))
+            //    {
+            //        OnRequestClose(this, new EventArgs());
+            //        _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
+            //        _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本保存路径：" + path);
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("保存翻译列表状态出错！");
+            //    }
+            //}
 
             
             

@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace ESO_LangEditor.GUI.Services
@@ -21,15 +22,21 @@ namespace ESO_LangEditor.GUI.Services
         private List<FilePaths> _copyFilePaths;
         private List<FilePaths> _filePaths;
 
-        
+        private ILangFile _langFile;
+        private ILangTextRepoClient _langTextRepo;
 
-        public PackAllAddonFile(PackFileViewModel packFileViewModel)
+        public PackAllAddonFile(PackFileViewModel packFileViewModel, ILangFile langFile, 
+            ILangTextRepoClient langTextRepoClient)
         {
             _addonVersion = packFileViewModel.AddonVersion;
             _apiVersion = packFileViewModel.ApiVersion;
             _addonVersionInt = packFileViewModel.AddonVersionInt;
             _updateLog = packFileViewModel.UpdateLog;
             _chsOrChtListSelected = packFileViewModel.ChsOrChtListSelected;
+
+            _langFile = langFile;
+            _langTextRepo = langTextRepoClient;
+
         }
 
         public void ProcessFiles()
@@ -56,29 +63,35 @@ namespace ESO_LangEditor.GUI.Services
             //}
         }
 
-        private async void ExportDbFiles()
+        private async Task ExportDbFiles()
         {
-            var readDb = new LangTextRepoClientService();
-            var export = new ExportDbToFile();
-            var tolang = new ThirdPartSerices();
+            //var readDb = new LangTextRepoClientService();
+            //var export = new ExportDbToFile();
+            //var tolang = new ThirdPartSerices();
 
-            var langtexts = await readDb.GetAlltLangTexts(0);
-            var langlua = await readDb.GetAlltLangTexts(1);
+            //var langtexts = await readDb.GetAlltLangTexts(0);
+            //var langlua = await readDb.GetAlltLangTexts(1);
 
-            export.ExportText(langtexts);
-            export.ExportLua(langlua);
+            //var langtexts = _langTextRepo.GetAlltLangTexts();
 
-            if (_chsOrChtListSelected == CHSorCHT.chs)
-                tolang.ConvertTxTtoLang(false);
-            else
-            {
-                tolang.OpenCCtoCHT();
-                tolang.ConvertTxTtoLang(true);
-                tolang.LuaStrToCHT();
-            }
+            //_langFile.ExportToText
 
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+
+
+            //export.ExportText(langtexts);
+            //export.ExportLua(langlua);
+
+            //if (_chsOrChtListSelected == CHSorCHT.chs)
+            //    tolang.ConvertTxTtoLang(false);
+            //else
+            //{
+            //    tolang.OpenCCtoCHT();
+            //    tolang.ConvertTxTtoLang(true);
+            //    tolang.LuaStrToCHT();
+            //}
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
         }
 
         private void ModifyFiles()

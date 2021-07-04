@@ -149,27 +149,27 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void ExportDbFiles()
         {
-            var readDb = new LangTextRepoClientService();
-            var export = new ExportDbToFile();
-            var tolang = new ThirdPartSerices();
+            //var readDb = new LangTextRepoClientService();
+            //var export = new ExportDbToFile();
+            //var tolang = new ThirdPartSerices();
 
-            var langtexts = await readDb.GetAlltLangTexts(0);
-            var langlua = await readDb.GetAlltLangTexts(1);
+            //var langtexts = await readDb.GetAlltLangTexts(0);
+            //var langlua = await readDb.GetAlltLangTexts(1);
 
-            export.ExportText(langtexts);
-            export.ExportLua(langlua);
+            //export.ExportText(langtexts);
+            //export.ExportLua(langlua);
 
-            if (ChsOrChtListSelected == CHSorCHT.chs)
-                tolang.ConvertTxTtoLang(false);
-            else
-            {
-                tolang.OpenCCtoCHT();
-                tolang.ConvertTxTtoLang(true);
-                tolang.LuaStrToCHT();
-            }
+            //if (ChsOrChtListSelected == CHSorCHT.chs)
+            //    tolang.ConvertTxTtoLang(false);
+            //else
+            //{
+            //    tolang.OpenCCtoCHT();
+            //    tolang.ConvertTxTtoLang(true);
+            //    tolang.LuaStrToCHT();
+            //}
 
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
         }
 
         private void ModifyFiles()

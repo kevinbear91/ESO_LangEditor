@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -110,6 +111,9 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user.UserName == null && user.UserNickName == null)
             {
+                return BadRequest(new MessageWithCode { Code = 123, Message = ApiMessageWithCode.没有找到匹配内容.ToString() });
+
+
                 return BadRequest(CustomRespondCode.InitAccountRequired);
             }
 

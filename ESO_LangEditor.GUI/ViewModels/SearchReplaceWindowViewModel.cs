@@ -67,14 +67,15 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _gridData, value); }
         }
 
-        private LangTextRepoClientService _langTextRepository = new LangTextRepoClientService();
+        private ILangTextRepoClient _langTextRepository; // = new LangTextRepoClientService();
         public ICommand GetMatchCommand => new ExcuteViewModelMethod(SearchIfMatch);
         public ICommand SaveSearchResultCommand => new ExcuteViewModelMethod(ReplaceTextListAsync);
         IEventAggregator _ea;
 
-        public SearchReplaceWindowViewModel(IEventAggregator ea)
+        public SearchReplaceWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
+            _langTextRepository = langTextRepoClient;
         }
 
 
@@ -103,22 +104,22 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                     if (_resultList != null && _resultList.Count > 0)
                     {
-                        var _mapper = App.Mapper;
+                        //var _mapper = App.Mapper;
 
-                        ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
-                        var replacedListToEnity = _mapper.Map<List<LangTextClient>>(ReplacedList);
+                        //ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
+                        //var replacedListToEnity = _mapper.Map<List<LangTextClient>>(ReplacedList);
 
-                        if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
-                        {
-                            var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
-                            _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
-                            MessageBox.Show("替换完成！");
-                        }
+                        //if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
+                        //{
+                        //    var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
+                        //    _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
+                        //    MessageBox.Show("替换完成！");
+                        //}
                             
-                        else
-                        {
-                            MessageBox.Show("替换失败！");
-                        }
+                        //else
+                        //{
+                        //    MessageBox.Show("替换失败！");
+                        //}
                             
                     }
                     else

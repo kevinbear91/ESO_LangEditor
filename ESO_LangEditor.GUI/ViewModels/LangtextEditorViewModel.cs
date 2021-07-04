@@ -82,11 +82,14 @@ namespace ESO_LangEditor.GUI.ViewModels
         public SnackbarMessageQueue EditorMessageQueue { get; }
         public event EventHandler OnRequestClose;
 
-        private readonly LangTextRepoClientService _langTextRepoClient = new LangTextRepoClientService();
+        private readonly ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
 
-        public LangtextEditorViewModel(IEventAggregator ea)
+        public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
+            _langTextRepoClient = langTextRepoClient;
+
+
             LangEditorSaveButton = new ExcuteViewModelMethod(SaveCurrentToDb);
             EditorMessageQueue = new SnackbarMessageQueue();
 

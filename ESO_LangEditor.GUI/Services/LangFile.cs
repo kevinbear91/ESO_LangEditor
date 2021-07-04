@@ -5,20 +5,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Text.Unicode;
+using System.Threading.Tasks;
 using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Services
 {
-    public class ParseLangFiles : IParseLangFile
+    public class LangFile : ILangFile
     {
-        Dictionary<string, LangTextDto> _data = new Dictionary<string, LangTextDto>();
+        Dictionary<string, LangTextDto> _data;
 
-        public Dictionary<string, LangTextDto> ParseCsvFile(string filePath)
+        public async Task<Dictionary<string, LangTextDto>> ParseCsvFile(string filePath)
         {
             string result;
-            //Dictionary<string, LangTextDto> csvData = new Dictionary<string, LangTextDto>();
+            Dictionary<string, LangTextDto> csvData = new Dictionary<string, LangTextDto>();
             using (StreamReader reader = new StreamReader(filePath))
             {
                 Debug.WriteLine("Opened file.");
@@ -26,19 +29,19 @@ namespace ESO_LangEditor.GUI.Services
                 
                 bool passedFirstLine = false;
 
-                if (_data.Count >= 1)
+                if (csvData.Count >= 1)
                 {
-                    _data.Clear();
+                    csvData.Clear();
                 }
 
-                while ((result = reader.ReadLine()) != null)
+                while ((result = await reader.ReadLineAsync()) != null)
                 {
                     string[] words = result.Trim().Split(new char[] { ',' }, 5);
 
                     if (passedFirstLine)
                     {
                         var lang = ParserCsvAddToDict(words);
-                        _data.Add(lang.TextId, lang);
+                        csvData.Add(lang.TextId, lang);
                     }
                     else
                     {
@@ -52,15 +55,15 @@ namespace ESO_LangEditor.GUI.Services
                         else
                         {
                             var lang = ParserCsvAddToDict(words);
-                            _data.Add(lang.TextId, lang);
+                            csvData.Add(lang.TextId, lang);
                         }
                     }
                 }
                 reader.Close();
-                Debug.WriteLine("Total lines: " + _data.Count);
+                Debug.WriteLine("Total lines: " + csvData.Count);
                 //MessageBox.Show("读取完毕，共 " + csvData.Count + " 行数据。");
             }
-            return _data;
+            return csvData;
 
             static LangTextDto ParserCsvAddToDict(string[] words)
             #region Parse CSV column，and return LangData
@@ -92,7 +95,7 @@ namespace ESO_LangEditor.GUI.Services
             #endregion
         }
 
-        public Dictionary<string, LangTextDto> ParseLangFile(string filePath)
+        public async Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath)
         {
             uint _filesize;
             const uint _textIdRecoredSize = 16;
@@ -202,7 +205,7 @@ namespace ESO_LangEditor.GUI.Services
             return _data;
         }
 
-        public Dictionary<string, LangTextDto> ParseLuaFile(List<string> filePath)
+        public async Task<Dictionary<string, LangTextDto>> ParseLuaFile(List<string> filePath)
         {
             bool isClient;
             string input;
@@ -218,7 +221,7 @@ namespace ESO_LangEditor.GUI.Services
                     isClient = false;
 
                 using StreamReader sr = new StreamReader(file);
-                while ((input = sr.ReadLine()) != null)
+                while ((input = await sr.ReadLineAsync()) != null)
                 {
                     foreach (Match match in Regex.Matches(input, pattern, RegexOptions.IgnoreCase))
                     {
@@ -298,6 +301,182 @@ namespace ESO_LangEditor.GUI.Services
 
         }
 
+        public async Task<string> ExportLangTextsAsJson(List<LangTextDto> langtextsList, LangChangeType changeType)
+        {
+            string fileName;
+
+            langtextsList.ForEach(lang => lang.IsTranslated = 2);
+
+            var json = new JsonFileDto
+            {
+                LangTexts = langtextsList,
+                Version = "1",
+                ExportTime = DateTime.Now,
+                ChangeType = changeType,
+            };
+
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+
+            };
+
+            var options1 = new JsonWriterOptions
+            {
+                Indented = true
+            };
+
+            string jsonString = JsonSerializer.Serialize(json, options);
+
+            if (changeType == LangChangeType.ChangedZH)
+            {
+                fileName = @"Export\Translate_" + GetTimeToFileName() + ".json";
+            }
+            else
+            {
+                fileName = @"Export\DatabaseRev_" + GetTimeToFileName() + "_" + changeType.ToString() + ".json";
+            }
+
+            try
+            {
+                using (StreamWriter sw = File.CreateText(fileName))
+                {
+                    await sw.WriteLineAsync(jsonString);
+                }
+
+                return fileName;
+            }
+            catch (DirectoryNotFoundException)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(fileName));
+                using (StreamWriter sw = File.CreateText(fileName))
+                {
+                    await sw.WriteLineAsync(jsonString);
+                }
+                return fileName;
+            }
+        }
+
+        public async Task ExportToText(List<LangTextDto> langList)
+        {
+            var outputIDFile = new List<string>();
+            var outputTextFile = new List<string>();
+
+            if (!Directory.Exists("_tmp"))
+                Directory.CreateDirectory("_tmp");
+
+            foreach (var l in langList)
+            {
+                outputIDFile.Add(l.TextId);
+                outputTextFile.Add(l.TextZh);
+            }
+
+            StreamWriter[] writer = new StreamWriter[2];
+            writer[0] = new StreamWriter("_tmp/ID.txt");
+            writer[1] = new StreamWriter("_tmp/Text.txt");
+
+            foreach (var l in langList)
+            {
+                await writer[0].WriteLineAsync(l.TextId);
+                await writer[1].WriteLineAsync(l.TextZh);
+            }
+            writer[0].Flush();
+            writer[0].Close();
+
+            //using (StreamWriter sw = new StreamWriter("_tmp/ID.txt"))
+            //{
+            //    foreach (var l in langList)
+            //    {
+            //        sw.WriteLine(l.TextId);
+            //    }
+            //    sw.Flush();
+            //    sw.Close();
+            //}
+
+            //using (StreamWriter sw = new StreamWriter("_tmp/Text.txt"))
+            //{
+            //    foreach (string s in outputTextFile)
+            //    {
+            //        sw.WriteLine(s);
+            //    }
+            //    sw.Flush();
+            //    sw.Close();
+            //}
+        }
+
+        public async Task ExportLuaToStr(List<LangTextDto> langList)
+        {
+            List<string> clientData = new List<string>();
+            List<string> pregameData = new List<string>();
+            string line;
+
+            StreamReader file = new StreamReader(@"Data\FontLib.txt");
+
+            while ((line = await file.ReadLineAsync()) != null)
+            {
+                clientData.Add(line);
+                pregameData.Add(line);
+            }
+            file.Close();
+            file.Dispose();
+
+            if (!Directory.Exists("Export"))
+                Directory.CreateDirectory("Export");
+
+            foreach (var d in langList)
+            {
+                switch (d.LangTextType)
+                {
+                    case LangType.LuaPreGame:
+                        pregameData.Add("[" + d.TextId + "]"
+                        + " = "
+                        + "\"" + d.TextZh + "\"");
+                        break;
+                    case LangType.LuaClient:
+                        clientData.Add("[" + d.TextId + "]"
+                        + " = "
+                        + "\"" + d.TextZh + "\"");
+                        break;
+                    case LangType.LuaBoth:
+                        pregameData.Add("[" + d.TextId + "]"
+                        + " = "
+                        + "\"" + d.TextZh + "\"");
+                        clientData.Add("[" + d.TextId + "]"
+                        + " = "
+                        + "\"" + d.TextZh + "\"");
+                        break;
+                }
+
+            }
+
+            using (StreamWriter sw = new StreamWriter(@"Export\zh_client.str"))
+            {
+                foreach (string s in clientData)
+                {
+                    await sw.WriteLineAsync(s);
+                }
+                sw.Flush();
+                sw.Close();
+            }
+            using (StreamWriter sw = new StreamWriter(@"Export\zh_pregame.str"))
+            {
+
+                foreach (string s in pregameData)
+                {
+                    await sw.WriteLineAsync(s);
+                }
+
+                sw.Flush();
+                sw.Close();
+            }
+        }
+
+        public Task ExportToLang(List<LangTextDto> langList)
+        {
+            throw new NotImplementedException();
+        }
+
         public JsonFileDto JsonDtoDeserialize(string path)
         {
             string jsonString;
@@ -310,7 +489,10 @@ namespace ESO_LangEditor.GUI.Services
             return JsonSerializer.Deserialize<JsonFileDto>(jsonString);
         }
 
-
+        private static string GetTimeToFileName()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
+        }
 
         /// <summary>
         /// Turn hex byte string to byte array.
@@ -332,6 +514,5 @@ namespace ESO_LangEditor.GUI.Services
             return raw;
         }
 
-        
     }
 }

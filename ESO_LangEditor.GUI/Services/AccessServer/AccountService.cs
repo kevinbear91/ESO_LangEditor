@@ -1,6 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Views;
 using Prism.Events;

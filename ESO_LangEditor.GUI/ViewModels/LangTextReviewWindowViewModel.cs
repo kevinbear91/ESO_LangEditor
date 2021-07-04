@@ -1,7 +1,7 @@
 ﻿using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using Prism.Events;
@@ -31,7 +31,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private LangTextForReviewDto _gridSelectedItem;
         private bool _isReviewSelectedItems = true;
         private LangtextNetService _langtextNetService = new LangtextNetService(App.ServerPath);
-        private LangTextRepoClientService _langTextRepoClient = new LangTextRepoClientService();
+        private ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
         private Dictionary<Guid, UserInClient> _userDict;
         private string _selectedItemInfo;
 
@@ -101,9 +101,10 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         IEventAggregator _ea;
         
-        public LangTextReviewWindowViewModel(IEventAggregator ea)
+        public LangTextReviewWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
+            _langTextRepoClient = langTextRepoClient;
         }
 
         public async void QueryReviewItemsBySelectedUser(object o)
@@ -142,7 +143,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             if (_userDict == null)
             {
-                _userDict = await _langTextRepoClient.GetUsersToDict();
+                //_userDict = await _langTextRepoClient.GetUsersToDict();
             }
 
             try

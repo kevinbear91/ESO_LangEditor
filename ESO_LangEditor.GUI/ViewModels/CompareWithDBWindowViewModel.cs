@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views;
@@ -106,7 +106,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _saveButtonEnable, value); }
         }
 
-        private LangTextRepoClientService _langTextRepository = new LangTextRepoClientService();
+        private ILangTextRepoClient _langTextRepository;
 
         public List<LangTextDto> Added 
         {
@@ -170,7 +170,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             UpdatedVersionInputEnable = true;
             GridData = new ObservableCollection<LangTextDto>();
-            _mapper = App.Mapper;
+            //_mapper = App.Mapper;
             _langtextNetService = new LangtextNetService(App.ServerPath);
         }
 

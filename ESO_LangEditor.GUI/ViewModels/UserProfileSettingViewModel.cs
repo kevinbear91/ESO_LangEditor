@@ -27,7 +27,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _submitProgress;
         private bool _waitingResult = false;
         private bool _FirstTimeInit = false;
-        private string _userAvatarPath = App.UserAvatarPath;
         private UserInClientDto _userDto;
 
         private PasswordBox _passwordBox;
@@ -73,12 +72,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             get { return _waitingResult; }
             set { SetProperty(ref _waitingResult, value); }
-        }
-
-        public string UserAvatarPath
-        {
-            get { return _userAvatarPath; }
-            set { SetProperty(ref _userAvatarPath, value); }
         }
 
         public string UserTranslatedInt

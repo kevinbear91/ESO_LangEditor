@@ -1,6 +1,7 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
+using ESO_LangEditor.GUI.Services;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -95,12 +96,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _connectStatus, value); }
         }
 
-        IEventAggregator _ea;
+        private IEventAggregator _ea;
 
-        public MainWindowSearchbarViewModel(IEventAggregator ea)
+        public MainWindowSearchbarViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
-            SearchLangCommand = new SearchLangCommand(ea);
+            SearchLangCommand = new SearchLangCommand(ea, langTextRepoClient);
 
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
         }
@@ -109,15 +110,5 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             ConnectStatus = obj;
         }
-
-
-
-
-        //protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
-
-
     }
 }

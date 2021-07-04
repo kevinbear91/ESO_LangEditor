@@ -1,5 +1,4 @@
-﻿using ESO_LangEditor.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -24,9 +23,10 @@ namespace ESO_LangEditorUpdater
         public LangDownloader(string[] args)
         {
             _downloadPath = args[0];
-            _fileName = args[1];
-            _fileSHA256 = args[2];
-            _langEditorServerVersion = args[3];
+            _fileSHA256 = args[1];
+            _langEditorServerVersion = args[2];
+
+            _fileName = "ESO_LangEditor_v" + _langEditorServerVersion + ".zip";
         }
         public void StartDownload()
         {
@@ -107,17 +107,24 @@ namespace ESO_LangEditorUpdater
             try
             {
                 ZipFile.ExtractToDirectory(_fileName, WorkingDirectory, true);
-                UpdateJsonVersion();
+                //UpdateJsonVersion();
 
                 File.Delete(_fileName);
+
+                //string args = _langEditorServerVersion, //服务器端版本号
+                //Debug.WriteLine(args);
+
 
                 ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
                 {
                     FileName = "ESO_LangEditorGUI.exe",
+                    Arguments = _langEditorServerVersion, //服务器端版本号
                 };
 
-                Process updater = new Process();
-                updater.StartInfo = startUpdaterInfo;
+                Process updater = new Process
+                {
+                    StartInfo = startUpdaterInfo,
+                };
                 updater.Start();
                 Environment.Exit(0);
 
@@ -129,12 +136,12 @@ namespace ESO_LangEditorUpdater
             
         }
 
-        private void UpdateJsonVersion()
-        {
-            AppConfigClient LangConfig = AppConfigClient.Load();
-            LangConfig.LangEditorVersion = _langEditorServerVersion;
-            AppConfigClient.Save(LangConfig);
-        }
+        //private void UpdateJsonVersion()
+        //{
+        //    AppConfigClient LangConfig = AppConfigClient.Load();
+        //    LangConfig.LangEditorVersion = _langEditorServerVersion;
+        //    AppConfigClient.Save(LangConfig);
+        //}
 
         
 

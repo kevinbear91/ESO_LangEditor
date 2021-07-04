@@ -9,13 +9,8 @@ namespace ESO_LangEditorUpdater
     {
         static void Main(string[] args)
         {
-            if (args.Length == 4)
+            if (args.Length == 3)
             {
-                if (File.Exists("ESO_LangEditorLib.dll"))
-                {
-                    File.Delete("ESO_LangEditorLib.dll");
-                    File.Delete("ESO_LangEditorLib.pdb");
-                }
                 new LangDownloader(args).StartDownload();
                 Console.ReadKey();
             }

@@ -19,12 +19,12 @@
                 <materialDesign:PackIcon Kind="ArrowUpBold" Height="35" Width="35" />
             </ToggleButton>-->
 
-            <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
+            <!--<Button Style="{StaticResource MaterialDesignFloatingActionButton}"
                                     Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
                                     CommandParameter="{x:Static Dock.Top}"
                                     Height="40" Width="40" Cursor="Hand" >
                 <Image Source="{Binding UserAvatarPath}" Stretch="Fill" />
-            </Button>
+            </Button>-->
 
 
             <Menu x:Name="menu" Padding="30,0,0,0" FontFamily="Microsoft YaHei UI" 

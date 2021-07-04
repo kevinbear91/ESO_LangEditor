@@ -15,13 +15,13 @@ using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Services
 {
-    public class LangTextRepoClientService
+    public class LangTextRepoClientService_Depart
     {
         private IMapper _mapper;
 
-        public LangTextRepoClientService()
+        public LangTextRepoClientService_Depart()
         {
-            _mapper = App.Mapper; // mapper;
+            //_mapper = new Mapper(); // mapper;
         }
 
         public async Task<LangTextClient> GetLangTextByGuidAsync(Guid langtextGuid)

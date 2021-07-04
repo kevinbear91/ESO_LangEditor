@@ -22,18 +22,11 @@ namespace ESO_LangEditor.GUI.ViewModels
         private MenuItem _mainMenuList;
         private List<string> _roleList = new List<string>();
         private ObservableCollection<MenuItemContent> _topMenu;
-        private string _userAvatarPath = App.UserAvatarPath;
 
         public ObservableCollection<MenuItemContent> TopMenu
         {
             get { return _topMenu; }
             set { SetProperty(ref _topMenu, value); }
-        }
-
-        public string UserAvatarPath
-        {
-            get { return _userAvatarPath; }
-            set { SetProperty(ref _userAvatarPath, value); }
         }
 
         IEventAggregator _ea;
@@ -223,13 +216,13 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void ExportLuaToStr(object o)
         {
-            var readDb = new LangTextRepoClientService();
-            var export = new ExportDbToFile();
+            //var readDb = new LangTextRepoClientService();
+            //var export = new ExportDbToFile();
 
-            var langlua = await readDb.GetLangTextByConditionAsync("100", SearchTextType.Type, SearchPostion.Full);
-            export.ExportLua(langlua);
+            //var langlua = await readDb.GetLangTextByConditionAsync("100", SearchTextType.Type, SearchPostion.Full);
+            //export.ExportLua(langlua);
 
-            MessageBox.Show("导出完成！");
+            //MessageBox.Show("导出完成！");
         }
 
         public static void GoToSite(object urlo)

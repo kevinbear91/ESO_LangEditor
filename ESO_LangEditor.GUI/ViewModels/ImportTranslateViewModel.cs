@@ -115,28 +115,28 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void ImportDataToDb(JsonFileDto json)
         {
-            var db = new LangTextRepoClientService();
-            IMapper mapper = App.Mapper;
+            //var db = new LangTextRepoClientService();
+            //IMapper mapper = App.Mapper;
 
-            switch (json.ChangeType)
-            {
-                case LangChangeType.Added:
-                    var listForAdd = mapper.Map<List<LangTextClient>>(json.LangTexts);
-                    await db.AddLangtexts(listForAdd);
-                    break;
-                case LangChangeType.ChangedEN:
-                    var listForEnChanged = mapper.Map<List<LangTextForUpdateEnDto>>(json.LangTexts);
-                    await db.UpdateLangtextEn(listForEnChanged);
-                    break;
-                case LangChangeType.ChangedZH:
-                    var listForZhChanged = mapper.Map<List<LangTextForUpdateZhDto>>(json.LangTexts);
-                    await db.UpdateLangtextZh(listForZhChanged);
-                    break;
-                case LangChangeType.Removed:
-                    var listForDelete = mapper.Map<List<LangTextClient>>(json.LangTexts);
-                    //await db.DeleteLangtexts(listForDelete);
-                    break;
-            }
+            //switch (json.ChangeType)
+            //{
+            //    case LangChangeType.Added:
+            //        var listForAdd = mapper.Map<List<LangTextClient>>(json.LangTexts);
+            //        await db.AddLangtexts(listForAdd);
+            //        break;
+            //    case LangChangeType.ChangedEN:
+            //        var listForEnChanged = mapper.Map<List<LangTextForUpdateEnDto>>(json.LangTexts);
+            //        await db.UpdateLangtextEn(listForEnChanged);
+            //        break;
+            //    case LangChangeType.ChangedZH:
+            //        var listForZhChanged = mapper.Map<List<LangTextForUpdateZhDto>>(json.LangTexts);
+            //        await db.UpdateLangtextZh(listForZhChanged);
+            //        break;
+            //    case LangChangeType.Removed:
+            //        var listForDelete = mapper.Map<List<LangTextClient>>(json.LangTexts);
+            //        //await db.DeleteLangtexts(listForDelete);
+            //        break;
+            //}
         }
 
         private void ParseJson(object o)

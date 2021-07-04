@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ESO_LangEditor.GUI.NetClient
+namespace ESO_LangEditor.GUI.NetClient.Old
 {
     public class UserAccess : IUserAccess
     {
@@ -39,7 +39,6 @@ namespace ESO_LangEditor.GUI.NetClient
             TokenDto revicedToken = null;
 
             HttpResponseMessage response = await client.PostAsync(url, content);
-            httpResponse aa;
 
             if (response.IsSuccessStatusCode)
             {
@@ -92,5 +91,14 @@ namespace ESO_LangEditor.GUI.NetClient
             return byteContent;
         }
 
+        public Task Get(Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task GetToken(Guid userId, object tokenDto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
