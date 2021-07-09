@@ -17,5 +17,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<List<string>> GetUserRoles(Guid userGuid);
         Task SetUserRoles(Guid userId, List<string> roles);
         Task<string> GetRegistrationCode();
+        void SaveToken(TokenDto token);
+        List<string> GetUserRoleFromToken(string token);
     }
 }

@@ -24,7 +24,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<bool> UpdateTranslateStatus(List<LangTextDto> langtexts);
         Task<bool> DeleteLangtexts(List<Guid> langtextId);
         Task<int> GetLangtextRevNumber();
-        Task UpdateRevNumber(int number);
+        Task<bool> UpdateRevNumber(int number);
         Task<UserInClient> GetUserInClient(Guid userId);
         Task<IEnumerable<UserInClient>> GetUsers();
         Task<bool> UpdateUsers(List<UserInClient> users);

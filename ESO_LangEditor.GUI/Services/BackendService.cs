@@ -62,8 +62,24 @@ namespace ESO_LangEditor.GUI.Services
             //MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
         }
 
+        //public Task StartupConnectSequenceCheck()
+        //{
+        //    IStartupCheck startupService = new StartupCheck();
+
+
+
+        //}
+
         public async Task SyncToken()
         {
+            var timer = new System.Threading.Timer(async e => await _userAccess.GetTokenByDto(new TokenDto
+            {
+                AuthToken = App.LangConfig.UserAuthToken,
+                RefreshToken = App.LangConfig.UserRefreshToken,
+            }),
+            null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
+
+
             //while (ConnectStatus == ClientConnectStatus.Login)
             //{
             //    await Task.Delay(TimeSpan.FromMinutes(10));
@@ -78,6 +94,7 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task SyncUser()
         {
+            Debug.WriteLine("SYNC USER");
             var userListFromServer = await _userAccess.GetUserList(App.LangConfig.UserAuthToken);
 
             if (userListFromServer != null)

@@ -64,7 +64,7 @@ namespace ESO_LangEditor.GUI.Services
                 
                 if (result != null)
                 {
-                    App.LangConfigServer = result;
+                    //App.LangConfigServer = result;
 
                     await CompareUpdaterVersion();
 
@@ -222,14 +222,14 @@ namespace ESO_LangEditor.GUI.Services
 
         private async Task CompareUpdaterVersion()
         {
-            if (App.LangConfig.LangUpdaterVersion != App.LangConfigServer.LangUpdaterVersion
-                || App.LangConfig.LangUpdaterDllSha256 != App.LangConfigServer.LangUpdaterDllSha256)
-            {
-                _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
+            //if (App.LangConfig.LangUpdaterVersion != App.LangConfigServer.LangUpdaterVersion
+            //    || App.LangConfig.LangUpdaterDllSha256 != App.LangConfigServer.LangUpdaterDllSha256)
+            //{
+            //    _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
 
-                await _startupNetwork.DownloadUpdater(App.ServerPath + App.LangConfigServer.LangUpdaterPackPath);
-                HashAndUnzipUpdaterPack();
-            }
+            //    await _startupNetwork.DownloadUpdater(App.ServerPath + App.LangConfigServer.LangUpdaterPackPath);
+            //    HashAndUnzipUpdaterPack();
+            //}
         }
 
         private void HashAndUnzipUpdaterPack()
@@ -237,51 +237,51 @@ namespace ESO_LangEditor.GUI.Services
             _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
             Debug.WriteLine("下载完成！");
             Task.Delay(1000);
-            if (GetFileExistAndSha256("UpdaterPack.zip", App.LangConfigServer.LangUpdaterPackSha256))
-            {
-                _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
-                Debug.WriteLine("SHA256校验通过，准备解压文件。");
-                ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
+            //if (GetFileExistAndSha256("UpdaterPack.zip", App.LangConfigServer.LangUpdaterPackSha256))
+            //{
+            //    _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
+            //    Debug.WriteLine("SHA256校验通过，准备解压文件。");
+            //    ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
 
-                App.LangConfig.LangUpdaterDllSha256 = App.LangConfigServer.LangUpdaterDllSha256;
-                App.LangConfig.LangUpdaterVersion = App.LangConfigServer.LangUpdaterVersion;
+            //    App.LangConfig.LangUpdaterDllSha256 = App.LangConfigServer.LangUpdaterDllSha256;
+            //    App.LangConfig.LangUpdaterVersion = App.LangConfigServer.LangUpdaterVersion;
 
-                AppConfigClient.Save(App.LangConfig);
+            //    AppConfigClient.Save(App.LangConfig);
 
-                File.Delete("UpdaterPack.zip");
+            //    File.Delete("UpdaterPack.zip");
 
-                //CompareServerConfig();
-            }
-            else
-                _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
+            //    //CompareServerConfig();
+            //}
+            //else
+            //    _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
 
         }
 
         private void CompareEditorVersion()
         {
-            if (App.LangConfig.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
-            {
-                string args = App.ServerPath                      //服务器地址
-                + App.LangConfigServer.LangFullpackPath           //编辑器包名
-                + " " + "LangEditorFullUpdate.zip"         //下载本地文件名
-                + " " + App.LangConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
-                + " " + App.LangConfigServer.LangEditorVersion;   //编辑器服务器端版本号
-                Debug.WriteLine(args);
+            //if (App.LangConfig.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
+            //{
+            //    string args = App.ServerPath                      //服务器地址
+            //    + App.LangConfigServer.LangFullpackPath           //编辑器包名
+            //    + " " + "LangEditorFullUpdate.zip"         //下载本地文件名
+            //    + " " + App.LangConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
+            //    + " " + App.LangConfigServer.LangEditorVersion;   //编辑器服务器端版本号
+            //    Debug.WriteLine(args);
 
-                ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
-                {
-                    FileName = "ESO_LangEditorUpdater.exe",
-                    Arguments = args,
-                };
+            //    ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
+            //    {
+            //        FileName = "ESO_LangEditorUpdater.exe",
+            //        Arguments = args,
+            //    };
                 
 
-                Process updater = new Process
-                {
-                    StartInfo = startUpdaterInfo
-                };
-                updater.Start();
-                Application.Current.Shutdown();
-            }
+            //    Process updater = new Process
+            //    {
+            //        StartInfo = startUpdaterInfo
+            //    };
+            //    updater.Start();
+            //    Application.Current.Shutdown();
+            //}
         }
 
 

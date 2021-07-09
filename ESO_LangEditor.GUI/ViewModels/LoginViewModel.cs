@@ -1,15 +1,12 @@
 ﻿using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
-using ESO_LangEditor.GUI.Services.AccessServer;
+using ESO_LangEditor.GUI.Services;
 using MaterialDesignThemes.Wpf;
+using NLog;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,9 +19,12 @@ namespace ESO_LangEditor.GUI.ViewModels
         private Guid _userGuid;
         private string _userName;
         private PasswordBox _passwordBox;
-        private AccountService _accountService;
+        //private AccountService _accountService;
         private bool _loginSuccess;
         private bool _isFirstime;
+
+        private IUserAccess _userAccess;
+        private ILogger _logger;
 
         public ICommand SumbitCommand { get; }
         public ICommand CloseDialogHostCommand { get; }
@@ -32,60 +32,60 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public Guid UserGuid
         {
-            get { return _userGuid; }
-            set { SetProperty(ref _userGuid, value); }
+            get => _userGuid;
+            set => SetProperty(ref _userGuid, value);
         }
 
         public string UserName
         {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
+            get => _userName;
+            set => SetProperty(ref _userName, value);
         }
 
         public bool LoginSuccess
         {
-            get { return _loginSuccess; }
-            set { SetProperty(ref _loginSuccess, value); }
+            get => _loginSuccess;
+            set => SetProperty(ref _loginSuccess, value);
         }
 
         public bool IsFirstime
         {
-            get { return _isFirstime; }
-            set { SetProperty(ref _isFirstime, value); }
+            get => _isFirstime;
+            set => SetProperty(ref _isFirstime, value);
         }
 
         IEventAggregator _ea;
 
-        public LoginViewModel(IEventAggregator ea)
+        public LoginViewModel(IEventAggregator ea, IUserAccess userAccess, ILogger logger)
         {
             _ea = ea;
-            UserGuid = GetGuid();
-            SumbitCommand = new SaveConfigCommand(SaveGuid);
+            _userAccess = userAccess;
+            _logger = logger;
+
+            //UserGuid = GetGuid();
+            //SumbitCommand = new SaveConfigCommand(SaveGuid);
             CloseDialogHostCommand = new SaveConfigCommand(CloseDialogHost);
         }
 
-        public void Load(PasswordBox passwordBox, AccountService accountService)
+        public void Load(PasswordBox passwordBox)
         {
             _passwordBox = passwordBox;
-            _accountService = accountService;
-            
         }
 
-
-        private Guid GetGuid()
-        {
-            return App.LangConfig.UserGuid;
-        }
+        //private Guid GetGuid()
+        //{
+        //    return App.LangConfig.UserGuid;
+        //}
 
         private void SaveGuid(object o)
         {
-            var config = App.LangConfig;
-            config.UserGuid = UserGuid;
-            AppConfigClient.Save(config);
+            //var config = App.LangConfig;
+            //config.UserGuid = UserGuid;
+            //AppConfigClient.Save(config);
 
-            LoginAsync();
+            //LoginAsync();
 
-            SumbitCommand.CanExecute(false);
+            //SumbitCommand.CanExecute(false);
 
             //DialogHost.CloseDialogCommand.Execute(null, null);
             //_mainWindowViewModel.GuidVaildStartupCheck();
@@ -99,43 +99,60 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async Task LoginAsync()
         {
-            try
-            {
-                if (IsFirstime)
-                {
-                    var loginSuccess = await _accountService.LoginFirstTime(new LoginUserDto
-                    {
-                        UserID = App.LangConfig.UserGuid,
-                        RefreshToken = _passwordBox.Password,
-                    });
 
-                    if (loginSuccess)
-                    {
-                        //_ea.GetEvent<InitUserRequired>().Publish();
-                        DialogHost.CloseDialogCommand.Execute(null, null);
-                    }
-                        
-                }
-                else
-                {
-                    var loginSuccess = await _accountService.Login(new LoginUserDto
-                    {
-                        UserID = App.LangConfig.UserGuid,
-                        Password = _passwordBox.Password,
-                    });
-
-                    if (loginSuccess)
-                    {
-                        DialogHost.CloseDialogCommand.Execute(null, null);
-                    }
-                        
-                }
-                
-            }
-            catch(Exception ex)
+            var Logintoken = await _userAccess.GetTokenByDto(new LoginUserDto
             {
-                MessageBox.Show(ex.ToString());
+                UserName = UserName,
+                Password = _passwordBox.Password,
+            });
+
+            if (Logintoken != null)
+            {
+                _logger.Debug("账号密码登录并获取Token成功");
+
+                _userAccess.SaveToken(Logintoken);
+                DialogHost.CloseDialogCommand.Execute(null, null);
             }
+
+
+
+            //try
+            //{
+            //    if (IsFirstime)
+            //    {
+            //        var loginSuccess = await _accountService.LoginFirstTime(new LoginUserDto
+            //        {
+            //            UserID = App.LangConfig.UserGuid,
+            //            RefreshToken = _passwordBox.Password,
+            //        });
+
+            //        if (loginSuccess)
+            //        {
+            //            //_ea.GetEvent<InitUserRequired>().Publish();
+            //            DialogHost.CloseDialogCommand.Execute(null, null);
+            //        }
+
+            //    }
+            //    else
+            //    {
+            //        var loginSuccess = await _accountService.Login(new LoginUserDto
+            //        {
+            //            UserID = App.LangConfig.UserGuid,
+            //            Password = _passwordBox.Password,
+            //        });
+
+            //        if (loginSuccess)
+            //        {
+            //            DialogHost.CloseDialogCommand.Execute(null, null);
+            //        }
+
+            //    }
+
+            //}
+            //catch(Exception ex)
+            //{
+            //    MessageBox.Show(ex.ToString());
+            //}
 
         }
 

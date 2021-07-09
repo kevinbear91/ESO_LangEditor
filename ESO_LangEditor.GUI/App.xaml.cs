@@ -1,28 +1,20 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.EFCore;
-using ESO_LangEditor.EFCore.RepositoryWrapper;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.ViewModels;
 using ESO_LangEditor.GUI.Views;
 using ESO_LangEditor.GUI.Views.UserControls;
 using Microsoft.EntityFrameworkCore;
 using NLog;
-using Prism.Events;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Runtime.ExceptionServices;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace ESO_LangEditor.GUI
@@ -36,8 +28,6 @@ namespace ESO_LangEditor.GUI
         public static IDCatalog iDCatalog = new IDCatalog();
         public static GameVersion gameUpdateVersionName = new GameVersion();
         public static AppConfigClient LangConfig;
-        public static AppConfigServer LangConfigServer;
-        //public static StartupConfigCheck LangNetworkService;
         public static UserInClientDto User;
         public static string ServerPath;
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
@@ -53,23 +43,15 @@ namespace ESO_LangEditor.GUI
                 .UseSqlite(@"Data Source=Data/LangData_v4.db")
                 //.UseLoggerFactory(MyLoggerFactory)
                 .Options;
-
-            
-
-            //Mapper = new Mapper(config);
-
         }
 
         public void App_Startup(object sender, StartupEventArgs e)
         {
-            //string filePath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-
             LangConfig = AppConfigClient.Load();
             AppConfigClient.Save(LangConfig);
             
             #if DEBUG
             Console.WriteLine("Debug version");
-            //MessageBox.Show("Debug version");
             #endif
 
             foreach (var server in LangConfig.LangServerList)
@@ -86,41 +68,6 @@ namespace ESO_LangEditor.GUI
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
-
-            //var avatarPath = WorkingDirectory + "/_tmp/" + LangConfig.UserAvatarPath;
-            //if (File.Exists(avatarPath))
-            //{
-            //    UserAvatarPath = avatarPath;
-            //}
-            //else
-            //{
-            //    UserAvatarPath = WorkingDirectory + "/Data/TempAvatar.png";
-            //}
-
-            //App.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
-
-
-            //var dbCheck = new StartupDBCheck(@"Data\LangData_v3.db", @"Data\LangData_v3.update");
-
-            //if (dbCheck.IsDBExist & dbCheck.CheckDbUpdateExist)
-            //{
-            //    dbCheck.ProcessUpdateMerge();
-            //    new MainWindow().Show();
-            //}
-            //else if (dbCheck.IsDBExist)
-            //{
-            //    new MainWindow().Show();
-            //}
-            //else if (dbCheck.CheckDbUpdateExist)
-            //{
-            //    dbCheck.RenameUpdateDB();
-            //    new MainWindow().Show();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-            //new MainWindow().Show();
         }
 
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -135,28 +82,20 @@ namespace ESO_LangEditor.GUI
                 cfg.AddProfile<LangTextMappingProfile>();
             });
 
-            //Mapper = new Mapper(config);
-
-
-            //Network service register
-            //containerRegistry.RegisterSingleton<HttpClient, HttpClientSingleton>();
-
-            var factory = new NLog.Extensions.Logging.NLogLoggerFactory();
-            Microsoft.Extensions.Logging.ILogger logger = factory.CreateLogger("");
-
-            containerRegistry.RegisterInstance<Microsoft.Extensions.Logging.ILogger>(logger);
-
-            // 从集合Container中获取ILogger对象
-            var log = Container.Resolve<Microsoft.Extensions.Logging.ILogger>();
+            var factory = new LogFactory();
+            ILogger logger = factory.GetCurrentClassLogger();
 
             //Services Register
+
+            containerRegistry.Register<IStartupCheck, StartupCheck>();
+
             containerRegistry.RegisterInstance<IMapper>(new Mapper(config));
+            containerRegistry.RegisterInstance(logger);
             containerRegistry.RegisterSingleton<ILangTextRepoClient, LangTextRepoClient>();
             containerRegistry.RegisterSingleton<ILangTextAccess, LangTextAccess>();
             containerRegistry.RegisterSingleton<IUserAccess, UserAccess>();
             containerRegistry.RegisterSingleton<ILangFile, LangFile>();
-            containerRegistry.RegisterSingleton<Logger>();
-
+            containerRegistry.RegisterSingleton<IBackendService, BackendService>();
 
             //ViewModel Register;
             ViewModelLocationProvider.Register<MainWindowSearchbar, MainWindowSearchbarViewModel>();

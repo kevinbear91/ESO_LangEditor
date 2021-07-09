@@ -12,6 +12,7 @@ namespace ESO_LangEditor.GUI.Services
         Task LangtextZhUpdateUpload(List<LangTextForUpdateZhDto> langTextUpdateZhDto);
         Task SyncToken();
         Task SyncUser();
+        //Task StartupConnectSequenceCheck();
 
     }
 }

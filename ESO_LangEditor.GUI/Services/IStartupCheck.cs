@@ -9,10 +9,12 @@ namespace ESO_LangEditor.GUI.Services
     {
         void UpdateEditor();
         Task UpdateUpdater();
-        bool CompareDatabaseRevNumber();
+        //bool CompareDatabaseRevNumber();
         Task DownloadFullDatabase();
         Task SyncRevDatabase();
+        Task StartupTaskList();
+        Task Login();
 
-        Task SyncUserInfo();
+        //Task SyncUserInfo();
     }
 }

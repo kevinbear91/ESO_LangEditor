@@ -25,7 +25,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
-using Microsoft.Extensions.Logging;
+using NLog;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -41,8 +41,12 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _keyword;
         private ObservableCollection<LangTextDto> _gridData;
         private ClientConnectStatus _connectStatus;
-        private AccountService _accountService;
-        private bool firstTime = true;
+        //private AccountService _accountService;
+        private IEventAggregator _ea;
+        private ILogger _logger;
+        private IStartupCheck _startupCheck;
+        private IBackendService _backendService;
+        
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
@@ -111,12 +115,16 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         //public DelegateCommand GetCommand
 
-        IEventAggregator _ea;
+        
+        
+
+
         public SnackbarMessageQueue MainWindowMessageQueue { get; }
         public event EventHandler OnRequestClose;
         public event EventHandler CloseDrawerHostEvent;
 
-        public MainWindowViewModel(IEventAggregator ea, ILogger logger)
+        public MainWindowViewModel(IEventAggregator ea, ILogger logger, 
+            IStartupCheck startupCheck, IBackendService backendService)
         {
             LoadMainView();
             GridData = new ObservableCollection<LangTextDto>();
@@ -124,6 +132,11 @@ namespace ESO_LangEditor.GUI.ViewModels
             //_langTextSearch = new LangTextSearchService(App.RepoClient, App.Mapper);
 
             _ea = ea;
+            _logger = logger;
+            _startupCheck = startupCheck;
+            _backendService = backendService;
+
+
             _ea.GetEvent<LangtextPostToMainDataGrid>().Subscribe(LangtextDataReceived);
             _ea.GetEvent<MainDataGridSelectedItemsToMainWindowVM>().Subscribe(LangtextDataSelected);
             _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Subscribe(ShowMessageQueueWithString);
@@ -138,7 +151,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
-            _accountService = new AccountService(_ea);
 
 
             //ConnectStatus = ClientConnectStatus.Login;
@@ -147,13 +159,29 @@ namespace ESO_LangEditor.GUI.ViewModels
             //_mainWindow.RootDialogWindow.Loaded += RootDialogWindow_Loaded;
             //
 
-            //ExportToLangCommand = new ExportToFileCommand(this);
 
-            logger.LogInformation("LogInformation-1");
-            logger.LogError("LogError-2");
-            logger.LogTrace("LogTrace-3");
-            logger.LogDebug("LogDebug-4");
-            logger.LogCritical("LogCritical-5");
+            logger.Debug("======启动至主界面======");
+            //logger.Error("======报错测试======");
+
+            Task.Run(() => BootCheck());
+        }
+
+        private async Task BootCheck()
+        {
+            var startupCheckList = Task.Run(() => _startupCheck.StartupTaskList());
+            var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
+
+            try
+            {
+                await startupCheckList;
+                await continuation;
+            }
+            catch (Exception ex)
+            {
+                _logger.Fatal(ex.ToString);
+            }
+
+            _startupCheck = null;
         }
 
         private void UserLogout()
@@ -171,92 +199,10 @@ namespace ESO_LangEditor.GUI.ViewModels
             new UserProfileSetting().Show();
         }
 
-        private async void ChangeConnectStatus(ClientConnectStatus connectStatus)
+        private void ChangeConnectStatus(ClientConnectStatus connectStatus)
         {
             ConnectStatus = connectStatus;
-
-            if (connectStatus == ClientConnectStatus.Login && firstTime)
-            {
-                //TimerForRefreshToken();
-                
-                //if (App.User.UserAvatarPath != null && App.User.UserAvatarPath != "")
-                //{
-                //    if(!Directory.Exists(App.WorkingDirectory + "/_tmp"))
-                //    {
-                //        Directory.CreateDirectory(App.WorkingDirectory + "/_tmp");
-                //    }
-
-                //    var avatarPath = App.WorkingDirectory + "/_tmp/" + App.User.UserAvatarPath;
-                //    Debug.WriteLine("avatar path : {0}" + avatarPath);
-
-                //    if (App.UserAvatarPath != avatarPath)
-                //    {
-                //        //var filename = App.User.UserAvatarPath;
-                //        Debug.WriteLine("download avatar file: {0}", App.User.UserAvatarPath);
-
-                        
-                //        await _accountService.UserAvatarDownload(App.User);
-
-                //        App.LangConfig.UserAvatarPath = App.User.UserAvatarPath;
-                //        AppConfigClient config = App.LangConfig;
-                //        AppConfigClient.Save(config);
-
-                //    }
-                //}
-
-                firstTime = false;
-            }
-
-            if(connectStatus == ClientConnectStatus.Login)
-            {
-                App.OnlineMode = true;
-            }
-            else
-            {
-                App.OnlineMode = false;
-            }
         }
-
-        //private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextUpdateZhDto)
-        //{
-        //    LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
-        //    LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
-        //    var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
-
-        //    Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
-            
-        //    if (code == System.Net.HttpStatusCode.OK || 
-        //        code == System.Net.HttpStatusCode.Accepted ||
-        //        code == System.Net.HttpStatusCode.Created)
-        //    {
-        //        langTextUpdateZhDto.IsTranslated = 3;
-        //        await langTextRepoClient.UpdateLangtextZh(langTextUpdateZhDto);
-        //    }
-
-        //    MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
-
-        //}
-
-        //private async void UploadLangtextZhUpdate(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
-        //{
-        //    LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
-        //    LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
-        //    var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDtoList, App.LangConfig.UserAuthToken);
-
-        //    if (code == System.Net.HttpStatusCode.OK ||
-        //        code == System.Net.HttpStatusCode.Accepted ||
-        //        code == System.Net.HttpStatusCode.Created)
-        //    {
-        //        foreach(var lang in langTextForUpdateZhDtoList)
-        //        {
-        //            lang.IsTranslated = 3;
-        //        }
-        //        await langTextRepoClient.UpdateLangtextZh(langTextForUpdateZhDtoList);
-        //    }
-
-        //    MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
-
-        //}
 
         private void UpdateProgressInfo(string str)
         {
@@ -275,21 +221,13 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            await GuidVaildStartupCheck();
+            //await GuidVaildStartupCheck();
         }
 
-        public async Task GuidVaildStartupCheck()
-        {
-            //var startCheck = new StartupConfigCheck(_ea);
-            //await startCheck.TryToGetServerRespondAndConfig();
-
-         
-            
-        }
 
         private async void ShowLoginUC()
         {
-            var view = new UC_Login(_accountService);
+            var view = new UC_Login();
 
             //show the dialog
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);

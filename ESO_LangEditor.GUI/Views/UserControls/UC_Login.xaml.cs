@@ -20,12 +20,12 @@ namespace ESO_LangEditor.GUI.Views.UserControls
     /// </summary>
     public partial class UC_Login : UserControl
     {
-        public UC_Login(AccountService accountService)
+        public UC_Login()
         {
             InitializeComponent();
 
-            var _vm = DataContext as LoginViewModel;
-            _vm.Load(userPassword, accountService);
+            LoginViewModel _vm = DataContext as LoginViewModel;
+            _vm.Load(userPassword);
         }
 
     }

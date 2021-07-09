@@ -6,6 +6,8 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -27,13 +29,15 @@ namespace ESO_LangEditor.GUI.Services
 
         public UserAccess(IEventAggregator ea)
         {
-            _userClient = new HttpClient
-            {
-                BaseAddress = new Uri(App.ServerPath),
-            };
+            _userClient = App.HttpClient;
 
-            _userClient.DefaultRequestHeaders.Accept.Clear();
-            _userClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //_userClient = new HttpClient
+            //{
+            //    BaseAddress = new Uri(App.ServerPath),
+            //};
+
+            //_userClient.DefaultRequestHeaders.Accept.Clear();
+            //_userClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _ea = ea;
 
             _jsonOption = new JsonSerializerOptions
@@ -113,6 +117,26 @@ namespace ESO_LangEditor.GUI.Services
             throw new NotImplementedException();
         }
 
+        public void SaveToken(TokenDto token)
+        {
+            var username = GetUserNameFromToken(token.AuthToken);
+            var config = App.LangConfig;
+
+            config.UserAuthToken = token.AuthToken;
+            config.UserRefreshToken = token.RefreshToken;
+            config.UserName = username;
+
+            App.LangConfig.UserAuthToken = token.AuthToken;
+            App.LangConfig.UserRefreshToken = token.RefreshToken;
+
+            AppConfigClient.Save(config);
+        }
+
+        public List<string> GetUserRoleFromToken(string token)
+        {
+            throw new NotImplementedException();
+        }
+
         private HttpContent SerializeDataToHttpContent(object data)
         {
             var myContent = JsonSerializer.SerializeToUtf8Bytes(data);
@@ -123,5 +147,17 @@ namespace ESO_LangEditor.GUI.Services
 
             return byteContent;
         }
+
+        private string GetUserNameFromToken(string token)
+        {
+            string userNameClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name";
+
+            var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var userName = jsontoken.Claims.First(claim => claim.Type == userNameClaim).Value;
+
+            return userName;
+        }
+
+        
     }
 }

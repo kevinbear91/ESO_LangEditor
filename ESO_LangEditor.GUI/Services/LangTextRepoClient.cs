@@ -265,16 +265,21 @@ namespace ESO_LangEditor.GUI.Services
             return saveCount > 0;
         }
 
-        public async Task UpdateRevNumber(int number)
+        public async Task<bool> UpdateRevNumber(int number)
         {
+            int saveCount = 0;
+
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
                 langtextRevNumber.LangTextRev = number;
+
                 db.LangtextRevNumber.Update(langtextRevNumber);
-                await db.SaveChangesAsync();
+                saveCount = await db.SaveChangesAsync();
+
                 db.Dispose();
             }
+            return saveCount > 0;
         }
 
         public async Task<bool> UpdateTranslateStatus(List<LangTextDto> langtexts)

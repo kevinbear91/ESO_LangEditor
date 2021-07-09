@@ -3,9 +3,11 @@ using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.EventAggres;
+using NLog;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -28,21 +30,26 @@ namespace ESO_LangEditor.GUI.Services
         private int _RevNumberLocal = 0;
         private int _RevNumberServer = 0;
 
+        private AppConfigServer _langConfigServer;
+
         private IEventAggregator _ea;
         private ILangTextRepoClient _langTextRepo;
         private ILangTextAccess _langTextAccess;
         private IUserAccess _userAccess;
         private IMapper _mapper;
         private JsonSerializerOptions _jsonOption;
+        private ILogger _logger;
+        
 
         public StartupCheck(IEventAggregator ea, ILangTextRepoClient langTextRepo, 
-            ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper)
+            ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper, ILogger logger)
         {
             _ea = ea;
             _langTextRepo = langTextRepo;
             _langTextAccess = langTextAccess;
             _userAccess = userAccess;
             _mapper = Mapper;
+            _logger = logger;
 
             _jsonOption = new JsonSerializerOptions
             {
@@ -50,48 +57,90 @@ namespace ESO_LangEditor.GUI.Services
             };
         }
 
-        public async Task TaskList()
+        public async Task StartupTaskList()
         {
-            List<Task> tasks = new List<Task>();
-
-
             _ea.GetEvent<ConnectProgressString>().Publish("正在读取服务器版本数据……");
             _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Connecting);
 
-            var serverConfig = await GetServerRespondAndConfig();
+            _langConfigServer = await GetServerRespondAndConfig();
+            
 
-            if (serverConfig != null)
+            if (_langConfigServer != null)
             {
-                if (App.LangConfig.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
+               
+                _logger.Debug("获取服务器配置成功");
+
+                if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion)
+                {
+                    await UpdateUpdater();
+                }
+                else
+                {
+                    _logger.Debug("更新器版本已最新");
+                }
+
+                if (App.LangConfig.LangEditorVersion != _langConfigServer.LangEditorVersion)
                 {
                     UpdateEditor();
                 }
+                else
+                {
+                    _logger.Debug("编辑器版本已最新");
+                }
 
-                //if ()
+            }
+        }
+
+        public async Task Login()
+        {
+            if (App.LangConfig.UserAuthToken != "" & App.LangConfig.UserRefreshToken != "")
+            {
+                var Logintoken = await _userAccess.GetTokenByDto(new TokenDto
+                {
+                    AuthToken = App.LangConfig.UserAuthToken,
+                    RefreshToken = App.LangConfig.UserRefreshToken,
+                });
+
+                if (Logintoken != null)
+                {
+                    _logger.Debug("登录并获取Token成功");
+
+                    _userAccess.SaveToken(Logintoken);
+                    await LoginTaskList();
+                }
             }
 
-            
-
-
-
+            if (App.LangConfig.UserAuthToken == "" || App.LangConfig.UserRefreshToken == "")
+            {
+                _ea.GetEvent<LoginRequiretEvent>().Publish();
+            }
         }
 
-
-        public bool CompareDatabaseRevNumber()
+        private async Task LoginTaskList()
         {
-            return _RevNumberLocal < _RevNumberServer;
+            await GetConfigFromDb();
+            _RevNumberServer = await _langTextAccess.GetLangTextRevisedNumber();
+
+            if (_RevNumberServer != 0 && _RevNumberLocal != _RevNumberServer)
+            {
+                _logger.Debug("本地步进号：" + _RevNumberLocal);
+                _logger.Debug("服务器端步进号：" + _RevNumberServer);
+                await SyncRevDatabase();
+            }
+            else
+            {
+                _logger.Debug("步进号已最新");
+            }
         }
+
 
         public void UpdateEditor()
         {
-            //if (App.LangConfig.LangEditorVersion != App.LangConfigServer.LangEditorVersion)
-            //{
-                
-            //}
+            _logger.Debug("发现编辑器版本更新");
 
-            string args = App.ServerPath + App.LangConfigServer.LangFullpackPath    //服务器地址 + 编辑器包名
-                + " " + App.LangConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
-                + " " + App.LangConfigServer.LangEditorVersion;   //编辑器服务器端版本号
+            string args = App.ServerPath + _langConfigServer.LangFullpackPath    //服务器地址 + 编辑器包名
+                + " " + _langConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
+                + " " + _langConfigServer.LangEditorVersion;   //编辑器服务器端版本号
             Debug.WriteLine(args);
 
             ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
@@ -111,17 +160,45 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task UpdateUpdater()
         {
-            if (App.LangConfig.LangUpdaterVersion != App.LangConfigServer.LangUpdaterVersion
-                || App.LangConfig.LangUpdaterDllSha256 != App.LangConfigServer.LangUpdaterDllSha256)
-            {
-                
-            }
-
+            _logger.Debug("发现更新器版本更新");
             _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
 
-            await DownloadUpdater();
-            //HashAndUnzipUpdaterPack();
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
+                await client.DownloadFileTaskAsync(new Uri(App.ServerPath + _langConfigServer.LangUpdaterPackPath),
+                "UpdaterPack.zip");
+            }
         }
+
+        private void DelegateHashAndUnzip(object sender, AsyncCompletedEventArgs e)
+        {
+            _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
+            Debug.WriteLine("下载完成！");
+
+            Task.Delay(1000);
+
+            if (GetFileExistAndSha256("UpdaterPack.zip", _langConfigServer.LangUpdaterPackSha256))
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
+                Debug.WriteLine("SHA256校验通过，准备解压文件。");
+
+                ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
+
+                App.LangConfig.LangUpdaterDllSha256 = _langConfigServer.LangUpdaterDllSha256;
+                App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
+
+                AppConfigClient.Save(App.LangConfig);
+
+                File.Delete("UpdaterPack.zip");
+            }
+            else
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
+                _logger.Fatal("=====新版更新器更新失败======");
+            }
+        }
+
 
         public Task DownloadFullDatabase()
         {
@@ -130,43 +207,32 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task SyncRevDatabase()
         {
-            if (_RevNumberLocal != _RevNumberServer)
-            {
-                
-            }
-
             _ea.GetEvent<ConnectProgressString>().Publish("发现更新数据库……");
             _ea.GetEvent<DatabaseUpdateEvent>().Publish(true);
 
             int RevCount = _RevNumberServer - _RevNumberLocal;
-            //bool isServerNewer = _RevNumberServer > _RevNumberLocal;
             int revised = _RevNumberLocal + 1;
-            Debug.WriteLine("Revised number: {0}", revised);
 
-            //if (isServerNewer)
-            //{
-                
-            //}
+            Debug.WriteLine("Revised number: {0}", revised);
+            _logger.Debug("步进计数：" + RevCount);
+            _logger.Debug("当前新步进号：" + revised);
 
             Dictionary<Guid, ReviewReason> langtextDeletedDict = new Dictionary<Guid, ReviewReason>();
             Dictionary<Guid, ReviewReason> langtextAddedDict = new Dictionary<Guid, ReviewReason>();
+            Dictionary<Guid, ReviewReason> langtextUpdateDict = new Dictionary<Guid, ReviewReason>();
 
             for (int i = 1; i <= RevCount; i++)
             {
+                _logger.Debug("当前步进：" + i);
                 _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("正在下载需要同步的文本列表(" + i + "/" + RevCount + ")");
                 //获取当前步进号的步进列表
                 var langRevisedDto = await _langTextAccess.GetLangTextRevisedDtos(revised);
 
                 if (langRevisedDto != null)
                 {
+                    _logger.Debug("当前langRevisedDto数量：" + langRevisedDto.Count());
                     foreach (var rev in langRevisedDto)
                     {
-                        //Debug.WriteLine("Rev Number: ", rev.LangTextRevNumber);
-                        //if (rev.ReasonFor == ReviewReason.Deleted)
-                        //{
-                        //    langtextDeletedDict.Add(rev.LangtextID, rev.ReasonFor);
-                        //}
-
                         switch (rev.ReasonFor)
                         {
                             case ReviewReason.Deleted:
@@ -174,6 +240,12 @@ namespace ESO_LangEditor.GUI.Services
                                 break;
                             case ReviewReason.NewAdded:
                                 langtextAddedDict.Add(rev.LangtextID, rev.ReasonFor);
+                                break;
+                            case ReviewReason.EnChanged:
+                                langtextUpdateDict.Add(rev.LangtextID, rev.ReasonFor);
+                                break;
+                            case ReviewReason.ZhChanged:
+                                langtextUpdateDict.Add(rev.LangtextID, rev.ReasonFor);
                                 break;
                         }
                     }
@@ -184,78 +256,72 @@ namespace ESO_LangEditor.GUI.Services
                     if (currentRevLangDto != null)
                     {
                         Debug.WriteLine("langtext from server count: {0}", currentRevLangDto.Count);
+                        _logger.Debug("当前步进服务器端lang文本数量：" + currentRevLangDto.Count);
 
-                        if (langtextAddedDict.Count >= 1)
+                        List<LangTextClient> newLangtexts = new List<LangTextClient>();
+                        List<LangTextClient> langtextToUpdateList = new List<LangTextClient>();
+
+                        foreach (var lang in currentRevLangDto)
                         {
-                            List<LangTextClient> newLangtexts = new List<LangTextClient>();
-                            List<LangTextDto> tempList = new List<LangTextDto>();
-                            _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并新增文本列表(" + i + "/" + RevCount + ")");
-                            _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("正在应用到数据库……");
-                            foreach (var lang in currentRevLangDto)
+                            if (langtextAddedDict.ContainsKey(lang.Id))
                             {
-                                if (langtextAddedDict.ContainsKey(lang.Id))
-                                {
-                                    var langclient = _mapper.Map<LangTextClient>(lang);
-                                    newLangtexts.Add(langclient);
-                                    tempList.Add(lang);
-                                }
+                                var langclient = _mapper.Map<LangTextClient>(lang);
+                                newLangtexts.Add(langclient);
                             }
 
-                            foreach (var lang in tempList)
-                            {
-                                currentRevLangDto.Remove(lang);
-                            }
-                            await _langTextRepo.AddLangtexts(newLangtexts); //应用新增文本
-                        }
-
-                        if (currentRevLangDto != null && currentRevLangDto.Count >= 1)
-                        {
-                            _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并更新文本列表(" + i + "/" + RevCount + ")");
-                            var langtextToUpdateList = new List<LangTextClient>();
-                            foreach (var lang in currentRevLangDto)
+                            if (langtextUpdateDict.ContainsKey(lang.Id))
                             {
                                 var langtext = await _langTextRepo.GetLangTextByGuidAsync(lang.Id);
                                 _mapper.Map(lang, langtext, typeof(LangTextDto), typeof(LangTextClient));
                                 langtextToUpdateList.Add(langtext);
                             }
-
-                            //var updatedlang = _mapper.Map<List<LangTextClient>>(currentRevLangDto);
-                            await _langTextRepo.UpdateLangtexts(langtextToUpdateList);   //应用修改文本
                         }
+
+                        _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("更新文本列表正在写入数据库(" + i + "/" + RevCount + ")");
+
+                        if (await _langTextRepo.AddLangtexts(newLangtexts))//应用新增文本
+                        {
+                            _logger.Debug("当前步进新增：" + newLangtexts.Count);
+                            _logger.Debug("当前步进新增文本完成");
+                        }
+                        
+                        if (await _langTextRepo.UpdateLangtexts(langtextToUpdateList))//应用修改文本
+                        {
+                            _logger.Debug("当前步进修改：" + langtextToUpdateList.Count);
+                            _logger.Debug("当前步进修改文本完成");
+                        }
+                           
+                        if (langtextDeletedDict.Count >= 1)
+                        {
+                            if (await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()))//应用删除文本
+                            {
+                                _logger.Debug("当前步进删除：" + langtextDeletedDict.Count);
+                                _logger.Debug("当前步进删除文本完成");
+                            }
+                        }
+
+                        if(await _langTextRepo.UpdateRevNumber(revised))    //更新步进号
+                        {
+                            _logger.Debug("当前步进号新增完成");
+                            revised++;
+                        }
+
+                        langtextDeletedDict.Clear();
+                        langtextAddedDict.Clear();
+                        langtextUpdateDict.Clear();
                     }
-
-                    if (langtextDeletedDict.Count >= 1)
-                    {
-                        _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("分析并应用删除文本列表(" + i + "/" + RevCount + ")");
-                        //var deletedlangList = new List<LangTextClient>();
-
-                        await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()); //应用删除文本
-
-                    }
-                    await _langTextRepo.UpdateRevNumber(revised);   //更新步进号
-                    revised++;
                 }
                 else
                 {
+                    _logger.Fatal("====当前步进号文本列表下载失败====");
                     _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("文本列表下载失败！");
                     _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("请尝试重启工具");
                 }
+                _logger.Debug("全部步进号更新完成");
                 _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("更新完成！");
                 _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("如果本窗口没有自动关闭，请点击下边的关闭按钮");
                 _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
             }
-        }
-
-        public async Task SyncUserInfo()
-        {
-            //var userApi = new ApiAccess(App.ServerPath);
-            //var userListFromServer = await _userAccess.GetUserList(App.LangConfig.UserAuthToken);
-
-            //if (userListFromServer != null)
-            //{
-            //    var userList = _mapper.Map<List<UserInClient>>(userListFromServer);
-            //    await _langTextRepo.UpdateUsers(userList);
-            //}
         }
 
         private async Task<AppConfigServer> GetServerRespondAndConfig()
@@ -288,34 +354,8 @@ namespace ESO_LangEditor.GUI.Services
             _RevNumberLocal = await _langTextRepo.GetLangtextRevNumber();
         }
 
-        private void HashAndUnzipUpdaterPack()
-        {
-            _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
-            Debug.WriteLine("下载完成！");
-            Task.Delay(1000);
-            if (GetFileExistAndSha256("UpdaterPack.zip", App.LangConfigServer.LangUpdaterPackSha256))
-            {
-                _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
-                Debug.WriteLine("SHA256校验通过，准备解压文件。");
-                ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
-
-                App.LangConfig.LangUpdaterDllSha256 = App.LangConfigServer.LangUpdaterDllSha256;
-                App.LangConfig.LangUpdaterVersion = App.LangConfigServer.LangUpdaterVersion;
-
-                AppConfigClient.Save(App.LangConfig);
-
-                File.Delete("UpdaterPack.zip");
-
-                //CompareServerConfig();
-            }
-            else
-                _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
-
-        }
-
         private bool GetFileExistAndSha256(string filePath, string fileSHA265)
         {
-            //string updaterPath = "Updater.exe";
             string hashReslut;
 
             if (File.Exists(filePath))
@@ -335,17 +375,6 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        private async Task DownloadUpdater()
-        {
-            _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
-
-            using var client = new WebClient();
-            //client.DownloadFileAsync(new Uri(uri), "UpdaterPack.zip");
-            await client.DownloadFileTaskAsync(new Uri(App.ServerPath + App.LangConfigServer.LangUpdaterPackPath), 
-                "UpdaterPack.zip");
-
-            HashAndUnzipUpdaterPack();
-        }
-
+        
     }
 }
