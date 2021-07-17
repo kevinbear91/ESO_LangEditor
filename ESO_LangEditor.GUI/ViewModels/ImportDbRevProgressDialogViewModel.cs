@@ -13,39 +13,39 @@ namespace ESO_LangEditor.GUI.ViewModels
         private Visibility _closeButtonVisibility = Visibility.Collapsed;
         private bool _closeButtonEnable = false;
         private bool _progressbarDisplay;
-        private string _downloadSpeed;
+        private string _subExcuteText;
 
         public string CurrentExcuteText
         {
-            get { return _currentExcuteText; }
-            set { SetProperty(ref _currentExcuteText, value); }
+            get => _currentExcuteText;
+            set => SetProperty(ref _currentExcuteText, value);
         }
 
         public Visibility CloseButtonVisibility
         {
-            get { return _closeButtonVisibility; }
-            set { SetProperty(ref _closeButtonVisibility, value); }
+            get => _closeButtonVisibility;
+            set => SetProperty(ref _closeButtonVisibility, value);
         }
 
         public bool CloseButtonEnable
         {
-            get { return _closeButtonEnable; }
-            set { SetProperty(ref _closeButtonEnable, value); }
+            get => _closeButtonEnable;
+            set => SetProperty(ref _closeButtonEnable, value);
         }
 
         public bool ProgressbarDisplay
         {
-            get { return _progressbarDisplay; }
-            set { SetProperty(ref _progressbarDisplay, value); }
+            get => _progressbarDisplay;
+            set => SetProperty(ref _progressbarDisplay, value);
         }
 
-        public string DownloadSpeed
+        public string SubExcuteText
         {
-            get { return _downloadSpeed; }
-            set { SetProperty(ref _downloadSpeed, value); }
+            get => _subExcuteText;
+            set => SetProperty(ref _subExcuteText, value);
         }
 
-        IEventAggregator _ea;
+        private IEventAggregator _ea;
 
         public ImportDbRevProgressDialogViewModel(IEventAggregator ea)
         {
@@ -70,7 +70,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private void UpdateSubString(string obj)
         {
-            DownloadSpeed = obj;
+            SubExcuteText = obj;
         }
 
         private void UpdateMainString(string obj)

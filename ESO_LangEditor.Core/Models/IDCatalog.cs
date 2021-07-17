@@ -28,15 +28,10 @@ namespace ESO_LangEditor.Core.Models
         private async Task InitFileidToCategory()
         {
             fileidToCategory = new Dictionary<int, string>();
-
-            //fileidToCategory.Add("UI", "UI");
-
             string result;
 
             using (StreamReader reader = new StreamReader(@"Data\IDCatalog.txt"))
             {
-                //Debug.WriteLine("Opened file.");
-
                 int id;
                 string text;
 
@@ -51,7 +46,6 @@ namespace ESO_LangEditor.Core.Models
                 }
                 reader.Close();
                 Debug.WriteLine("Total lines: " + fileidToCategory.Count);
-                //MessageBox.Show("读取完毕，共 " + csvData.Count + " 行数据。");
             }
         }
 

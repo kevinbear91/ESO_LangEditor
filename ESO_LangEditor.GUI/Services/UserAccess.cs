@@ -97,12 +97,12 @@ namespace ESO_LangEditor.GUI.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<UserInClientDto>> GetUserList(string token)
+        public Task<List<UserInClientDto>> GetUserList()
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> GetUserPwResetCode(Guid userGuid)
+        public Task<string> GetUserPasswordRecoveryCode(Guid userGuid)
         {
             throw new NotImplementedException();
         }
@@ -158,6 +158,29 @@ namespace ESO_LangEditor.GUI.Services
             return userName;
         }
 
-        
+        public Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiMessageWithCode> AddNewRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

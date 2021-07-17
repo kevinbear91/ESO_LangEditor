@@ -35,7 +35,54 @@
         <TabControl Grid.Column="1" Style="{StaticResource MaterialDesignNavigatilRailTabControl}" 
                     TabStripPlacement="Top" materialDesign:ColorZoneAssist.Mode="PrimaryMid" 
                     materialDesign:ShadowAssist.ShadowDepth="Depth1">
-            
+
+            <TabItem Header="综合" Style="{StaticResource MaterialDesignNavigationRailTabItem}" Width="120">
+                <materialDesign:DialogHost IsOpen="{Binding IsOpenDialogs}"
+                                           CloseOnClickAway="True"
+                                           OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
+                                           DialogTheme="Inherit">
+                    <Grid Grid.Column="1" Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="138*" />
+                            <RowDefinition Height="121*" />
+                            <RowDefinition Height="62*" />
+                            <RowDefinition Height="171*" />
+                        </Grid.RowDefinitions>
+                        <Rectangle  Fill="{DynamicResource MaterialDesignDivider}"
+                               Grid.Row="0" VerticalAlignment="Bottom" Height="2"  />
+                        <Rectangle  Fill="{DynamicResource MaterialDesignDivider}"
+                               Grid.Row="1" VerticalAlignment="Bottom" Height="2"  />
+                        <Rectangle Fill="{DynamicResource MaterialDesignDivider}"
+                               Grid.Row="3" VerticalAlignment="Bottom" Height="2"  />
+
+
+                        <TextBlock Grid.Row="0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" 
+                                   Text="新用户注册码" TextAlignment="Center"  />
+                        
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <Button Content="获取注册码" Width="120" Margin="10" Command="{Binding GetRegistrationCodeCommand}" 
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
+                            <TextBox x:Name="RegTextBox" Text="{Binding RegistrationCode, FallbackValue='RegistrationCode'}" Width="150"
+                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
+                        </StackPanel>
+
+                        <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" 
+                                   Text="用户密码重置码" TextAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top"  />
+                        
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0"  >
+                            <Button Content="获取重置码" Width="120" Margin="10" Command="{Binding UserPwRecoveryCodeCommand}" 
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
+                            <TextBox x:Name="PhoneTextBox" Text="{Binding RecoveryCode, FallbackValue='RecoveryCode'}" Width="120"
+                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
+
+                        </StackPanel>
+                    </Grid>
+
+                </materialDesign:DialogHost>
+
+            </TabItem>
             <TabItem Header="编辑用户" Style="{StaticResource MaterialDesignNavigationRailTabItem}" Width="120">
                 <materialDesign:DialogHost IsOpen="{Binding IsOpenDialogs}"
                                            CloseOnClickAway="True"
@@ -43,92 +90,66 @@
                                            DialogTheme="Inherit">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="144*" />
+                            <RowDefinition Height="285*" />
+                            <RowDefinition Height="83*" />
                         </Grid.RowDefinitions>
-                        <Rectangle Margin="0 24 0 0" Height="1" Fill="{DynamicResource MaterialDesignDivider}"
-                               Grid.Row="0" />
-                        <Rectangle Margin="0 24 0 0" Height="1" Fill="{DynamicResource MaterialDesignDivider}"
-                               Grid.Row="1" />
-                        <Rectangle Margin="0 24 0 0" Height="1" Fill="{DynamicResource MaterialDesignDivider}"
-                               Grid.Row="2" />
-                        <StackPanel Grid.Row="0" >
+                        <Rectangle Fill="{DynamicResource MaterialDesignDivider}"
+                               Grid.Row="0" VerticalAlignment="Bottom" Height="2"  />
+                        <Rectangle Fill="{DynamicResource MaterialDesignDivider}"
+                               Grid.Row="1" VerticalAlignment="Bottom" Height="2"  />
+                        <!--<Rectangle Margin="0,94,0,6" Fill="{DynamicResource MaterialDesignDivider}"
+                               Grid.Row="2" />-->
+                        <StackPanel Grid.Row="0" Margin="0,0,0,256" Grid.RowSpan="2" >
                             <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                                    Text="用户角色" TextAlignment="Center"/>
                             <ListBox Style="{StaticResource MaterialDesignFilterChipListBox}" HorizontalAlignment="Center" VerticalAlignment="Center" 
                          Margin="0,10,0,4" 
                          ItemsSource="{Binding RoleList}">
                             </ListBox>
-                            <Button Width="150"  Margin="0,10,0,10"
-                        Content="同步用户角色设置" Command="{Binding UpdateUserRolesCommand}" />
+                            <Button Width="150"  Margin="0,10,0,10" Content="同步用户角色设置"
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                    Command="{Binding UpdateUserRolesCommand}"  />
                         </StackPanel>
 
                         <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" 
-                                   Text="用户资料" TextAlignment="Center"/>
+                                   Text="用户资料" TextAlignment="Center" Margin="0,0,0,10" />
                         <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" 
-                                   Text="{Binding UserInfo.ID}" TextAlignment="Center" Margin="0,30,0,0" />
+                                   Text="{Binding UserGuid}" TextAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0" Height="25" />
 
                         <WrapPanel Grid.Row="1" Margin="20,50,20,10" >
 
-                            <TextBox materialDesign:HintAssist.Hint="User Id" 
+                            <TextBox materialDesign:HintAssist.Hint="User Name" 
                                  materialDesign:HintAssist.IsFloating="True"
-                                 Margin="10" Text="{Binding UserInfo.UserName}" Width="100" />
+                                 Margin="10" Text="{Binding UserName}" Width="120" />
                             <TextBox materialDesign:HintAssist.Hint="User NickName" 
                                  materialDesign:HintAssist.IsFloating="True"
-                                 Margin="10" Text="{Binding UserInfo.UserNickName}" Width="100" />
-                            <TextBlock VerticalAlignment="Center" Text="已翻译：{Binding UserInfo.TranslatedCount}条" Margin="10" />
+                                 Margin="10" Text="{Binding UserNickName}" Width="120" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding UserTranslatedNumebr, FallbackValue='UserTranslatedNumebr'}" Margin="10" />
 
                             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" >
                                 <TextBlock VerticalAlignment="Center" Text="禁止登录" />
-                                <ToggleButton Margin="10" IsChecked="{Binding UserInfo.LockoutEnabled}" />
-                                <DatePicker Width="140" materialDesign:HintAssist.Hint="选择日期"
-                                        Style="{StaticResource MaterialDesignFilledDatePicker}" />
+                                <ToggleButton Margin="10" IsChecked="{Binding UserLockoutEnabled}" />
+                                <DatePicker Width="160" materialDesign:HintAssist.Hint="选择日期" Language="zh-CN"
+                                        Style="{StaticResource MaterialDesignFilledDatePicker}" 
+                                        SelectedDate="{Binding UserLockoutEnd, Mode=TwoWay}" FirstDayOfWeek="Monday" SelectedDateFormat="Long"   />
                             </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="同步用户状态" Width="120" Margin="10" Command="{Binding SetUserInfoCommand}" 
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
+                                <Button Content="重置为随机密码" Width="130" Margin="10" Command="{Binding SetUserPasswordToRandomCommand}" 
+                                    Style="{StaticResource MaterialDesignFlatButton}"
+                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand"/>
+                            </StackPanel>
+
+
 
                         </WrapPanel>
 
-                        <TextBlock Grid.Row="2" Style="{StaticResource MaterialDesignHeadline6TextBlock}" 
-                                   Text="用户调整" TextAlignment="Center"/>
-                        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="20,50,20,10">
-                            <Button Content="密码重置码" Width="120" Margin="10" Command="{Binding UserPwResetCodeCommand}" />
-                            <TextBox x:Name="PhoneTextBox" Text="123123" Width="120"
-                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
-
-                        </StackPanel>
-
-                    </Grid>
-
-                </materialDesign:DialogHost>
-                
-            </TabItem>
-            <TabItem Header="新用户相关" Style="{StaticResource MaterialDesignNavigationRailTabItem}" Width="120">
-                <materialDesign:DialogHost IsOpen="{Binding IsOpenDialogs}"
-                                           CloseOnClickAway="True"
-                                           OverlayBackground="{DynamicResource PrimaryHueDarkBrush}"
-                                           DialogTheme="Inherit">
-                    <Grid Grid.Column="1" Margin="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="127*" />
-                            <RowDefinition Height="62*" />
-                            <RowDefinition Height="303*" />
-                        </Grid.RowDefinitions>
-                        <Rectangle Margin="0 24 0 0" Height="1" Fill="{DynamicResource MaterialDesignDivider}"
-                               Grid.Row="0" />
-                        <Rectangle Margin="0 24 0 0" Height="1" Fill="{DynamicResource MaterialDesignDivider}"
-                               Grid.Row="1" />
-                        <Rectangle Margin="0 24 0 0" Height="1"
-                               Grid.Row="2" />
-
-                        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" >
-                            <Button Content="注册码" Width="120" Margin="10" Command="{Binding GetRegistrationCodeCommand}" />
-                            <TextBox x:Name="RegTextBox" Text="{Binding RegCode, FallbackValue='RegCode'}" Width="120"
-                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
-                        </StackPanel>
-
-
-
-                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="48" Width="330">
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="48" Width="330">
                             <TextBox x:Name="RoleName_Textbox" materialDesign:HintAssist.Hint="新增角色"
                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                      Width="150" Height="40" Margin="0,0,15,0" >
@@ -142,10 +163,10 @@
                                 </TextBox.Text>
                             </TextBox>
 
-                            <Button Width="150" Margin="15,0,0,0" Content="新增角色" 
-                        Command="{Binding AddUserRoleCommand}" >
+                            <Button Width="150" Margin="15,0,0,0" Content="新增角色" Command="{Binding AddUserRoleCommand}" 
+                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
                                 <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                         <Setter Property="IsEnabled" Value="True"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=RoleName_Textbox}" Value="True">
@@ -157,47 +178,14 @@
                             </Button>
                         </StackPanel>
 
-                        <StackPanel Grid.Row="2" Orientation="Horizontal" Width="330" Height="40" VerticalAlignment="Top" Margin="0,20,0,0">
-                            <TextBox x:Name="UserGuid_Textbox" materialDesign:HintAssist.Hint="GUID"
-                       Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                     Width="150" Height="40" Margin="0,0,15,0" Cursor="IBeam" >
-                                <TextBox.Text>
-                                    <Binding Path="UserGuid" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <services:GuidValidation ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-
-                            <Button Width="150" Margin="15,0,0,0" Content="初始化用户" 
-                        Command="{Binding InitUserCommand}" Cursor="Hand" >
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                        <Setter Property="IsEnabled" Value="True"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=UserGuid_Textbox}" Value="True">
-                                                <Setter Property="IsEnabled" Value="False" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                            </Button>
-                        </StackPanel>
-
-
-
-                        <TextBox Grid.Row="2" Width="300" HorizontalAlignment="Center" Margin="0,100,0,23"
-                     Style="{StaticResource MaterialDesignFilledTextBox}"
-                     Text="{Binding NewUserInfo}" IsReadOnly="true" Height="150"  />
 
 
                     </Grid>
 
                 </materialDesign:DialogHost>
-               
+
             </TabItem>
+
         </TabControl>
 
 

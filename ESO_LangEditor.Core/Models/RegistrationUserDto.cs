@@ -5,15 +5,15 @@ using System.Text;
 
 namespace ESO_LangEditor.Core.Models
 {
-    public class RegisterUser
+    public class RegistrationUserDto
     {
 
         [Required, MinLength(4)]
         public string UserName { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        //[Required]
+        //[EmailAddress]
+        //public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -23,5 +23,10 @@ namespace ESO_LangEditor.Core.Models
         [Compare("Password",
             ErrorMessage = "密码与确认密码不一致，请重新输入.")]
         public string ConfirmPassword { get; set; }
+
+        public string UserNickName { get; set; }
+
+        public string RegisterCode { get; set; }
+
     }
 }

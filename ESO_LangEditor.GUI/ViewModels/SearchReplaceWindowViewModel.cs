@@ -1,9 +1,11 @@
-﻿using ESO_LangEditor.Core.Entities;
+﻿using AutoMapper;
+using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views.UserControls;
+using NLog;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -25,6 +27,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _replaceWord;
         private bool _onlyMatchword;
         private bool _ingoreCase;
+        private bool _ingoreSearchFirst;
         private List<LangTextDto> _inputList;
         private List<LangTextDto> _currentSearchList;
         private List<LangTextDto> _resultList;
@@ -33,51 +36,63 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public string SearchWord
         {
-            get { return _searchWord; }
-            set { SetProperty(ref _searchWord, value); }
+            get => _searchWord;
+            set => SetProperty(ref _searchWord, value);
         }
 
         public string ReplaceWord
         {
-            get { return _replaceWord; }
-            set { SetProperty(ref _replaceWord, value); }
+            get => _replaceWord;
+            set => SetProperty(ref _replaceWord, value);
         }
 
         public bool OnlyMatchWord
         {
-            get { return _onlyMatchword; }
-            set { SetProperty(ref _onlyMatchword, value); }
+            get => _onlyMatchword;
+            set => SetProperty(ref _onlyMatchword, value);
         }
 
         public bool IngoreCase
         {
-            get { return _ingoreCase; }
-            set { SetProperty(ref _ingoreCase, value); }
+            get => _ingoreCase;
+            set => SetProperty(ref _ingoreCase, value);
+        }
+
+        public bool IngoreSearchFirst
+        {
+            get => _ingoreSearchFirst;
+            set => SetProperty(ref _ingoreSearchFirst, value);
         }
 
         public List<LangTextDto> CurrentSearchList
         {
-            get { return _currentSearchList; }
-            set { SetProperty(ref _currentSearchList, value); }
+            get => _currentSearchList;
+            set => SetProperty(ref _currentSearchList, value);
         }
 
         public ObservableCollection<LangTextDto> GridData
         {
-            get { return _gridData; }
-            set { SetProperty(ref _gridData, value); }
+            get => _gridData;
+            set => SetProperty(ref _gridData, value);
         }
 
         private ILangTextRepoClient _langTextRepository; // = new LangTextRepoClientService();
+        private IEventAggregator _ea;
+        private ILogger _logger;
+        private IMapper _mapper;
+
         public ICommand GetMatchCommand => new ExcuteViewModelMethod(SearchIfMatch);
         public ICommand SaveSearchResultCommand => new ExcuteViewModelMethod(ReplaceTextListAsync);
-        IEventAggregator _ea;
-
-        public SearchReplaceWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
+        
+        public SearchReplaceWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
+            ILogger logger, IMapper mapper)
         {
             _ea = ea;
             _langTextRepository = langTextRepoClient;
-        }
+            _logger = logger;
+            _mapper = mapper;
 
+        }
 
         public void Load(List<LangTextDto> langTextDtos)
         {
@@ -101,26 +116,24 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 if (!string.IsNullOrEmpty(SearchWord) && !string.IsNullOrEmpty(ReplaceWord))
                 {
-
-                    if (_resultList != null && _resultList.Count > 0)
+                    if (!IngoreSearchFirst && _resultList != null && _resultList.Count > 0)
                     {
-                        //var _mapper = App.Mapper;
+                        ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
+                        var replacedListToEnity = _mapper.Map<List<LangTextClient>>(ReplacedList);
 
-                        //ReplacedList = SearchReplace(SearchWord, ReplaceWord, OnlyMatchWord, RegexOptions.IgnoreCase);
-                        //var replacedListToEnity = _mapper.Map<List<LangTextClient>>(ReplacedList);
+                        if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
+                        {
+                            _logger.Debug("批量替换完成，共 " + replacedListToEnity.Count + " 条文本");
 
-                        //if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
-                        //{
-                        //    var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
-                        //    _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
-                        //    MessageBox.Show("替换完成！");
-                        //}
-                            
-                        //else
-                        //{
-                        //    MessageBox.Show("替换失败！");
-                        //}
-                            
+                            var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
+                            _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
+                            MessageBox.Show("替换完成！");
+                        }
+                        else
+                        {
+                            MessageBox.Show("替换失败！");
+                        }
+
                     }
                     else
                     {
@@ -135,6 +148,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             catch (Exception ex)
             {
+                _logger.Fatal("替换时发生了错误，错误信息：" + ex.Message);
                 MessageBox.Show("替换时发生了错误，错误信息： " + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             

@@ -95,7 +95,7 @@ namespace ESO_LangEditor.GUI.Services
         public async Task SyncUser()
         {
             Debug.WriteLine("SYNC USER");
-            var userListFromServer = await _userAccess.GetUserList(App.LangConfig.UserAuthToken);
+            var userListFromServer = await _userAccess.GetUserList();
 
             if (userListFromServer != null)
             {

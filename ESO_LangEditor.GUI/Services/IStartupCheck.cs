@@ -14,6 +14,8 @@ namespace ESO_LangEditor.GUI.Services
         Task SyncRevDatabase();
         Task StartupTaskList();
         Task Login();
+        Task LoginTaskList();
+        Task SyncUsers();
 
         //Task SyncUserInfo();
     }

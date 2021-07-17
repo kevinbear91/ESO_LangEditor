@@ -7,6 +7,7 @@ using ESO_LangEditor.GUI.ViewModels;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -47,20 +48,21 @@ namespace ESO_LangEditor.GUI.Views.UserControls
         {
             InitializeComponent();
             //LangDataGridCommand = new LangDataGridCommand(this);
-
-            Loaded += UC_LangDataGrid_Loaded;
+            
+            //Loaded += UC_LangDataGrid_Loaded;
         }
 
-        private void UC_LangDataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            foreach (var column in LangDataGrid.Columns)
-            {
-                if (column.Header.ToString() == "变更原因" && GetDataGridInWindowTag() == "LangtextReviewWindow")
-                {
-                    column.Visibility = Visibility.Visible;
-                }
-            }
-        }
+        //private void UC_LangDataGrid_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    foreach (var column in LangDataGrid.Columns)
+        //    {
+        //        if (column.Header.ToString() == "变更原因" && GetDataGridInWindowTag() == "LangtextReviewWindow")
+        //        {
+        //            column.Visibility = Visibility.Visible;
+        //        }
+        //    }
+
+        //}
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -70,24 +72,16 @@ namespace ESO_LangEditor.GUI.Views.UserControls
             IInputElement obj = datagrid.InputHitTest(aP);
             DependencyObject target = obj as DependencyObject;
 
-
             while (target != null)
             {
                 if (target is DataGridRow & GetDataGridInWindowTag() == "Mainwindow")
                 {
                     if (datagrid.SelectedIndex != -1)
                     {
-                        //MakeSelectedItemToEventArgs();
-                        //var vm = DataContext as MainWindowViewModel;
                         _selectedItem = (LangTextDto)datagrid.SelectedItem;
-                        //vm.GridSelectedItem = _selectedItem;
                         MakeDouleClickSelectedItemToEventArgs(_selectedItem);
-                        //new LangtextEditor((LangTextDto)datagrid.SelectedItem).Show();
-                        //RaiseEvent(new RoutedEventArgs(DataGridDoubleClick));
                     }
                 }
-
-                //MessageBox.Show(target.ToString());
                 target = VisualTreeHelper.GetParent(target);
             }
 
@@ -143,8 +137,6 @@ namespace ESO_LangEditor.GUI.Views.UserControls
                         RowRightClickMenuGenerater();
                     }
                 }
-
-                //MessageBox.Show(target.ToString());
                 target = VisualTreeHelper.GetParent(target);
             }
 
@@ -214,65 +206,36 @@ namespace ESO_LangEditor.GUI.Views.UserControls
 
         private void RowRightClickMenuGenerater()
         {
-
             if (_rowRightClickMenu.Items.Count == 0)
             {
-                //_rowRightClickMenu.ItemsSource = RowRightClickMenuEnum;
-
-                //foreach (MenuItem item in _rowRightClickMenu.Items)
-                //{
-                //    item.Header = _enumDescriptionConverter.GetEnumDescription((LangDataGridContextMenu)item.DataContext);
-                //    item.Click += RowRightClickMenu_OnClick;
-                //}
-
                 foreach (var item in RowRightClickMenuEnum)
                 {
                     var menuItem = new MenuItem
                     {
                         Header = _enumDescriptionConverter.GetEnumDescription(item),
                         DataContext = item,
-                        //IsChecked = column.Visibility == Visibility.Visible,
-                        //IsCheckable = true,
-                        // Don't allow user to hide all columns
-                        //IsEnabled = visibleColumns > 1 || column.Visibility != Visibility.Visible
-                        //Command = LangDataGridCommand,
-                        //CommandParameter = item,
-                        //ItemsSource = RowRightClickMenuEnum,
-
                     };
                     menuItem.Click += RowRightClickMenu_OnClick;
-                    //(object a, RoutedEventArgs ea)
-                    //=> MessageBox.Show(menuItem.DataContext.ToString());
                     _rowRightClickMenu.Items.Add(menuItem);
                 }
             }
-
-
             _rowRightClickMenu.IsOpen = true;
         }
 
         private void RowRightClickMenu_OnClick(object sender, RoutedEventArgs e)
         {
             MenuItem menuitem = sender as MenuItem;
-            //ContextMenu cm = mi.Parent as ContextMenu;
             LangDataGridContextMenu _menuEnum = (LangDataGridContextMenu)menuitem.DataContext;
 
             switch (_menuEnum)
             {
-                //LangDataGridContextMenu.EditCurrentItem => "编辑当前",
                 case LangDataGridContextMenu.EditMutilItem:
-                    //new TextEditor(GetSeletedItems()).Show();
                     new LangtextEditor(GetSeletedItems()).Show();
                     break;
                 case LangDataGridContextMenu.SearchAndReplace:
                     new SearchReplaceWindow(GetSeletedItems()).Show();
                     break;
-
-                    //LangDataGridContextMenu.SearchAndReplace => "查找替换",
-
             };
-
-            //MessageBox.Show(word);
 
         }
 
@@ -341,22 +304,5 @@ namespace ESO_LangEditor.GUI.Views.UserControls
             this.RaiseEvent(args);
         }
 
-        //private void MakeSelectedItemToReviewEventArgs(LangTextForReviewDto langtext)
-        //{
-        //    DataGridSelectedItemReviewEventArgs args = new DataGridSelectedItemReviewEventArgs(DataGridSelectionChangedEvent, langtext);
-        //    this.RaiseEvent(args);
-        //}
-
-
-
-        //private void OpenLangEditorWindow()
-        //{
-        //    //List<LangTextDto> selectedItems = (List<LangTextDto>)LangDataGrid.SelectedItems;
-
-        //    TextEditor langEditor = new TextEditor(_selectedItems);
-
-        //    //langEditor.UpdateData(_selectedItems);
-        //    langEditor.Show();
-        //}
     }
 }

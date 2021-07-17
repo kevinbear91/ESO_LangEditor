@@ -24,12 +24,17 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
-            <ToolBarTray Margin="0,5,0,5" Width="800">
+            <ToolBarTray Margin="0,5,0,5" Width="800" Height="50">
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
-                          VerticalAlignment="Center" ToolBarTray.IsLocked="True">
+                          VerticalAlignment="Center" ToolBarTray.IsLocked="True" Height="50" >
 
-                    <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}">
-                        <materialDesign:PackIcon Kind="ContentSave" />
+                    <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" />
+                            <TextBlock Margin="10 .5 0 0" Text="保存当前文本" VerticalAlignment="Center" />
+                        </StackPanel>
+
                     </Button>
                     <Separator />
                     <!--<Button Command="Cut" ToolTip="Cut" ToolBar.OverflowMode="AsNeeded">
@@ -90,7 +95,9 @@
                           Visibility="{Binding DataListVisbility}" 
                           Margin="10,5,10,5" 
                           VerticalScrollBarVisibility="Auto" >
-                    --><!--<uc:UC_LangDataGrid />--><!--
+                    -->
+        <!--<uc:UC_LangDataGrid />-->
+        <!--
                 </ScrollViewer>
             </StackPanel>
         </Expander>-->

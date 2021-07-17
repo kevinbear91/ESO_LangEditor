@@ -23,7 +23,7 @@ namespace ESO_LangEditor.GUI.Views
             InitializeComponent();
 
             var vm = DataContext as UserProfileSettingViewModel;
-            vm.Load(PasswordChange, PasswordConfirm);
+            vm.Load(PasswordChange, PasswordConfirm, PasswordCurrently);
             vm.UserProfileSettingWindow = this;
         }
     }

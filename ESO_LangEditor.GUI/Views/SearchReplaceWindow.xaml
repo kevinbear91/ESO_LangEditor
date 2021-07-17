@@ -55,13 +55,22 @@
                       Style="{StaticResource MaterialDesignCheckBox}" 
                       IsChecked="{Binding IngoreCase}"
                       Margin="0 10 0 0" />
+            <CheckBox x:Name="CheckBox_IgnoreSearchFirst" Content="保存时自动查找匹配"
+                      ToolTip="仅限于100%把握时使用，开启此功能可直接保存结果，无需先点查找按钮"
+                      Style="{StaticResource MaterialDesignCheckBox}" 
+                      IsChecked="{Binding IgnoreSearchFirst}"
+                      Margin="0 10 0 0" />
 
 
-            <Button x:Name="Button_Replace" Content="查找"
+            <Button x:Name="Button_Replace" Style="{StaticResource MaterialDesignFlatButton}"
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" 
+                    Content="查找"
                     Margin="0 30 0 0"
                     Command="{Binding GetMatchCommand}" />
 
-            <Button x:Name="Button_save" Content="保存"
+            <Button x:Name="Button_save" Style="{StaticResource MaterialDesignFlatButton}"
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" 
+                    Content="保存"
                     Margin="0 20 0 0"
                     Command="{Binding SaveSearchResultCommand}" />
 

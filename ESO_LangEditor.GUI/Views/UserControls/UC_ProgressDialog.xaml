@@ -9,7 +9,8 @@
              xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             TextElement.FontSize="14"
              d:DesignHeight="220" d:DesignWidth="350">
     <Grid Margin="16">
 
@@ -18,22 +19,28 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
+        <StackPanel Grid.Row="0">
+            <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
                      HorizontalAlignment="Center"
-                     Grid.Row="0"
                      IsIndeterminate="{Binding ProgressbarDisplay}"
                      Value="0" />
-        <TextBlock Grid.Row="1" Margin="0 16 0 0" Text="{Binding CurrentExcuteText}" HorizontalAlignment="Center" FontSize="14"></TextBlock>
+            <TextBlock Margin="0 16 0 0" Text="{Binding CurrentExcuteText}" HorizontalAlignment="Center" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Margin="0 16 0 0" Text="{Binding SubExcuteText}" HorizontalAlignment="Center" />
+        </StackPanel>
+        
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="BeginButton" Margin="10 16 10 0" Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{Binding RunDialogCommand}" 
-                    Content="开始" Visibility="{Binding BeginButtonVisibility}" Cursor="Hand"  />
+                    Content="开始" Visibility="{Binding BeginButtonVisibility}"/>
 
 
             <Button Name="CloseButton" IsCancel="True" Margin="10 16 10 0" Style="{DynamicResource MaterialDesignFlatButton}"
                     Command="{x:Static wpf:DialogHost.CloseDialogCommand}" IsEnabled="{Binding CloseButtonEnable}"
-                    Content="关闭" Cursor="Hand">
+                    Content="关闭">
                 <Button.CommandParameter>
                     <system:Boolean>False</system:Boolean>
                 </Button.CommandParameter>

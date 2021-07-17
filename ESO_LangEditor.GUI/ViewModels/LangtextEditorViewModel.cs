@@ -77,18 +77,18 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
         }
 
-        IEventAggregator _ea;
+        
         public ICommand LangEditorSaveButton { get; }
         public SnackbarMessageQueue EditorMessageQueue { get; }
         public event EventHandler OnRequestClose;
 
-        private readonly ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
+        private IEventAggregator _ea;
+        private readonly ILangTextRepoClient _langTextRepoClient;
 
         public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
             _langTextRepoClient = langTextRepoClient;
-
 
             LangEditorSaveButton = new ExcuteViewModelMethod(SaveCurrentToDb);
             EditorMessageQueue = new SnackbarMessageQueue();
@@ -96,7 +96,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<DataGridSelectedItemInEditor>().Subscribe(SetCurrentItemFromList);
 
         }
-
 
         public void Load(LangTextDto langTextDto)
         {
@@ -155,9 +154,9 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void SaveCurrentToDb(object o)
         {
-            var user = await _langTextRepoClient.GetUserInClient(App.LangConfig.UserGuid);
+            var user = App.User;
 
-            if(user == null)
+            if (user == null)
             {
                 MessageBox.Show("用户无效，保存失败！");
             }
@@ -166,7 +165,6 @@ namespace ESO_LangEditor.GUI.ViewModels
                 if (LangTextZh != CurrentLangText.TextZh)
                 {
                     var time = DateTime.UtcNow;
-                    //time = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, time.Second, time.Kind);
                     var langtextUpdateZh = new LangTextForUpdateZhDto
                     {
                         Id = CurrentLangText.Id,
@@ -176,23 +174,23 @@ namespace ESO_LangEditor.GUI.ViewModels
                         UserId = user.Id,
                     };
 
-                    //Debug.WriteLine("{0},{1}", CurrentLangText.TextZh, CurrentLangText.ZhLastModifyTimestamp);
-
                     if (await _langTextRepoClient.UpdateLangtextZh(langtextUpdateZh))
                     {
                         CurrentLangText.TextZh = LangTextZh;
 
                         if (GridData != null && GridData.Count > 1)
                         {
-                            var removeitem = GridData.Single(l => l.Id == CurrentLangText.Id);
-                            GridData.Remove(removeitem);
+                            //var removeitem = GridData.Single(l => l.Id == CurrentLangText.Id);
+                            GridData.Remove(GridData.Single(l => l.Id == CurrentLangText.Id));
 
-
-                            SetCurrentItemFromList(GridData.ElementAtOrDefault(0));
-
+                            if (GridData.ElementAtOrDefault(0) != null)
+                            {
+                                SetCurrentItemFromList(GridData.ElementAtOrDefault(0));
+                            }
                         }
                         else
                         {
+                            
                             OnRequestClose(this, new EventArgs());
                             _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！"
                                 + "需重新搜索才会刷新表格。");

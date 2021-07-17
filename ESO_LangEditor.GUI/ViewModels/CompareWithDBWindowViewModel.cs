@@ -43,7 +43,11 @@ namespace ESO_LangEditor.GUI.ViewModels
         private Dictionary<string, LangTextDto> _removedDict;
         private ObservableCollection<LangTextDto> _gridData;
         private IMapper _mapper;
-        private LangtextNetService _langtextNetService;
+        private ILangFile _langfile;
+        private IBackendService _backendService;
+        private ILangTextRepoClient _langTextRepo;
+        private ILangTextAccess _langTextAccess;
+        //private LangtextNetService _langtextNetService;
         private string _selectedKey;
 
         public string UpdateVersionText
@@ -152,12 +156,10 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ExcuteViewModelMethod SaveToServerCommand => new ExcuteViewModelMethod(UploadResultToServer);
         public ExcuteViewModelMethod CompareFilesCommand => new ExcuteViewModelMethod(CompreWithDb);
 
-        //public Dictionary<string, LangTextDto> DbDict { get; set; }
-        //public Dictionary<string, LangTextDto> CsvDict { get; set; }
-
         public CompareWithDBWindow compareWithDBWindow;
 
-        public CompareWithDBWindowViewModel()
+        public CompareWithDBWindowViewModel(IBackendService backendService, ILangTextRepoClient langTextRepo,
+            ILangTextAccess langTextAccess, IMapper mapper)
         {
             _addedTag = "新增";
             _changedTag = "修改";
@@ -166,12 +168,19 @@ namespace ESO_LangEditor.GUI.ViewModels
             FileList = new List<string>();
             SaveToDbCommand.IsExecuting = true;
             SaveToServerCommand.IsExecuting = true;
-            //CompareListSelecteCommand.IsExecuting = true;
 
             UpdatedVersionInputEnable = true;
             GridData = new ObservableCollection<LangTextDto>();
-            //_mapper = App.Mapper;
-            _langtextNetService = new LangtextNetService(App.ServerPath);
+
+            _langfile = new LangFile();
+            _backendService = backendService;
+            _langTextRepo = langTextRepo;
+            _langTextAccess = langTextAccess;
+            _mapper = mapper;
+
+
+        //_mapper = App.Mapper;
+        //_langtextNetService = new LangtextNetService(App.ServerPath);
         }
 
         public void PathTooltip()
@@ -180,11 +189,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             foreach (var s in FileList)
             {
-                if (FilePathTooltip == null)
-                    FilePathTooltip = s;
-                else
-                    FilePathTooltip = FilePathTooltip + "\r\n" + s;
-
+                FilePathTooltip = FilePathTooltip == null ? s : FilePathTooltip + "\r\n" + s;
             }
         }
 
@@ -274,17 +279,9 @@ namespace ESO_LangEditor.GUI.ViewModels
                 try
                 {
                     InfoText = "正在上传新增文本，等待服务器处理并返回结果中……";
-                    var respondCode = await _langtextNetService.CreateLangtextListAsync(langTextForCreationDtos, 
-                        App.LangConfig.UserAuthToken);
+                    var respondCode = await _langTextAccess.AddLangTexts(langTextForCreationDtos);
 
-                    if (respondCode == HttpStatusCode.OK)
-                    {
-                        InfoText = "新增文本上传成功";
-                    }
-                    else
-                    {
-                        InfoText = "新增文本上传失败，" + respondCode.ToString();
-                    }
+                    InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
                 }
                 catch(HttpRequestException ex)
                 {
@@ -304,17 +301,9 @@ namespace ESO_LangEditor.GUI.ViewModels
                 try
                 {
                     InfoText = "正在上传英文变化文本，等待服务器处理并返回结果中……";
-                    var respondCode = await _langtextNetService.UpdateLangtextEnList(langTextForUpdateEnDtos,
-                        App.LangConfig.UserAuthToken);
+                    var respondCode = await _langTextAccess.UpdateLangTextEn(langTextForUpdateEnDtos);
 
-                    if (respondCode == HttpStatusCode.OK)
-                    {
-                        InfoText = "英文变化文本上传成功";
-                    }
-                    else
-                    {
-                        InfoText = "英文变化文本上传失败，" + respondCode.ToString();
-                    }
+                    InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
                 }
                 catch (HttpRequestException ex)
                 {
@@ -334,17 +323,9 @@ namespace ESO_LangEditor.GUI.ViewModels
                 try
                 {
                     InfoText = "正在上传删除列表，等待服务器处理并返回结果中……";
-                    var respondCode = await _langtextNetService.DeleteLangtextListAsync(langTextForDeletedList,
-                        App.LangConfig.UserAuthToken);
+                    var respondCode = await _langTextAccess.RemoveLangTexts(langTextForDeletedList);
 
-                    if (respondCode == HttpStatusCode.OK)
-                    {
-                        InfoText = "删除列表上传成功";
-                    }
-                    else
-                    {
-                        InfoText = "删除列表上传失败，" + respondCode.ToString();
-                    }
+                    InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
                 }
                 catch (HttpRequestException ex)
                 {
@@ -391,7 +372,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             UpdatedVersionInputEnable = false;
             CompareFilesCommand.IsExecuting = true;
 
-            var langfileParser = new LangFileParser();
+            //var langfileParser = new LangFileParser();
             var luaList = new List<string>();
 
             Dictionary<string, LangTextDto> fileContent = new Dictionary<string, LangTextDto>();
@@ -405,9 +386,9 @@ namespace ESO_LangEditor.GUI.ViewModels
                 if (file.EndsWith(".lua"))
                     luaList.Add(file);
                 else
-                    fileContent = await langfileParser.CsvParserToDictionaryAsync(file);
+                    fileContent = await _langfile.ParseCsvFile(file);
             }
-            Dictionary<string, LangTextDto> lualist = await langfileParser.LuaParser(luaList);
+            Dictionary<string, LangTextDto> lualist = await _langfile.ParseLuaFile(luaList);
 
             foreach (var item in lualist)
             {

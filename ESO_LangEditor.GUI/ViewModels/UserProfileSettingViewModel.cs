@@ -1,9 +1,12 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
+using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Services.AccessServer;
 using ESO_LangEditor.GUI.Views;
 using Microsoft.Win32;
+using NLog;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -23,55 +26,32 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _userName = App.LangConfig.UserName;
         private string _userGuid = "GUID：" + App.LangConfig.UserGuid.ToString();
         private string _nickName;
-        private string _esoId;
-        private string _submitProgress;
-        private bool _waitingResult = false;
-        private bool _FirstTimeInit = false;
         private UserInClientDto _userDto;
 
         private PasswordBox _passwordBox;
         private PasswordBox _passwordBoxConfirm;
-        private AccountService _accountService;
-        
+        private PasswordBox _passwordCurrently;
+        //private AccountService _accountService;
 
-        public ExcuteViewModelMethod UploadInfoCommand => new ExcuteViewModelMethod(UploadUserInfo);
-        public ExcuteViewModelMethod UploadAvatarCommand => new ExcuteViewModelMethod(UploadUserAvatar);
+
+        public ExcuteViewModelMethod ChangeUserInfoCommand => new ExcuteViewModelMethod(UserInfoChange);
+        public ExcuteViewModelMethod ChangeUserPasswordCommand => new ExcuteViewModelMethod(UserPasswordChange);
+        //public ExcuteViewModelMethod UploadAvatarCommand => new ExcuteViewModelMethod(UploadUserAvatar);
         public UserProfileSetting UserProfileSettingWindow;
 
 
-        public string UserName 
+        public string UserName
         {
-            get { return _userName; }
-            set { SetProperty(ref _userName, value); }
+            get => _userName;
+            set => SetProperty(ref _userName, value);
         }
 
-        public string UserGuid
-        {
-            get { return _userGuid; }
-        }
+        public string UserGuid => _userGuid;
 
         public string NickName
         {
-            get { return _nickName; }
-            set { SetProperty(ref _nickName, value); }
-        }
-
-        public string EsoId
-        {
-            get { return _esoId; }
-            set { SetProperty(ref _esoId, value); }
-        }
-
-        public string SubmitProgress
-        {
-            get { return _submitProgress; }
-            set { SetProperty(ref _submitProgress, value); }
-        }
-
-        public bool WaitingResult
-        {
-            get { return _waitingResult; }
-            set { SetProperty(ref _waitingResult, value); }
+            get => _nickName;
+            set => SetProperty(ref _nickName, value);
         }
 
         public string UserTranslatedInt
@@ -94,139 +74,98 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public UserInClientDto UserDto
         {
-            get { return _userDto; }
-            set { SetProperty(ref _userDto, value); }
+            get => _userDto;
+            set => SetProperty(ref _userDto, value);
         }
 
-        IEventAggregator _ea;
+        private IEventAggregator _ea;
+        private IUserAccess _userAccess;
+        private ILogger _logger;
 
-
-        public UserProfileSettingViewModel(IEventAggregator ea)
+        public UserProfileSettingViewModel(IEventAggregator ea, IUserAccess userAccess, ILogger logger)
         {
             _ea = ea;
-            _ea.GetEvent<ConnectProgressString>().Subscribe(ConnectStatus);
+            _userAccess = userAccess;
+            _logger = logger;
+
             UserDto = App.User;
         }
 
-        private void ConnectStatus(string str)
-        {
-            SubmitProgress = str;
-        }
-
-        public void Load(PasswordBox passwordBox, PasswordBox passwordBoxConfrim)
+        public void Load(PasswordBox passwordBox, PasswordBox passwordBoxConfrim, PasswordBox passwordCurrently)
         {
             _passwordBox = passwordBox;
             _passwordBoxConfirm = passwordBoxConfrim;
-            //_accountService = accountService;
-            _accountService = new AccountService(_ea);
+            _passwordCurrently = passwordCurrently;
         }
 
-        public async void UploadUserInfo(object o)
+        private async void UserInfoChange(object obj)
+        {
+            if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(NickName))
+            {
+                ChangeUserInfoCommand.CanExecute(false);
+
+                var respond = await _userAccess.SetUserInfoChange(new UserInfoChangeDto
+                {
+                    UserID = UserDto.Id,
+                    UserName = UserName,
+                    UserNickName = NickName,
+                });
+
+                MessageBox.Show(respond.ApiMessageCodeString(), "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                ChangeUserInfoCommand.CanExecute(true);
+            }
+        }
+
+        private async void UserPasswordChange(object obj)
         {
             var regex = new Regex(@"(?=.*[0-9])(?=.*[a-zA-Z])(?=([\x21-\x7e]+)[^a-zA-Z0-9]).{8,30}", RegexOptions.IgnorePatternWhitespace);
-            List<string> roleList = _accountService.GetUserRoleFromToken(App.LangConfig.UserAuthToken);
 
-            if (!string.IsNullOrEmpty(_passwordBox.Password) || roleList.Contains("InitUser"))
+            if (_passwordBox.Password != _passwordBoxConfirm.Password)
             {
-                if (_passwordBox.Password != _passwordBoxConfirm.Password)
-                {
-                    SubmitProgress = "两次输入的密码不一致！";
-                }
-                else
-                {
-                    if (regex.IsMatch(_passwordBox.Password))
-                    {
-                        bool isSuccessed;
-                        if (roleList.Contains("InitUser"))
-                        {
-                            WaitingResult = true;
-                            isSuccessed = await _accountService.UserInfoInit(new UserInfoChangeDto
-                            {
-                                NewPassword = _passwordBox.Password,
-                                UserID = App.LangConfig.UserGuid,
-                                UserName = UserName,
-                                UserNickName = NickName,
-                                UserEsoId = EsoId,
-                            });
-                        }
-                        else
-                        {
-                            WaitingResult = true;
-                            isSuccessed = await _accountService.UserInfoChange(new UserInfoChangeDto
-                            {
-                                NewPassword = _passwordBox.Password,
-                                UserID = App.LangConfig.UserGuid,
-                                UserName = UserName,
-                                UserNickName = NickName,
-                                UserEsoId = EsoId,
-                            });
-                        }
-
-                        _passwordBox.Clear();
-                        _passwordBoxConfirm.Clear();
-
-                        if (isSuccessed)
-                        {
-                            var config = App.LangConfig;
-                            config.UserAuthToken = "";
-                            config.UserRefreshToken = "";
-                            AppConfigClient.Save(config);
-
-                            WaitingResult = false;
-                            SubmitProgress = "修改成功，请退出工具用密码重新登录！";
-                        }
-                    }
-                    else
-                    {
-                        _passwordBox.Clear();
-                        _passwordBoxConfirm.Clear();
-                        SubmitProgress = "密码必须大于8位小于30位，包含数字、英文字母与特殊符号！";
-                    }
-                }
+                MessageBox.Show("两次输入的密码不一致！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                WaitingResult = true;
-                var isSuccessed = await _accountService.UserInfoChange(new UserInfoChangeDto
+                if (regex.IsMatch(_passwordBox.Password))
                 {
-                    UserID = App.LangConfig.UserGuid,
-                    UserName = UserName,
-                    UserNickName = NickName
-                });
 
-                if (isSuccessed)
-                {
-                    WaitingResult = false;
-                    SubmitProgress = "修改成功，请重新启动工具来更新缓存。";
-                }
-            }
-        }
-
-        private async void UploadUserAvatar(object obj)
-        {
-            OpenFileDialog dialog = new OpenFileDialog { Multiselect = false };
-            
-
-            if (dialog.ShowDialog(UserProfileSettingWindow) == true)
-            {
-                if (dialog.FileName.EndsWith(".jpg") && new FileInfo(dialog.FileName).Length < 512 * 1024)  // 512 * 1024 = 512 KB
-                {
-                    WaitingResult = true;
-                    if (await _accountService.UserAvatarUpload(dialog.FileName))
+                    ApiMessageWithCode respond = await _userAccess.SetUserPasswordChange(new UserPasswordChangeDto
                     {
-                        WaitingResult = false;
+                        UserId = UserDto.Id,
+                        OldPassword = _passwordCurrently.Password,
+                        NewPassword = _passwordBox.Password,
+                        NewPasswordConfirm = _passwordBoxConfirm.Password,
+                    });
+
+                    _passwordCurrently.Clear();
+                    _passwordBox.Clear();
+                    _passwordBoxConfirm.Clear();
+
+                    if (respond == ApiMessageWithCode.Success)
+                    {
+                        var config = App.LangConfig;
+                        config.UserAuthToken = "";
+                        config.UserRefreshToken = "";
+                        AppConfigClient.Save(config);
+
+                        MessageBox.Show(respond.ApiMessageCodeString() + "，请退出工具用新密码重新登录！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        //SubmitProgress = "修改成功，请退出工具用密码重新登录！";
                     }
-                    
+                    else
+                    {
+                        MessageBox.Show(respond.ApiMessageCodeString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("仅支持上传 .jpg 文件并且体积小于 512 KB！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                    _passwordBox.Clear();
+                    _passwordBoxConfirm.Clear();
+                    MessageBox.Show("密码必须大于8位小于30位，包含数字、英文字母与特殊符号！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
-
-
 
     }
 }

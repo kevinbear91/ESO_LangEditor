@@ -37,63 +37,65 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public string SearchResultInfo
         {
-            get { return _searchResultInfo; }
+            get => _searchResultInfo;
             set { SetProperty(ref _searchResultInfo, "查询到 " + value + " 条文本"); }
         }
 
         public string SelectedInfo
         {
-            get { return _selectedInfo; }
+            get => _selectedInfo;
             set { SetProperty(ref _selectedInfo, "已选择 " + value + " 条文本"); }
         }
 
         public string NetworkInfo
         {
-            get { return _networkInfo; }
-            set { SetProperty(ref _networkInfo, value); }
+            get => _networkInfo;
+            set => SetProperty(ref _networkInfo, value);
         }
 
         public ObservableCollection<LangTextForReviewDto> GridData
         {
-            get { return _gridData; }
-            set { SetProperty(ref _gridData, value); }
+            get => _gridData;
+            set => SetProperty(ref _gridData, value);
         }
 
         public List<LangTextForReviewDto> GridSelectedItems
         {
-            get { return _gridSelectedItems; }
-            set { SetProperty(ref _gridSelectedItems, value); }
+            get => _gridSelectedItems;
+            set => SetProperty(ref _gridSelectedItems, value);
         }
 
         public ObservableCollection<UserInClientDto> UserList
         {
-            get { return _userList; }
-            set { SetProperty(ref _userList, value); }
+            get => _userList;
+            set => SetProperty(ref _userList, value);
         }
 
         public UserInClientDto SelectedUser
         {
-            get { return _selectedUser; }
-            set { SetProperty(ref _selectedUser, value); }
+            get => _selectedUser;
+            set => SetProperty(ref _selectedUser, value);
         }
 
         public bool IsReviewSelectedItems
         {
-            get { return _isReviewSelectedItems; }
-            set { SetProperty(ref _isReviewSelectedItems, value); }
+            get => _isReviewSelectedItems;
+            set => SetProperty(ref _isReviewSelectedItems, value);
         }
 
         public string SelectedItemInfo
         {
-            get { return _selectedItemInfo; }
-            set { SetProperty(ref _selectedItemInfo, value); }
+            get => _selectedItemInfo;
+            set => SetProperty(ref _selectedItemInfo, value);
         }
 
-        public LangTextForReviewDto GridSelectedItem 
+        public LangTextForReviewDto GridSelectedItem
         {
-            get { return _gridSelectedItem; }
-            set { SetProperty(ref _gridSelectedItem, value); }
+            get => _gridSelectedItem;
+            set => SetProperty(ref _gridSelectedItem, value);
         }
+
+        public Visibility ReasonForVisibility => Visibility.Visible;
 
         public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewUserList);
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);

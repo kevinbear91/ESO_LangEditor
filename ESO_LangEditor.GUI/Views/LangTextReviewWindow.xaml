@@ -7,6 +7,8 @@
         xmlns:UserControls="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:prism="http://prismlibrary.com/" 
+        xmlns:viewmodels="clr-namespace:ESO_LangEditor.GUI.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:LangTextReviewWindowViewModel}"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"

@@ -111,6 +111,8 @@ namespace ESO_LangEditor.GUI.ViewModels
                 _logger.Debug("账号密码登录并获取Token成功");
 
                 _userAccess.SaveToken(Logintoken);
+                _ea.GetEvent<LoginFromUcEvent>().Publish();
+
                 DialogHost.CloseDialogCommand.Execute(null, null);
             }
 

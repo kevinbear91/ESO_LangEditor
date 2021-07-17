@@ -22,20 +22,22 @@ namespace ESO_LangEditor.GUI.ViewModels
         private ObservableCollection<ListBoxItem> _roleList;
         private string _roleName;
         private string _progressSting;
-        private AccountService _accountService;
         private UserInClientDto _selectedUser;
         private List<string> _roleListFromServer;
+        private UserDto _userInfo;
+        private Guid _UserGuid;
         private string _userName;
+        private string _userNickName;
+        private bool _userLockoutEnabled;
+        private DateTimeOffset? _userLockoutEnd;
+        private string _userTranslatedNumber;
         private string _newUserInfo;
         private Guid _newUserId;
-        private Guid _UserGuid;
         private bool _isEnabledGuid;
-        private UserDto _userInfo;
         private bool _isOpenDialogs;
-        private string _pwResetCode;
-        private string _regCode;
-
-        private IUserAccess _userService;
+        private string _recoveryCode;
+        private string _registrationCode;
+        
 
         private List<string> _roles = new List<string>
         {
@@ -76,10 +78,40 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _selectedUser, value);
         }
 
+        public Guid UserGuid
+        {
+            get => _UserGuid;
+            set => SetProperty(ref _UserGuid, value);
+        }
+
         public string UserName
         {
             get => _userName;
             set => SetProperty(ref _userName, value);
+        }
+
+        public string UserNickName
+        {
+            get => _userNickName;
+            set => SetProperty(ref _userNickName, value);
+        }
+
+        public bool UserLockoutEnabled
+        {
+            get => _userLockoutEnabled;
+            set => SetProperty(ref _userLockoutEnabled, value);
+        }
+
+        public DateTimeOffset? UserLockoutEnd
+        {
+            get => _userLockoutEnd;
+            set => SetProperty(ref _userLockoutEnd, value);
+        }
+
+        public string UserTranslatedNumebr
+        {
+            get => "已翻译：" + _userTranslatedNumber + " 条文本";
+            set => SetProperty(ref _userTranslatedNumber, value);
         }
 
         public string NewUserInfo
@@ -92,12 +124,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             get => _newUserId;
             set => SetProperty(ref _newUserId, value);
-        }
-
-        public Guid UserGuid
-        {
-            get => _UserGuid;
-            set => SetProperty(ref _UserGuid, value);
         }
 
         public UserDto UserInfo
@@ -118,35 +144,33 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _isOpenDialogs, value);
         }
 
-        public string PwResetCode
+        public string RecoveryCode
         {
-            get => _pwResetCode;
-            set => SetProperty(ref _pwResetCode, value);
+            get => _recoveryCode;
+            set => SetProperty(ref _recoveryCode, value);
         }
 
-        public string RegCode
+        public string RegistrationCode
         {
-            get => _regCode;
-            set => SetProperty(ref _regCode, value);
+            get => _registrationCode;
+            set => SetProperty(ref _registrationCode, value);
         }
 
         //public ICommand SelectedUser => new ExcuteViewModelMethod(GetInfoBySelectedUser);
         public ICommand GetUserListCommand => new ExcuteViewModelMethod(GetUserList);
         public ICommand UpdateUserRolesCommand => new ExcuteViewModelMethod(UpdateUserRoles);
         public ICommand AddUserRoleCommand => new ExcuteViewModelMethod(AddNewRole);
-        public ICommand AddUserCommand => new ExcuteViewModelMethod(AddNewUser);
-        public ICommand InitUserCommand => new ExcuteViewModelMethod(InitUser);
-        public ICommand UserPwResetCodeCommand => new ExcuteViewModelMethod(GetUserPwResetCode);
+        public ICommand UserPwRecoveryCodeCommand => new ExcuteViewModelMethod(GetUserPwRecoveryCode);
         public ICommand GetRegistrationCodeCommand => new ExcuteViewModelMethod(GetUserRegistrationCode);
+        public ICommand SetUserInfoCommand => new ExcuteViewModelMethod(SetUserInfo);
+        public ICommand SetUserPasswordToRandomCommand => new ExcuteViewModelMethod(SetUserPasswordToRandom);
 
+        private IEventAggregator _ea;
+        private IUserAccess _userService;
 
-
-        IEventAggregator _ea;
-
-        public UserRoleEditorViewModel(IEventAggregator ea, UserAccess userAccess)
+        public UserRoleEditorViewModel(IEventAggregator ea, IUserAccess userAccess)
         {
             _ea = ea;
-            _accountService = new AccountService(_ea);
             _userService = userAccess;
 
             _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressSting);
@@ -163,9 +187,11 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void GetUserList(object obj)
         {
-            var userlist = await _accountService.GetUserList();
+            var userlist = await _userService.GetUserList();
 
             UserList = new ObservableCollection<UserInClientDto>(userlist);
+
+            //TO DO
 
             foreach (var user in _userList)
             {
@@ -177,7 +203,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public async void GetRolesBySelectedUser(object obj)
         {
             _roleListFromServer = null;
-            _roleListFromServer = await _accountService.GetUserRoleList(SelectedUser.Id);
+            _roleListFromServer = await _userService.GetUserRoles(SelectedUser.Id);
 
             LoadListboxItem(_roleListFromServer);
 
@@ -190,9 +216,17 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             UserInfo = await _userService.GetUserInfoFromServer(SelectedUser.Id);
 
-            //_roleListFromServer = await _accountService.GetUserRoleList(SelectedUser.Id);
+            if (UserInfo != null)
+            {
+                UserGuid = UserInfo.ID;
+                UserName = UserInfo.UserName;
+                UserNickName = UserInfo.UserNickName;
+                UserTranslatedNumebr = UserInfo.TranslatedCount.ToString();
+                UserLockoutEnabled = UserInfo.LockoutEnabled;
+                UserLockoutEnd = UserInfo.LockoutEnd;
 
-            LoadListboxItem(UserInfo.UserRoles);
+                LoadListboxItem(UserInfo.UserRoles);
+            }
 
             IsOpenDialogs = false;
 
@@ -211,14 +245,18 @@ namespace ESO_LangEditor.GUI.ViewModels
                 }
             }
 
-            if (await _accountService.ModifyUserRoles(SelectedUser.Id, selectedRoles))
-            {
-                ProgressSting = "提交请求已完成";
-            }
-            else
-            {
-                ProgressSting = "提交请求出错";
-            }
+            await _userService.SetUserRoles(SelectedUser.Id, selectedRoles);
+
+            //TO DO
+
+            //if ()
+            //{
+            //    ProgressSting = "提交请求已完成";
+            //}
+            //else
+            //{
+            //    ProgressSting = "提交请求出错";
+            //}
 
         }
 
@@ -226,38 +264,10 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(RoleName))
             {
-                await _accountService.AddRole(RoleName);
+                await _userService.AddNewRole(RoleName);
             }
 
-        }
-
-        private async void AddNewUser(object obj)
-        {
-            Debug.WriteLine(UserName);
-            if (!string.IsNullOrWhiteSpace(UserName))
-            {
-                var newUserDto = new UserDto
-                {
-                    ID = NewUserId,
-                    UserName = UserName,
-                };
-
-                var userDto = await _accountService.AddUser(newUserDto);
-
-                NewUserInfo = userDto.ID + "\n" + userDto.UserName + "\n" + userDto.RefreshToken;
-            }
-
-        }
-
-        private async void InitUser(object obj)
-        {
-            Debug.WriteLine(UserGuid);
-            if (!string.IsNullOrWhiteSpace(UserGuid.ToString()))
-            {
-                var userDto = await _accountService.InitUser(UserGuid);
-
-                NewUserInfo = userDto.ID + "\n" + userDto.UserName + "\n" + userDto.RefreshToken;
-            }
+            //TO DO
 
         }
 
@@ -288,18 +298,18 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
         }
 
-        private async void GetUserPwResetCode(object obj)
+        private async void GetUserPwRecoveryCode(object obj)
         {
-            if (PwResetCode != null || PwResetCode != "")
+            if (RecoveryCode != null || RecoveryCode != "")
             {
-                PwResetCode = "";
+                RecoveryCode = "";
             }
 
             if (SelectedUser != null)
             {
                 IsOpenDialogs = true;
 
-                PwResetCode = await _userService.GetUserPwResetCode(SelectedUser.Id);
+                RecoveryCode = await _userService.GetUserPasswordRecoveryCode(SelectedUser.Id);
 
                 IsOpenDialogs = false;
             }
@@ -308,18 +318,47 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void GetUserRegistrationCode(object obj)
         {
-            if (RegCode != null || RegCode != "")
+            if (RegistrationCode != null || RegistrationCode != "")
             {
-                RegCode = "";
+                RegistrationCode = "";
             }
 
             IsOpenDialogs = true;
 
-            RegCode = await _userService.GetRegistrationCode();
+            RegistrationCode = await _userService.GetRegistrationCode();
 
             IsOpenDialogs = false;
         }
 
+        private async void SetUserInfo(object obj)
+        {
+            if (SelectedUser != null)
+            {
+                var aa = await _userService.SetUserInfo(new SetUserInfoDto
+                {
+                    UserID = UserGuid,
+                    UserName = UserName,
+                    UserNickName = UserNickName,
+                    LockoutEnabled = UserLockoutEnabled,
+                    LockoutEnd = UserLockoutEnd,
+                });
+
+                //TO DO
+
+
+            }
+        }
+
+        private async void SetUserPasswordToRandom(object obj)
+        {
+            if (SelectedUser != null)
+            {
+                var aa = await _userService.SetUserPasswordToRandom(SelectedUser.Id);
+            }
+            //TO DO
+
+
+        }
 
     }
 

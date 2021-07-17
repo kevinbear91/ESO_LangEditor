@@ -83,7 +83,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                             Header = "CSV和Lua与数据库对比",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "CompareWithDBWindow",
-                            Visible = RoleToVisibility("Admin"),
+                            //Visible = RoleToVisibility("Admin"),
                         }
                     }
 
@@ -128,7 +128,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                             Header = "一键发布",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "PackToRelase",
-                            Visible = RoleToVisibility("Admin"),
+                            //Visible = RoleToVisibility("Admin"),
                         }
                     }
 
@@ -141,7 +141,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                             Header = "用户角色编辑",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "UserRoleEditor",
-                            Visible = RoleToVisibility("Admin"),
+                            //Visible = RoleToVisibility("Admin"),
                         },
                         new MenuItemContent {
                             Header="资料修改",

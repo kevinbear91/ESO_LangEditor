@@ -10,6 +10,9 @@
              prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DiscreteObjectKeyFrame x:Key="FlagKey" Value="{Binding ReasonForVisibility}" />
+    </UserControl.Resources>
     <Grid>
         <DataGrid x:Name="LangDataGrid" ItemsSource="{Binding GridData}"
                   SelectedItem="{Binding GridSelectedItem}"
@@ -29,7 +32,7 @@
                 <materialDesign:DataGridTextColumn Binding="{Binding EnLastModifyTimestamp}" Header="最后修改日期(英文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding ZhLastModifyTimestamp}" Header="最后修改日期(中文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding UserId}" Header="用户" Visibility="Collapsed"/>
-                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="{Binding Value, Source={StaticResource FlagKey}, FallbackValue='Collapsed'}"/>
             </DataGrid.Columns>
         </DataGrid>
         

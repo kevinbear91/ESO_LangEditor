@@ -55,6 +55,8 @@ namespace ESO_LangEditor.GUI.Services
             {
                 PropertyNameCaseInsensitive = true,
             };
+
+            
         }
 
         public async Task StartupTaskList()
@@ -116,9 +118,11 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        private async Task LoginTaskList()
+        public async Task LoginTaskList()
         {
             await GetConfigFromDb();
+            await SyncUsers();
+
             _RevNumberServer = await _langTextAccess.GetLangTextRevisedNumber();
 
             if (_RevNumberServer != 0 && _RevNumberLocal != _RevNumberServer)
@@ -131,8 +135,8 @@ namespace ESO_LangEditor.GUI.Services
             {
                 _logger.Debug("步进号已最新");
             }
+            //_ea.GetEvent<LoginFromUcEvent>().Unsubscribe(LoginTaskCallFromUC);
         }
-
 
         public void UpdateEditor()
         {
@@ -199,6 +203,17 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
+        public async Task SyncUsers()
+        {
+            Debug.WriteLine("SYNC USER");
+            var userListFromServer = await _userAccess.GetUserList();
+
+            if (userListFromServer != null)
+            {
+                var userList = _mapper.Map<List<UserInClient>>(userListFromServer);
+                await _langTextRepo.UpdateUsers(userList);
+            }
+        }
 
         public Task DownloadFullDatabase()
         {

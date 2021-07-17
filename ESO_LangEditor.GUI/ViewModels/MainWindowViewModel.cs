@@ -113,11 +113,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public List<LangTextDto> GridSelectedItems { get; set; }
 
-        //public DelegateCommand GetCommand
-
-        
-        
-
+        public Visibility ReasonForVisibility => Visibility.Collapsed;
 
         public SnackbarMessageQueue MainWindowMessageQueue { get; }
         public event EventHandler OnRequestClose;
@@ -149,6 +145,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
             _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
+            _ea.GetEvent<LoginFromUcEvent>().Subscribe(LoginTaskCallFromUC);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
 
@@ -169,19 +166,24 @@ namespace ESO_LangEditor.GUI.ViewModels
         private async Task BootCheck()
         {
             var startupCheckList = Task.Run(() => _startupCheck.StartupTaskList());
-            var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
+            //var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
 
             try
             {
                 await startupCheckList;
-                await continuation;
+                //await continuation;
             }
             catch (Exception ex)
             {
                 _logger.Fatal(ex.ToString);
             }
 
-            _startupCheck = null;
+            //_startupCheck = null;
+        }
+
+        private async void LoginTaskCallFromUC()
+        {
+            await _startupCheck.LoginTaskList();
         }
 
         private void UserLogout()
