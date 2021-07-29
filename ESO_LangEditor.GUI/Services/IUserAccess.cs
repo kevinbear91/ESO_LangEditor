@@ -14,6 +14,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<ApiMessageWithCode> AddNewRole(string roleName);
         Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto);
         Task<TokenDto> GetTokenByDto<T>(T Dto);
+        Task<TokenDto> GetTokenByLogin(LoginUserDto loginUserDto);
         Task<List<UserInClientDto>> GetUserList();
         Task<UserDto> GetUserInfoFromServer(Guid userGuid);
         Task<string> GetUserPasswordRecoveryCode(Guid userGuid);
@@ -22,7 +23,7 @@ namespace ESO_LangEditor.GUI.Services
         List<string> GetUserRoleFromToken(string token);
         Task SetUserRoles(Guid userId, List<string> roles);
         Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto);
-        Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordResetDto userPasswordResetDto);
+        Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto);
         Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid);
         Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto);
         Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto);

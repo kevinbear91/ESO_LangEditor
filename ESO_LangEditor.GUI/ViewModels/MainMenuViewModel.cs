@@ -29,7 +29,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _topMenu, value); }
         }
 
-        IEventAggregator _ea;
+        private IEventAggregator _ea;
+        private IBackendService _backendService;
 
         public Window WindowLink(string windowClassName)
         {
@@ -43,11 +44,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             return (Window)window;
         }
 
-        public MainMenuListViewModel(IEventAggregator ea)
+        public MainMenuListViewModel(IEventAggregator ea, IBackendService backendService)
         {
             //WindowLink("ESO_LangEditor.GUI.Views.ExportTranslate").Show();
 
             _ea = ea;
+            _backendService = backendService;
             _ea.GetEvent<RoleListUpdateEvent>().Subscribe(UpdateRoleList);
             LoadMemu();
         }
@@ -101,7 +103,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                         new MenuItemContent
                         {
                             Header = "导出文本至.lang", 
-                            //Command = new ExcuteViewModelMethod(OpenWindowByICommand), 
+                            Command = new ExcuteViewModelMethod(ExportLang),
                             //CommandParameter = "ESO_LangEditor.GUI.Views.ExportTranslate"
                         },
                         new MenuItemContent
@@ -212,6 +214,11 @@ namespace ESO_LangEditor.GUI.ViewModels
         private void LogoutByICommand(object o)
         {
             _ea.GetEvent<LogoutEvent>().Publish();
+        }
+
+        private async void ExportLang(object o)
+        {
+            await _backendService.ExportLangFile();
         }
 
         private async void ExportLuaToStr(object o)

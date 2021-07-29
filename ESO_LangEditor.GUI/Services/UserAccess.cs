@@ -84,13 +84,32 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
-                var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
-                MessageBox.Show(code.Message);
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
             }    
             return tokenDto;
         }
 
-        
+        public async Task<TokenDto> GetTokenByLogin(LoginUserDto loginUserDto)
+        {
+            var content = SerializeDataToHttpContent(loginUserDto);
+            TokenDto tokenDto = null;   // = new TokenDto();
+
+            HttpResponseMessage respond = await _userClient.PostAsync("api/account/login", content);
+
+            if (respond.IsSuccessStatusCode)
+            {
+                string respondContent = await respond.Content.ReadAsStringAsync();
+                tokenDto = JsonSerializer.Deserialize<TokenDto>(respondContent, _jsonOption);
+            }
+            else
+            {
+                string respondContent = await respond.Content.ReadAsStringAsync();
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
+            }
+            return tokenDto;
+        }
 
         public Task<UserDto> GetUserInfoFromServer(Guid userGuid)
         {
@@ -179,6 +198,16 @@ namespace ESO_LangEditor.GUI.Services
         }
 
         public Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto)
         {
             throw new NotImplementedException();
         }

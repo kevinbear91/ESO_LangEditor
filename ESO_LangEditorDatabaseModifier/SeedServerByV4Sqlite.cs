@@ -47,7 +47,6 @@ namespace ESO_LangEditorDatabaseModifier
                     TranslatedCount = 0,
                     InReviewCount = 0,
                     RemovedCount = 0,
-                    RefreshTokenExpireTime = DateTime.Now,
 
                 },
             };
@@ -63,7 +62,7 @@ namespace ESO_LangEditorDatabaseModifier
                 Debug.WriteLine("Key: {0}, Id: {1}, Name: {2}", user.Key, user.Value.Id, user.Value.UserNickName);
             }
 
-            _langTextsv4 = _langTextRepository.GeAlltLangTexts_v4();
+            //_langTextsv4 = _langTextRepository.GeAlltLangTexts_v4();
 
             List<ESO_LangEditor.Core.Entities.LangText> langTexts = new List<ESO_LangEditor.Core.Entities.LangText>();
 

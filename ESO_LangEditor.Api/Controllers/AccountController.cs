@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using ESO_LangEditor.API.Filters;
 using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
@@ -34,11 +37,12 @@ namespace ESO_LangEditor.API.Controllers
         private IMapper _mapper;
         private ILogger<AccountController> _logger;
         private string _loggerMessage;
+        private IRepositoryWrapper _repositoryWrapper;
 
         public AccountController(UserManager<User> userManager,
           SignInManager<User> signInManager, ITokenService tokenService,
           RoleManager<Role> roleManager, IMapper mapper, IWebHostEnvironment webHostEnvironment,
-          ILogger<AccountController> logger)
+          ILogger<AccountController> logger, IRepositoryWrapper repositoryWrapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -47,6 +51,7 @@ namespace ESO_LangEditor.API.Controllers
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
+            _repositoryWrapper = repositoryWrapper;
         }
 
         //[HttpPost("register")]
@@ -79,7 +84,7 @@ namespace ESO_LangEditor.API.Controllers
 
         //        await _userManager.AddToRolesAsync(userCreated, roles);
         //        return Ok();
-                
+
         //    }
         //    else
         //    {
@@ -89,183 +94,62 @@ namespace ESO_LangEditor.API.Controllers
 
         //}
 
+        [ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("login", Name = nameof(Login))]
         public async Task<IActionResult> Login(LoginUserDto loginUser)
         {
-            var user = await _userManager.FindByIdAsync(loginUser.UserID.ToString());
+            var user = await _userManager.FindByNameAsync(loginUser.UserName);
 
             if (user == null)
             {
-                _loggerMessage = "Can't find user, From client UserID: " + loginUser.UserID.ToString();
+                _loggerMessage = "Can't find user, From client UserName: " + loginUser.UserName;
                 _logger.LogInformation(_loggerMessage);
-                return Unauthorized();
+                return NotFound(ApiMessageWithCode.UserNotFound);
             }
-
 
             if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
             {
-                _loggerMessage = "User Password not match! UserID: " + loginUser.UserID.ToString();
+                _loggerMessage = "User Password not match! UserName: " + loginUser.UserName;
                 _logger.LogInformation(_loggerMessage);
-                return Unauthorized();
+                return Unauthorized(ApiMessageWithCode.PasswordNotMatch);
             }
 
-            if (user.UserName == null && user.UserNickName == null)
-            {
-                return BadRequest(new MessageWithCode { Code = 123, Message = ApiMessageWithCode.没有找到匹配内容.ToString() });
-
-
-                return BadRequest(CustomRespondCode.InitAccountRequired);
-            }
-
-            List<Claim> userClaims = new List<Claim>();
-            //var userClaims = await _userManager.GetClaimsAsync(user);
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            foreach (var roleItem in userRoles)
-            {
-                userClaims.Add(new Claim(ClaimTypes.Role, roleItem));
-            }
-
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    //new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
-                };
-
-            claims.AddRange(userClaims);
-
-            var authToken = _tokenService.GenerateAccessToken(claims);
-            var refreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshToken = refreshToken;
-            user.RefreshTokenExpireTime = DateTime.Now.AddDays(7);
-            //userContext.SaveChanges();
-
-            await _userManager.UpdateAsync(user);
+            var authToken = await _tokenService.GenerateAccessToken(user);
+            var refreshToken = await _tokenService.GenerateRefreshToken(user);
 
             return Ok(new TokenDto
             {
                 AuthToken = authToken,
                 RefreshToken = refreshToken
             });
-
-            //ModelState.AddModelError(string.Empty, "登录失败，请重试");
-            
-
-
-            //return View(model);
         }
 
-        [HttpPost("FirstTimeLogin", Name = nameof(FirstTimeLogin))]
-        public async Task<IActionResult> FirstTimeLogin(LoginUserDto loginUser)
-        {
-            var user = await _userManager.FindByIdAsync(loginUser.UserID.ToString());
+        //[HttpPost]
+        //public async Task<IActionResult> LogoutAsync()
+        //{
+        //    await _signInManager.SignOutAsync();
 
-            if (user == null)
-            {
-                _loggerMessage = "User first time login null, UserID: " + loginUser.UserID.ToString();
-                _logger.LogInformation(_loggerMessage);
-                return Unauthorized();
-            }
+        //    return Ok();
+        //    //return RedirectToAction("index"，"home");
+        //}
 
-            if (user.PasswordHash == null 
-                && user.RefreshToken == loginUser.RefreshToken)
-            {
-                var userClaims = await _userManager.GetClaimsAsync(user);
-                var userRoles = await _userManager.GetRolesAsync(user);
-
-                foreach (var roleItem in userRoles)
-                {
-                    userClaims.Add(new Claim(ClaimTypes.Role, roleItem));
-                }
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    //new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
-                };
-
-                claims.AddRange(userClaims);
-
-                //var claims = new List<Claim>
-                //{
-                //    new Claim(ClaimTypes.Name, loginUser.UserName),
-                //    new Claim(ClaimTypes., loginUser.UserName),
-                //    //new Claim(ClaimTypes.Role, await _userManager.GetRolesAsync(user))
-                //};
-                var authToken = _tokenService.GenerateAccessToken(claims);
-                var refreshToken = _tokenService.GenerateRefreshToken();
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpireTime = DateTime.Now.AddDays(7);
-                //userContext.SaveChanges();
-
-                await _userManager.UpdateAsync(user);
-
-                return Ok(new TokenDto
-                {
-                    AuthToken = authToken,
-                    RefreshToken = refreshToken
-                });
-            }
-            _loggerMessage = "User first time login failed, UserID: " + loginUser.UserID.ToString();
-            _logger.LogInformation(_loggerMessage);
-            return BadRequest();
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> LogoutAsync()
-        {
-            await _signInManager.SignOutAsync();
-
-            return Ok();
-            //return RedirectToAction("index"，"home");
-        }
-
-        [HttpPost("refresh", Name = nameof(RefreshToken))]
+        [ServiceFilter(typeof(ValidationFilter))]
+        [HttpPost("token", Name = nameof(RefreshToken))]
         public async Task<ActionResult> RefreshToken(TokenDto tokenDto)
         {
-            if (tokenDto is null)
-            {
-                return BadRequest("Invalid client request");
-            }
             string authToken = tokenDto.AuthToken;
             string refreshToken = tokenDto.RefreshToken;
             var principal = _tokenService.GetPrincipalFromExpiredToken(authToken);
             var username = principal.Identity.Name; //this is mapped to the Name claim by default
-
-            //var user = userContext.LoginModels.SingleOrDefault(u => u.UserName == username);
             var user = await _userManager.FindByNameAsync(username);
 
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpireTime <= DateTime.Now)
+            if (user == null && !await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
             {
-                return BadRequest("Invalid client request");
+                return BadRequest(ApiMessageWithCode.TokenInvalid);
             }
 
-            var userClaims = await _userManager.GetClaimsAsync(user);
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            foreach (var roleItem in userRoles)
-            {
-                userClaims.Add(new Claim(ClaimTypes.Role, roleItem));
-            }
-
-            var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    //new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString())
-                };
-
-            claims.AddRange(userClaims);
-
-            var newAuthTokenToken = _tokenService.GenerateAccessToken(claims);
-            var newRefreshToken = _tokenService.GenerateRefreshToken();
-            user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpireTime = DateTime.Now.AddDays(30);
-
-            await _userManager.UpdateAsync(user);
+            var newAuthTokenToken = _tokenService.GenerateAccessToken(user);
+            var newRefreshToken = await _tokenService.GenerateRefreshToken(user);
 
             return new ObjectResult(new
             {
@@ -274,18 +158,19 @@ namespace ESO_LangEditor.API.Controllers
             });
         }
 
-        [Authorize]
-        [HttpPost("revoke", Name = nameof(RevokeToken))]
-        public async Task<ActionResult> RevokeToken()
-        {
-            var username = User.Identity.Name;
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null) return BadRequest();
-            user.RefreshToken = null;
-            await _userManager.UpdateAsync(user);
-            return NoContent();
-        }
+        //[ServiceFilter(typeof(ValidationFilter))]
+        //[HttpPost("newRefreshToken")]
+        //public async Task<IActionResult> RefreshAuthToken(TokenDto tokenDto)
+        //{
 
+
+
+
+
+        //}
+
+
+        [ServiceFilter(typeof(ValidationFilter))]
         [Authorize]
         [HttpPost("infochange")]
         public async Task<IActionResult> UserChangeInfoAsync(UserInfoChangeDto userInfoChangeDto)
@@ -293,17 +178,17 @@ namespace ESO_LangEditor.API.Controllers
             var user = await _userManager.FindByIdAsync(userInfoChangeDto.UserID.ToString());
             var userIdFromToken = _userManager.GetUserId(HttpContext.User);
 
-            if (user == null || userIdFromToken != user.Id.ToString())
+            if (userIdFromToken != user.Id.ToString())
             {
-                return Unauthorized();
+                return Unauthorized(ApiMessageWithCode.TokenInvalid);
             }
 
-            if(user.UserName != userInfoChangeDto.UserName && !string.IsNullOrWhiteSpace(userInfoChangeDto.UserName))
+            if(user.UserName != userInfoChangeDto.UserName)
             {
                 user.UserName = userInfoChangeDto.UserName;
             }
 
-            if (user.UserNickName != userInfoChangeDto.UserNickName && !string.IsNullOrWhiteSpace(userInfoChangeDto.UserNickName))
+            if (user.UserNickName != userInfoChangeDto.UserNickName)
             {
                 user.UserNickName = userInfoChangeDto.UserNickName;
             }
@@ -318,161 +203,144 @@ namespace ESO_LangEditor.API.Controllers
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(userInfoChangeDto.NewPassword))
-            {
-                var PwChangeresult = await _userManager.ChangePasswordAsync(user,
-                    userInfoChangeDto.OldPassword,
-                    userInfoChangeDto.NewPassword);
-
-                if (PwChangeresult.Succeeded)
-                {
-                    return Ok();
-                }
-                foreach (var error in result.Errors)
-                {
-                    return BadRequest(error);
-                }
-            }
-
-            return Ok();
-            
+            return Ok(ApiMessageWithCode.Success);
         }
 
+
+        [ServiceFilter(typeof(ValidationFilter))]
         [Authorize]
-        [HttpPost("infoinit")]
-        public async Task<IActionResult> UserInitInfoAsync(UserInfoChangeDto userInfoChangeDto)
+        [HttpPost("passwordchange")]
+        public async Task<IActionResult> UserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
         {
-            var user = await _userManager.FindByIdAsync(userInfoChangeDto.UserID.ToString());
+            var user = await _userManager.FindByIdAsync(userPasswordChangeDto.UserId.ToString());
             var userIdFromToken = _userManager.GetUserId(HttpContext.User);
 
-            if (user == null || userIdFromToken != user.Id.ToString())
+            if (userIdFromToken != user.Id.ToString())
             {
-                return Unauthorized();
+                return Unauthorized(ApiMessageWithCode.TokenInvalid);
             }
 
-            if (string.IsNullOrEmpty(userInfoChangeDto.NewPassword))
+            var checkCurrentPW = await _userManager.CheckPasswordAsync(user, userPasswordChangeDto.OldPassword);
+
+            if (!checkCurrentPW)
             {
-                return Unauthorized();
+                return BadRequest(ApiMessageWithCode.PasswordNotMatch);
             }
 
-            user.UserNickName = userInfoChangeDto.UserNickName;
-            //user.UserName = userInfoChangeDto.UserName;
+            var result = await _userManager.ChangePasswordAsync(user, userPasswordChangeDto.OldPassword,
+                userPasswordChangeDto.NewPasswordConfirm);
 
-            var setNameResult = await _userManager.SetUserNameAsync(user, userInfoChangeDto.UserName);
-
-            if (!setNameResult.Succeeded)
+            if (result.Succeeded)
             {
-                foreach (var error in setNameResult.Errors)
-                {
-                    Debug.WriteLine("UserName error: " + error);
-                    _loggerMessage = "User Set UserName Failed, UserID: " + userInfoChangeDto.UserID.ToString() 
-                        + ", Error: " + error;
-                    _logger.LogError(_loggerMessage);
-                    return BadRequest(error);
-                }
+                return Ok(ApiMessageWithCode.Success);
             }
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
+            else
             {
-                foreach (var error in result.Errors)
-                {
-                    Debug.WriteLine("Update User error: " + error);
-                    _loggerMessage = "User update info Failed, UserID: " + userInfoChangeDto.UserID.ToString()
-                        + ", Error: " + error;
-                    _logger.LogError(_loggerMessage);
-                    return BadRequest(error);
-                }
+                return BadRequest(ApiMessageWithCode.PasswordChangeFailed);
             }
+        }
 
-            var resultForPw = await _userManager.AddPasswordAsync(user, userInfoChangeDto.NewPassword);
+        [ServiceFilter(typeof(ValidationFilter))]
+        [HttpPost("{userId}/passwordrecovery")]
+        public async Task<IActionResult> UserPasswordRecovery(UserPasswordRecoveryDto userPasswordRecoveryDto)
+        {
+            var user = await _userManager.FindByNameAsync(userPasswordRecoveryDto.UserName);
+            var result = await _userManager.ResetPasswordAsync(user, userPasswordRecoveryDto.RecoveryCode, 
+                userPasswordRecoveryDto.NewPasswordConfirm);
 
-            if (!resultForPw.Succeeded)
+            if (result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    Debug.WriteLine(error);
-                    _loggerMessage = "User update password Failed, UserID: " + userInfoChangeDto.UserID.ToString()
-                        + ", Error: " + error;
-                    _logger.LogError(_loggerMessage);
-                    return BadRequest(error);
-                }
-                //return Ok();
+                return Ok(ApiMessageWithCode.Success);
             }
-
-            var userAfterSetting = await _userManager.FindByIdAsync(userInfoChangeDto.UserID.ToString());
-
-            if (await _userManager.IsInRoleAsync(userAfterSetting, "InitUser"))
+            else
             {
-                await _userManager.RemoveFromRoleAsync(userAfterSetting, "InitUser");
-                await _userManager.AddToRoleAsync(userAfterSetting, "Editor");
+                return Ok(ApiMessageWithCode.PasswordChangeFailed);
             }
-
-            return Ok();
 
         }
 
         [Authorize]
-        [Consumes("multipart/form-data", "image/jpg", "image/png")]
-        [HttpPost("{userGuid}/avatar")]
-        public async Task<IActionResult> UserUploadAvatarAsync(Guid userGuid, IFormFile avatar)
+        [HttpGet("registrationcode")]
+        public async Task<IActionResult> GetRegistrationCode(Guid userId)
         {
-            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
-            var user = await _userManager.FindByIdAsync(userIdFromToken);
-            //var file = avatar;
+            var user = await _userManager.FindByIdAsync(userId.ToString());
 
-            if (user == null && userIdFromToken != userGuid.ToString())
+            if (user == null)
             {
-                return Unauthorized();
+                return BadRequest(ApiMessageWithCode.UserNotFound);
             }
 
-            //string uniqueFileName = null;
-            string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-            string uniqueFileName = user.UserName + "_" + Guid.NewGuid().ToString() + ".jpg";
-            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            string filePathTemp = Path.GetTempFileName();
+            var regCode = _tokenService.GenerateRegistrationCode();
+            var isRegCodeExist = await _repositoryWrapper.RegistrationCodeRepo.IsExistAsync(regCode);
 
-            Debug.WriteLine("uplpad folder: {0}, filename: {1}, filepath: {2}", uploadsFolder, uniqueFileName, filePath);
 
-            using (var stream = System.IO.File.Create(filePathTemp))
+            if (!isRegCodeExist)
             {
-                await avatar.CopyToAsync(stream);
+                _repositoryWrapper.RegistrationCodeRepo.Create(new UserRegistrationCode
+                {
+                    Code = regCode,
+                    RequestTimestamp = DateTime.UtcNow,
+                    UserRequest = user.Id,
+                    UserForRequest = user,
+                });
+
+                if(await _repositoryWrapper.RegistrationCodeRepo.SaveAsync())
+                {
+                    return Ok(regCode);
+                }
+                else
+                {
+                    return BadRequest(ApiMessageWithCode.GenerateRegistrationCodeFailed);
+                }
+
+            }
+            else
+            {
+                return BadRequest(ApiMessageWithCode.GenerateRegistrationCodeFailed);
             }
 
-            if (avatar.Length > 512 * 1024) // 512 * 1024 = 512 KB
+        }
+
+        [ServiceFilter(typeof(ValidationFilter))]
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterUser(RegistrationUserDto registrationUserDto)
+        {
+
+            var isExistUser = await _userManager.FindByNameAsync(registrationUserDto.UserName);
+
+            if (isExistUser != null)
             {
-                System.IO.File.Delete(filePathTemp);
-                return BadRequest();
+                return BadRequest(ApiMessageWithCode.UserNameExisted);
             }
 
-            avatar.CopyTo(new FileStream(filePath, FileMode.Create));
-
-            if(!System.IO.File.Exists(filePath))
+            var result = await _userManager.CreateAsync(new User
             {
-                _loggerMessage = "User uoload avatar Failed, UserID: " + userIdFromToken
-                        + ", FilePath: " + filePath;
-                _logger.LogError(_loggerMessage);
-                return BadRequest();
+                Id = Guid.NewGuid(),
+                UserName = registrationUserDto.UserName,
+                UserNickName = registrationUserDto.UserNickName,
+            });
+
+            if (result.Succeeded)
+            {
+                var userAdded = await _userManager.FindByNameAsync(registrationUserDto.UserName);
+                var addRoleResult = await _userManager.AddToRoleAsync(userAdded, "Editor");
+
+                if (!addRoleResult.Succeeded)
+                {
+                    return Ok(ApiMessageWithCode.UserRoleSetFailed);
+                }
+                return Ok(ApiMessageWithCode.Created);
             }
-
-            user.UserAvatarPath = uniqueFileName;
-            await _userManager.UpdateAsync(user);
-
-            return Ok();
+            else
+            {
+                return BadRequest(ApiMessageWithCode.UserRegistrationFailed);
+            }
         }
 
         [Authorize]
         [HttpGet("users")]
         public async Task<ActionResult<List<UserInClientDto>>> GetUsersAsync()
         {
-            //var user = new User
-            //{
-            //    UserName = registerUser.UserName,
-            //    Email = registerUser.Email,
-
-            //};
-
             var users = await Task.Run(() => _userManager.Users.ToList());
             var userClientDto = _mapper.Map<List<UserInClientDto>>(users);
 
@@ -496,21 +364,6 @@ namespace ESO_LangEditor.API.Controllers
 
             return roles;
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> InitUserByGuidAsync(Guid userGuid)
-        //{
-        //    var user = await _userManager.FindByIdAsync(userGuid.ToString());
-
-        //    if (user.PasswordHash.Length < 8 && user.UserName == "" && user.UserNickName == "")
-        //    {
-        //        return BadRequest("InitUser");
-        //    }
-
-
-        //    return Ok();
-        //    //return RedirectToAction("index"，"home");
-        //}
 
     }
 }

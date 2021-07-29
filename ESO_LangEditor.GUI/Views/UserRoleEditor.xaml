@@ -63,7 +63,7 @@
                             <Button Content="获取注册码" Width="120" Margin="10" Command="{Binding GetRegistrationCodeCommand}" 
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
-                            <TextBox x:Name="RegTextBox" Text="{Binding RegistrationCode, FallbackValue='RegistrationCode'}" Width="150"
+                            <TextBox x:Name="RegTextBox" Text="{Binding RegistrationCode, FallbackValue='RegistrationCode'}" Width="230"
                                      materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
                         </StackPanel>
 
@@ -74,8 +74,8 @@
                             <Button Content="获取重置码" Width="120" Margin="10" Command="{Binding UserPwRecoveryCodeCommand}" 
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
-                            <TextBox x:Name="PhoneTextBox" Text="{Binding RecoveryCode, FallbackValue='RecoveryCode'}" Width="120"
-                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
+                            <TextBox x:Name="PhoneTextBox" Text="{Binding RecoveryCode, FallbackValue='RecoveryCode'}" Width="230"
+                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" Cursor="IBeam" />
 
                         </StackPanel>
                     </Grid>

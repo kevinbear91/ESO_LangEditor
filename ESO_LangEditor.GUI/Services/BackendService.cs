@@ -30,6 +30,15 @@ namespace ESO_LangEditor.GUI.Services
             _ea = ea;
         }
 
+        public async Task ExportLangFile()
+        {
+            var langs = await _langTextRepo.GetAlltLangTextsDictionaryAsync(0);
+
+            ILangFile langFile = new LangFile();
+
+            await langFile.ExportToLang(langs);
+
+        }
 
         public async Task LangtextZhUpdateUpload(LangTextForUpdateZhDto langTextUpdateZhDto)
         {

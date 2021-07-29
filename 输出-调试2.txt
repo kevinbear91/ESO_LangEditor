@@ -1,0 +1,978 @@
+﻿“ESO_LangEditor.GUI.exe”(CoreCLR: DefaultDomain): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.CoreLib.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\ESO_LangEditor.GUI.dll”。已加载符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Prism.Unity.Wpf.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Prism.Wpf.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\WindowsBase.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Xaml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Prism.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\ESO_LangEditor.Core.dll”。已加载符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Process.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\netstandard.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Tasks.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\ESO_LangEditor.EFCore.dll”。已加载符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Tasks.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Debug.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\Microsoft.Win32.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.NonGeneric.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+Total lines: 336
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.InteropServices.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Data.Common.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Linq.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Remote Debugger\x64\Runtime\Microsoft.VisualStudio.Debugger.Runtime.NetCoreApp.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.ThreadPool.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+单步执行: 正在逐过程执行非用户代码“ESO_LangEditor.GUI.App..ctor”
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.TraceSource.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.IO.Packaging.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.Uri.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.RegularExpressions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationCore.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\mscorlib.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\DirectWriteForwarder.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.CompilerServices.VisualC.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Buffers.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\Microsoft.Win32.Registry.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.Specialized.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Thread.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Configuration.ConfigurationManager.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Xml.ReaderWriter.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.Xml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.IO.FileSystem.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.WebClient.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Memory.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.Algorithms.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.Encoding.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+单步执行: 正在逐过程执行非用户代码“ESO_LangEditor.GUI.App.InitializeComponent”
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Resources.ResourceManager.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.TypeConverter.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Windows.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.Concurrent.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ObjectModel.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\MaterialDesignThemes.Wpf.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\MaterialDesignColors.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Requests.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Principal.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.WebHeaderCollection.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework.Aero2.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Console.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Http.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.Json.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Emit.Lightweight.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Emit.ILGeneration.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Numerics.Vectors.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.CompilerServices.Unsafe.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.Encodings.Web.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Tracing.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Security.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.X509Certificates.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Unity.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Unity.Container.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\AutoMapper.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\NLog.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Linq.Expressions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.Annotations.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Drawing.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.StackTrace.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Mail.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.IO.FileSystem.Watcher.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Sockets.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Tools.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Timer.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.FileVersionInfo.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\UIAutomationTypes.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.DiagnosticSource.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Overlapped.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.NameResolution.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Windows.Controls.Ribbon.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework-SystemCore.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework-SystemXml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+System.Windows.Data Error: 40 : BindingExpression path error: 'AvatarPath' property not found on 'object' ''MainWindowViewModel' (HashCode=21618074)'. BindingExpression:Path=AvatarPath; DataItem='MainWindowViewModel' (HashCode=21618074); target element is 'Image' (Name=''); target property is 'Source' (type 'ImageSource')
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework-SystemData.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\UIAutomationProvider.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\zh-Hans\PresentationFramework.resources.dll”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Principal.Windows.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Claims.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Metadata.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.Immutable.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+System.Windows.Data Error: 23 : Cannot convert '<null>' from type '<null>' to type 'System.Windows.Visibility' for 'en-US' culture with default conversions; consider using Converter property of Binding. NotSupportedException:'System.NotSupportedException: EnumConverter cannot convert from (null).
+   at System.ComponentModel.TypeConverter.GetConvertFromException(Object value)
+   at System.ComponentModel.TypeConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
+   at System.ComponentModel.EnumConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
+   at MS.Internal.Data.DefaultValueConverter.ConvertHelper(Object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, Boolean isForward)'
+System.Windows.Data Warning: 6 : 'ObjectSourceConverter' converter failed to convert value '<null>' (type '<null>'); fallback value will be used, if available. BindingExpression:Path=Value; DataItem='DiscreteObjectKeyFrame' (HashCode=3658088); target element is 'DataGridTextColumn' (HashCode=15257500); target property is 'Visibility' (type 'Visibility') NotSupportedException:'System.NotSupportedException: EnumConverter cannot convert from (null).
+   at MS.Internal.Data.DefaultValueConverter.ConvertHelper(Object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, Boolean isForward)
+   at MS.Internal.Data.ObjectSourceConverter.Convert(Object o, Type type, Object parameter, CultureInfo culture)
+   at System.Windows.Data.BindingExpression.ConvertHelper(IValueConverter converter, Object value, Type targetType, Object parameter, CultureInfo culture)'
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\zh-Hans\PresentationCore.resources.dll”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.Encoding.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Numerics.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“c:\program files (x86)\microsoft visual studio\2019\community\common7\ide\commonextensions\microsoft\xamldiagnostics\Core\x64\Microsoft.VisualStudio.DesignTools.WpfTap.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.IO.Pipes.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Json.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.DataContractSerialization.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Xml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Formatters.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\Accessibility.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Linq.Queryable.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Transactions.Local.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“Anonymously Hosted DynamicMethods Assembly”。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Data.Sqlite.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.core.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.batteries_v2.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.provider.dynamic_cdecl.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.nativelibrary.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Windows\system32\WinMetadata\Windows.Storage.winmd”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Windows\system32\WinMetadata\Windows.Foundation.winmd”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.InteropServices.WindowsRuntime.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+线程 0x30ac 已退出，返回值为 0 (0x0)。
+线程 0xa90 已退出，返回值为 0 (0x0)。
+线程 0x5c4 已退出，返回值为 0 (0x0)。
+线程 0x603c 已退出，返回值为 0 (0x0)。
+线程 0x838 已退出，返回值为 0 (0x0)。
+线程 0x3d68 已退出，返回值为 0 (0x0)。
+线程 0x1568 已退出，返回值为 0 (0x0)。
+线程 0x4444 已退出，返回值为 0 (0x0)。
+text: 表情：|c22ADDC喝酒|r, Length: 25
+ID: 3427285, unknown: 3, Index: 3, offset: 13601713, text: 表情：|c22ADDC喝酒|r
+text: EMOTE: |c22ADDCSalute, Length: 21
+ID: 3427285, unknown: 2, Index: 31, offset: 13601734, text: EMOTE: |c22ADDCSalute
+text: 表情, Length: 6
+ID: 3427285, unknown: 3, Index: 7, offset: 13601740, text: 表情
+text: 靠墙站（背）, Length: 18
+ID: 3427285, unknown: 2, Index: 9, offset: 13601758, text: 靠墙站（背）
+text: 潜行走, Length: 9
+ID: 3427285, unknown: 8, Index: 16, offset: 13601767, text: 潜行走
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 8, Index: 17, offset: 13601773, text: 奔跑
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 2, Index: 24, offset: 13601773, text: 奔跑
+text: 表情： |c22ADDCeat3, Length: 22
+ID: 3427285, unknown: 4, Index: 23, offset: 13601795, text: 表情： |c22ADDCeat3
+text: 表情： |c22ADDCidle4, Length: 23
+ID: 3427285, unknown: 4, Index: 24, offset: 13601818, text: 表情： |c22ADDCidle4
+text: 闲置： |c22ADDCidle2, Length: 23
+ID: 3427285, unknown: 4, Index: 26, offset: 13601841, text: 闲置： |c22ADDCidle2
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 6, Index: 19, offset: 13601773, text: 奔跑
+text: 表情： |c22ADDCarmscrossed, Length: 29
+ID: 3427285, unknown: 6, Index: 22, offset: 13601870, text: 表情： |c22ADDCarmscrossed
+text: 表情： |c22ADDCtwiddle, Length: 25
+ID: 3427285, unknown: 7, Index: 24, offset: 13601895, text: 表情： |c22ADDCtwiddle
+text: 步行, Length: 6
+ID: 3427285, unknown: 6, Index: 23, offset: 13601901, text: 步行
+text: 表情： |c22ADDCritual, Length: 24
+ID: 3427285, unknown: 6, Index: 26, offset: 13601925, text: 表情： |c22ADDCritual
+text: 表情： |c22ADDCgreet, Length: 23
+ID: 3427285, unknown: 6, Index: 27, offset: 13601948, text: 表情： |c22ADDCgreet
+text: 表情： |c22ADDCSearch, Length: 24
+ID: 3427285, unknown: 6, Index: 28, offset: 13601972, text: 表情： |c22ADDCSearch
+text: EMOTE: |c22ADDCWave, Length: 19
+ID: 3427285, unknown: 6, Index: 31, offset: 13601991, text: EMOTE: |c22ADDCWave
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 7, Index: 3, offset: 13601773, text: 奔跑
+text: 表情： |c22ADDCIdle3|r, Length: 25
+ID: 3427285, unknown: 6, Index: 18, offset: 13602016, text: 表情： |c22ADDCIdle3|r
+text: JOG, Length: 3
+ID: 3427285, unknown: 7, Index: 14, offset: 13602019, text: JOG
+text: JOG, Length: 3
+ID: 3427285, unknown: 7, Index: 17, offset: 13602019, text: JOG
+text: 表情： |c22ADDC Idle4|r, Length: 26
+ID: 3427285, unknown: 7, Index: 18, offset: 13602045, text: 表情： |c22ADDC Idle4|r
+text: 表情： |c22ADDCbow, Length: 21
+ID: 3427285, unknown: 6, Index: 24, offset: 13602066, text: 表情： |c22ADDCbow
+text: 闲置： |c22ADDCidle4, Length: 23
+ID: 3427285, unknown: 5, Index: 26, offset: 13602089, text: 闲置： |c22ADDCidle4
+text: 表情： |c22ADDCidle4, Length: 23
+ID: 3427285, unknown: 5, Index: 27, offset: 13601818, text: 表情： |c22ADDCidle4
+text: 表情： |c22ADDCPhew, Length: 22
+ID: 3427285, unknown: 5, Index: 28, offset: 13602111, text: 表情： |c22ADDCPhew
+text: 表情： |c22ADDCTilt|r, Length: 24
+ID: 3427285, unknown: 3, Index: 14, offset: 13602135, text: 表情： |c22ADDCTilt|r
+text: 靠墙站（侧）, Length: 18
+ID: 3427285, unknown: 3, Index: 9, offset: 13602153, text: 靠墙站（侧）
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 7, Index: 23, offset: 13601773, text: 奔跑
+text: 步行, Length: 6
+ID: 3427285, unknown: 8, Index: 18, offset: 13601901, text: 步行
+text: 潜行, Length: 6
+ID: 3427285, unknown: 7, Index: 16, offset: 13602159, text: 潜行
+text: 表情： |c22ADDCwave, Length: 22
+ID: 3427285, unknown: 8, Index: 24, offset: 13602181, text: 表情： |c22ADDCwave
+text: 步行, Length: 6
+ID: 3427285, unknown: 6, Index: 17, offset: 13601901, text: 步行
+text: 步行, Length: 6
+ID: 3427285, unknown: 6, Index: 14, offset: 13601901, text: 步行
+text: 表情： |c22ADDCidle3, Length: 23
+ID: 3427285, unknown: 4, Index: 27, offset: 13602204, text: 表情： |c22ADDCidle3
+text: 表情： |c22ADDCTake, Length: 22
+ID: 3427285, unknown: 4, Index: 28, offset: 13602226, text: 表情： |c22ADDCTake
+text: EMOTE: |c22ADDCSearch, Length: 21
+ID: 3427285, unknown: 7, Index: 31, offset: 13602247, text: EMOTE: |c22ADDCSearch
+text: EMOTE: |c22ADDCIdle 2, Length: 21
+ID: 3427285, unknown: 4, Index: 31, offset: 13602268, text: EMOTE: |c22ADDCIdle 2
+text: JOG, Length: 3
+ID: 3427285, unknown: 5, Index: 8, offset: 13602019, text: JOG
+text: 表情： |c22ADDCIdle3|r, Length: 25
+ID: 3427285, unknown: 5, Index: 14, offset: 13602016, text: 表情： |c22ADDCIdle3|r
+text: JOG, Length: 3
+ID: 3427285, unknown: 5, Index: 15, offset: 13602019, text: JOG
+text: JOG, Length: 3
+ID: 3427285, unknown: 5, Index: 16, offset: 13602019, text: JOG
+text: 表情： |c22ADDCYes|r, Length: 23
+ID: 3427285, unknown: 5, Index: 17, offset: 13602291, text: 表情： |c22ADDCYes|r
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 6, Index: 16, offset: 13601773, text: 奔跑
+text: 表情： |c22ADDCIdle2|r, Length: 25
+ID: 3427285, unknown: 5, Index: 18, offset: 13602316, text: 表情： |c22ADDCIdle2|r
+text: 表情： |c22ADDCdoom, Length: 22
+ID: 3427285, unknown: 5, Index: 22, offset: 13602338, text: 表情： |c22ADDCdoom
+text: 闲置： |c22ADDCgreet, Length: 23
+ID: 3427285, unknown: 5, Index: 23, offset: 13602361, text: 闲置： |c22ADDCgreet
+text: 步行, Length: 6
+ID: 3427285, unknown: 5, Index: 3, offset: 13601901, text: 步行
+text: 表情： |c22ADDCsleep, Length: 23
+ID: 3427285, unknown: 5, Index: 24, offset: 13602384, text: 表情： |c22ADDCsleep
+text: 表情： |c22ADDCeat3, Length: 22
+ID: 3427285, unknown: 7, Index: 27, offset: 13601795, text: 表情： |c22ADDCeat3
+text: 表情: |c22ADDC粗鲁|r, Length: 24
+ID: 3427285, unknown: 3, Index: 8, offset: 13602408, text: 表情: |c22ADDC粗鲁|r
+text: JOG, Length: 3
+ID: 3427285, unknown: 5, Index: 19, offset: 13602019, text: JOG
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 6, Index: 8, offset: 13601773, text: 奔跑
+text: EMOTE: |c22ADDCPoint, Length: 20
+ID: 3427285, unknown: 5, Index: 31, offset: 13602428, text: EMOTE: |c22ADDCPoint
+text: 步行, Length: 6
+ID: 3427285, unknown: 6, Index: 3, offset: 13601901, text: 步行
+text: 爆破, Length: 6
+ID: 3427285, unknown: 2, Index: 7, offset: 13602434, text: 爆破
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 2, Index: 28, offset: 13601773, text: 奔跑
+text: 表情: |c22ADDC欢迎|r, Length: 24
+ID: 3427285, unknown: 2, Index: 8, offset: 13602458, text: 表情: |c22ADDC欢迎|r
+text: 表情： |c22ADDCNo|r, Length: 22
+ID: 3427285, unknown: 2, Index: 12, offset: 13602480, text: 表情： |c22ADDCNo|r
+text: EMOTE: |c22ADDCCome Here, Length: 24
+ID: 3427285, unknown: 8, Index: 31, offset: 13602504, text: EMOTE: |c22ADDCCome Here
+text: 冲刺, Length: 6
+ID: 3427285, unknown: 8, Index: 23, offset: 13602510, text: 冲刺
+text: 表情： |c22ADDCIdle3|r, Length: 25
+ID: 3427285, unknown: 3, Index: 19, offset: 13602016, text: 表情： |c22ADDCIdle3|r
+text: 表情： |c22ADDCArmscrossed|r, Length: 31
+ID: 3427285, unknown: 3, Index: 21, offset: 13602541, text: 表情： |c22ADDCArmscrossed|r
+text: 表情： |c22ADDCritual, Length: 24
+ID: 3427285, unknown: 3, Index: 22, offset: 13601925, text: 表情： |c22ADDCritual
+text: 闲置： |c22ADDCidle4, Length: 23
+ID: 3427285, unknown: 3, Index: 23, offset: 13602089, text: 闲置： |c22ADDCidle4
+text: 表情： |c22ADDCidle3, Length: 23
+ID: 3427285, unknown: 3, Index: 24, offset: 13602204, text: 表情： |c22ADDCidle3
+text: 闲置： |c22ADDCread, Length: 22
+ID: 3427285, unknown: 3, Index: 26, offset: 13602563, text: 闲置： |c22ADDCread
+text: 表情： |c22ADDCidle2, Length: 23
+ID: 3427285, unknown: 3, Index: 27, offset: 13602586, text: 表情： |c22ADDCidle2
+text: 表情： |c22ADDCCrouch, Length: 24
+ID: 3427285, unknown: 3, Index: 28, offset: 13602610, text: 表情： |c22ADDCCrouch
+text: EMOTE: |c22ADDCSalute 2, Length: 23
+ID: 3427285, unknown: 3, Index: 31, offset: 13602633, text: EMOTE: |c22ADDCSalute 2
+text: 表情: |c22ADDC醉了|r, Length: 24
+ID: 3427285, unknown: 4, Index: 3, offset: 13602657, text: 表情: |c22ADDC醉了|r
+text: 步行, Length: 6
+ID: 3427285, unknown: 4, Index: 8, offset: 13601901, text: 步行
+text: 检查武器……, Length: 18
+ID: 3427285, unknown: 4, Index: 9, offset: 13602675, text: 检查武器……
+text: 表情: |c22ADDC搓手|r, Length: 24
+ID: 3427285, unknown: 3, Index: 16, offset: 13602699, text: 表情: |c22ADDC搓手|r
+text: 表情： |c22ADDCHandsonhips|r, Length: 31
+ID: 3427285, unknown: 3, Index: 15, offset: 13602730, text: 表情： |c22ADDCHandsonhips|r
+text: 表情： |c22ADDCStretch|r, Length: 27
+ID: 3427285, unknown: 2, Index: 13, offset: 13602757, text: 表情： |c22ADDCStretch|r
+text: 表情: |c22ADDC打扮|r, Length: 24
+ID: 3427285, unknown: 2, Index: 14, offset: 13602781, text: 表情: |c22ADDC打扮|r
+text: 表情： |c22ADDCKneel|r, Length: 25
+ID: 3427285, unknown: 4, Index: 17, offset: 13602806, text: 表情： |c22ADDCKneel|r
+text: 表情: |c22ADDC擦肩|r, Length: 24
+ID: 3427285, unknown: 2, Index: 15, offset: 13602830, text: 表情: |c22ADDC擦肩|r
+text: 表情： |c22ADDCAnnoyed|r, Length: 27
+ID: 3427285, unknown: 2, Index: 17, offset: 13602857, text: 表情： |c22ADDCAnnoyed|r
+text: 表情： |c22ADDCSpit|r, Length: 24
+ID: 3427285, unknown: 2, Index: 18, offset: 13602881, text: 表情： |c22ADDCSpit|r
+text: 表情： |c22ADDCIdle2|r, Length: 25
+ID: 3427285, unknown: 2, Index: 19, offset: 13602316, text: 表情： |c22ADDCIdle2|r
+text: 表情： |c22ADDCBeckon|r, Length: 26
+ID: 3427285, unknown: 2, Index: 21, offset: 13602907, text: 表情： |c22ADDCBeckon|r
+text: 闲置： |c22ADDCidle4, Length: 23
+ID: 3427285, unknown: 2, Index: 22, offset: 13602089, text: 闲置： |c22ADDCidle4
+text: 表情： |c22ADDCjuggleflame, Length: 29
+ID: 3427285, unknown: 4, Index: 22, offset: 13602936, text: 表情： |c22ADDCjuggleflame
+text: 闲置： |c22ADDCidle3, Length: 23
+ID: 3427285, unknown: 2, Index: 23, offset: 13602959, text: 闲置： |c22ADDCidle3
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 2, Index: 26, offset: 13601773, text: 奔跑
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 2, Index: 27, offset: 13601773, text: 奔跑
+text: 表情： |c22ADDCIdle3|r, Length: 25
+ID: 3427285, unknown: 2, Index: 16, offset: 13602016, text: 表情： |c22ADDCIdle3|r
+text: 步行, Length: 6
+ID: 3427285, unknown: 4, Index: 16, offset: 13601901, text: 步行
+text: 步行, Length: 6
+ID: 3427285, unknown: 4, Index: 15, offset: 13601901, text: 步行
+text: 表情： |c22ADDCIdle2|r, Length: 25
+ID: 3427285, unknown: 4, Index: 14, offset: 13602316, text: 表情： |c22ADDCIdle2|r
+text: 表情： |c22ADDCTilt|r, Length: 24
+ID: 3427285, unknown: 3, Index: 17, offset: 13602135, text: 表情： |c22ADDCTilt|r
+text: 表情： |c22ADDCLeanside|r, Length: 28
+ID: 3427285, unknown: 3, Index: 18, offset: 13602987, text: 表情： |c22ADDCLeanside|r
+text: 步行, Length: 6
+ID: 3427285, unknown: 4, Index: 21, offset: 13601901, text: 步行
+text: 步行, Length: 6
+ID: 3427285, unknown: 4, Index: 19, offset: 13601901, text: 步行
+text: 表情： |c22ADDCBow|r, Length: 23
+ID: 3427285, unknown: 4, Index: 18, offset: 13603010, text: 表情： |c22ADDCBow|r
+text: 潜行跑, Length: 9
+ID: 3427285, unknown: 9, Index: 16, offset: 13603019, text: 潜行跑
+text: 奔跑, Length: 6
+ID: 3427285, unknown: 9, Index: 18, offset: 13601773, text: 奔跑
+text: IDLE, Length: 4
+ID: 3427285, unknown: 0, Index: 33, offset: 13603023, text: IDLE
+text: WALK, Length: 4
+ID: 3427285, unknown: 1, Index: 33, offset: 13603027, text: WALK
+text: EMOTE: |c22ADDCEat, Length: 18
+ID: 3427285, unknown: 2, Index: 33, offset: 13603045, text: EMOTE: |c22ADDCEat
+text: EMOTE: |c22ADDCShout, Length: 20
+ID: 3427285, unknown: 3, Index: 33, offset: 13603065, text: EMOTE: |c22ADDCShout
+text: EMOTE: |c22ADDCIdle 2, Length: 21
+ID: 3427285, unknown: 4, Index: 33, offset: 13602268, text: EMOTE: |c22ADDCIdle 2
+text: EMOTE: |c22ADDCIdle 3, Length: 21
+ID: 3427285, unknown: 5, Index: 33, offset: 13603086, text: EMOTE: |c22ADDCIdle 3
+text: EMOTE: |c22ADDCIdle 3, Length: 21
+ID: 3427285, unknown: 9, Index: 31, offset: 13603086, text: EMOTE: |c22ADDCIdle 3
+text: 步行, Length: 6
+ID: 3427285, unknown: 1, Index: 26, offset: 13601901, text: 步行
+text: 步行, Length: 6
+ID: 3427285, unknown: 1, Index: 27, offset: 13601901, text: 步行
+text: 步行, Length: 6
+ID: 3427285, unknown: 1, Index: 28, offset: 13601901, text: 步行
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 27, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 16, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 26, offset: 13603092, text: 闲置
+text: 表情: |c22ADDC欢呼|r, Length: 24
+ID: 3427285, unknown: 1, Index: 18, offset: 13603116, text: 表情: |c22ADDC欢呼|r
+text: 表情： |c22ADDCIdle2|r, Length: 25
+ID: 3427285, unknown: 1, Index: 21, offset: 13602316, text: 表情： |c22ADDCIdle2|r
+text: 闲置： |c22ADDCidle2, Length: 23
+ID: 3427285, unknown: 1, Index: 22, offset: 13601841, text: 闲置： |c22ADDCidle2
+text: 闲置： |c22ADDCidle2, Length: 23
+ID: 3427285, unknown: 1, Index: 23, offset: 13601841, text: 闲置： |c22ADDCidle2
+text: 表情： |c22ADDCIdle2|r, Length: 25
+ID: 3427285, unknown: 1, Index: 13, offset: 13602316, text: 表情： |c22ADDCIdle2|r
+text: 步行, Length: 6
+ID: 3427285, unknown: 1, Index: 24, offset: 13601901, text: 步行
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 21, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 19, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 18, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 17, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 15, offset: 13603092, text: 闲置
+text: 闲置：, Length: 9
+ID: 3427285, unknown: 0, Index: 24, offset: 13603125, text: 闲置：
+text: 闲置： |c22ADDC, Length: 18
+ID: 3427285, unknown: 0, Index: 23, offset: 13603143, text: 闲置： |c22ADDC
+text: 闲置： |c22ADDCread, Length: 22
+ID: 3427285, unknown: 0, Index: 22, offset: 13602563, text: 闲置： |c22ADDCread
+text: WALK, Length: 4
+ID: 3427285, unknown: 1, Index: 31, offset: 13603027, text: WALK
+text: 表情: |c22ADDC欢呼|r, Length: 24
+ID: 3427285, unknown: 2, Index: 3, offset: 13603116, text: 表情: |c22ADDC欢呼|r
+text: 表情： |c22ADDCApprove|r, Length: 27
+ID: 3427285, unknown: 1, Index: 19, offset: 13603170, text: 表情： |c22ADDCApprove|r
+text: 进入传送门, Length: 15
+ID: 3427285, unknown: 1, Index: 7, offset: 13603185, text: 进入传送门
+text: 表情: |c22ADDC大笑|r, Length: 24
+ID: 3427285, unknown: 1, Index: 3, offset: 13603209, text: 表情: |c22ADDC大笑|r
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 3, offset: 13603092, text: 闲置
+text: 饮品, Length: 6
+ID: 3427285, unknown: 0, Index: 7, offset: 13603215, text: 饮品
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 8, offset: 13603092, text: 闲置
+text: 吃苹果, Length: 9
+ID: 3427285, unknown: 0, Index: 9, offset: 13603224, text: 吃苹果
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 10, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 12, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 13, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 14, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 31, offset: 13603092, text: 闲置
+text: 闲置, Length: 6
+ID: 3427285, unknown: 0, Index: 28, offset: 13603092, text: 闲置
+text: 表情： |c22ADDCThreaten|r, Length: 28
+ID: 3427285, unknown: 1, Index: 17, offset: 13603252, text: 表情： |c22ADDCThreaten|r
+text: 表情: |c22ADDC搓手|r, Length: 24
+ID: 3427285, unknown: 1, Index: 15, offset: 13602699, text: 表情: |c22ADDC搓手|r
+text: 表情： |c22ADDC喝酒|r, Length: 26
+ID: 3427285, unknown: 1, Index: 8, offset: 13603278, text: 表情： |c22ADDC喝酒|r
+text: 祝福, Length: 6
+ID: 3427285, unknown: 1, Index: 9, offset: 13603284, text: 祝福
+text: 表情： |c22ADDCArmscrossed|r, Length: 31
+ID: 3427285, unknown: 1, Index: 10, offset: 13602541, text: 表情： |c22ADDCArmscrossed|r
+text: 表情： |c22ADDCSigh|r, Length: 24
+ID: 3427285, unknown: 1, Index: 12, offset: 13603308, text: 表情： |c22ADDCSigh|r
+text: 表情： |c22ADDCFlirt|r, Length: 25
+ID: 3427285, unknown: 1, Index: 14, offset: 13603333, text: 表情： |c22ADDCFlirt|r
+text: 表情： |c22ADDCIdle2|r, Length: 25
+ID: 3427285, unknown: 1, Index: 16, offset: 13602316, text: 表情： |c22ADDCIdle2|r
+text: WALK, Length: 4
+ID: 3427285, unknown: 1, Index: 35, offset: 13603027, text: WALK
+text: JOG, Length: 3
+ID: 3427285, unknown: 2, Index: 35, offset: 13602019, text: JOG
+text: RUN, Length: 3
+ID: 3427285, unknown: 3, Index: 35, offset: 13603336, text: RUN
+text: 搜索, Length: 6
+ID: 3427285, unknown: 4, Index: 35, offset: 13603342, text: 搜索
+text: Cheer, Length: 5
+ID: 3427285, unknown: 5, Index: 35, offset: 13603347, text: Cheer
+text: Taunt, Length: 5
+ID: 3427285, unknown: 6, Index: 35, offset: 13603352, text: Taunt
+text: IDLE, Length: 4
+ID: 3427285, unknown: 0, Index: 35, offset: 13603023, text: IDLE
+text: RUN, Length: 3
+ID: 3427285, unknown: 7, Index: 19, offset: 13603336, text: RUN
+text: IDLE, Length: 4
+ID: 3427285, unknown: 0, Index: 34, offset: 13603023, text: IDLE
+text: EMOTE: |c22ADDCPoint Right, Length: 26
+ID: 3427285, unknown: 13, Index: 34, offset: 13603378, text: EMOTE: |c22ADDCPoint Right
+text: EMOTE: |c22ADDCBeckon, Length: 21
+ID: 3427285, unknown: 12, Index: 34, offset: 13603399, text: EMOTE: |c22ADDCBeckon
+text: EMOTE: |c22ADDCBow, Length: 18
+ID: 3427285, unknown: 11, Index: 34, offset: 13603417, text: EMOTE: |c22ADDCBow
+text: EMOTE: |c22ADDCIdle 5, Length: 21
+ID: 3427285, unknown: 10, Index: 34, offset: 13603438, text: EMOTE: |c22ADDCIdle 5
+text: EMOTE: |c22ADDCIdle4, Length: 20
+ID: 3427285, unknown: 9, Index: 34, offset: 13603458, text: EMOTE: |c22ADDCIdle4
+text: EMOTE: |c22ADDCDrum, Length: 19
+ID: 3427285, unknown: 8, Index: 34, offset: 13603477, text: EMOTE: |c22ADDCDrum
+text: EMOTE: |c22ADDCTap, Length: 18
+ID: 3427285, unknown: 7, Index: 34, offset: 13603495, text: EMOTE: |c22ADDCTap
+text: EMOTE: |c22ADDCIdle 3, Length: 21
+ID: 3427285, unknown: 6, Index: 34, offset: 13603086, text: EMOTE: |c22ADDCIdle 3
+text: EMOTE: |c22ADDCFlute, Length: 20
+ID: 3427285, unknown: 5, Index: 34, offset: 13603515, text: EMOTE: |c22ADDCFlute
+text: EMOTE: |c22ADDCTwiddle, Length: 22
+ID: 3427285, unknown: 4, Index: 34, offset: 13603537, text: EMOTE: |c22ADDCTwiddle
+text: EMOTE: |c22ADDCIdle 2, Length: 21
+ID: 3427285, unknown: 3, Index: 34, offset: 13602268, text: EMOTE: |c22ADDCIdle 2
+text: EMOTE: |c22ADDCLute, Length: 19
+ID: 3427285, unknown: 2, Index: 34, offset: 13603556, text: EMOTE: |c22ADDCLute
+text: WALK, Length: 4
+ID: 3427285, unknown: 1, Index: 34, offset: 13603027, text: WALK
+text: 我们当时在岭荫镇。伊格诺伯特和山迪尔正在带领着一些商人前往安全地点。我们计划在远处的高塔碰头，但是亡灵…太多了。, Length: 168
+ID: 3952276, unknown: 0, Index: 5827, offset: 13603724, text: 我们当时在岭荫镇。伊格诺伯特和山迪尔正在带领着一些商人前往安全地点。我们计划在远处的高塔碰头，但是亡灵…太多了。
+text: 谢谢你。我还有最后一个请求。你能帮我们安葬家人吗？想想你为我们所做的一切，梅拉和我都觉得这样会更合适。, Length: 153
+ID: 3952276, unknown: 0, Index: 5851, offset: 13603877, text: 谢谢你。我还有最后一个请求。你能帮我们安葬家人吗？想想你为我们所做的一切，梅拉和我都觉得这样会更合适。
+text: 一把制作精良的弓静静地躺在一名倒下的兽人旁边。看起来在战斗中这把弓也受到了损伤，但对有的人来说依旧很有价值。, Length: 162
+ID: 3952276, unknown: 0, Index: 5852, offset: 13604039, text: 一把制作精良的弓静静地躺在一名倒下的兽人旁边。看起来在战斗中这把弓也受到了损伤，但对有的人来说依旧很有价值。
+text: 我为国王工作。我一直在注意着<<1>>有没有什么杰出人物出现，以便国王需要时引荐。他现在正需要，而你就是那个杰出人物。\n\n往他在<<2>>里的王宫去吧。只要说“藤蔓在黄昏时最茂盛”，他就会知道你是皇室的朋友。, Length: 290
+ID: 3952276, unknown: 0, Index: 5853, offset: 13604329, text: 我为国王工作。我一直在注意着<<1>>有没有什么杰出人物出现，以便国王需要时引荐。他现在正需要，而你就是那个杰出人物。\n\n往他在<<2>>里的王宫去吧。只要说“藤蔓在黄昏时最茂盛”，他就会知道你是皇室的朋友。
+text: Rumor is, Ethruin's been looking to raise an army of giant skeletons from under an even more giant tree called the Barrowbough. Head to the Barrowbough in the Bone Orchard of Grahtwood and break up their parley by killing the New Moon ambassador., Length: 246
+ID: 3952276, unknown: 1, Index: 7860, offset: 13604575, text: Rumor is, Ethruin's been looking to raise an army of giant skeletons from under an even more giant tree called the Barrowbough. Head to the Barrowbough in the Bone Orchard of Grahtwood and break up their parley by killing the New Moon ambassador.
+text: My client insists that an old battlemage placed a hex on them. Now, before you object, Guybert knows a little something about curses! Handling these weapons is quite safe. Probably.\n\nPull a few from their resting places and we'll share the profits!, Length: 250
+ID: 3952276, unknown: 1, Index: 7863, offset: 13604825, text: My client insists that an old battlemage placed a hex on them. Now, before you object, Guybert knows a little something about curses! Handling these weapons is quite safe. Probably.\n\nPull a few from their resting places and we'll share the profits!
+text: Well, there's a bit more to it. \n\nYou'll also need to gather the metal pellets used to help with the grinding process.\nWe can only find the darn things in the Fundament. Belan would be happy to talk your ear off about if you want to know more., Length: 246
+ID: 3952276, unknown: 1, Index: 7337, offset: 13605071, text: Well, there's a bit more to it. \n\nYou'll also need to gather the metal pellets used to help with the grinding process.\nWe can only find the darn things in the Fundament. Belan would be happy to talk your ear off about if you want to know more.
+text: 他们偷了很多有价值的遗物，我们得找回他们。\n\n我们还希望严密留意他们的动向。我怀疑大部分睿智者已经给成员们做好分工和计划了。用你的手段收集这些计划书吧。, Length: 226
+ID: 3952276, unknown: 1, Index: 7490, offset: 13605297, text: 他们偷了很多有价值的遗物，我们得找回他们。\n\n我们还希望严密留意他们的动向。我怀疑大部分睿智者已经给成员们做好分工和计划了。用你的手段收集这些计划书吧。
+text: 迫不及待啦？那就好，我们需要的正是满腔的热忱。\n\n你的第一课就要开始了。教团侦测到一些……泰姆瑞尔的异常。其实是时空结构出现一些小漏洞，所以我希望你能帮忙修补一下。, Length: 244
+ID: 3952276, unknown: 1, Index: 7508, offset: 13605541, text: 迫不及待啦？那就好，我们需要的正是满腔的热忱。\n\n你的第一课就要开始了。教团侦测到一些……泰姆瑞尔的异常。其实是时空结构出现一些小漏洞，所以我希望你能帮忙修补一下。
+text: 调色剂！颜料！记住，要纯天然的。我需要你收集这些物料来完成这幅惟妙惟肖的大师杰作。\n\n带上这张清单，噢记得还有这茶叶。你得拿到第一件物品。去吧去吧。, Length: 220
+ID: 3952276, unknown: 1, Index: 7451, offset: 13605761, text: 调色剂！颜料！记住，要纯天然的。我需要你收集这些物料来完成这幅惟妙惟肖的大师杰作。\n\n带上这张清单，噢记得还有这茶叶。你得拿到第一件物品。去吧去吧。
+text: 那风暴不是自然形成的，是海精灵让它成形的。如果我能近距离搞定那些海洋法师，我能打破他们对风暴的控制，阻止灾难的来临 ...... 但是，独木难支啊。, Length: 206
+ID: 3952276, unknown: 1, Index: 7454, offset: 13605967, text: 那风暴不是自然形成的，是海精灵让它成形的。如果我能近距离搞定那些海洋法师，我能打破他们对风暴的控制，阻止灾难的来临 ...... 但是，独木难支啊。
+text: 到主廊见我吧。我们可以和秘会的其他成员商量，利用占卜池继续对珍珠的探知。\n\n尽管情况让人忧虑，但不得不承认，我还是很高兴能再次回到这场行动。, Length: 208
+ID: 3952276, unknown: 1, Index: 7457, offset: 13606175, text: 到主廊见我吧。我们可以和秘会的其他成员商量，利用占卜池继续对珍珠的探知。\n\n尽管情况让人忧虑，但不得不承认，我还是很高兴能再次回到这场行动。
+text: 你需要充当调解员的位置，成为一双懂得聆听的眼睛。一种催化剂！调解员作为一个支点，缓解着各种针锋相对。他们也会做类似收集证据，采访嫌犯的事情。\n\n你觉得怎样？, Length: 232
+ID: 3952276, unknown: 1, Index: 7460, offset: 13606407, text: 你需要充当调解员的位置，成为一双懂得聆听的眼睛。一种催化剂！调解员作为一个支点，缓解着各种针锋相对。他们也会做类似收集证据，采访嫌犯的事情。\n\n你觉得怎样？
+text: 是的是的！而你就是来帮我们找回它们的，希望到时候遗物没有受损。真是的，为什么这些东西会造成各种麻烦呢。\n\n不过，首先，先读一下赛伊克抄本吧。那本书可以帮你了解最新的情况。, Length: 253
+ID: 3952276, unknown: 1, Index: 7461, offset: 13606660, text: 是的是的！而你就是来帮我们找回它们的，希望到时候遗物没有受损。真是的，为什么这些东西会造成各种麻烦呢。\n\n不过，首先，先读一下赛伊克抄本吧。那本书可以帮你了解最新的情况。
+text: Well, she's certainly missing, and I'm not risking my scaly hide going in to find her. \n\nHmm. You look scrappy enough. If you can grab those tokens and what's left of my apprentice, I'll make it worth your while. What do you say?, Length: 231
+ID: 3952276, unknown: 1, Index: 7463, offset: 13606891, text: Well, she's certainly missing, and I'm not risking my scaly hide going in to find her. \n\nHmm. You look scrappy enough. If you can grab those tokens and what's left of my apprentice, I'll make it worth your while. What do you say?
+text: 一些在小时候就被他们家人抛弃的高精灵。这在我们社会是很残酷的。\n\n夏暮岛也许是作田园画的最佳地点，但阴暗的东西往往藏在光彩背后。我希望直面我们的禁忌。你愿意帮忙吗？, Length: 244
+ID: 3952276, unknown: 1, Index: 7465, offset: 13607135, text: 一些在小时候就被他们家人抛弃的高精灵。这在我们社会是很残酷的。\n\n夏暮岛也许是作田园画的最佳地点，但阴暗的东西往往藏在光彩背后。我希望直面我们的禁忌。你愿意帮忙吗？
+text: In truth, I only wish to attend to check on Tableau. Her invitation came with a note, outlining concerns for her safety. \n\nCould you perhaps … go in and check on her? Make sure things run smoothly? It would mean a good deal to me if you would., Length: 247
+ID: 3952276, unknown: 1, Index: 7466, offset: 13607382, text: In truth, I only wish to attend to check on Tableau. Her invitation came with a note, outlining concerns for her safety. \n\nCould you perhaps … go in and check on her? Make sure things run smoothly? It would mean a good deal to me if you would.
+text: 我担心他已经加入了，这也是我找你寻求帮助的原因。我需要你潜入戏剧团。我的兄弟拉莱德尔会认出我，但他并不认识你。\n\n你必须帮我找到他，然后我来说服他离开那里！, Length: 232
+ID: 3952276, unknown: 1, Index: 7434, offset: 13607614, text: 我担心他已经加入了，这也是我找你寻求帮助的原因。我需要你潜入戏剧团。我的兄弟拉莱德尔会认出我，但他并不认识你。\n\n你必须帮我找到他，然后我来说服他离开那里！
+text: 我需要一些能提升我地产声誉的人。一个受人敬仰的，英雄般的人物。我对你有种感觉。你已经做了些伟大的事情，而且很可能将来会完成更伟大的事业。\n\n我们似乎能在这点上互惠互利。, Length: 250
+ID: 3952276, unknown: 1, Index: 7450, offset: 13607864, text: 我需要一些能提升我地产声誉的人。一个受人敬仰的，英雄般的人物。我对你有种感觉。你已经做了些伟大的事情，而且很可能将来会完成更伟大的事业。\n\n我们似乎能在这点上互惠互利。
+text: 我猜想这是一种古代语言，也许比泰姆瑞尔语还来得早。感觉上，这段记忆与梦之洞穴里挡住“透明律法”之心的屏障是有所联系的。\n\n朋友，我们得搞清这些古代词语到底是什么意思。, Length: 247
+ID: 3952276, unknown: 1, Index: 7433, offset: 13608111, text: 我猜想这是一种古代语言，也许比泰姆瑞尔语还来得早。感觉上，这段记忆与梦之洞穴里挡住“透明律法”之心的屏障是有所联系的。\n\n朋友，我们得搞清这些古代词语到底是什么意思。
+text: 他可是和平主义者，玛拉在上！\n\n智萃学者的所谓调查就是个笑话。他们不过给埃米尔做个笔录，然后就下判决。当然啦，当地这些公会会长就是只会按着上头的要求办事，一群懦夫。求你了，我需要你帮忙, Length: 274
+ID: 3952276, unknown: 1, Index: 7430, offset: 13608385, text: 他可是和平主义者，玛拉在上！\n\n智萃学者的所谓调查就是个笑话。他们不过给埃米尔做个笔录，然后就下判决。当然啦，当地这些公会会长就是只会按着上头的要求办事，一群懦夫。求你了，我需要你帮忙
+text: Very perceptive. I knew you were the right person for the job!\n\nTalk to <<1>> if you want more details. Otherwise, head into the Shadow Cleft, locate the missing mage and the perception tabulator we provided, and return to claim your reward., Length: 243
+ID: 3952276, unknown: 1, Index: 7392, offset: 13608628, text: Very perceptive. I knew you were the right person for the job!\n\nTalk to <<1>> if you want more details. Otherwise, head into the Shadow Cleft, locate the missing mage and the perception tabulator we provided, and return to claim your reward.
+text: Take this perception tabulator, return to the Shadow Cleft, and perform Favar's analysis. And while you're in there, try to find our poor initiate.\n\nIf you require additional details, talk to <<1>>. You can find him in the Grand Depository., Length: 242
+ID: 3952276, unknown: 1, Index: 7393, offset: 13608870, text: Take this perception tabulator, return to the Shadow Cleft, and perform Favar's analysis. And while you're in there, try to find our poor initiate.\n\nIf you require additional details, talk to <<1>>. You can find him in the Grand Depository.
+text: You'll not only need to fend off the factotums, but collect saturated oil from them as well. We believe this oil to be crucial to the ventilation fan's maintenance.\n\nFor more information talk to <<1>>. She's our current expert on the subject., Length: 244
+ID: 3952276, unknown: 1, Index: 7394, offset: 13609114, text: You'll not only need to fend off the factotums, but collect saturated oil from them as well. We believe this oil to be crucial to the ventilation fan's maintenance.\n\nFor more information talk to <<1>>. She's our current expert on the subject.
+text: Coral crab eggs, from the reef between Corgrad and Lillandril. Handle them carefully, and beware the Queen of the Reef. That giant coral crab has killed many an ambitious gourmand, but if she has been perverted by unholy powers she must be purged., Length: 247
+ID: 3952276, unknown: 1, Index: 7395, offset: 13609361, text: Coral crab eggs, from the reef between Corgrad and Lillandril. Handle them carefully, and beware the Queen of the Reef. That giant coral crab has killed many an ambitious gourmand, but if she has been perverted by unholy powers she must be purged.
+text: Yes. Ancient indriks like Caanerin enjoy a deep connection to Y'ffre—the forest god. They are very resilient—much like weeds. Luckily, the Sapiarchs erected warding stones to keep her from returning. \n\nKill Caanerin and activate those stones., Length: 248
+ID: 3952276, unknown: 1, Index: 7396, offset: 13609609, text: Yes. Ancient indriks like Caanerin enjoy a deep connection to Y'ffre—the forest god. They are very resilient—much like weeds. Luckily, the Sapiarchs erected warding stones to keep her from returning. \n\nKill Caanerin and activate those stones.
+text: I need you to destroy the tainted coral that serves as the primary ingredient for B'Korgen's alchemical concoctions. Then eliminate the Sload alchemist before he can unleash more terrors upon the island.\n\nI suggest you take companions on this one., Length: 249
+ID: 3952276, unknown: 1, Index: 7397, offset: 13609858, text: I need you to destroy the tainted coral that serves as the primary ingredient for B'Korgen's alchemical concoctions. Then eliminate the Sload alchemist before he can unleash more terrors upon the island.\n\nI suggest you take companions on this one.
+text: Yes, indeed! The Sea Elves regularly goad their nasty pets into our water ways. If left unchecked they'll devastate the local fauna and move on to do it all again.\n\nWe need to root out these nests before the vipers spread to the mainland coast., Length: 246
+ID: 3952276, unknown: 1, Index: 7491, offset: 13610104, text: Yes, indeed! The Sea Elves regularly goad their nasty pets into our water ways. If left unchecked they'll devastate the local fauna and move on to do it all again.\n\nWe need to root out these nests before the vipers spread to the mainland coast.
+text: We've also been requested to collect the beasts' feathers. Some Wood Elf merchants have offered us quite a bit of gold for them. It seems the Bosmer prize such things.\n\nIt should be easy enough to find some in the surrounding nests., Length: 234
+ID: 3952276, unknown: 1, Index: 7398, offset: 13610338, text: We've also been requested to collect the beasts' feathers. Some Wood Elf merchants have offered us quite a bit of gold for them. It seems the Bosmer prize such things.\n\nIt should be easy enough to find some in the surrounding nests.
+text: Trapped on the other side of a broken bridge, I'm afraid. \n\nSay, you look capable. Would you mind escorting me through the <<1>> in order to reach my companions? It's vitally important we continue our expedition., Length: 214
+ID: 3952276, unknown: 1, Index: 7372, offset: 13610552, text: Trapped on the other side of a broken bridge, I'm afraid. \n\nSay, you look capable. Would you mind escorting me through the <<1>> in order to reach my companions? It's vitally important we continue our expedition.
+text: 当然。但如果您拒绝了，他便会另寻参预，您就没有机会了——然后背负着胆小怕事的帽子苟且一生。我猜你肯定不会选择后者吧？\n\n能为迪维斯·菲尔大师工作可是莫大的尊荣啊，先生，且三思。, Length: 261
+ID: 3952276, unknown: 1, Index: 7350, offset: 13610813, text: 当然。但如果您拒绝了，他便会另寻参预，您就没有机会了——然后背负着胆小怕事的帽子苟且一生。我猜你肯定不会选择后者吧？\n\n能为迪维斯·菲尔大师工作可是莫大的尊荣啊，先生，且三思。
+text: 嗯，我曾经和一个亚龙人法师交战过。他能够穿越暗影—在极短的时间内移动很长的距离。这也许就是答案，阴影传送门之类的？\n\n我们需要知道更多信息。, Length: 208
+ID: 3952276, unknown: 1, Index: 7379, offset: 13611021, text: 嗯，我曾经和一个亚龙人法师交战过。他能够穿越暗影—在极短的时间内移动很长的距离。这也许就是答案，阴影传送门之类的？\n\n我们需要知道更多信息。
+text: It gave a repeated message, requesting to find its integral of memory in the Mnemonic Planisphere. \n\nYou seem like the adventuring sort. Do you think you could collect it for me? Rebuilding a factotum would just spring-load me into a council seat!, Length: 249
+ID: 3952276, unknown: 1, Index: 7377, offset: 13611270, text: It gave a repeated message, requesting to find its integral of memory in the Mnemonic Planisphere. \n\nYou seem like the adventuring sort. Do you think you could collect it for me? Rebuilding a factotum would just spring-load me into a council seat!
+text: I knew the Court could count on you! You always were my favorite of all the featherless curs.\n\nI'm feeling bold! Brazen, even. I desire ornate armor from far off lands. Bring me these things and I'll reward you in kind., Length: 221
+ID: 3952276, unknown: 1, Index: 7376, offset: 13611491, text: I knew the Court could count on you! You always were my favorite of all the featherless curs.\n\nI'm feeling bold! Brazen, even. I desire ornate armor from far off lands. Bring me these things and I'll reward you in kind.
+text: 前去苏里庞德养殖场，回收一些遗物碎片，试着去对付那只饥食兽来保护这片区域。\n\n停留在城市内的提尔维娜·阿瓦尼有着更多的情报。她是个紧张的小家伙，还有你的报酬也在那边。, Length: 246
+ID: 3952276, unknown: 1, Index: 7187, offset: 13611737, text: 前去苏里庞德养殖场，回收一些遗物碎片，试着去对付那只饥食兽来保护这片区域。\n\n停留在城市内的提尔维娜·阿瓦尼有着更多的情报。她是个紧张的小家伙，还有你的报酬也在那边。
+text: 你说的有点太简单了，不过你说的也对。\n\n我既是瑞多然的议员也是一名父亲。不幸的是，我的议员身份往往盖过了我作为一名父亲对子女的爱。这也是为什么我想跟我女儿谈谈的原因。, Length: 247
+ID: 3952276, unknown: 1, Index: 7188, offset: 13611984, text: 你说的有点太简单了，不过你说的也对。\n\n我既是瑞多然的议员也是一名父亲。不幸的是，我的议员身份往往盖过了我作为一名父亲对子女的爱。这也是为什么我想跟我女儿谈谈的原因。
+text: 我怀疑那些奴隶贩子插了一脚，这意味着镇上有人在帮助他们。这种事情，是不可饶恕的！\n\n揪出来到底是谁把灯火灭了。他们会带着我们找到那些奴隶贩子的。去问问德尔慕斯，那天晚上到底是谁负责看顾灯塔的。他就在塔楼上。, Length: 307
+ID: 3952276, unknown: 1, Index: 7189, offset: 13612291, text: 我怀疑那些奴隶贩子插了一脚，这意味着镇上有人在帮助他们。这种事情，是不可饶恕的！\n\n揪出来到底是谁把灯火灭了。他们会带着我们找到那些奴隶贩子的。去问问德尔慕斯，那天晚上到底是谁负责看顾灯塔的。他就在塔楼上。
+text: If these treasonous malcontents insist on harboring sticks firmly in their hindquarters, then they can at least have the decency to keep them in bloom!\n\nFind the grumps in my domain and pelt them with these enchanted petals until morale improves!, Length: 248
+ID: 3952276, unknown: 1, Index: 7190, offset: 13612539, text: If these treasonous malcontents insist on harboring sticks firmly in their hindquarters, then they can at least have the decency to keep them in bloom!\n\nFind the grumps in my domain and pelt them with these enchanted petals until morale improves!
+text: 我会返回萨德瑞斯·莫拉，继续我的学习。和伊欧吉谈谈。我还会埋头写一本小说。\n\n记得来拜访我，我们可以就坐着聊会天，像朋友相处的那样。我还欠你一杯茶，不是吗？, Length: 231
+ID: 3952276, unknown: 1, Index: 7191, offset: 13612770, text: 我会返回萨德瑞斯·莫拉，继续我的学习。和伊欧吉谈谈。我还会埋头写一本小说。\n\n记得来拜访我，我们可以就坐着聊会天，像朋友相处的那样。我还欠你一杯茶，不是吗？
+text: That gap in the model—that's where we'll find the lost Library of Andule! Once you go and locate the exact spot, we can start examining the records related to our earliest Velothi settlers.\n\nWhat do you say? Ready for one more adventure?, Length: 241
+ID: 3952276, unknown: 1, Index: 7192, offset: 13613011, text: That gap in the model—that's where we'll find the lost Library of Andule! Once you go and locate the exact spot, we can start examining the records related to our earliest Velothi settlers.\n\nWhat do you say? Ready for one more adventure?
+text: We recently tracked the kagouti pack east, to the other side of Red Mountain. Pick off the members of its pack and eventually King Razor-Tusk will show its fearsome visage.\n\nJust be wary, for the smell of blood will drive it into a frenzy., Length: 241
+ID: 3952276, unknown: 1, Index: 7182, offset: 13613252, text: We recently tracked the kagouti pack east, to the other side of Red Mountain. Pick off the members of its pack and eventually King Razor-Tusk will show its fearsome visage.\n\nJust be wary, for the smell of blood will drive it into a frenzy.
+text: 我们在塔下修盖车间的时候，开了一条大裂缝。菲尔大人相信裂隙的另一头有现世神。一旦整装完毕，他一定会进去一探究竟。\n\n如果你感兴趣，可以再去问问我的双胞胎妹妹。, Length: 235
+ID: 3952276, unknown: 1, Index: 7283, offset: 13613487, text: 我们在塔下修盖车间的时候，开了一条大裂缝。菲尔大人相信裂隙的另一头有现世神。一旦整装完毕，他一定会进去一探究竟。\n\n如果你感兴趣，可以再去问问我的双胞胎妹妹。
+text: 首先，在睿智大厅内取得大主教的印章。是时候确立一个新的大祭司了。我会召集我的人们在中央庙塔的石像下集合。\n\n我的朋友，那将会是一场荣光的庆典。, Length: 211
+ID: 3952276, unknown: 1, Index: 7286, offset: 13613698, text: 首先，在睿智大厅内取得大主教的印章。是时候确立一个新的大祭司了。我会召集我的人们在中央庙塔的石像下集合。\n\n我的朋友，那将会是一场荣光的庆典。
+text: The Everwound Wellspring, a wondrous oasis in this mechanical desert! Sotha Sil created the place, but the lector made plants grow in the metallic soil. Once every year, he distributes food and chooses an apprentice. You should come with me and see!, Length: 249
+ID: 3952276, unknown: 1, Index: 7352, offset: 13613947, text: The Everwound Wellspring, a wondrous oasis in this mechanical desert! Sotha Sil created the place, but the lector made plants grow in the metallic soil. Once every year, he distributes food and chooses an apprentice. You should come with me and see!
+text: 嗯……事实上乌鸦们在你戳穿暗影替身的同时就抵达了城市，实在可疑。但比起其他事情它们看起来更对简单的恶作剧感兴趣。\n\n在贸易高坛周围找人问问吧。也许我们的治安官中有人能告诉你更多。, Length: 265
+ID: 3952276, unknown: 1, Index: 7355, offset: 13614212, text: 嗯……事实上乌鸦们在你戳穿暗影替身的同时就抵达了城市，实在可疑。但比起其他事情它们看起来更对简单的恶作剧感兴趣。\n\n在贸易高坛周围找人问问吧。也许我们的治安官中有人能告诉你更多。
+text: The Forge takes on a life of its own when it's gorged on slaughter. Once you've stoked it with the blood of your enemies, invoke the Scroll of Glorious Battle before you shatter the murderous Earthgore Amalgam that's formed in its molten heart., Length: 244
+ID: 3952276, unknown: 1, Index: 7356, offset: 13614456, text: The Forge takes on a life of its own when it's gorged on slaughter. Once you've stoked it with the blood of your enemies, invoke the Scroll of Glorious Battle before you shatter the murderous Earthgore Amalgam that's formed in its molten heart.
+text: The Reach army is led by a real titan of a minotaur. Wades through men like ants and spits fire, if you believe that.\n\nSounds the Jarl's warhorn in defiance of the beast and you're sure to have it seeing red before you lock horns!, Length: 232
+ID: 3952276, unknown: 1, Index: 7357, offset: 13614688, text: The Reach army is led by a real titan of a minotaur. Wades through men like ants and spits fire, if you believe that.\n\nSounds the Jarl's warhorn in defiance of the beast and you're sure to have it seeing red before you lock horns!
+text: 是，正是。你学得很快。我需要能把这些邪教徒赶跑并且能帮我把星星归还给星图天空的人。请一定帮我们，这个任务至关重要。, Length: 171
+ID: 3952276, unknown: 1, Index: 7359, offset: 13614859, text: 是，正是。你学得很快。我需要能把这些邪教徒赶跑并且能帮我把星星归还给星图天空的人。请一定帮我们，这个任务至关重要。
+text: Yes, a clockwork apostle named Varuni Arvel. Apparently, she's a member of the Congress of Calibration—the governing body here in the city.\n\nMy associates, Kireth and Raynor, are already working on a plan to earn her trust. Will you help us?, Length: 245
+ID: 3952276, unknown: 1, Index: 7360, offset: 13615104, text: Yes, a clockwork apostle named Varuni Arvel. Apparently, she's a member of the Congress of Calibration—the governing body here in the city.\n\nMy associates, Kireth and Raynor, are already working on a plan to earn her trust. Will you help us?
+text: Truly? Why, that's most excellent! \n\nNow, the very fate of Clockwork City's clean water supply rests in our hands, so we must act quickly. I know the locations of the machines in need of repairs, but we'll have to search around for specific parts., Length: 249
+ID: 3952276, unknown: 1, Index: 7361, offset: 13615353, text: Truly? Why, that's most excellent! \n\nNow, the very fate of Clockwork City's clean water supply rests in our hands, so we must act quickly. I know the locations of the machines in need of repairs, but we'll have to search around for specific parts.
+text: No, and I can't imagine how hard something like that is to come by in Clockwork City. Maurice never did say how he came by a case of it, but I'm not one to pry.\n\nCouldn't hurt to do some asking around though, right?, Length: 217
+ID: 3952276, unknown: 1, Index: 7366, offset: 13615570, text: No, and I can't imagine how hard something like that is to come by in Clockwork City. Maurice never did say how he came by a case of it, but I'm not one to pry.\n\nCouldn't hurt to do some asking around though, right?
+text: One more thing, a special request. Tubabi loved nix-hound meat before she wound up here.\n\n<<1>> raises the best you can find, but I can't afford his prices. I'd really like to impress her and I know where he keeps his stash., Length: 226
+ID: 3952276, unknown: 1, Index: 7367, offset: 13615796, text: One more thing, a special request. Tubabi loved nix-hound meat before she wound up here.\n\n<<1>> raises the best you can find, but I can't afford his prices. I'd really like to impress her and I know where he keeps his stash.
+text: 比这更糟。一开始，我将这些当做是枯燥或者疲惫，甚至是初步衰老的表现而没有在意。但现在，经过足够时间的观察，我可以断言——这不是那个我认识的索萨·希尔了。\n\n这里面有迪德拉的阴谋，而我们要根除它。, Length: 288
+ID: 3952276, unknown: 1, Index: 7369, offset: 13616084, text: 比这更糟。一开始，我将这些当做是枯燥或者疲惫，甚至是初步衰老的表现而没有在意。但现在，经过足够时间的观察，我可以断言——这不是那个我认识的索萨·希尔了。\n\n这里面有迪德拉的阴谋，而我们要根除它。
+text: Chodala won't hand over the staff. And trying to take it could lead to a war we can't afford to wage.\n\nI suggest you go to Ald'ruhn and talk to his sister, Seryn. I don't trust her either, but she worked with you before. Perhaps she'll do so again., Length: 250
+ID: 3952276, unknown: 1, Index: 7295, offset: 13616334, text: Chodala won't hand over the staff. And trying to take it could lead to a war we can't afford to wage.\n\nI suggest you go to Ald'ruhn and talk to his sister, Seryn. I don't trust her either, but she worked with you before. Perhaps she'll do so again.
+text: 研究员们在去希尔·瓦尔·沃德的皇家动物园路上被逃窜的野兽杀了。真的不知道那些动物饲养员在干些什么，那只格拉维尔德已经发疯似的在野外乱跑。\n\n杀了它，从审判官手中取回《誓言卷轴》。, Length: 263
+ID: 3952276, unknown: 1, Index: 7399, offset: 13616597, text: 研究员们在去希尔·瓦尔·沃德的皇家动物园路上被逃窜的野兽杀了。真的不知道那些动物饲养员在干些什么，那只格拉维尔德已经发疯似的在野外乱跑。\n\n杀了它，从审判官手中取回《誓言卷轴》。
+text: Yes. A massive sea adder. It suns itself in the bay south of Sea Keep. Our navy won't be safe until it's dealt with.\n\nWorse, the ships it destroyed carried sensitive intelligence. I need you to search the shore and recover any logs you can., Length: 242
+ID: 3952276, unknown: 1, Index: 7400, offset: 13616839, text: Yes. A massive sea adder. It suns itself in the bay south of Sea Keep. Our navy won't be safe until it's dealt with.\n\nWorse, the ships it destroyed carried sensitive intelligence. I need you to search the shore and recover any logs you can.
+text: Really? Well, if you got me some fresh ones from the Halls of Regulation that'd be a start, but they aren't much good like that. Salas has some trick to making them edible he keeps closely guarded.\n\nMaybe you could pilfer his secret recipe for me?, Length: 249
+ID: 3952276, unknown: 1, Index: 7403, offset: 13617088, text: Really? Well, if you got me some fresh ones from the Halls of Regulation that'd be a start, but they aren't much good like that. Salas has some trick to making them edible he keeps closely guarded.\n\nMaybe you could pilfer his secret recipe for me?
+text: 咱们不妨聊一聊博学者吧。他嘴上肯定不说出来，但他肯定是有心事——跟那些法杖碎片有关。, Length: 126
+ID: 3952276, unknown: 1, Index: 7533, offset: 13617214, text: 咱们不妨聊一聊博学者吧。他嘴上肯定不说出来，但他肯定是有心事——跟那些法杖碎片有关。
+text: 我们的祖先，“龙骨引领者” 盖迪尔，将她的掠夺品埋葬了这片地方。\n\n如果你给我们找到了这个宝箱，以后没有什么背后偷袭了。这张地图会带你找到它的。别担心，你的辛苦也会有酬劳的。, Length: 257
+ID: 3952276, unknown: 1, Index: 7535, offset: 13617471, text: 我们的祖先，“龙骨引领者” 盖迪尔，将她的掠夺品埋葬了这片地方。\n\n如果你给我们找到了这个宝箱，以后没有什么背后偷袭了。这张地图会带你找到它的。别担心，你的辛苦也会有酬劳的。
+text: 他们是夏暮岛骑士们的一个阶层，我很骄傲能成为他们中的一员。\n\n斯马加抓住了我的三个伙伴并且不知道它用了什么方法竟然复制了他们。即便是单独对付他们中的一个都是很困难的事。你觉得你能够完成这样的一个任务吗？, Length: 301
+ID: 3952276, unknown: 1, Index: 7537, offset: 13617772, text: 他们是夏暮岛骑士们的一个阶层，我很骄傲能成为他们中的一员。\n\n斯马加抓住了我的三个伙伴并且不知道它用了什么方法竟然复制了他们。即便是单独对付他们中的一个都是很困难的事。你觉得你能够完成这样的一个任务吗？
+text: Yes, I'm afraid I do. Could you travel to Cloudrest and seek out my mother, Belarin?\n\nI must warn you though, should my dreams be true, such a journey may come at great risk. You'll want to gather many allies by your side before heading off., Length: 243
+ID: 3952276, unknown: 1, Index: 7540, offset: 13618015, text: Yes, I'm afraid I do. Could you travel to Cloudrest and seek out my mother, Belarin?\n\nI must warn you though, should my dreams be true, such a journey may come at great risk. You'll want to gather many allies by your side before heading off.
+text: 劳烦你抽空跟卓莎洁聊聊那根法杖的事情。恐怕她还怨恨我将法杖碎片给锁起来了。\n\n她有过.....心理创伤，要是我对于这根法杖跟她做出承诺，有可能对她会造成不必要的干扰。, Length: 237
+ID: 3952276, unknown: 1, Index: 7541, offset: 13618252, text: 劳烦你抽空跟卓莎洁聊聊那根法杖的事情。恐怕她还怨恨我将法杖碎片给锁起来了。\n\n她有过.....心理创伤，要是我对于这根法杖跟她做出承诺，有可能对她会造成不必要的干扰。
+text: 对，一如既往地，我们为你准备好了“占卜师”、地图和“赛伊克之印”。找卓莎洁要就行了。\n\n等你关好了那些裂隙就找我吧。我们会尽快搞得这根法杖的问题，相信我。, Length: 229
+ID: 3952276, unknown: 1, Index: 7542, offset: 13618481, text: 对，一如既往地，我们为你准备好了“占卜师”、地图和“赛伊克之印”。找卓莎洁要就行了。\n\n等你关好了那些裂隙就找我吧。我们会尽快搞得这根法杖的问题，相信我。
+text: 对，正是如此。\n\n卓莎洁会为你提供所需之物的。不过我一开始还不肯交给她这个任务，但一直不让她参与这个项目似乎过于谨慎......或许也是一种人道吧？你还是跟她聊聊吧，她需要一些善意的忠告。, Length: 268
+ID: 3952276, unknown: 1, Index: 7543, offset: 13618749, text: 对，正是如此。\n\n卓莎洁会为你提供所需之物的。不过我一开始还不肯交给她这个任务，但一直不让她参与这个项目似乎过于谨慎......或许也是一种人道吧？你还是跟她聊聊吧，她需要一些善意的忠告。
+text: Vykosa is going to be your toughest opponent. Legends say she was turned into a werewolf by Hircine himself. A worthy adversary if I ever heard of one.\n\nEvoke the Scroll of Glorious Battle, and make your fight even more legendary., Length: 232
+ID: 3952276, unknown: 1, Index: 7529, offset: 13618981, text: Vykosa is going to be your toughest opponent. Legends say she was turned into a werewolf by Hircine himself. A worthy adversary if I ever heard of one.\n\nEvoke the Scroll of Glorious Battle, and make your fight even more legendary.
+text: 在我伤害他的自尊心之前，我们计划去探索这个神奇的机器世界。他冲出去证明她不需要我的帮助，我们知道那结果将会怎样！\n\n我会让他冷静下来，但你能保证他不惹麻烦吗？, Length: 235
+ID: 3952276, unknown: 1, Index: 7391, offset: 13619216, text: 在我伤害他的自尊心之前，我们计划去探索这个神奇的机器世界。他冲出去证明她不需要我的帮助，我们知道那结果将会怎样！\n\n我会让他冷静下来，但你能保证他不惹麻烦吗？
+text: Hircine revels in the brutal combat between his contestants. And the way I hear it, your greatest competition is the werewolf Balorgh.\n\nTaunt the Orc by burning his pack's banner, and show Hircine what you're truly made of., Length: 225
+ID: 3952276, unknown: 1, Index: 7532, offset: 13619441, text: Hircine revels in the brutal combat between his contestants. And the way I hear it, your greatest competition is the werewolf Balorgh.\n\nTaunt the Orc by burning his pack's banner, and show Hircine what you're truly made of.
+text: 法师公会的一名成员谋杀了一名智萃学者，但是凶手的一个朋友吵吵闹闹地反对这宗定罪。\n\n给她讲讲道理吧，要不？她可能会听一下另一个......访客。去战士公会外面可以找到她的。, Length: 244
+ID: 3952276, unknown: 1, Index: 7510, offset: 13619685, text: 法师公会的一名成员谋杀了一名智萃学者，但是凶手的一个朋友吵吵闹闹地反对这宗定罪。\n\n给她讲讲道理吧，要不？她可能会听一下另一个......访客。去战士公会外面可以找到她的。
+text: 几十年来它们都安安静静的。现在呢？遗迹突然有了又新又大的裂缝，晚上还有诡异的声音。我对阴影里面的东西没兴趣。但那些失踪的人可是一个重要的警醒。\n\n如果你要下去的话，找一下我的朋友，好吗？, Length: 277
+ID: 3952276, unknown: 1, Index: 7472, offset: 13619962, text: 几十年来它们都安安静静的。现在呢？遗迹突然有了又新又大的裂缝，晚上还有诡异的声音。我对阴影里面的东西没兴趣。但那些失踪的人可是一个重要的警醒。\n\n如果你要下去的话，找一下我的朋友，好吗？
+text: 当然不可以赌上我的生命啦，这就是你的意思吧。\n\n你瞧，你看着挺凶狠的，要不要考虑接下我这个委托呢？如果你找到了尼拉琳，或者至少找到她留下的物品，我一定会好好犒劳你的。, Length: 247
+ID: 3952276, unknown: 1, Index: 7473, offset: 13620209, text: 当然不可以赌上我的生命啦，这就是你的意思吧。\n\n你瞧，你看着挺凶狠的，要不要考虑接下我这个委托呢？如果你找到了尼拉琳，或者至少找到她留下的物品，我一定会好好犒劳你的。
+text: 可能是我多虑了。天气很晴朗而且风也很和煦。或许今天他们的战果累累因此不想浪费这个好运气，但如果我能知道到底是什么延误了他们我可能就会感觉好点。, Length: 213
+ID: 3952276, unknown: 1, Index: 7478, offset: 13620422, text: 可能是我多虑了。天气很晴朗而且风也很和煦。或许今天他们的战果累累因此不想浪费这个好运气，但如果我能知道到底是什么延误了他们我可能就会感觉好点。
+text: Destroy the Maormer's supplies, gathered along the shore. Rescue any citizen you find captured. And free Sunnawel, a gryphon, from capture. She's not only the city's symbol, she's also the best weapon we have at our disposal.\n\nWill you help?, Length: 243
+ID: 3952276, unknown: 1, Index: 7479, offset: 13620665, text: Destroy the Maormer's supplies, gathered along the shore. Rescue any citizen you find captured. And free Sunnawel, a gryphon, from capture. She's not only the city's symbol, she's also the best weapon we have at our disposal.\n\nWill you help?
+text: 我知道个迪德拉啊？那些精灵干啥都有规矩——吃喝拉撒睡的......互殴这件事自然也讲规矩。\n\n你应该不至于没兴趣帮我弄清这件事吧？, Length: 181
+ID: 3952276, unknown: 1, Index: 7481, offset: 13620846, text: 我知道个迪德拉啊？那些精灵干啥都有规矩——吃喝拉撒睡的......互殴这件事自然也讲规矩。\n\n你应该不至于没兴趣帮我弄清这件事吧？
+text: No. They're assuredly dead. King's Haven Pass is very dangerous, teeming with goblins and gryphons, but the cult considers the pilgrimage a test of faith. \n\nRecovering their articles would be viewed favorably by the religious authorities., Length: 240
+ID: 3952276, unknown: 1, Index: 7484, offset: 13621086, text: No. They're assuredly dead. King's Haven Pass is very dangerous, teeming with goblins and gryphons, but the cult considers the pilgrimage a test of faith. \n\nRecovering their articles would be viewed favorably by the religious authorities.
+text: 我们见识了水晶塔落入鼠辈之手将可能造成多大的灾难。而诺克图娜尔的袭击无疑印证了加强防御工作的重要性。\n\n我想邀请你为我们辩解。你愿意加入吗？, Length: 208
+ID: 3952276, unknown: 1, Index: 7485, offset: 13621294, text: 我们见识了水晶塔落入鼠辈之手将可能造成多大的灾难。而诺克图娜尔的袭击无疑印证了加强防御工作的重要性。\n\n我想邀请你为我们辩解。你愿意加入吗？
+text: Defeating a Dragon Priest is no small feat, but why not challenge yourself a little more?\n\nOnce you've dealt with the petty creatures and cultists, invoke the Scroll of Glorious Battle to call forth Zaan the Scalecaller in all her terrible might., Length: 248
+ID: 3952276, unknown: 1, Index: 7486, offset: 13621542, text: Defeating a Dragon Priest is no small feat, but why not challenge yourself a little more?\n\nOnce you've dealt with the petty creatures and cultists, invoke the Scroll of Glorious Battle to call forth Zaan the Scalecaller in all her terrible might.
+text: Sounds like Orryn the Black is summoning something nasty. I say let him. Better yet, read his notes and help make it the meanest stack of bones to take up walking. Then grind them both to dust.\n\nThat'll prove who's the real Undaunted here., Length: 241
+ID: 3952276, unknown: 1, Index: 7487, offset: 13621783, text: Sounds like Orryn the Black is summoning something nasty. I say let him. Better yet, read his notes and help make it the meanest stack of bones to take up walking. Then grind them both to dust.\n\nThat'll prove who's the real Undaunted here.
+text: Replacement water filters need to be taken from factotums and installed. Naturally the Clockwork Apostles will reward you for this most important of tasks.\n\nFor more information speak to <<1>>. She's leading all maintenance., Length: 226
+ID: 3952276, unknown: 1, Index: 7401, offset: 13622009, text: Replacement water filters need to be taken from factotums and installed. Naturally the Clockwork Apostles will reward you for this most important of tasks.\n\nFor more information speak to <<1>>. She's leading all maintenance.
+text: 我们快要进入占卜仪式的关键阶段了，所以没人能离开这个房间。如果你找到我的助手奥莉安德拉的话，她会给你我们需要的增幅药剂。\n\n她在楼上的索萨·希尔研究室。, Length: 225
+ID: 3952276, unknown: 1, Index: 7432, offset: 13622234, text: 我们快要进入占卜仪式的关键阶段了，所以没人能离开这个房间。如果你找到我的助手奥莉安德拉的话，她会给你我们需要的增幅药剂。\n\n她在楼上的索萨·希尔研究室。
+text: 这些高高瘦瘦的精灵......他们太多规矩了！你有听说艾琳女王现在不在夏暮岛吗？还有，要想跟她的代理女王见面，我得整个什么正式引荐才行。\n\n要是没有这个，温迪文可不会让我进这个宫殿。, Length: 259
+ID: 3952276, unknown: 1, Index: 7467, offset: 13622493, text: 这些高高瘦瘦的精灵......他们太多规矩了！你有听说艾琳女王现在不在夏暮岛吗？还有，要想跟她的代理女王见面，我得整个什么正式引荐才行。\n\n要是没有这个，温迪文可不会让我进这个宫殿。
+text: 路特斯出了名是乖孩子。就像小羔羊一样温顺。我可是一手把她带大的。\n\n她在那片混乱中逃走了，但是她一只鹿肯定过不下去的。我得尽快找到她，希望她没有受伤，或是有更严重的情况......, Length: 256
+ID: 3952276, unknown: 1, Index: 7442, offset: 13622749, text: 路特斯出了名是乖孩子。就像小羔羊一样温顺。我可是一手把她带大的。\n\n她在那片混乱中逃走了，但是她一只鹿肯定过不下去的。我得尽快找到她，希望她没有受伤，或是有更严重的情况......
+text: 好问题。我在大圣物室那找到了这块记忆石。它叫做回忆之眼。在图书馆基座附近使用它可能会告诉我们为什么这些废墟会被封住。\n\n你看起来比大多数人要强壮。你能帮我一把吗？, Length: 241
+ID: 3952276, unknown: 1, Index: 7448, offset: 13622990, text: 好问题。我在大圣物室那找到了这块记忆石。它叫做回忆之眼。在图书馆基座附近使用它可能会告诉我们为什么这些废墟会被封住。\n\n你看起来比大多数人要强壮。你能帮我一把吗？
+text: 我们还需要劝服索萨·希尔，让他给我们分享一些有用的消息。不过既然仪式大师不在，他可能已经打算动身离开了。他就像“暗精灵审判席”的成员一样，难以捉摸。\n\n不过，或许你能和他说上几句话......, Length: 273
+ID: 3952276, unknown: 1, Index: 7446, offset: 13623263, text: 我们还需要劝服索萨·希尔，让他给我们分享一些有用的消息。不过既然仪式大师不在，他可能已经打算动身离开了。他就像“暗精灵审判席”的成员一样，难以捉摸。\n\n不过，或许你能和他说上几句话......
+text: Surely. Here's a list of the folk I was still to muster out. When you finish up, head back to the manor house. Check in with the Captain, Landare.\n\nI'll just gather my wits., Length: 175
+ID: 3952276, unknown: 1, Index: 4954, offset: 13623438, text: Surely. Here's a list of the folk I was still to muster out. When you finish up, head back to the manor house. Check in with the Captain, Landare.\n\nI'll just gather my wits.
+text: Aye, that I did. \n\nAnd I swear on the blood of me crew, that spook will pay for this wicked trick., Length: 100
+ID: 3952276, unknown: 1, Index: 4955, offset: 13623538, text: Aye, that I did. \n\nAnd I swear on the blood of me crew, that spook will pay for this wicked trick.
+text: 他想向祖先证明他自己。他觉得城堡金库深处有一些宝藏。索容鬼迷心窍疯了似的想当瑞利斯家族的人。\n\n我只是想让他平平安安的。求你了，帮我照看一下他好吗?, Length: 218
+ID: 3952276, unknown: 1, Index: 4958, offset: 13623756, text: 他想向祖先证明他自己。他觉得城堡金库深处有一些宝藏。索容鬼迷心窍疯了似的想当瑞利斯家族的人。\n\n我只是想让他平平安安的。求你了，帮我照看一下他好吗?
+text: What? You'd … you'd help me? Thank you!\n\nI used to be a mage. There's a soul totem on my body here. My soul is down in the playroom, just through that door. Banish Falarel and capture my soul. Then bring it back to me., Length: 222
+ID: 3952276, unknown: 1, Index: 4959, offset: 13623978, text: What? You'd … you'd help me? Thank you!\n\nI used to be a mage. There's a soul totem on my body here. My soul is down in the playroom, just through that door. Banish Falarel and capture my soul. Then bring it back to me.
+text: 到破晓镇去，和司勇聊聊。在那里做我的眼线，还得确保安全可靠。我不能让艾斯翠破坏这次竞选，厄尔西蒙已经前往首堡准备了。\n\n拉森-达尔和我还要再谈谈。, Length: 215
+ID: 3952276, unknown: 1, Index: 4963, offset: 13624193, text: 到破晓镇去，和司勇聊聊。在那里做我的眼线，还得确保安全可靠。我不能让艾斯翠破坏这次竞选，厄尔西蒙已经前往首堡准备了。\n\n拉森-达尔和我还要再谈谈。
+text: 是不是听起来很扯？他就跟波兹莫一样疯狂。压根就不听我说的。\n\n我来跟你做个约定。找到马克。劝说他回来。我就会给你一些金币，这样我们都能高高兴兴离开了。, Length: 223
+ID: 3952276, unknown: 1, Index: 4970, offset: 13624416, text: 是不是听起来很扯？他就跟波兹莫一样疯狂。压根就不听我说的。\n\n我来跟你做个约定。找到马克。劝说他回来。我就会给你一些金币，这样我们都能高高兴兴离开了。
+text: Yes. Three of my friends are in there—probably still shackled and helpless.\n\nI think you're the only chance they've got., Length: 124
+ID: 3952276, unknown: 1, Index: 4971, offset: 13624540, text: Yes. Three of my friends are in there—probably still shackled and helpless.\n\nI think you're the only chance they've got.
+text: Indeed. I need their rutter. They're sneaking ships through our waters; with that rutter, we'll know their routes, and intercepting them will be a matter of procedure.\n\nThere is, however, a small army of bandits in there. Feel like lending a hand?, Length: 249
+ID: 3952276, unknown: 1, Index: 4977, offset: 13624789, text: Indeed. I need their rutter. They're sneaking ships through our waters; with that rutter, we'll know their routes, and intercepting them will be a matter of procedure.\n\nThere is, however, a small army of bandits in there. Feel like lending a hand?
+text: 我的丈夫在变成了扭曲的生物之后诅咒了我。 这使得我的灵魂碎裂成了三份，且被分别封印在三个护符匣中。\n\n如果护符匣被打碎，我将得到安息，但是护符匣皆被恶兽守护着。, Length: 236
+ID: 3952276, unknown: 1, Index: 4978, offset: 13625025, text: 我的丈夫在变成了扭曲的生物之后诅咒了我。 这使得我的灵魂碎裂成了三份，且被分别封印在三个护符匣中。\n\n如果护符匣被打碎，我将得到安息，但是护符匣皆被恶兽守护着。
+text: 都回来吗？我很惊讶啊。美瑞蒂娅的骑士与此事休戚与共，这可以理解；但为何莱森也愿意回来呢？这实在说不通。\n\n不管怎样，你先找索萨·希尔谈一下吧。也许他可以为我们提供进入水晶塔内部的情报。, Length: 273
+ID: 3952276, unknown: 1, Index: 7447, offset: 13625298, text: 都回来吗？我很惊讶啊。美瑞蒂娅的骑士与此事休戚与共，这可以理解；但为何莱森也愿意回来呢？这实在说不通。\n\n不管怎样，你先找索萨·希尔谈一下吧。也许他可以为我们提供进入水晶塔内部的情报。
+text: 当然！感谢你能帮助我们，我准备派出一个小队去护送这些居民出去，喏，名单在这里。\n\n跟我在城镇中心的庄园里碰面，希望那时你已经把他们都送出去了。, Length: 211
+ID: 3952276, unknown: 1, Index: 4951, offset: 13625509, text: 当然！感谢你能帮助我们，我准备派出一个小队去护送这些居民出去，喏，名单在这里。\n\n跟我在城镇中心的庄园里碰面，希望那时你已经把他们都送出去了。
+text: 如果要我猜的话，是的。我不知道他们为什么去了那么久，已经好几个小时了。你能帮帮老朋友去找找他们吗？我想自己去，但是我还得在这守着。, Length: 195
+ID: 3952276, unknown: 1, Index: 5955, offset: 13625704, text: 如果要我猜的话，是的。我不知道他们为什么去了那么久，已经好几个小时了。你能帮帮老朋友去找找他们吗？我想自己去，但是我还得在这守着。
+text: I am sworn to remain here. I shall meet <<1>>, who is on her way with a contingent of soldiers. But you are not so bound.\n\nGo to <<Ac:2>>. Find <<3>>, if he still draws breath. Help him protect our future., Length: 207
+ID: 3952276, unknown: 1, Index: 5958, offset: 13625911, text: I am sworn to remain here. I shall meet <<1>>, who is on her way with a contingent of soldiers. But you are not so bound.\n\nGo to <<Ac:2>>. Find <<3>>, if he still draws breath. Help him protect our future.
+text: 它像吸了我的同学的魂一样！他们本来神志清醒的，现在他们的人格却变成了小说、故事书里面的角色。例如像猪一样拱鼻子，像猫一样四处窜...... 这学院怕是变成了疯人院！\n\n我倒是有一些主意来解决这个摊子，但我需要帮手。, Length: 305
+ID: 3952276, unknown: 1, Index: 7435, offset: 13626216, text: 它像吸了我的同学的魂一样！他们本来神志清醒的，现在他们的人格却变成了小说、故事书里面的角色。例如像猪一样拱鼻子，像猫一样四处窜...... 这学院怕是变成了疯人院！\n\n我倒是有一些主意来解决这个摊子，但我需要帮手。
+text: 不。他不见了！他们说他逃了，你信不？他明明才自首了几个小时，怎么会想逃跑呢？毫无疑问，那些人隐瞒了一些事！\n\n拜托你了，这位“瑟鲁瓦尔”，帮我找到我儿子。这孩子不会伤人了，我发誓！, Length: 268
+ID: 3952276, unknown: 1, Index: 7436, offset: 13626484, text: 不。他不见了！他们说他逃了，你信不？他明明才自首了几个小时，怎么会想逃跑呢？毫无疑问，那些人隐瞒了一些事！\n\n拜托你了，这位“瑟鲁瓦尔”，帮我找到我儿子。这孩子不会伤人了，我发誓！
+text: 在警恶惩奸方面我们往往无法达成共识。现在他们打算花好几周来问一下士兵，量一下脚印。而这时候只有更多的人变成肉干。\n\n事实上，你愿不愿意帮我这个忙？, Length: 217
+ID: 3952276, unknown: 1, Index: 7437, offset: 13626701, text: 在警恶惩奸方面我们往往无法达成共识。现在他们打算花好几周来问一下士兵，量一下脚印。而这时候只有更多的人变成肉干。\n\n事实上，你愿不愿意帮我这个忙？
+text: 有些平民说她只是个无辜的女孩，但却被恶毒的姐妹活埋了。其它人说她是一个被送上刀口的死灵法师。谁又知道呢？\n\n如果你把她拽走，整个夏暮岛都会感激你的。不过别指望我会跟着你忙就行了。, Length: 265
+ID: 3952276, unknown: 1, Index: 7438, offset: 13626966, text: 有些平民说她只是个无辜的女孩，但却被恶毒的姐妹活埋了。其它人说她是一个被送上刀口的死灵法师。谁又知道呢？\n\n如果你把她拽走，整个夏暮岛都会感激你的。不过别指望我会跟着你忙就行了。
+text: 不少旅行者失踪了，有时长达数日。据我所听闻，这片森林在你穿过的时候......会......会移动。我们必须跟紧彼此。\n\n所以？你想帮我解开古代之谜吗？我不会亏待你的。, Length: 226
+ID: 3952276, unknown: 1, Index: 7439, offset: 13627192, text: 不少旅行者失踪了，有时长达数日。据我所听闻，这片森林在你穿过的时候......会......会移动。我们必须跟紧彼此。\n\n所以？你想帮我解开古代之谜吗？我不会亏待你的。
+text: 安德温比我心中有数。一名傲特莫应该为荣誉而战，而不是为了捞钱。跋山涉水就为了......找那座破庙？真的太离谱了。n\n所以我们说好咯？你要接手我的工作吗？, Length: 216
+ID: 3952276, unknown: 1, Index: 7441, offset: 13627408, text: 安德温比我心中有数。一名傲特莫应该为荣誉而战，而不是为了捞钱。跋山涉水就为了......找那座破庙？真的太离谱了。n\n所以我们说好咯？你要接手我的工作吗？
+text: I need someone to fight their way into the barrows and find his hiding place.\n\nIt shouldn't be too hard. One of Althen's old cronies came to help him escape. Trolls got to him, but he must've been carrying a clue to Althen's hiding place., Length: 240
+ID: 3952276, unknown: 1, Index: 5954, offset: 13627648, text: I need someone to fight their way into the barrows and find his hiding place.\n\nIt shouldn't be too hard. One of Althen's old cronies came to help him escape. Trolls got to him, but he must've been carrying a clue to Althen's hiding place.
+text: The skimmer requires a specific kind of wire mesh, and we've only been able to find it in the Halls of Regulation. <<1>> will need more of the stuff if we want to continue collecting. She can tell you more about the process, if you're still willing., Length: 249
+ID: 3952276, unknown: 1, Index: 7336, offset: 13627897, text: The skimmer requires a specific kind of wire mesh, and we've only been able to find it in the Halls of Regulation. <<1>> will need more of the stuff if we want to continue collecting. She can tell you more about the process, if you're still willing.
+text: 检查他在大殿西翼的住宅。他有时藏在那里独自舔舐受伤的自尊，或者写些消极攻击的日志。\n\n我将试着安抚使徒们的紧张情绪。实话说，我自己的的紧张也需要一些缓解。, Length: 229
+ID: 3952276, unknown: 1, Index: 7324, offset: 13628126, text: 检查他在大殿西翼的住宅。他有时藏在那里独自舔舐受伤的自尊，或者写些消极攻击的日志。\n\n我将试着安抚使徒们的紧张情绪。实话说，我自己的的紧张也需要一些缓解。
+text: Fyr casts a long Aetherial shadow—it makes him difficult to miss. I sense … yes, he is in Mournhold. The Tribunal Temple. Conferring with Almalexia, perhaps?\n\nFind Divayth and tell him what is at stake. With any luck, we will find common cause., Length: 250
+ID: 3952276, unknown: 1, Index: 7348, offset: 13628376, text: Fyr casts a long Aetherial shadow—it makes him difficult to miss. I sense … yes, he is in Mournhold. The Tribunal Temple. Conferring with Almalexia, perhaps?\n\nFind Divayth and tell him what is at stake. With any luck, we will find common cause.
+text: 神州必须知道敌人在阿尔琉斯堡垒的兵力。这个危险的任务急需侦察兵。\n\n -索隆将军, Length: 114
+ID: 3952276, unknown: 0, Index: 2753, offset: 13628490, text: 神州必须知道敌人在阿尔琉斯堡垒的兵力。这个危险的任务急需侦察兵。\n\n -索隆将军
+text: 神州的战士们！大军阀索卡林号召战士们去侦察法拉格特堡垒的敌人据点。志愿者应立即出发。, Length: 126
+ID: 3952276, unknown: 0, Index: 2756, offset: 13628616, text: 神州的战士们！大军阀索卡林号召战士们去侦察法拉格特堡垒的敌人据点。志愿者应立即出发。
+text: 神州必须知道敌人在蓝道堡垒的兵力。这个危险的任务急需侦察兵。\n\n -索隆将军, Length: 108
+ID: 3952276, unknown: 0, Index: 2757, offset: 13628724, text: 神州必须知道敌人在蓝道堡垒的兵力。这个危险的任务急需侦察兵。\n\n -索隆将军
+text: Warriors of the Dominion! Grand Warlord Sorcalin needs volunteers to scout the mine near Bloodmayne and return with reports on its defenses.\n\n- Scribe Fireluin, Length: 161
+ID: 3952276, unknown: 0, Index: 2784, offset: 13628885, text: Warriors of the Dominion! Grand Warlord Sorcalin needs volunteers to scout the mine near Bloodmayne and return with reports on its defenses.\n\n- Scribe Fireluin
+text: 在洛克拉塔废墟时他们是闲杂人等。那需要你和维兰迪斯来处理。\n\n我会向夫人报告北角镇最新状况。你和维兰迪斯处理完那些遗迹后我们在那等你。, Length: 199
+ID: 3952276, unknown: 1, Index: 5715, offset: 13629084, text: 在洛克拉塔废墟时他们是闲杂人等。那需要你和维兰迪斯来处理。\n\n我会向夫人报告北角镇最新状况。你和维兰迪斯处理完那些遗迹后我们在那等你。
+text: 我们从不拒绝任何人尝试，但这不是个简单的测试。坚强的战士和法师达人都在这追求中动摇,那就是你必须成为一个可怕的猎人，愿意为保护”蕨叶”而付出生命。\n\n我们的领袖，格拉惹斯，能告诉你更多。, Length: 275
+ID: 3952276, unknown: 1, Index: 5667, offset: 13629359, text: 我们从不拒绝任何人尝试，但这不是个简单的测试。坚强的战士和法师达人都在这追求中动摇,那就是你必须成为一个可怕的猎人，愿意为保护”蕨叶”而付出生命。\n\n我们的领袖，格拉惹斯，能告诉你更多。
+text: I do. The workers have rest camps in between the johads. If someone brought in this poison, there may be evidence of it there.\n\nIf you can find something of import, bring it to me. I'll be at the main johad down the road., Length: 223
+ID: 3952276, unknown: 1, Index: 5680, offset: 13629582, text: I do. The workers have rest camps in between the johads. If someone brought in this poison, there may be evidence of it there.\n\nIf you can find something of import, bring it to me. I'll be at the main johad down the road.
+text: 从<<1>>的报告来看，一伙蠕虫邪教的信徒们举行了大量召唤迪德拉的仪式。我们必须一一将其击破。\n\n在你行动之前去找找萨维尔。她或许现在还没离开维威克城。, Length: 216
+ID: 3952276, unknown: 1, Index: 7235, offset: 13629798, text: 从<<1>>的报告来看，一伙蠕虫邪教的信徒们举行了大量召唤迪德拉的仪式。我们必须一一将其击破。\n\n在你行动之前去找找萨维尔。她或许现在还没离开维威克城。
+text: Search the Comonna Tong campsite in Khartag Point and eliminate their commander. This should slow their progress.\n\nVorar Vendu has brought this issue to our attention. He's in Vivec City if you need more information. He'll also have your reward., Length: 247
+ID: 3952276, unknown: 1, Index: 7236, offset: 13630045, text: Search the Comonna Tong campsite in Khartag Point and eliminate their commander. This should slow their progress.\n\nVorar Vendu has brought this issue to our attention. He's in Vivec City if you need more information. He'll also have your reward.
+text: 误导他们。拿上这两张写有月亮糖草生长的过程记录。一张放在他们的收成边，一张放在他们的研究处附近。那些遇到的强盗随你怎么处置。\n\n伊沃司就在这附近，如果你想要更多的信息的话。而且你的报酬也在他手里。, Length: 292
+ID: 3952276, unknown: 1, Index: 7241, offset: 13630337, text: 误导他们。拿上这两张写有月亮糖草生长的过程记录。一张放在他们的收成边，一张放在他们的研究处附近。那些遇到的强盗随你怎么处置。\n\n伊沃司就在这附近，如果你想要更多的信息的话。而且你的报酬也在他手里。
+text: Confiscate an egg from the primary egg chamber and find some breeding research describing their methods. You'll also need to plant poison kwama feed that will help control the mine's population. \n\nYou may speak with <<1>> for more information., Length: 245
+ID: 3952276, unknown: 1, Index: 7243, offset: 13630582, text: Confiscate an egg from the primary egg chamber and find some breeding research describing their methods. You'll also need to plant poison kwama feed that will help control the mine's population. \n\nYou may speak with <<1>> for more information.
+text: 当我和团队分开后，我们在这儿探索巴尔·费尔遗迹。我期望着雇佣的人手能帮我点忙。但斯提本?那个家伙总是依赖别人的帮助。\n\n找到那些法师和斯提本。接着用这个信标杖，我会过来找你们的。, Length: 262
+ID: 3952276, unknown: 1, Index: 7244, offset: 13630844, text: 当我和团队分开后，我们在这儿探索巴尔·费尔遗迹。我期望着雇佣的人手能帮我点忙。但斯提本?那个家伙总是依赖别人的帮助。\n\n找到那些法师和斯提本。接着用这个信标杖，我会过来找你们的。
+text: I trust her. It's just …. When she proposed using the Telvanni's rules against them, it seemed like wisdom. But murder? Recapturing Khajiit who meant to escape? I fear she has lost perspective.\n\nI must speak with her. Can you find her for me?, Length: 246
+ID: 3952276, unknown: 1, Index: 7251, offset: 13631090, text: I trust her. It's just …. When she proposed using the Telvanni's rules against them, it seemed like wisdom. But murder? Recapturing Khajiit who meant to escape? I fear she has lost perspective.\n\nI must speak with her. Can you find her for me?
+text: 前往遗忘之海以西的北面海岸，找到废墟。尽你所能的清理被放逐者。他们已无可救药，他们的存在只会枯萎这块大陆。\n\n找到遗物并将它们带给我保管。, Length: 205
+ID: 3952276, unknown: 1, Index: 7196, offset: 13631295, text: 前往遗忘之海以西的北面海岸，找到废墟。尽你所能的清理被放逐者。他们已无可救药，他们的存在只会枯萎这块大陆。\n\n找到遗物并将它们带给我保管。
+text: The ruins lie to the north, to the east of West Gash. Go there and put an end to the cult and remove temptation from the House of Troubles. \n\nReturn any relics they removed from the shrine to me for safekeeping., Length: 213
+ID: 3952276, unknown: 1, Index: 7195, offset: 13631508, text: The ruins lie to the north, to the east of West Gash. Go there and put an end to the cult and remove temptation from the House of Troubles. \n\nReturn any relics they removed from the shrine to me for safekeeping.
+text: To the south, between here and Balmora. Slay the brigands and recover any relics they may have stolen.\n\nBring the relics back to me and the Urshilaku will keep them safe for the day when Daedric worship returns to the fore., Length: 225
+ID: 3952276, unknown: 1, Index: 7194, offset: 13631733, text: To the south, between here and Balmora. Slay the brigands and recover any relics they may have stolen.\n\nBring the relics back to me and the Urshilaku will keep them safe for the day when Daedric worship returns to the fore.
+text: No, she has not. All to the good, I guess. A finless fish weakens the shoal.\n\nBut enough about me. You, my friend, are a mighty swimmer. Seek her out in her stone dwelling-place. If I know my heart, she will certainly have a task for you., Length: 240
+ID: 3952276, unknown: 1, Index: 7234, offset: 13631973, text: No, she has not. All to the good, I guess. A finless fish weakens the shoal.\n\nBut enough about me. You, my friend, are a mighty swimmer. Seek her out in her stone dwelling-place. If I know my heart, she will certainly have a task for you.
+text: Head along the coast, to the ruins of Yasammidan that overlooks the sea. It was once a shrine to Mehrunes Dagon. Find any relics you can and bring them to me.\n\nHistory fades if measures aren't taken., Length: 201
+ID: 3952276, unknown: 1, Index: 7193, offset: 13632174, text: Head along the coast, to the ruins of Yasammidan that overlooks the sea. It was once a shrine to Mehrunes Dagon. Find any relics you can and bring them to me.\n\nHistory fades if measures aren't taken.
+text: 很简单，再杀他们一次。他们残留意志的记忆依旧认为他们所处在一场古老的战役中，将所有的筹码都推上了这局赌注中。而且他们会攻击所有靠近他们的人。\n\n安德罗默或许知道更多东西。他现在在城内独自研究着那所古墓。, Length: 301
+ID: 3952276, unknown: 1, Index: 7173, offset: 13632475, text: 很简单，再杀他们一次。他们残留意志的记忆依旧认为他们所处在一场古老的战役中，将所有的筹码都推上了这局赌注中。而且他们会攻击所有靠近他们的人。\n\n安德罗默或许知道更多东西。他现在在城内独自研究着那所古墓。
+text: 克拉维库斯·威尔算计我，削弱我……所做的一切都是确定出发条城的位置。或许我们得以毒攻毒，用一位迪德拉……去对付另一位迪德拉。\n\n阿祖拉的勇士，瑟音……现在正在大主教的办公室内，寻求着引导。你必须快一点，时间不等人。, Length: 318
+ID: 3952276, unknown: 1, Index: 7174, offset: 13632793, text: 克拉维库斯·威尔算计我，削弱我……所做的一切都是确定出发条城的位置。或许我们得以毒攻毒，用一位迪德拉……去对付另一位迪德拉。\n\n阿祖拉的勇士，瑟音……现在正在大主教的办公室内，寻求着引导。你必须快一点，时间不等人。
+text: Strange, I know. She's enthralled several sailors with a song enchantment, and now no one can get close to the wreck. Valga Celatus can tell you more. She posted the job and is currently in Vivec City.\n\nHead over to her and see what you can do., Length: 246
+ID: 3952276, unknown: 1, Index: 7175, offset: 13633039, text: Strange, I know. She's enthralled several sailors with a song enchantment, and now no one can get close to the wreck. Valga Celatus can tell you more. She posted the job and is currently in Vivec City.\n\nHead over to her and see what you can do.
+text: The farm at Fort Warden provides support for our foe's troops. Grand Warlord Sorcalin needs scouting reports on this farm to determine its importance to the enemy., Length: 163
+ID: 3952276, unknown: 0, Index: 2794, offset: 13633202, text: The farm at Fort Warden provides support for our foe's troops. Grand Warlord Sorcalin needs scouting reports on this farm to determine its importance to the enemy.
+text: Great Zexxin has been spotted to the northeast of the Erabenimsun camp near Nchuleftingth. Nix-ox and other creatures gather near the yellow rocks and pools in the area. Search for signs of Great Zexxin's passing and follow the tracks to your quarry., Length: 250
+ID: 3952276, unknown: 1, Index: 7176, offset: 13633452, text: Great Zexxin has been spotted to the northeast of the Erabenimsun camp near Nchuleftingth. Nix-ox and other creatures gather near the yellow rocks and pools in the area. Search for signs of Great Zexxin's passing and follow the tracks to your quarry.
+text: 神州的战士们!大军阀索卡林号召战士们前往察尔曼堡垒的敌人据点进行侦察。志愿者应立即出发。, Length: 130
+ID: 3952276, unknown: 0, Index: 2752, offset: 13633582, text: 神州的战士们!大军阀索卡林号召战士们前往察尔曼堡垒的敌人据点进行侦察。志愿者应立即出发。
+text: 神州必须知道麦酒泉堡垒的敌人的实力。这个危险的任务急需侦察兵。\n\n -索隆将军, Length: 111
+ID: 3952276, unknown: 0, Index: 2750, offset: 13633693, text: 神州必须知道麦酒泉堡垒的敌人的实力。这个危险的任务急需侦察兵。\n\n -索隆将军
+text: The enemy has held our former stronghold of Fort Warden for too long. We must erase this stain on our honor! Scouts are needed to report on our foe's strength at the fort. For the Covenant!\n\n- General Khamagash, Length: 212
+ID: 3952276, unknown: 0, Index: 2841, offset: 13633905, text: The enemy has held our former stronghold of Fort Warden for too long. We must erase this stain on our honor! Scouts are needed to report on our foe's strength at the fort. For the Covenant!\n\n- General Khamagash
+text: Grand Warlord Dortene commands the Covenant to recapture Fort Glademist. Scouts are needed to verify rumors of enemy forces gathering there. Step forward, warriors!, Length: 164
+ID: 3952276, unknown: 0, Index: 2843, offset: 13634069, text: Grand Warlord Dortene commands the Covenant to recapture Fort Glademist. Scouts are needed to verify rumors of enemy forces gathering there. Step forward, warriors!
+text: The enemy has held our former stronghold of Fort Ash for too long. We must erase this stain on our honor! Scouts are needed to report on our foe's strength at the fort. For the Covenant!\n\n- General Khamagash, Length: 209
+ID: 3952276, unknown: 0, Index: 2844, offset: 13634278, text: The enemy has held our former stronghold of Fort Ash for too long. We must erase this stain on our honor! Scouts are needed to report on our foe's strength at the fort. For the Covenant!\n\n- General Khamagash
+text: Faregyl Lumbermill is one of our enemy's sources of wood for its siege engines. We must have scouting reports on its defenses before we attack. Volunteers are needed!, Length: 166
+ID: 3952276, unknown: 0, Index: 2827, offset: 13634444, text: Faregyl Lumbermill is one of our enemy's sources of wood for its siege engines. We must have scouting reports on its defenses before we attack. Volunteers are needed!
+text: 战士们:我们必须夺回法格尔城堡的要塞。大军阀索卡林需要知道敌人的力量来计划我们的进攻。侦察兵将会得到丰厚的回报！ \n\n -索隆将军, Length: 185
+ID: 3952276, unknown: 0, Index: 2760, offset: 13634629, text: 战士们:我们必须夺回法格尔城堡的要塞。大军阀索卡林需要知道敌人的力量来计划我们的进攻。侦察兵将会得到丰厚的回报！ \n\n -索隆将军
+text: 神州的战士们!我们以前的要塞阿莱西娅城堡已经落入敌人手中，必须夺回。第一步是确定敌人的兵力。急需侦察兵。, Length: 154
+ID: 3952276, unknown: 0, Index: 2759, offset: 13634783, text: 神州的战士们!我们以前的要塞阿莱西娅城堡已经落入敌人手中，必须夺回。第一步是确定敌人的兵力。急需侦察兵。
+text: 大军阀索尔卡林下达了一个在德雷克劳堡垒进行侦察的任务。敌人异常活动的报告必须得到证实。这个任务需要可靠的战士。, Length: 165
+ID: 3952276, unknown: 0, Index: 2758, offset: 13634948, text: 大军阀索尔卡林下达了一个在德雷克劳堡垒进行侦察的任务。敌人异常活动的报告必须得到证实。这个任务需要可靠的战士。
+text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us., Length: 195
+ID: 3952276, unknown: 0, Index: 2786, offset: 13635143, text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us.
+text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us., Length: 195
+ID: 3952276, unknown: 0, Index: 2787, offset: 13635143, text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us.
+text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us., Length: 195
+ID: 3952276, unknown: 0, Index: 2788, offset: 13635143, text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us.
+text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us., Length: 195
+ID: 3952276, unknown: 0, Index: 2789, offset: 13635143, text: We have come too far to allow the basic needs of our fighting forces to slip past our notice. Our {warrior}s need food and to provide for them we will need to know what farms are available to us.
+text: 我们的敌人正在迅速加强他们的据点。大军阀索卡林必须知道他们的原料来源，这样我们才能击中他们最痛处。侦察兵需要侦察灰矿并带回报告。\n\n -索隆将军, Length: 210
+ID: 3952276, unknown: 0, Index: 2768, offset: 13635353, text: 我们的敌人正在迅速加强他们的据点。大军阀索卡林必须知道他们的原料来源，这样我们才能击中他们最痛处。侦察兵需要侦察灰矿并带回报告。\n\n -索隆将军
+text: 神州的战士们!大军阀索卡林需要志愿者去侦察薄雾林地堡垒附近的地雷，并在他们的防御下带回报告。\n\n -菲尔鲁因书记官, Length: 163
+ID: 3952276, unknown: 0, Index: 2767, offset: 13635516, text: 神州的战士们!大军阀索卡林需要志愿者去侦察薄雾林地堡垒附近的地雷，并在他们的防御下带回报告。\n\n -菲尔鲁因书记官
+text: 雷利斯矿场对我们抗敌战争的努力至关重要。需要志愿者去侦察矿坑并报告其防御情况。, Length: 117
+ID: 3952276, unknown: 0, Index: 2766, offset: 13635633, text: 雷利斯矿场对我们抗敌战争的努力至关重要。需要志愿者去侦察矿坑并报告其防御情况。
+text: 我们的敌人正在迅速加固他们的据点。大军阀索卡林必须知道他们的原料来源，这样我们才能击中他们的痛点。侦察兵需要侦察守望者堡垒并带回报告。\n\n -索隆将军, Length: 219
+ID: 3952276, unknown: 0, Index: 2765, offset: 13635852, text: 我们的敌人正在迅速加固他们的据点。大军阀索卡林必须知道他们的原料来源，这样我们才能击中他们的痛点。侦察兵需要侦察守望者堡垒并带回报告。\n\n -索隆将军
+text: 尼-墨克·上古卷轴在我的脑海中挥之不去。我们的军队需要这个卷轴所赐予的祝福。我要寻找勇士来为神州夺取它;我能把你算在其中吗?, Length: 179
+ID: 3952276, unknown: 0, Index: 2732, offset: 13636031, text: 尼-墨克·上古卷轴在我的脑海中挥之不去。我们的军队需要这个卷轴所赐予的祝福。我要寻找勇士来为神州夺取它;我能把你算在其中吗?
+text: 我有一个——阿尔玛-努玛上古卷轴。敌人用他们肮脏卑劣的手玷污它太久了。它必须处在神州的掌控下。这是我给你的一次挑战。, Length: 172
+ID: 3952276, unknown: 0, Index: 2733, offset: 13636203, text: 我有一个——阿尔玛-努玛上古卷轴。敌人用他们肮脏卑劣的手玷污它太久了。它必须处在神州的掌控下。这是我给你的一次挑战。
+text: 神州的战士们!大军阀索卡林号召战士们前往敌人的据点守望者堡垒。志愿者应立即出发。, Length: 118
+ID: 3952276, unknown: 0, Index: 2746, offset: 13636321, text: 神州的战士们!大军阀索卡林号召战士们前往敌人的据点守望者堡垒。志愿者应立即出发。
+text: 神州必须知道敌人在雷斯堡的兵力。这个危险的任务急需侦察兵。\n\n 索隆将军, Length: 104
+ID: 3952276, unknown: 0, Index: 2747, offset: 13636425, text: 神州必须知道敌人在雷斯堡的兵力。这个危险的任务急需侦察兵。\n\n 索隆将军
+text: 大军阀索卡林已经下令前往薄雾林地堡垒执行侦察任务。敌人异常活动的报告必须得到证实。这个任务需要可靠的战士。, Length: 159
+ID: 3952276, unknown: 0, Index: 2748, offset: 13636584, text: 大军阀索卡林已经下令前往薄雾林地堡垒执行侦察任务。敌人异常活动的报告必须得到证实。这个任务需要可靠的战士。
+text: 先祖神州的战士们!大军阀索卡林号召战士们去灰烬堡垒侦察敌人的据点。志愿者应立即出发。, Length: 124
+ID: 3952276, unknown: 0, Index: 2749, offset: 13636708, text: 先祖神州的战士们!大军阀索卡林号召战士们去灰烬堡垒侦察敌人的据点。志愿者应立即出发。
+text: 大军阀索卡林已经下令在龙爪堡垒执行侦察任务。敌人异常活动的报告必须得到证实。这个任务需要可靠的战士。, Length: 150
+ID: 3952276, unknown: 0, Index: 2751, offset: 13636858, text: 大军阀索卡林已经下令在龙爪堡垒执行侦察任务。敌人异常活动的报告必须得到证实。这个任务需要可靠的战士。
+text: We call it Tarra-Suj, which means "powerful hunter" in my people's language. Our camp near Nchuleftingth suffers as the creature becomes ever more bold.\n\nKill common nix-hounds and Tarra-Suj will appear. Try to fare better than my hunters, Outlander., Length: 252
+ID: 3952276, unknown: 1, Index: 7177, offset: 13637110, text: We call it Tarra-Suj, which means "powerful hunter" in my people's language. Our camp near Nchuleftingth suffers as the creature becomes ever more bold.\n\nKill common nix-hounds and Tarra-Suj will appear. Try to fare better than my hunters, Outlander.
+text: Check the fetcherfly nests northwest of our camp near Nchuleftingth. Disturb the nests and eventually Writhing Sveeth will appear to protect them. Just be careful not to take on too many of the pests at once. They like to swarm., Length: 228
+ID: 3952276, unknown: 1, Index: 7178, offset: 13637338, text: Check the fetcherfly nests northwest of our camp near Nchuleftingth. Disturb the nests and eventually Writhing Sveeth will appear to protect them. Just be careful not to take on too many of the pests at once. They like to swarm.
+text: 我们把这种生物称为锯齿-爪之母，从汹涌波涛中爬出的最大，最有攻击性的雌蟹才能得到这样的称呼。\n\n如果你想要吸引泥沼蟹之母的注意，可以在她下蛋的泥洞里捣乱。, Length: 227
+ID: 3952276, unknown: 1, Index: 7179, offset: 13637565, text: 我们把这种生物称为锯齿-爪之母，从汹涌波涛中爬出的最大，最有攻击性的雌蟹才能得到这样的称呼。\n\n如果你想要吸引泥沼蟹之母的注意，可以在她下蛋的泥洞里捣乱。
+text: Unfortunately, she has ensconced herself deep in the Mechanical Fundament to meditate on the nature of the Sublime Piston. I haven't seen her in over a year, but I'm sure you'll have no trouble with the patrolling factotums., Length: 224
+ID: 3952276, unknown: 1, Index: 7388, offset: 13637789, text: Unfortunately, she has ensconced herself deep in the Mechanical Fundament to meditate on the nature of the Sublime Piston. I haven't seen her in over a year, but I'm sure you'll have no trouble with the patrolling factotums.
+text: This may surprise you, but the higher I climb and the more powerful I become, the lonelier it gets.\n\nA true Telvanni life always involves some seclusion, but I value our friendship—and Eoki's affection. I'd hate to lose either of you., Length: 238
+ID: 3952276, unknown: 1, Index: 7183, offset: 13638027, text: This may surprise you, but the higher I climb and the more powerful I become, the lonelier it gets.\n\nA true Telvanni life always involves some seclusion, but I value our friendship—and Eoki's affection. I'd hate to lose either of you.
+text: I need you to collect Dwemer parts and tools from the ruins of Nchuleft. The Zainab tribe used to loot it for items to trade. \n\nDredase-Hlarar can tell you more. Give the items to him once you're done., Length: 203
+ID: 3952276, unknown: 1, Index: 7184, offset: 13638230, text: I need you to collect Dwemer parts and tools from the ruins of Nchuleft. The Zainab tribe used to loot it for items to trade. \n\nDredase-Hlarar can tell you more. Give the items to him once you're done.
+text: Head over to his tower and see what's going on. You've also been asked to collect any research notes you may find for the apprentice to study later.\n\nVaram can fill you in on the details. She'll also have your pay if you manage to complete the job., Length: 250
+ID: 3952276, unknown: 1, Index: 7185, offset: 13638480, text: Head over to his tower and see what's going on. You've also been asked to collect any research notes you may find for the apprentice to study later.\n\nVaram can fill you in on the details. She'll also have your pay if you manage to complete the job.
+text: We miss pecking at ectoplasm, essence, and bug-infested roots! Find these delicacies and return to me. I'll reward you spectacularly once the Court's hunger has been sated., Length: 172
+ID: 3952276, unknown: 1, Index: 7383, offset: 13638652, text: We miss pecking at ectoplasm, essence, and bug-infested roots! Find these delicacies and return to me. I'll reward you spectacularly once the Court's hunger has been sated.
+text: If they insist on not dying, then a different tribute must be collected. Steal their tools of eating! Bring me their plates and bowls! If we can't eat, then neither can they. A fair and meaningful tribute that also teaches a lesson, yes?, Length: 237
+ID: 3952276, unknown: 1, Index: 7384, offset: 13638889, text: If they insist on not dying, then a different tribute must be collected. Steal their tools of eating! Bring me their plates and bowls! If we can't eat, then neither can they. A fair and meaningful tribute that also teaches a lesson, yes?
+text: We will seal the portal—after we learn everything we can about why it's here and what's on the other side. For your troubles, the apostles are willing to pay a substantial reward.\n\nGo see <<1>> if you need more information., Length: 227
+ID: 3952276, unknown: 1, Index: 7386, offset: 13639116, text: We will seal the portal—after we learn everything we can about why it's here and what's on the other side. For your troubles, the apostles are willing to pay a substantial reward.\n\nGo see <<1>> if you need more information.
+text: An oracle of sorts. It's an unusual factotum with a penchant for the mystical and the dramatic.\n\nI fear Kamid plans to do something foolish—and dangerous. Perhaps you'd be willing to go to the Outlaws Refuge and talk to him? Keep him safe?, Length: 243
+ID: 3952276, unknown: 1, Index: 7387, offset: 13639359, text: An oracle of sorts. It's an unusual factotum with a penchant for the mystical and the dramatic.\n\nI fear Kamid plans to do something foolish—and dangerous. Perhaps you'd be willing to go to the Outlaws Refuge and talk to him? Keep him safe?
+text: 进入尖牙巢穴深处的路被强大的魔法封住了。不过我还是找到了一条隐秘的小路，既然你在这里我们或许就可以以武力来破坏那些屏障。给那些死灵法师点颜色瞧瞧在原路返回。\n\n怎么样？, Length: 250
+ID: 3952276, unknown: 1, Index: 7370, offset: 13639609, text: 进入尖牙巢穴深处的路被强大的魔法封住了。不过我还是找到了一条隐秘的小路，既然你在这里我们或许就可以以武力来破坏那些屏障。给那些死灵法师点颜色瞧瞧在原路返回。\n\n怎么样？
+text: Travel to the Sanctuary of Verification. You must also gather the Imperfect's sequence plaques that have been scattered during previous battles. Many are found near the bridge to the chamber.\n\nPayment will be given upon completion of this task., Length: 246
+ID: 3952276, unknown: 1, Index: 7389, offset: 13639855, text: Travel to the Sanctuary of Verification. You must also gather the Imperfect's sequence plaques that have been scattered during previous battles. Many are found near the bridge to the chamber.\n\nPayment will be given upon completion of this task.
+text: Yes, the ancient Dark Elf sorcerer.\n\nWhile Divayth and I do not always see eye to eye, he does not deserve to be slaughtered by his own shadow. My visions tell me that he is currently in Mournhold. You will find him in the Tribunal Temple., Length: 241
+ID: 3952276, unknown: 1, Index: 7349, offset: 13640096, text: Yes, the ancient Dark Elf sorcerer.\n\nWhile Divayth and I do not always see eye to eye, he does not deserve to be slaughtered by his own shadow. My visions tell me that he is currently in Mournhold. You will find him in the Tribunal Temple.
+text: 就目前来看，我需要迪维斯·菲尔。他离开了我的堡垒去处理事务了。我想同你们两人在更私人的地点交谈。\n\n请找到菲尔然后在回响挽歌与我见面。, Length: 198
+ID: 3952276, unknown: 1, Index: 7347, offset: 13640294, text: 就目前来看，我需要迪维斯·菲尔。他离开了我的堡垒去处理事务了。我想同你们两人在更私人的地点交谈。\n\n请找到菲尔然后在回响挽歌与我见面。
+text: 在这次事件中，你无需承担任何责任，所以菲尔大师不会迁怒于你。我保证，不会动你一根手指头的！\n\n除此之外，这次交付得到的报酬也算你的。相较之那些钱财，能避免这种可怕的处境才是好的。, Length: 265
+ID: 3952276, unknown: 1, Index: 7289, offset: 13640559, text: 在这次事件中，你无需承担任何责任，所以菲尔大师不会迁怒于你。我保证，不会动你一根手指头的！\n\n除此之外，这次交付得到的报酬也算你的。相较之那些钱财，能避免这种可怕的处境才是好的。
+text: Crunch, crackle, and snap. Hides and carapaces from the corpses of creatures, and Daedric husks that the Court can crumble and crush! Those would be most excellent!\n\nAnd for your assistance, I offer the usual compensation., Length: 224
+ID: 3952276, unknown: 1, Index: 7382, offset: 13640783, text: Crunch, crackle, and snap. Hides and carapaces from the corpses of creatures, and Daedric husks that the Court can crumble and crush! Those would be most excellent!\n\nAnd for your assistance, I offer the usual compensation.
+text: 你会在全岛各地发现暗岩人。\n\n猎人达瑞去了天帷古坟。伊曼和他的姐姐罗兰达去了奥凯的洞穴。我的中士希恩去了霍金庄园。, Length: 169
+ID: 3952276, unknown: 1, Index: 7294, offset: 13640952, text: 你会在全岛各地发现暗岩人。\n\n猎人达瑞去了天帷古坟。伊曼和他的姐姐罗兰达去了奥凯的洞穴。我的中士希恩去了霍金庄园。
+text: You have already shown your respect for our ways. Return to Ald'ruhn and seek out Zanammu of the Zainab tribe. Ask him how you might continue to further your friendship with our tribes. Perhaps in learning from us, we can also learn from you., Length: 242
+ID: 3952276, unknown: 1, Index: 7297, offset: 13641194, text: You have already shown your respect for our ways. Return to Ald'ruhn and seek out Zanammu of the Zainab tribe. Ask him how you might continue to further your friendship with our tribes. Perhaps in learning from us, we can also learn from you.
+text: 只得由我们的首领们来做决定，他们目前都还呆在奥德‘汝因。你可以去见见扎纳姆，告诉他你想要帮助部落，向我们展示你们这些异乡人是值得信赖的。他可以把你介绍给其他部落。, Length: 243
+ID: 3952276, unknown: 1, Index: 7298, offset: 13641437, text: 只得由我们的首领们来做决定，他们目前都还呆在奥德‘汝因。你可以去见见扎纳姆，告诉他你想要帮助部落，向我们展示你们这些异乡人是值得信赖的。他可以把你介绍给其他部落。
+text: Return to Ald'ruhn. Seek out Zanammu of tribe Zainab. He has a particular fondness for outlanders and is less likely to try to kill you. From there, he can direct you to those who will guide you on the path to becoming a friend of the clans., Length: 241
+ID: 3952276, unknown: 1, Index: 7299, offset: 13641678, text: Return to Ald'ruhn. Seek out Zanammu of tribe Zainab. He has a particular fondness for outlanders and is less likely to try to kill you. From there, he can direct you to those who will guide you on the path to becoming a friend of the clans.
+text: Haven't the foggiest. My people will explain their needs when you find them. The details aren't my concern, I only care about results. \n\nEnsure they cleanse Valenvaryon, the ruin east of here, and you'll be handsomely rewarded. Do we have a deal?, Length: 248
+ID: 3952276, unknown: 1, Index: 7318, offset: 13641926, text: Haven't the foggiest. My people will explain their needs when you find them. The details aren't my concern, I only care about results. \n\nEnsure they cleanse Valenvaryon, the ruin east of here, and you'll be handsomely rewarded. Do we have a deal?
+text: Your anger is understandable. \n\nA true Telvanni life always involves some seclusion. The higher I climb, the lonelier it gets. But I truly value our friendship, and Eoki's affection. I'd hate to lose either of you., Length: 216
+ID: 3952276, unknown: 1, Index: 7319, offset: 13642142, text: Your anger is understandable. \n\nA true Telvanni life always involves some seclusion. The higher I climb, the lonelier it gets. But I truly value our friendship, and Eoki's affection. I'd hate to lose either of you.
+text: Your hands, crow-friend! Our wings lack such ugly but useful appendages!\n\nNow listen well. Plunder armor of the most ornate sort. Pieces that make a statement! Impractical things, but pretty when polished and shined. Yes, bring such items to me!, Length: 247
+ID: 3952276, unknown: 1, Index: 7323, offset: 13642389, text: Your hands, crow-friend! Our wings lack such ugly but useful appendages!\n\nNow listen well. Plunder armor of the most ornate sort. Pieces that make a statement! Impractical things, but pretty when polished and shined. Yes, bring such items to me!
+text: "Show your appreciation or your arse to our generous rulers as they regale their subjects with their regality. Pranks, performances, and potables on offer in Daggerfall, Ebonheart, and Vulkhel Guard.\n\n"Come one, come all, to the Festival of Fools!", Length: 250
+ID: 3952276, unknown: 1, Index: 7212, offset: 13642639, text: "Show your appreciation or your arse to our generous rulers as they regale their subjects with their regality. Pranks, performances, and potables on offer in Daggerfall, Ebonheart, and Vulkhel Guard.\n\n"Come one, come all, to the Festival of Fools!"
+text: There are some, um, "local attractions" that should have what I'm looking for, but they're no place for royalty.\n\nIf you would risk venturing out on my behalf, I'll ensure you play a key role in today's festivities!, Length: 217
+ID: 3952276, unknown: 1, Index: 7206, offset: 13642856, text: There are some, um, "local attractions" that should have what I'm looking for, but they're no place for royalty.\n\nIf you would risk venturing out on my behalf, I'll ensure you play a key role in today's festivities!
+text: "To redeem this voucher and receive your special cake, look for the chef and his bakery barge in the ports of Vulkhel Guard, Davon's Watch, and the Harbor District of Daggerfall. We guarantee it will be delicious!", Length: 214
+ID: 3952276, unknown: 1, Index: 7205, offset: 13643070, text: "To redeem this voucher and receive your special cake, look for the chef and his bakery barge in the ports of Vulkhel Guard, Davon's Watch, and the Harbor District of Daggerfall. We guarantee it will be delicious!"
+text: 奥薇斯·德罗斯，她是被官方派遣来调查这次偷窃事件的，她相信那些小偷们藏身于普克洞窟。去将那些税金和记录拿回来，城市的建设少不了这些财富。\n\n如果你需要更多情报，可以在维威克城找到奥薇斯。, Length: 276
+ID: 3952276, unknown: 1, Index: 7203, offset: 13643346, text: 奥薇斯·德罗斯，她是被官方派遣来调查这次偷窃事件的，她相信那些小偷们藏身于普克洞窟。去将那些税金和记录拿回来，城市的建设少不了这些财富。\n\n如果你需要更多情报，可以在维威克城找到奥薇斯。
+text: East of our village, hiding among the mounds of ash. If you disturb the mounds, you should draw it out—provided it doesn't ambush you first.\n\nOnce the dire ash beetle appears, your skill will determine the outcome of the encounter., Length: 235
+ID: 3952276, unknown: 1, Index: 7180, offset: 13643581, text: East of our village, hiding among the mounds of ash. If you disturb the mounds, you should draw it out—provided it doesn't ambush you first.\n\nOnce the dire ash beetle appears, your skill will determine the outcome of the encounter.
+text: I am the personal assistant to Narsis Dren and I know a great deal about a good many things! I found the old scroll that mentioned the treasure, after all.\n\nNarsis has been gone a long time, though. Even missed lunch today, and he never skips a meal., Length: 252
+ID: 3952276, unknown: 1, Index: 7277, offset: 13643833, text: I am the personal assistant to Narsis Dren and I know a great deal about a good many things! I found the old scroll that mentioned the treasure, after all.\n\nNarsis has been gone a long time, though. Even missed lunch today, and he never skips a meal.
+text: 它能让人保存记忆留给后人。我希望为我疏远已久的孩子们保留回忆。\n\n我在你的地图上标记了一些地方，在这些地方激活我的石头，我希望保存的记忆就会显现。, Length: 217
+ID: 3952276, unknown: 1, Index: 7172, offset: 13644050, text: 它能让人保存记忆留给后人。我希望为我疏远已久的孩子们保留回忆。\n\n我在你的地图上标记了一些地方，在这些地方激活我的石头，我希望保存的记忆就会显现。
+text: Head toward the camp near Nchuleftingth and search for signs of Old Stomper's attacks. A good tracker can follow the blood trail back to the creature's nest.\n\nJust be wary. Old Stomper has survived these many seasons by being ferocious and cruel., Length: 248
+ID: 3952276, unknown: 1, Index: 7181, offset: 13644298, text: Head toward the camp near Nchuleftingth and search for signs of Old Stomper's attacks. A good tracker can follow the blood trail back to the creature's nest.\n\nJust be wary. Old Stomper has survived these many seasons by being ferocious and cruel.
+text: 是的。暮光女王的仆人。我和我的朋友们为阿祖拉的信徒们解读未来。然而，我们一个一个遭到绑架。\n\n把这个水晶带去流放者大修道院。玫瑰之母会告诉你剩下的部分。, Length: 226
+ID: 3952276, unknown: 1, Index: 7226, offset: 13644524, text: 是的。暮光女王的仆人。我和我的朋友们为阿祖拉的信徒们解读未来。然而，我们一个一个遭到绑架。\n\n把这个水晶带去流放者大修道院。玫瑰之母会告诉你剩下的部分。
+text: 这样瓦托拉和他的士兵都会死 ！我知道流程，提交一份令状需要好几个小时甚至几天的时间！我会给娜玉留张纸条，让她在堡垒那与我们碰头。\n\n我这就动身，不管你来不来。, Length: 233
+ID: 3952276, unknown: 1, Index: 7221, offset: 13644757, text: 这样瓦托拉和他的士兵都会死 ！我知道流程，提交一份令状需要好几个小时甚至几天的时间！我会给娜玉留张纸条，让她在堡垒那与我们碰头。\n\n我这就动身，不管你来不来。
+text: No, no. A colleague of mine, Esulo, has already seen to that. He just needs some help ensuring the books are safely removed from Summerset.\n\nYou'll find him in Golden Gryphon—at the bar, no doubt., Length: 200
+ID: 3952276, unknown: 1, Index: 7492, offset: 13644957, text: No, no. A colleague of mine, Esulo, has already seen to that. He just needs some help ensuring the books are safely removed from Summerset.\n\nYou'll find him in Golden Gryphon—at the bar, no doubt.
+text: 润泽尔的一生最珍贵的宝藏就是他的妻子，温柔的班娜尼。最后一次看到她的时候，她位于我们的船附近。俺猜测她已经机智地躲藏起来了，但想脱身，还是需要点帮助的。\n\n帮我完成这些事情，润泽尔一定会好好奖赏你的。, Length: 298
+ID: 3952276, unknown: 1, Index: 7494, offset: 13645255, text: 润泽尔的一生最珍贵的宝藏就是他的妻子，温柔的班娜尼。最后一次看到她的时候，她位于我们的船附近。俺猜测她已经机智地躲藏起来了，但想脱身，还是需要点帮助的。\n\n帮我完成这些事情，润泽尔一定会好好奖赏你的。
+text: 我派出了一支冒险者和海军想调查一下“海洋斯洛德”会有多大威胁。但是在他们报告发现可靠线索之后，就失去联系了。\n\n 虽然说凯恩纳，格罗格以及米丽娅都很可靠，但是这种杳无音讯的情况实在没法让人放心。, Length: 287
+ID: 3952276, unknown: 1, Index: 7497, offset: 13645542, text: 我派出了一支冒险者和海军想调查一下“海洋斯洛德”会有多大威胁。但是在他们报告发现可靠线索之后，就失去联系了。\n\n 虽然说凯恩纳，格罗格以及米丽娅都很可靠，但是这种杳无音讯的情况实在没法让人放心。
+text: 我可以告诉你的是，军官派出了三名冒险者和一队海军来检查这个事件的严重性。初步报告显示，这支队伍已经失去联系了。\n\n至于军官会让你做点什么，那就是她的事情了。, Length: 232
+ID: 3952276, unknown: 1, Index: 7498, offset: 13645774, text: 我可以告诉你的是，军官派出了三名冒险者和一队海军来检查这个事件的严重性。初步报告显示，这支队伍已经失去联系了。\n\n至于军官会让你做点什么，那就是她的事情了。
+text: Destroy the geysers. Find them and obliterate them as quickly as you can.\n\nYou'll need to fight through the creatures spawned by the geysers, so bring allies with you if you can. And make sure to destroy the pearls. That's the source of the magic., Length: 249
+ID: 3952276, unknown: 1, Index: 7503, offset: 13646023, text: Destroy the geysers. Find them and obliterate them as quickly as you can.\n\nYou'll need to fight through the creatures spawned by the geysers, so bring allies with you if you can. And make sure to destroy the pearls. That's the source of the magic.
+text: 我派出了一支冒险者和海军想调查一下这个威胁有多严重，而我最后听到的报告是“有可靠线索”。\n\n 凯恩纳，格罗格以及米丽娅看起来都挺可靠的，但目前我实在无法不担心他们的安全。, Length: 251
+ID: 3952276, unknown: 1, Index: 7499, offset: 13646274, text: 我派出了一支冒险者和海军想调查一下这个威胁有多严重，而我最后听到的报告是“有可靠线索”。\n\n 凯恩纳，格罗格以及米丽娅看起来都挺可靠的，但目前我实在无法不担心他们的安全。
+text: "To redeem this voucher and receive your special cake, look for the chef and his bakery barge in the ports of Vulkhel Guard, Davon's Watch, and the Harbor District of Daggerfall. We guarantee it will be delicious!", Length: 214
+ID: 3952276, unknown: 1, Index: 7502, offset: 13643070, text: "To redeem this voucher and receive your special cake, look for the chef and his bakery barge in the ports of Vulkhel Guard, Davon's Watch, and the Harbor District of Daggerfall. We guarantee it will be delicious!"
+text: 我担心，"神使花园"已经被一群狼人占据了。最让人绝望的是，神圣裁决没法再分配资源下来抑制这股势力。你得自己解决了。\n\n你愿意接下这个委任吗？, Length: 204
+ID: 3952276, unknown: 1, Index: 7489, offset: 13646478, text: 我担心，"神使花园"已经被一群狼人占据了。最让人绝望的是，神圣裁决没法再分配资源下来抑制这股势力。你得自己解决了。\n\n你愿意接下这个委任吗？
+text: 就在班科莱的“培林墓地”，阿里克尔的“蕾姬之刃”，影沼的希斯特大树，还有迪莎安的“利齿尖塔”。\n\n你要是到了裂隙的附近，就叫醒这个“占卜师”，它应该就能找到这些遗物，卓莎洁会跟你详细分说的。一路顺风。, Length: 298
+ID: 3952276, unknown: 1, Index: 7544, offset: 13646776, text: 就在班科莱的“培林墓地”，阿里克尔的“蕾姬之刃”，影沼的希斯特大树，还有迪莎安的“利齿尖塔”。\n\n你要是到了裂隙的附近，就叫醒这个“占卜师”，它应该就能找到这些遗物，卓莎洁会跟你详细分说的。一路顺风。
+text: 好吧，这么说确实有点难以理解。简单来讲，每一个瓦登费尔的古代望族们将藏书库的位置藏了起来，并且将线索刻在了祖坟上。\n\n我想要人去帮我将这些线索用拓本复刻下来。你能帮我去解决这个难题么?, Length: 272
+ID: 3952276, unknown: 1, Index: 7223, offset: 13647048, text: 好吧，这么说确实有点难以理解。简单来讲，每一个瓦登费尔的古代望族们将藏书库的位置藏了起来，并且将线索刻在了祖坟上。\n\n我想要人去帮我将这些线索用拓本复刻下来。你能帮我去解决这个难题么?
+text: The Wraith-of-Crows can be found within a portal to Evergloam, located in Exarchs' Egress. Take precautions before entering, such as enlisting teammates. Other threats are found in the surrounding area.\n\nDo you accept this contract?, Length: 234
+ID: 3952276, unknown: 1, Index: 7390, offset: 13647282, text: The Wraith-of-Crows can be found within a portal to Evergloam, located in Exarchs' Egress. Take precautions before entering, such as enlisting teammates. Other threats are found in the surrounding area.\n\nDo you accept this contract?
+text: The ruins lie far to the north, west of the Forgotten Wastes. I do not know what dangers surround the ancient shrine, so tread carefully.\n\nReturn to me when you've collected a good amount of relics., Length: 200
+ID: 3952276, unknown: 1, Index: 7197, offset: 13647482, text: The ruins lie far to the north, west of the Forgotten Wastes. I do not know what dangers surround the ancient shrine, so tread carefully.\n\nReturn to me when you've collected a good amount of relics.
+text: The ruins lie to the northwest of Ald'ruhn. Travel to the shrine and slay as many of these vampires as you can. They lair deep below ground where we cannot go, but every death you deal weakens the pack.\n\nRetrieve any relics you find and return to me., Length: 252
+ID: 3952276, unknown: 1, Index: 7198, offset: 13647734, text: The ruins lie to the northwest of Ald'ruhn. Travel to the shrine and slay as many of these vampires as you can. They lair deep below ground where we cannot go, but every death you deal weakens the pack.\n\nRetrieve any relics you find and return to me.
+text: Travel north and west from Ald'ruhn and seek out the ruins near the coast. Gather whatever relics you can find from the exterior ruins and bring them back to me.\n\nAvoid the interior of the shrine, however. The place is cursed., Length: 228
+ID: 3952276, unknown: 1, Index: 7199, offset: 13647962, text: Travel north and west from Ald'ruhn and seek out the ruins near the coast. Gather whatever relics you can find from the exterior ruins and bring them back to me.\n\nAvoid the interior of the shrine, however. The place is cursed.
+text: Free her from her minders, so we may grow fat together! Take a token of my love, the sickly-sweet brownish flesh of mudcrab apples, and she will know I sent you.\n\nThe guard cannot know their king bade the abscencing of his bride. Use cautiousness., Length: 249
+ID: 3952276, unknown: 1, Index: 7200, offset: 13648211, text: Free her from her minders, so we may grow fat together! Take a token of my love, the sickly-sweet brownish flesh of mudcrab apples, and she will know I sent you.\n\nThe guard cannot know their king bade the abscencing of his bride. Use cautiousness.
+text: 不可思议，你居然听懂了！娜玉还说你就像红山的灰烬风暴一样不解人意。原来我们的利刃之母也会犯错啊 \n\n薇娅的情绪很低落，不仅仅是因为她的兄弟。她想跟娜玉一起去。, Length: 233
+ID: 3952276, unknown: 1, Index: 7202, offset: 13648444, text: 不可思议，你居然听懂了！娜玉还说你就像红山的灰烬风暴一样不解人意。原来我们的利刃之母也会犯错啊 \n\n薇娅的情绪很低落，不仅仅是因为她的兄弟。她想跟娜玉一起去。
+text: 你想和那个竹竿子术士说上话？行！去山上那个花哨的“精灵大厅”，你就能找到他。\n\n那么，抱歉了，失陪一下，我可得去冒险了！, Length: 178
+ID: 3952276, unknown: 1, Index: 7500, offset: 13648622, text: 你想和那个竹竿子术士说上话？行！去山上那个花哨的“精灵大厅”，你就能找到他。\n\n那么，抱歉了，失陪一下，我可得去冒险了！
+text: Grand Warlord Sorcalin knows Farragut Lumbermill is providing wood to build the enemy's siege weapons. She wants to put an end to that. Scouts are needed to bring back reports on this site's defenses.\n\n- Gen. Thoron, Length: 217
+ID: 3952276, unknown: 0, Index: 2823, offset: 13648839, text: Grand Warlord Sorcalin knows Farragut Lumbermill is providing wood to build the enemy's siege weapons. She wants to put an end to that. Scouts are needed to bring back reports on this site's defenses.\n\n- Gen. Thoron
+text: 嗯……是的，他是被困在这里。我的父亲在死前转化成了狼人，因此，他的灵魂被迫永远生活在狩猎场里。\n\n我唯一能解放我父亲灵魂的方法就是抓获那只巨犀鹿，赢得海尔辛的欢心。, Length: 244
+ID: 3952276, unknown: 1, Index: 7530, offset: 13649083, text: 嗯……是的，他是被困在这里。我的父亲在死前转化成了狼人，因此，他的灵魂被迫永远生活在狩猎场里。\n\n我唯一能解放我父亲灵魂的方法就是抓获那只巨犀鹿，赢得海尔辛的欢心。
+text: Let me attune you to my spell. There! Now we're connected through my mental link.\n\nFind the three adventurers, Cainar, Grog, and Miriya. When you examine them, the spell should take you into their individual mind traps. I can direct you from there., Length: 250
+ID: 3952276, unknown: 1, Index: 7511, offset: 13649333, text: Let me attune you to my spell. There! Now we're connected through my mental link.\n\nFind the three adventurers, Cainar, Grog, and Miriya. When you examine them, the spell should take you into their individual mind traps. I can direct you from there.
+text: Hidden within the icy tombs of Skyrim.\n\nYou must travel to Stormcrag Crypt, a Nord tomb in Eastmarch. Find the scroll, bring it back to Zahari, and our scholars will do the rest. Simple, no?, Length: 192
+ID: 3952276, unknown: 1, Index: 7749, offset: 13649525, text: Hidden within the icy tombs of Skyrim.\n\nYou must travel to Stormcrag Crypt, a Nord tomb in Eastmarch. Find the scroll, bring it back to Zahari, and our scholars will do the rest. Simple, no?
+text: You must slay a Daedra and store its soul in an empty soul gem. \n\nZahari has collected many empty gems for just this purpose. Use them well. Once you return, our enchanters will imbue our weapons with their power., Length: 215
+ID: 3952276, unknown: 1, Index: 7712, offset: 13649740, text: You must slay a Daedra and store its soul in an empty soul gem. \n\nZahari has collected many empty gems for just this purpose. Use them well. Once you return, our enchanters will imbue our weapons with their power.
+text: Yes, into exactly sixteen pieces. My brother and I found and restored each and every one. And then, just as we were about to put all the pieces together again, they were stolen!\n\nOh, who would even do such a thing?, Length: 216
+ID: 3952276, unknown: 1, Index: 7713, offset: 13649956, text: Yes, into exactly sixteen pieces. My brother and I found and restored each and every one. And then, just as we were about to put all the pieces together again, they were stolen!\n\nOh, who would even do such a thing?
+text: I'll admit, I've never been sure of how it plays the song. Perhaps through an enchantment?\n\nI can't help but feel that we're missing something here. Something that wouldn't be clear until the mural was restored once more., Length: 223
+ID: 3952276, unknown: 1, Index: 7714, offset: 13650179, text: I'll admit, I've never been sure of how it plays the song. Perhaps through an enchantment?\n\nI can't help but feel that we're missing something here. Something that wouldn't be clear until the mural was restored once more.
+text: 巨兽潜入了掠食者台地。杀死他们，把他们的血液收集到这个容器里。一旦你得到血液，把它涂到台地中央附近的仪式祭坛上供奉给海尔辛。\n\n这样做，饥饿之猫便会知道我们对他的崇敬。, Length: 250
+ID: 3952276, unknown: 1, Index: 7776, offset: 13650429, text: 巨兽潜入了掠食者台地。杀死他们，把他们的血液收集到这个容器里。一旦你得到血液，把它涂到台地中央附近的仪式祭坛上供奉给海尔辛。\n\n这样做，饥饿之猫便会知道我们对他的崇敬。
+text: Yes, maybe you can.\n\nI find myself having difficulty focusing. If the force that reanimates these corpses exerts pressure on the mind as well … that would be profoundly unsettling. I intend to search these ruins for answers. Will you join me?, Length: 246
+ID: 3952276, unknown: 1, Index: 7716, offset: 13650675, text: Yes, maybe you can.\n\nI find myself having difficulty focusing. If the force that reanimates these corpses exerts pressure on the mind as well … that would be profoundly unsettling. I intend to search these ruins for answers. Will you join me?
+text: Hmm. Something about the enchantment—it's purposeful. Its strength seems tied to your new friend's will to serve. Fighting the undead with the sword near to hand might be enough to restore it.\n\nWe'll need it fully charged to defeat Arum-Khal., Length: 246
+ID: 3952276, unknown: 1, Index: 7718, offset: 13650921, text: Hmm. Something about the enchantment—it's purposeful. Its strength seems tied to your new friend's will to serve. Fighting the undead with the sword near to hand might be enough to restore it.\n\nWe'll need it fully charged to defeat Arum-Khal.
+text: Hmm. You ask a lot of questions, yes? Mother just told me to stand here and find more farmhands. So I did.\n\nYou have questions? Talk to Mother at our farm. Her name is Kideya, though you should call her ma'am. That is only polite, yes?, Length: 237
+ID: 3952276, unknown: 1, Index: 7719, offset: 13651158, text: Hmm. You ask a lot of questions, yes? Mother just told me to stand here and find more farmhands. So I did.\n\nYou have questions? Talk to Mother at our farm. Her name is Kideya, though you should call her ma'am. That is only polite, yes?
+text: You mean to help? Well, I guess there's no harm in delegating. According to my research, a powerful wizard named Marzula-jo used this place as his laboratory. If you find his notes and any memory stones he might have left behind, I would be indebted., Length: 250
+ID: 3952276, unknown: 1, Index: 7721, offset: 13651408, text: You mean to help? Well, I guess there's no harm in delegating. According to my research, a powerful wizard named Marzula-jo used this place as his laboratory. If you find his notes and any memory stones he might have left behind, I would be indebted.
+text: That is just it. I have no idea. Moons, my head pounds! The effort I exerted at Jode's Core was not without … a cost.\n\nFive-claw, could I convince you to determine the fate of my soldiers and our friends?, Length: 208
+ID: 3952276, unknown: 1, Index: 7723, offset: 13651616, text: That is just it. I have no idea. Moons, my head pounds! The effort I exerted at Jode's Core was not without … a cost.\n\nFive-claw, could I convince you to determine the fate of my soldiers and our friends?
+text: Of course, five-claw, of course! All the more reason to fear crossing the Purring Liar on the road. The Thief-God delights in stealing pride even more than riches.\n\nBetter to make a friend of Rajhin first by acquiring him an offering. Or three., Length: 246
+ID: 3952276, unknown: 1, Index: 7781, offset: 13651862, text: Of course, five-claw, of course! All the more reason to fear crossing the Purring Liar on the road. The Thief-God delights in stealing pride even more than riches.\n\nBetter to make a friend of Rajhin first by acquiring him an offering. Or three.
+text: We merely wish for our recruits to observe your fighting techniques. Teaching through demonstration is most effective, yes?\n\nMeet Captain Shideya at the Kulati Mines in Alik'r and show our soldiers a thing or two about fighting spiders., Length: 238
+ID: 3952276, unknown: 1, Index: 7725, offset: 13652100, text: We merely wish for our recruits to observe your fighting techniques. Teaching through demonstration is most effective, yes?\n\nMeet Captain Shideya at the Kulati Mines in Alik'r and show our soldiers a thing or two about fighting spiders.
+text: Stay focused. We can deal with that later. Right now, we must assist the Defense Force. We'll rendezvous at their command post.\n\nOn your way, however, I have another task for you. I detected several surges of power that I want you to investigate., Length: 248
+ID: 3952276, unknown: 1, Index: 7734, offset: 13652348, text: Stay focused. We can deal with that later. Right now, we must assist the Defense Force. We'll rendezvous at their command post.\n\nOn your way, however, I have another task for you. I detected several surges of power that I want you to investigate.
+text: 扎玛拉克想去协助卡吉特守备军，但他还有些事得先完成。而你，旅行者，你的前途不可限量。\n\n去河堡城找阿伯尼尔·萨恩。请为对抗巨龙伸出援手。, Length: 201
+ID: 3952276, unknown: 1, Index: 7737, offset: 13652549, text: 扎玛拉克想去协助卡吉特守备军，但他还有些事得先完成。而你，旅行者，你的前途不可限量。\n\n去河堡城找阿伯尼尔·萨恩。请为对抗巨龙伸出援手。
+text: Consider it obfuscation to hide your true purpose. We don't want to give Euraxia a reason to react poorly to overtures of reconciliation. Not that I expect to reach an accord, but still.\n\nMeet me in Rimmen and we'll enter the palace together., Length: 244
+ID: 3952276, unknown: 1, Index: 7741, offset: 13652793, text: Consider it obfuscation to hide your true purpose. We don't want to give Euraxia a reason to react poorly to overtures of reconciliation. Not that I expect to reach an accord, but still.\n\nMeet me in Rimmen and we'll enter the palace together.
+text: Yes. Probably. Memories run deep in places like this, and where there are memories, there are spirits. Helpful ones, I hope. With any luck, one of them will answer our questions.\n\nNow, it's a long climb to the temple summit. Are you prepared?, Length: 244
+ID: 3952276, unknown: 1, Index: 7717, offset: 13653037, text: Yes. Probably. Memories run deep in places like this, and where there are memories, there are spirits. Helpful ones, I hope. With any luck, one of them will answer our questions.\n\nNow, it's a long climb to the temple summit. Are you prepared?
+text: 就是那些魔法小饰品！尼苏齐知道在哪里可以找到它们。\n\n找到不齿者居所——一个充满不死者的倒塌庙宇。无论是谁唤醒了他们都留下了许多符咒。带回来三个左右，本人会很感谢你。, Length: 247
+ID: 3952276, unknown: 1, Index: 7775, offset: 13653284, text: 就是那些魔法小饰品！尼苏齐知道在哪里可以找到它们。\n\n找到不齿者居所——一个充满不死者的倒塌庙宇。无论是谁唤醒了他们都留下了许多符咒。带回来三个左右，本人会很感谢你。
+text: 我们在修行堂的那些朋友十分珍爱他们的卷轴。在那些辛酸的岁月里，这些修行者隐藏我们的四轮马车，给我们提供庇护所和温热的食物。我们理应报答这些，不是吗？\n\n请在那些尤拉西恩士兵之前抢救一些卷轴。, Length: 283
+ID: 3952276, unknown: 1, Index: 7774, offset: 13653567, text: 我们在修行堂的那些朋友十分珍爱他们的卷轴。在那些辛酸的岁月里，这些修行者隐藏我们的四轮马车，给我们提供庇护所和温热的食物。我们理应报答这些，不是吗？\n\n请在那些尤拉西恩士兵之前抢救一些卷轴。
+text: A good question, five-claw. This one doesn't think so, but what does Lyrrsazhi know about military engagements? We do have a new queen, though, so that is something.\n\nGo to Riverhold and talk to the Tharn. He should be able to allay your concerns., Length: 249
+ID: 3952276, unknown: 1, Index: 7773, offset: 13653816, text: A good question, five-claw. This one doesn't think so, but what does Lyrrsazhi know about military engagements? We do have a new queen, though, so that is something.\n\nGo to Riverhold and talk to the Tharn. He should be able to allay your concerns.
+text: Now these satchels work, but they turn the plants so bitter no one will drink the tonics Aveberl makes. We've found a sweet syrup in the Wellspring that makes them tolerable, but you'll have to deal with the patrol factotums. \n\nStill interested?, Length: 247
+ID: 3952276, unknown: 1, Index: 7341, offset: 13654063, text: Now these satchels work, but they turn the plants so bitter no one will drink the tonics Aveberl makes. We've found a sweet syrup in the Wellspring that makes them tolerable, but you'll have to deal with the patrol factotums. \n\nStill interested?
+text: 我需要确保不会有其他人进入传送门。\n\n但也许你可以进去寻找一下我的助手瓦瑞娅。这种感知记录仪会自动记录下你所经历的一切，并且能定位到我的助手。拿着，好好使用它。, Length: 238
+ID: 3952276, unknown: 1, Index: 7344, offset: 13654301, text: 我需要确保不会有其他人进入传送门。\n\n但也许你可以进去寻找一下我的助手瓦瑞娅。这种感知记录仪会自动记录下你所经历的一切，并且能定位到我的助手。拿着，好好使用它。
+text: Icehammer Vault, a Nord tomb in Eastmarch. \n\nFind the scroll within its icy depths, and return to Zahari. She will then make sure it is sent to our scholars. After all, ancient Nord is not this one's first language., Length: 217
+ID: 3952276, unknown: 1, Index: 7750, offset: 13654518, text: Icehammer Vault, a Nord tomb in Eastmarch. \n\nFind the scroll within its icy depths, and return to Zahari. She will then make sure it is sent to our scholars. After all, ancient Nord is not this one's first language.
+text: 嗯，我曾经和一个亚龙人法师交战过。他能够穿越暗影—在极短的时间内移动很长的距离。这也许就是答案，阴影传送门之类的？\n\n我们需要知道更多信息。, Length: 208
+ID: 3952276, unknown: 1, Index: 7345, offset: 13611021, text: 嗯，我曾经和一个亚龙人法师交战过。他能够穿越暗影—在极短的时间内移动很长的距离。这也许就是答案，阴影传送门之类的？\n\n我们需要知道更多信息。
+text: Travel to Shroud Hearth, a Nord tomb in the Rift. Search for the scroll hidden within its icy depths. The information it contains could very well turn the tide of battle., Length: 170
+ID: 3952276, unknown: 1, Index: 7751, offset: 13654688, text: Travel to Shroud Hearth, a Nord tomb in the Rift. Search for the scroll hidden within its icy depths. The information it contains could very well turn the tide of battle.
+text: 不是随便一种茶！是萨马白毫！全泰姆瑞尔最好的茶。\n\n嗯……如此柔和令人沉醉的味道。如此的甜美的柑橘余香！一想到这一点就口水直流，不是吗？摘那些最好的，最嫩的茶叶。尼苏齐会给你发高薪！, Length: 271
+ID: 3952276, unknown: 1, Index: 7778, offset: 13654959, text: 不是随便一种茶！是萨马白毫！全泰姆瑞尔最好的茶。\n\n嗯……如此柔和令人沉醉的味道。如此的甜美的柑橘余香！一想到这一点就口水直流，不是吗？摘那些最好的，最嫩的茶叶。尼苏齐会给你发高薪！
+text: Not according to the official record. The Imperials built a fort here around three hundred years ago, but it was lost to some unspoken calamity and abandoned. Unofficially, an item of similar description was unearthed here not long before then., Length: 244
+ID: 3952276, unknown: 1, Index: 7681, offset: 13655203, text: Not according to the official record. The Imperials built a fort here around three hundred years ago, but it was lost to some unspoken calamity and abandoned. Unofficially, an item of similar description was unearthed here not long before then.
+text: Then what are you doing here? Famia will not last long without your help, new blood! And if she dies, who will Zadaza work for and make fun of?\n\nYou should go find her, yes?, Length: 175
+ID: 3952276, unknown: 1, Index: 7683, offset: 13655378, text: Then what are you doing here? Famia will not last long without your help, new blood! And if she dies, who will Zadaza work for and make fun of?\n\nYou should go find her, yes?
+text: Could they be interested in the Moon Gate of Anequina? It lies in that direction.\n\nI wonder if this pertains to Euraxia's final order? A soldier mentioned it after we captured her, but she refused to elaborate. Maybe you can help Tharn find out more., Length: 252
+ID: 3952276, unknown: 1, Index: 7686, offset: 13655630, text: Could they be interested in the Moon Gate of Anequina? It lies in that direction.\n\nI wonder if this pertains to Euraxia's final order? A soldier mentioned it after we captured her, but she refused to elaborate. Maybe you can help Tharn find out more.
+text: Simply put, I just acquired two halves of an ancient tablet. The Wrathstone. It forms a map that will lead us to a weapon capable of forcing all sides to cease their aggressive behavior.\n\nHelp me find this weapon and we can end the war., Length: 238
+ID: 3952276, unknown: 1, Index: 7688, offset: 13655868, text: Simply put, I just acquired two halves of an ancient tablet. The Wrathstone. It forms a map that will lead us to a weapon capable of forcing all sides to cease their aggressive behavior.\n\nHelp me find this weapon and we can end the war.
+程序“[9488] ESO_LangEditor.GUI.exe”已退出，返回值为 -1 (0xffffffff)。

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ESO_LangEditor.Core.Models
 {
-    public class UserPasswordResetDto
+    public class UserPasswordRecoveryDto
     {
         public string UserName { get; set; }
         public string NewPassword { get; set; }

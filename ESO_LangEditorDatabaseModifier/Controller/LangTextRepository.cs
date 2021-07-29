@@ -46,11 +46,11 @@ namespace ESO_LangEditorDatabaseModifier.Controller
             }
         }
 
-        public List<LangText> GeAlltLangTexts_v4()
+        public Dictionary<string, LangText> GeAlltLangTexts_v4()
         {
             using (var db = new LangDbContextV4())
             {
-                return db.Langtexts.ToList();
+                return db.Langtexts.ToDictionary(lang => lang.TextId);
 
                 //return data;
             }
@@ -81,6 +81,32 @@ namespace ESO_LangEditorDatabaseModifier.Controller
 
             Debug.WriteLine("Save Done!");
         }
+
+        public void AddNewLangsToV5(List<LangText> v4List)
+        {
+
+            using (var db = new LangDbContextV5())
+            {
+                db.Database.EnsureCreated();
+                db.AddRange(v4List);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save Done!");
+        }
+
+        public void UpdateLangsToV4(List<LangText> v4List)
+        {
+
+            using (var db = new LangDbContextV4())
+            {
+                //db.Database.EnsureCreated();
+                db.UpdateRange(v4List);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save Done!");
+        }
         public void AddUsersToV4(List<UserInClient> v4UserList)
         {
 
@@ -88,6 +114,32 @@ namespace ESO_LangEditorDatabaseModifier.Controller
             {
                 db.Database.EnsureCreated();
                 db.AddRange(v4UserList);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save Done!");
+        }
+
+        public void AddUsersToV5(List<UserInClient> v4UserList)
+        {
+
+            using (var db = new LangDbContextV5())
+            {
+                db.Database.EnsureCreated();
+                db.AddRange(v4UserList);
+                db.SaveChanges();
+            }
+
+            Debug.WriteLine("Save Done!");
+        }
+
+        public void AddRevToV5(int revnumber)
+        {
+
+            using (var db = new LangDbContextV5())
+            {
+                db.Database.EnsureCreated();
+                db.Add(revnumber);
                 db.SaveChanges();
             }
 

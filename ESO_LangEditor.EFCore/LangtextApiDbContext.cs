@@ -20,6 +20,7 @@ namespace ESO_LangEditor.EFCore
         public DbSet<LangTextArchive> LangtextArchive { get; set; }
         public DbSet<LangTextRevised> LangtextRevised { get; set; }
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
+        public DbSet<UserRegistrationCode> UserRegistrationCode { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

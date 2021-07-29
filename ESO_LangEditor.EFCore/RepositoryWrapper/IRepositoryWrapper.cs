@@ -12,5 +12,6 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
         ILangTextArchiveRepository LangTextArchiveRepo { get; }
         ILangTextRevisedRepository LangTextRevisedRepo { get; }
         ILangTextRevNumberRepository LangTextRevNumberRepo { get; }
+        IRegistrationCodeRepository RegistrationCodeRepo { get; }
     }
 }

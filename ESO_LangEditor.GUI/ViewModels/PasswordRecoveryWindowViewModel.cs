@@ -49,7 +49,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private void UserPasswordReset(object obj)
         {
-            _userAccess.SetUserPasswordByRecoveryCode(new UserPasswordResetDto
+            _userAccess.SetUserPasswordByRecoveryCode(new UserPasswordRecoveryDto
             {
                 UserName = UserName,
                 NewPassword = _passwordBox.Password,

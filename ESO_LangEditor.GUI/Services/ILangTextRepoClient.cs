@@ -13,7 +13,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<LangTextClient> GetLangTextByGuidAsync(Guid langtextGuid);
         Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, SearchTextType searchType, SearchPostion searchPostion);
         Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2,SearchTextType searchType, SearchTextType searchType2, SearchPostion searchPostion);
-        Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync();
+        Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync(int searchType);
         Task<List<LangTextDto>> GetAlltLangTexts();
         Task<bool> AddLangtexts(List<LangTextClient> langtextDto);
         Task<bool> UpdateLangtextEn(List<LangTextForUpdateEnDto> langtextDto);

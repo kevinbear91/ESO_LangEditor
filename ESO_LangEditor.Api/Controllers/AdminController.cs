@@ -139,97 +139,108 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> AddUserAsync(UserDto username)
+        [HttpGet("{userId}/passwordrecoverycode")]
+        public async Task<IActionResult> GetUserPasswordRecoveryToken(Guid userId)
         {
-            Guid userId;
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            if (username.ID == null || username.ID == new Guid())
-            {
-                userId = Guid.NewGuid();
-            }
-            else
-            {
-                userId = username.ID;
-            }
-
-            var user = new User
-            {
-                Id = userId,
-                UserName = username.UserName,
-                //Email = "123@2233.com",
-
-            };
-
-            var result = await _userManager.CreateAsync(user);
-
-            //foreach(var error in result.Errors)
-            //{
-            //    Debug.WriteLine(error.Description);
-            //    _loggerMessage = "Creat user Failed, Error: " + error;
-            //    _logger.LogError(_loggerMessage);
-            //}
-            
-            if (result.Succeeded)
-            {
-
-                await _userManager.AddToRoleAsync(user, "InitUser");
-
-                var refreshToken = _tokenService.GenerateRefreshToken();
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpireTime = DateTime.Now.AddDays(1);
-
-                await _userManager.UpdateAsync(user);
-                var userDto = _mapper.Map<UserDto>(user);
-
-                return userDto;
-
-            }
-            else
-            {
-                foreach (var error in result.Errors)
-                {
-                    Debug.WriteLine(error.Description);
-                    _loggerMessage = "Create user Failed, Error: " + error;
-                    _logger.LogError(_loggerMessage);
-                }
-                return BadRequest();
-            }
-
+            return Ok(token);
         }
 
-        [Authorize(Roles = "Creater")]
-        [HttpGet("init/{userId}")]
-        public async Task<ActionResult<UserDto>> InitExistUserAsync(string userId)
-        {
-            var user = await _userManager.FindByIdAsync(userId);
 
-            if (user.SecurityStamp == null)
-            {
-                await _userManager.UpdateSecurityStampAsync(user);
-            }
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost("register")]
+        //public async Task<ActionResult<UserDto>> AddUserAsync(UserDto username)
+        //{
+        //    Guid userId;
 
-            if (user != null)
-            {
-                await _userManager.AddToRoleAsync(user, "InitUser");
+        //    if (username.ID == null || username.ID == new Guid())
+        //    {
+        //        userId = Guid.NewGuid();
+        //    }
+        //    else
+        //    {
+        //        userId = username.ID;
+        //    }
 
-                var refreshToken = _tokenService.GenerateRefreshToken();
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpireTime = DateTime.Now.AddDays(1);
+        //    var user = new User
+        //    {
+        //        Id = userId,
+        //        UserName = username.UserName,
+        //        //Email = "123@2233.com",
 
-                await _userManager.UpdateAsync(user);
-                var userDto = _mapper.Map<UserDto>(user);
+        //    };
 
-                return userDto;
+        //    var result = await _userManager.CreateAsync(user);
 
-            }
-            else
-            {
-                _loggerMessage = "Init user Failed, user id: " + userId;
-                _logger.LogError(_loggerMessage);
-                return BadRequest();
-            }
+        //    //foreach(var error in result.Errors)
+        //    //{
+        //    //    Debug.WriteLine(error.Description);
+        //    //    _loggerMessage = "Creat user Failed, Error: " + error;
+        //    //    _logger.LogError(_loggerMessage);
+        //    //}
 
-        }
+        //    if (result.Succeeded)
+        //    {
+
+        //        await _userManager.AddToRoleAsync(user, "InitUser");
+
+        //        var refreshToken = _tokenService.GenerateRefreshToken();
+        //        user.RefreshToken = refreshToken;
+        //        user.RefreshTokenExpireTime = DateTime.Now.AddDays(1);
+
+        //        await _userManager.UpdateAsync(user);
+        //        var userDto = _mapper.Map<UserDto>(user);
+
+        //        return userDto;
+
+        //    }
+        //    else
+        //    {
+        //        foreach (var error in result.Errors)
+        //        {
+        //            Debug.WriteLine(error.Description);
+        //            _loggerMessage = "Create user Failed, Error: " + error;
+        //            _logger.LogError(_loggerMessage);
+        //        }
+        //        return BadRequest();
+        //    }
+
+        //}
+
+        //[Authorize(Roles = "Creater")]
+        //[HttpGet("init/{userId}")]
+        //public async Task<ActionResult<UserDto>> InitExistUserAsync(string userId)
+        //{
+        //    var user = await _userManager.FindByIdAsync(userId);
+
+        //    if (user.SecurityStamp == null)
+        //    {
+        //        await _userManager.UpdateSecurityStampAsync(user);
+        //    }
+
+        //    if (user != null)
+        //    {
+        //        await _userManager.AddToRoleAsync(user, "InitUser");
+
+        //        var refreshToken = _tokenService.GenerateRefreshToken();
+        //        user.RefreshToken = refreshToken;
+        //        user.RefreshTokenExpireTime = DateTime.Now.AddDays(1);
+
+        //        await _userManager.UpdateAsync(user);
+        //        var userDto = _mapper.Map<UserDto>(user);
+
+        //        return userDto;
+
+        //    }
+        //    else
+        //    {
+        //        _loggerMessage = "Init user Failed, user id: " + userId;
+        //        _logger.LogError(_loggerMessage);
+        //        return BadRequest();
+        //    }
+
+        //}
     }
 }

@@ -1,0 +1,971 @@
+﻿“ESO_LangEditor.GUI.exe”(CoreCLR: DefaultDomain): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.CoreLib.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\ESO_LangEditor.GUI.dll”。已加载符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Prism.Unity.Wpf.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Prism.Wpf.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\WindowsBase.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Xaml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Prism.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\ESO_LangEditor.Core.dll”。已加载符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Process.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\netstandard.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Tasks.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\ESO_LangEditor.EFCore.dll”。已加载符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Sqlite.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Tasks.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Debug.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\Microsoft.Win32.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.NonGeneric.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+Total lines: 336
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.InteropServices.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Relational.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Data.Common.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Linq.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Remote Debugger\x64\Runtime\Microsoft.VisualStudio.Debugger.Runtime.NetCoreApp.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.ThreadPool.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+单步执行: 正在逐过程执行非用户代码“ESO_LangEditor.GUI.App..ctor”
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.TraceSource.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.IO.Packaging.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.RegularExpressions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.Uri.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationCore.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\mscorlib.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\DirectWriteForwarder.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.CompilerServices.VisualC.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Buffers.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\Microsoft.Win32.Registry.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.Specialized.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Thread.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Configuration.ConfigurationManager.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Xml.ReaderWriter.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.Xml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.IO.FileSystem.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.WebClient.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Memory.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.Algorithms.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.Encoding.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+单步执行: 正在逐过程执行非用户代码“ESO_LangEditor.GUI.App.InitializeComponent”
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Resources.ResourceManager.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.TypeConverter.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Windows.Extensions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.Concurrent.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ObjectModel.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\MaterialDesignThemes.Wpf.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\MaterialDesignColors.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Requests.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Principal.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.WebHeaderCollection.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework.Aero2.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Console.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Http.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.Json.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Emit.Lightweight.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Emit.ILGeneration.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Numerics.Vectors.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.CompilerServices.Unsafe.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Text.Encodings.Web.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Tracing.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Security.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.X509Certificates.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Unity.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Unity.Container.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\AutoMapper.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\NLog.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Linq.Expressions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Stores.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.ComponentModel.Annotations.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Identity.Core.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Drawing.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.StackTrace.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Mail.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.IO.FileSystem.Watcher.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.Sockets.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.Tools.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Timer.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.FileVersionInfo.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\UIAutomationTypes.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Diagnostics.DiagnosticSource.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Threading.Overlapped.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Net.NameResolution.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\System.Windows.Controls.Ribbon.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework-SystemCore.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework-SystemXml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+System.Windows.Data Error: 40 : BindingExpression path error: 'AvatarPath' property not found on 'object' ''MainWindowViewModel' (HashCode=21618074)'. BindingExpression:Path=AvatarPath; DataItem='MainWindowViewModel' (HashCode=21618074); target element is 'Image' (Name=''); target property is 'Source' (type 'ImageSource')
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\PresentationFramework-SystemData.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\UIAutomationProvider.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\zh-Hans\PresentationFramework.resources.dll”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Principal.Windows.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Claims.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Reflection.Metadata.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Collections.Immutable.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+System.Windows.Data Error: 23 : Cannot convert '<null>' from type '<null>' to type 'System.Windows.Visibility' for 'en-US' culture with default conversions; consider using Converter property of Binding. NotSupportedException:'System.NotSupportedException: EnumConverter cannot convert from (null).
+   at System.ComponentModel.TypeConverter.GetConvertFromException(Object value)
+   at System.ComponentModel.TypeConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
+   at System.ComponentModel.EnumConverter.ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, Object value)
+   at MS.Internal.Data.DefaultValueConverter.ConvertHelper(Object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, Boolean isForward)'
+System.Windows.Data Warning: 6 : 'ObjectSourceConverter' converter failed to convert value '<null>' (type '<null>'); fallback value will be used, if available. BindingExpression:Path=Value; DataItem='DiscreteObjectKeyFrame' (HashCode=3658088); target element is 'DataGridTextColumn' (HashCode=15257500); target property is 'Visibility' (type 'Visibility') NotSupportedException:'System.NotSupportedException: EnumConverter cannot convert from (null).
+   at MS.Internal.Data.DefaultValueConverter.ConvertHelper(Object o, Type destinationType, DependencyObject targetElement, CultureInfo culture, Boolean isForward)
+   at MS.Internal.Data.ObjectSourceConverter.Convert(Object o, Type type, Object parameter, CultureInfo culture)
+   at System.Windows.Data.BindingExpression.ConvertHelper(IValueConverter converter, Object value, Type targetType, Object parameter, CultureInfo culture)'
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\zh-Hans\PresentationCore.resources.dll”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Security.Cryptography.Encoding.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Numerics.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“c:\program files (x86)\microsoft visual studio\2019\community\common7\ide\commonextensions\microsoft\xamldiagnostics\Core\x64\Microsoft.VisualStudio.DesignTools.WpfTap.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.IO.Pipes.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Json.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Private.DataContractSerialization.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Xml.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.Serialization.Formatters.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\3.1.17\Accessibility.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Linq.Queryable.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Transactions.Local.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Logging.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“Anonymously Hosted DynamicMethods Assembly”。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Caching.Memory.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Bcl.HashCode.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Extensions.Configuration.Abstractions.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\Microsoft.Data.Sqlite.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.core.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.batteries_v2.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.provider.dynamic_cdecl.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“D:\Work\CSharp\ESO_LangEditor\ESO_LangEditor.GUI\bin\x64\Debug\netcoreapp3.1\SQLitePCLRaw.nativelibrary.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Windows\system32\WinMetadata\Windows.Storage.winmd”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Windows\system32\WinMetadata\Windows.Foundation.winmd”。模块已生成，不包含符号。
+“ESO_LangEditor.GUI.exe”(CoreCLR: clrhost): 已加载“C:\Program Files\dotnet\shared\Microsoft.NETCore.App\3.1.17\System.Runtime.InteropServices.WindowsRuntime.dll”。已跳过加载符号。模块进行了优化，并且调试器选项“仅我的代码”已启用。
+线程 0x4c74 已退出，返回值为 0 (0x0)。
+线程 0x23cc 已退出，返回值为 0 (0x0)。
+线程 0x63ac 已退出，返回值为 0 (0x0)。
+线程 0x3e60 已退出，返回值为 0 (0x0)。
+线程 0x3930 已退出，返回值为 0 (0x0)。
+text: 表情：|c22ADDC喝酒|r, Length: 26
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 229
+text bytes: 150
+text bytes: 157
+text bytes: 233
+text bytes: 133
+text bytes: 146
+text bytes: 124
+text bytes: 114
+text bytes: 0
+ID: 3427285, unknown: 3, Index: 3, offset: 13601714, text: 表情：|c22ADDC喝酒|r
+text: EMOTE: |c22ADDCSalute, Length: 22
+text bytes: 69
+text bytes: 77
+text bytes: 79
+text bytes: 84
+text bytes: 69
+text bytes: 58
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 83
+text bytes: 97
+text bytes: 108
+text bytes: 117
+text bytes: 116
+text bytes: 101
+text bytes: 0
+ID: 3427285, unknown: 2, Index: 31, offset: 13601736, text: EMOTE: |c22ADDCSalute
+text: 表情, Length: 7
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 0
+ID: 3427285, unknown: 3, Index: 7, offset: 13601743, text: 表情
+text: 靠墙站（背）, Length: 19
+text bytes: 233
+text bytes: 157
+text bytes: 160
+text bytes: 229
+text bytes: 162
+text bytes: 153
+text bytes: 231
+text bytes: 171
+text bytes: 153
+text bytes: 239
+text bytes: 188
+text bytes: 136
+text bytes: 232
+text bytes: 131
+text bytes: 140
+text bytes: 239
+text bytes: 188
+text bytes: 137
+text bytes: 0
+ID: 3427285, unknown: 2, Index: 9, offset: 13601762, text: 靠墙站（背）
+text: 潜行走, Length: 10
+text bytes: 230
+text bytes: 189
+text bytes: 156
+text bytes: 232
+text bytes: 161
+text bytes: 140
+text bytes: 232
+text bytes: 181
+text bytes: 176
+text bytes: 0
+ID: 3427285, unknown: 8, Index: 16, offset: 13601772, text: 潜行走
+text: 奔跑, Length: 7
+text bytes: 229
+text bytes: 165
+text bytes: 148
+text bytes: 232
+text bytes: 183
+text bytes: 145
+text bytes: 0
+ID: 3427285, unknown: 8, Index: 17, offset: 13601779, text: 奔跑
+text: 奔跑, Length: 7
+text bytes: 229
+text bytes: 165
+text bytes: 148
+text bytes: 232
+text bytes: 183
+text bytes: 145
+text bytes: 0
+ID: 3427285, unknown: 2, Index: 24, offset: 13601779, text: 奔跑
+text: 表情： |c22ADDCeat3, Length: 23
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 101
+text bytes: 97
+text bytes: 116
+text bytes: 51
+text bytes: 0
+ID: 3427285, unknown: 4, Index: 23, offset: 13601802, text: 表情： |c22ADDCeat3
+text: 表情： |c22ADDCidle4, Length: 24
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 105
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 52
+text bytes: 0
+ID: 3427285, unknown: 4, Index: 24, offset: 13601826, text: 表情： |c22ADDCidle4
+text: 闲置： |c22ADDCidle2, Length: 24
+text bytes: 233
+text bytes: 151
+text bytes: 178
+text bytes: 231
+text bytes: 189
+text bytes: 174
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 105
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 50
+text bytes: 0
+ID: 3427285, unknown: 4, Index: 26, offset: 13601850, text: 闲置： |c22ADDCidle2
+text: 奔跑, Length: 7
+text bytes: 229
+text bytes: 165
+text bytes: 148
+text bytes: 232
+text bytes: 183
+text bytes: 145
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 19, offset: 13601779, text: 奔跑
+text: 表情： |c22ADDCarmscrossed, Length: 30
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 97
+text bytes: 114
+text bytes: 109
+text bytes: 115
+text bytes: 99
+text bytes: 114
+text bytes: 111
+text bytes: 115
+text bytes: 115
+text bytes: 101
+text bytes: 100
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 22, offset: 13601880, text: 表情： |c22ADDCarmscrossed
+text: 表情： |c22ADDCtwiddle, Length: 26
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 116
+text bytes: 119
+text bytes: 105
+text bytes: 100
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 24, offset: 13601906, text: 表情： |c22ADDCtwiddle
+text: 步行, Length: 7
+text bytes: 230
+text bytes: 173
+text bytes: 165
+text bytes: 232
+text bytes: 161
+text bytes: 140
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 23, offset: 13601913, text: 步行
+text: 表情： |c22ADDCritual, Length: 25
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 114
+text bytes: 105
+text bytes: 116
+text bytes: 117
+text bytes: 97
+text bytes: 108
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 26, offset: 13601938, text: 表情： |c22ADDCritual
+text: 表情： |c22ADDCgreet, Length: 24
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 103
+text bytes: 114
+text bytes: 101
+text bytes: 101
+text bytes: 116
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 27, offset: 13601962, text: 表情： |c22ADDCgreet
+text: 表情： |c22ADDCSearch, Length: 25
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 83
+text bytes: 101
+text bytes: 97
+text bytes: 114
+text bytes: 99
+text bytes: 104
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 28, offset: 13601987, text: 表情： |c22ADDCSearch
+text: EMOTE: |c22ADDCWave, Length: 20
+text bytes: 69
+text bytes: 77
+text bytes: 79
+text bytes: 84
+text bytes: 69
+text bytes: 58
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 87
+text bytes: 97
+text bytes: 118
+text bytes: 101
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 31, offset: 13602007, text: EMOTE: |c22ADDCWave
+text: 奔跑, Length: 7
+text bytes: 229
+text bytes: 165
+text bytes: 148
+text bytes: 232
+text bytes: 183
+text bytes: 145
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 3, offset: 13601779, text: 奔跑
+text: 表情： |c22ADDCIdle3|r, Length: 26
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 73
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 51
+text bytes: 124
+text bytes: 114
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 18, offset: 13602033, text: 表情： |c22ADDCIdle3|r
+text: JOG, Length: 4
+text bytes: 74
+text bytes: 79
+text bytes: 71
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 14, offset: 13602037, text: JOG
+text: JOG, Length: 4
+text bytes: 74
+text bytes: 79
+text bytes: 71
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 17, offset: 13602037, text: JOG
+text: 表情： |c22ADDC Idle4|r, Length: 27
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 32
+text bytes: 73
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 52
+text bytes: 124
+text bytes: 114
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 18, offset: 13602064, text: 表情： |c22ADDC Idle4|r
+text: 表情： |c22ADDCbow, Length: 22
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 98
+text bytes: 111
+text bytes: 119
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 24, offset: 13602086, text: 表情： |c22ADDCbow
+text: 闲置： |c22ADDCidle4, Length: 24
+text bytes: 233
+text bytes: 151
+text bytes: 178
+text bytes: 231
+text bytes: 189
+text bytes: 174
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 105
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 52
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 26, offset: 13602110, text: 闲置： |c22ADDCidle4
+text: 表情： |c22ADDCidle4, Length: 24
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 105
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 52
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 27, offset: 13601826, text: 表情： |c22ADDCidle4
+text: 表情： |c22ADDCPhew, Length: 23
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 80
+text bytes: 104
+text bytes: 101
+text bytes: 119
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 28, offset: 13602133, text: 表情： |c22ADDCPhew
+text: 表情： |c22ADDCTilt|r, Length: 25
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 84
+text bytes: 105
+text bytes: 108
+text bytes: 116
+text bytes: 124
+text bytes: 114
+text bytes: 0
+ID: 3427285, unknown: 3, Index: 14, offset: 13602158, text: 表情： |c22ADDCTilt|r
+text: 靠墙站（侧）, Length: 19
+text bytes: 233
+text bytes: 157
+text bytes: 160
+text bytes: 229
+text bytes: 162
+text bytes: 153
+text bytes: 231
+text bytes: 171
+text bytes: 153
+text bytes: 239
+text bytes: 188
+text bytes: 136
+text bytes: 228
+text bytes: 190
+text bytes: 167
+text bytes: 239
+text bytes: 188
+text bytes: 137
+text bytes: 0
+ID: 3427285, unknown: 3, Index: 9, offset: 13602177, text: 靠墙站（侧）
+text: 奔跑, Length: 7
+text bytes: 229
+text bytes: 165
+text bytes: 148
+text bytes: 232
+text bytes: 183
+text bytes: 145
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 23, offset: 13601779, text: 奔跑
+text: 步行, Length: 7
+text bytes: 230
+text bytes: 173
+text bytes: 165
+text bytes: 232
+text bytes: 161
+text bytes: 140
+text bytes: 0
+ID: 3427285, unknown: 8, Index: 18, offset: 13601913, text: 步行
+text: 潜行, Length: 7
+text bytes: 230
+text bytes: 189
+text bytes: 156
+text bytes: 232
+text bytes: 161
+text bytes: 140
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 16, offset: 13602184, text: 潜行
+text: 表情： |c22ADDCwave, Length: 23
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 119
+text bytes: 97
+text bytes: 118
+text bytes: 101
+text bytes: 0
+ID: 3427285, unknown: 8, Index: 24, offset: 13602207, text: 表情： |c22ADDCwave
+text: 步行, Length: 7
+text bytes: 230
+text bytes: 173
+text bytes: 165
+text bytes: 232
+text bytes: 161
+text bytes: 140
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 17, offset: 13601913, text: 步行
+text: 步行, Length: 7
+text bytes: 230
+text bytes: 173
+text bytes: 165
+text bytes: 232
+text bytes: 161
+text bytes: 140
+text bytes: 0
+ID: 3427285, unknown: 6, Index: 14, offset: 13601913, text: 步行
+text: 表情： |c22ADDCidle3, Length: 24
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 105
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 51
+text bytes: 0
+ID: 3427285, unknown: 4, Index: 27, offset: 13602231, text: 表情： |c22ADDCidle3
+text: 表情： |c22ADDCTake, Length: 23
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 84
+text bytes: 97
+text bytes: 107
+text bytes: 101
+text bytes: 0
+ID: 3427285, unknown: 4, Index: 28, offset: 13602254, text: 表情： |c22ADDCTake
+text: EMOTE: |c22ADDCSearch, Length: 22
+text bytes: 69
+text bytes: 77
+text bytes: 79
+text bytes: 84
+text bytes: 69
+text bytes: 58
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 83
+text bytes: 101
+text bytes: 97
+text bytes: 114
+text bytes: 99
+text bytes: 104
+text bytes: 0
+ID: 3427285, unknown: 7, Index: 31, offset: 13602276, text: EMOTE: |c22ADDCSearch
+text: EMOTE: |c22ADDCIdle 2, Length: 22
+text bytes: 69
+text bytes: 77
+text bytes: 79
+text bytes: 84
+text bytes: 69
+text bytes: 58
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 73
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 32
+text bytes: 50
+text bytes: 0
+ID: 3427285, unknown: 4, Index: 31, offset: 13602298, text: EMOTE: |c22ADDCIdle 2
+text: JOG, Length: 4
+text bytes: 74
+text bytes: 79
+text bytes: 71
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 8, offset: 13602037, text: JOG
+text: 表情： |c22ADDCIdle3|r, Length: 26
+text bytes: 232
+text bytes: 161
+text bytes: 168
+text bytes: 230
+text bytes: 131
+text bytes: 133
+text bytes: 239
+text bytes: 188
+text bytes: 154
+text bytes: 32
+text bytes: 124
+text bytes: 99
+text bytes: 50
+text bytes: 50
+text bytes: 65
+text bytes: 68
+text bytes: 68
+text bytes: 67
+text bytes: 73
+text bytes: 100
+text bytes: 108
+text bytes: 101
+text bytes: 51
+text bytes: 124
+text bytes: 114
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 14, offset: 13602033, text: 表情： |c22ADDCIdle3|r
+text: JOG, Length: 4
+text bytes: 74
+text bytes: 79
+text bytes: 71
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 15, offset: 13602037, text: JOG
+text: JOG, Length: 4
+text bytes: 74
+text bytes: 79
+text bytes: 71
+text bytes: 0
+ID: 3427285, unknown: 5, Index: 16, offset: 13602037, text: JOG
+text: 表情： |c22ADDCYes|r, Length: 24
+程序“[19740] ESO_LangEditor.GUI.exe”已退出，返回值为 -1 (0xffffffff)。

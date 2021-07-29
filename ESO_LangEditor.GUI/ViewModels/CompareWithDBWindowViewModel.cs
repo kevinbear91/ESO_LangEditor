@@ -378,7 +378,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             Dictionary<string, LangTextDto> fileContent = new Dictionary<string, LangTextDto>();
             InfoText = "正在读取数据库……";
 
-            var DbDict = await Task.Run(() => _langTextRepository.GetAlltLangTextsDictionaryAsync());
+            var DbDict = await Task.Run(() => _langTextRepository.GetAlltLangTextsDictionaryAsync(0));
 
             InfoText = "正在分析文件……";
             foreach (var file in FileList)

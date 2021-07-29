@@ -187,16 +187,16 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void GetUserList(object obj)
         {
-            var userlist = await _userService.GetUserList();
+            //var userlist = await _userService.GetUserList();
 
-            UserList = new ObservableCollection<UserInClientDto>(userlist);
+            //UserList = new ObservableCollection<UserInClientDto>(userlist);
 
-            //TO DO
+            ////TO DO
 
-            foreach (var user in _userList)
-            {
-                Debug.WriteLine(user.Id);
-            }
+            //foreach (var user in _userList)
+            //{
+            //    Debug.WriteLine(user.Id);
+            //}
 
         }
 

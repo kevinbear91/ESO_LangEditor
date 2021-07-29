@@ -1,9 +1,11 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -17,6 +19,12 @@ namespace ESO_LangEditor.GUI.Services
     public class LangFile : ILangFile
     {
         Dictionary<string, LangTextDto> _data;
+        private ILangTextRepoClient _langTextRepo;
+
+        public LangFile(/*ILangTextRepoClient langTextRepo*/)
+        {
+            //_langTextRepo = langTextRepo;
+        }
 
         public async Task<Dictionary<string, LangTextDto>> ParseCsvFile(string filePath)
         {
@@ -472,9 +480,219 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        public Task ExportToLang(List<LangTextDto> langList)
+        public async Task ExportToLang(Dictionary<string, LangTextDto> langList)
         {
-            throw new NotImplementedException();
+            //var langDict = await _langTextRepo.GetAlltLangTextsDictionaryAsync();
+            var orderedLang = langList.OrderBy(lang => lang.Value.IdType);
+
+            List<LangFileDto> langFiles = new List<LangFileDto>();
+            Dictionary<string, int> langSameTextOffsetDict = new Dictionary<string, int>();
+
+            int recoredCount = orderedLang.Count();
+            const int _textIdRecoredSize = 16;
+            int textBeginOffset = recoredCount * _textIdRecoredSize + 8;
+
+            byte[] headVersion = BitConverter.GetBytes(0x02);
+            byte[] recoredCountByte = BitConverter.GetBytes(recoredCount);
+
+            byte[] langHeadBuffer = new byte[8];
+            byte[] langTextRecoredbuffer = new byte[16];
+            //langHeadBuffer.CopyTo(headVersion, 0);
+            //langHeadBuffer.CopyTo(recoredCountByte, 4);
+
+            //byte[] fileRecoredBuffer = new byte[textBeginOffset];
+
+            
+
+            int id;
+            int unknown;
+            int index;
+            int offset = textBeginOffset;
+            int currentOffset;
+            string text;
+
+            //foreach (var lang in orderedLang)
+            //{
+            //    string[] keySplit = lang.Key.Trim().Split(new char[] { '-' }, 3);
+
+            //    id = ToInt32(keySplit[0]/*.Trim('-')*/);
+            //    unknown = ToInt32(keySplit[1]/*.Trim('-')*/);
+            //    index = ToInt32(keySplit[2]/*.Trim('-')*/);
+
+            //    text = lang.Value.TextZh == null ? lang.Value.TextEn : lang.Value.TextZh;
+
+            //    //Debug.WriteLine(text);
+
+            //    //int currentTextLength = int.Parse(text);
+
+            //    var textBytes = Encoding.UTF8.GetBytes(text + '\0');
+            //    int currentTextLength = textBytes.Length;
+
+            //    Debug.WriteLine($"text: {text}, Length: {currentTextLength}");
+
+            //    //foreach(var textbyte in textBytes)
+            //    //{
+            //    //    Debug.WriteLine($"text bytes: {textbyte}");
+            //    //}
+
+            //    if (langSameTextOffsetDict.ContainsKey(text))
+            //    {
+            //        currentOffset = langSameTextOffsetDict[text];
+            //    }
+            //    else
+            //    {
+            //        offset += currentTextLength;
+            //        currentOffset = offset;
+            //        langSameTextOffsetDict.Add(text, offset);
+            //    }
+
+            //    langFiles.Add(new LangFileDto
+            //    {
+            //        Id = id,
+            //        Unknown = unknown,
+            //        Index = index,
+            //        Offset = currentOffset,
+            //        Text = text,
+            //    });
+
+
+            //    //filebuffer.CopyTo();
+
+            //    Debug.WriteLine($"ID: {id}, unknown: {unknown}, Index: {index}, offset: {currentOffset}, text: {text}");
+
+
+            //}
+            List<byte> fileByteList = new List<byte>();
+            List<byte> textBytesList = new List<byte>();
+
+            using (var b = new BinaryWriter(File.Open("zh.lang", FileMode.Create)))
+            {
+                Array.Reverse(headVersion);
+                Array.Reverse(recoredCountByte);
+
+                headVersion.CopyTo(langHeadBuffer, 0);
+                recoredCountByte.CopyTo(langHeadBuffer, 4);
+
+                fileByteList.AddRange(langHeadBuffer);
+
+                //b.Write(headVersion);
+                //b.Write(recoredCountByte);
+
+                //int recoredOffset = 8;
+
+                foreach (var lang in orderedLang)
+                {
+                    string[] keySplit = lang.Key.Trim().Split(new char[] { '-' }, 3);
+
+                    id = ToInt32(keySplit[0]/*.Trim('-')*/);
+                    unknown = ToInt32(keySplit[1]/*.Trim('-')*/);
+                    index = ToInt32(keySplit[2]/*.Trim('-')*/);
+
+                    text = lang.Value.TextZh == null ? lang.Value.TextEn : lang.Value.TextZh;
+
+
+                    text = text.Replace(@"\n", "\x0a");
+                    text = text.Replace(@"\r", "\x0d");
+                    //text = text.Replace("\"\"", "\"");
+
+                    //Debug.WriteLine(text);
+
+                    //int currentTextLength = int.Parse(text);
+
+                    var textBytes = Encoding.UTF8.GetBytes(text + "\0");
+                    int currentTextLength = textBytes.Length;
+
+                    //Debug.WriteLine($"text: {text}, Length: {currentTextLength}");
+
+                    //foreach(var textbyte in textBytes)
+                    //{
+                    //    Debug.WriteLine($"text bytes: {textbyte}");
+                    //}
+
+                    if (langSameTextOffsetDict.ContainsKey(text))
+                    {
+                        currentOffset = langSameTextOffsetDict[text];
+                    }
+                    else
+                    {
+                        offset += currentTextLength;
+                        currentOffset = offset;
+                        //langSameTextOffsetDict.Add(text, offset);
+                        //if (!IsEn(text))
+                        //{
+                        //    Array.Reverse(textBytes);
+                        //}
+
+                        textBytesList.AddRange(textBytes);
+                    }
+
+                    //langFiles.Add(new LangFileDto
+                    //{
+                    //    Id = id,
+                    //    Unknown = unknown,
+                    //    Index = index,
+                    //    Offset = currentOffset,
+                    //    Text = text,
+                    //});
+
+                    byte[] idBytes = BitConverter.GetBytes(id);
+                    byte[] unknownBytes = BitConverter.GetBytes(unknown);
+                    byte[] indexBytes = BitConverter.GetBytes(index);
+                    byte[] currentOffsetBytes = BitConverter.GetBytes(currentOffset);
+
+                    Array.Reverse(idBytes);
+                    Array.Reverse(unknownBytes);
+                    Array.Reverse(indexBytes);
+                    Array.Reverse(currentOffsetBytes);
+
+                    idBytes.CopyTo(langTextRecoredbuffer, 0);
+                    unknownBytes.CopyTo(langTextRecoredbuffer, 4);
+                    indexBytes.CopyTo(langTextRecoredbuffer, 8);
+                    currentOffsetBytes.CopyTo(langTextRecoredbuffer, 12);
+
+                    fileByteList.AddRange(langTextRecoredbuffer);
+
+                    //recoredOffset += 16;
+
+                    //fileRecoredBuffer.CopyTo(langTextRecoredbuffer);
+                    //langTextRecoredbuffer.CopyTo(fileRecoredBuffer);
+
+                    //Debug.WriteLine($"ID: {id}, unknown: {unknown}, Index: {index}, offset: {currentOffset}, text: {text}");
+
+                    //langTextRecoredbuffer.CopyTo(BitConverter.GetBytes(id), 0);
+
+
+
+                    //b.Write(textBytes, currentOffset, currentTextLength);
+
+
+                }
+
+                fileByteList.AddRange(textBytesList);
+
+                //fileByteList.ToArray();
+                b.Write(fileByteList.ToArray());
+            }
+
+
+            //using (var s = new FileStream("zh.lang", FileMode.Append, FileAccess.Write))
+            //{
+            //    s.WriteAsync
+            //}
+
+
+            //await File.WriteAllBytesAsync("zh.lang",)
+            //FileStream fs = new FileStream("aaa.lang", FileMode.Create);
+            //fs.WriteAsync
+
+
+
+            //using (StreamWriter sw = new StreamWriter())
+            //{
+            //    sw.
+            //}
+
+
         }
 
         public JsonFileDto JsonDtoDeserialize(string path)
@@ -514,5 +732,16 @@ namespace ESO_LangEditor.GUI.Services
             return raw;
         }
 
+        private static bool IsEn(string langText)
+        {
+            if (string.IsNullOrWhiteSpace(langText))
+            {
+                return true;
+            }
+
+            var bytes = Encoding.UTF8.GetBytes(langText);
+            bool result = bytes.Length == langText.Length;
+            return result;
+        }
     }
 }

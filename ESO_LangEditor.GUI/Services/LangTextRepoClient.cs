@@ -81,9 +81,31 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        public Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync()
+        public async Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync(int searchType)
         {
-            throw new NotImplementedException();
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+
+                //var list = await db.Langtexts.FindAsync();
+
+                //return _mapper.Map<List<LangTextDto>>(list);
+
+                //return 
+                var listData = searchType switch
+                {
+                    0 => await db.Langtexts.Where(d => d.IdType != 100).ToListAsync(),  //搜索游戏内文本
+                    1 => await db.Langtexts.Where(d => d.IdType == 100).ToListAsync(),  //搜索Lua UI文本
+                    _ => await db.Langtexts.Where(d => d.IdType != 100).ToListAsync(),  //搜索游戏内文本
+                };
+
+                var langtextDto = _mapper.Map<List<LangTextDto>>(listData);
+
+                var langDictDto = langtextDto.ToDictionary(lang => lang.TextId);
+
+                return langDictDto;
+
+                //return data;
+            }
         }
 
         public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, SearchTextType searchType, SearchPostion searchPostion)

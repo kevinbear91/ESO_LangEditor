@@ -1,5 +1,6 @@
 using AutoMapper;
 using ESO_LangEditor.API.Filters;
+using ESO_LangEditor.API.Helpers;
 using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.EFCore;
@@ -69,6 +70,7 @@ namespace ESO_LangEditorApi
                     optionBuilder => optionBuilder.MigrationsAssembly(typeof(Startup).Assembly.GetName().Name));
             });
             //services.AddScoped<ILangTextRepository, MockLangtextRepository>();
+            services.AddScoped<ValidationFilter>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<ITokenService, TokenService>();
 
@@ -79,6 +81,8 @@ namespace ESO_LangEditorApi
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 8;
+                options.Tokens.ProviderMap.Add("RefreshTokenProvider",
+                    new TokenProviderDescriptor(typeof(CustomRefreshTokenProvider<User>)));
             })
                 .AddEntityFrameworkStores<LangtextApiDbContext>()
                 .AddDefaultTokenProviders();

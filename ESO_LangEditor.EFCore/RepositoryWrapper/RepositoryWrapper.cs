@@ -12,6 +12,7 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
         private readonly ILangTextArchiveRepository _langtextArchiveRepository = null;
         private readonly ILangTextRevisedRepository _langTextRevisedRepository = null;
         private readonly ILangTextRevNumberRepository _langTextRevNumberRepository = null;
+        private readonly IRegistrationCodeRepository _registrationCodeRepository = null;
 
         public LangtextApiDbContext LangtextApiDbContext { get; }
 
@@ -24,6 +25,8 @@ namespace ESO_LangEditor.EFCore.RepositoryWrapper
         public ILangTextRevisedRepository LangTextRevisedRepo => _langTextRevisedRepository ?? new LangTextRevisedRepository(LangtextApiDbContext);
 
         public ILangTextRevNumberRepository LangTextRevNumberRepo => _langTextRevNumberRepository ?? new LangTextRevNumberRepository(LangtextApiDbContext);
+
+        public IRegistrationCodeRepository RegistrationCodeRepo => _registrationCodeRepository ?? new RegistrationCodeRepository(LangtextApiDbContext);
 
         public RepositoryWrapper(LangtextApiDbContext langtextApiDbContext)
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ESO_LangEditor.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -10,8 +11,11 @@ namespace ESO_LangEditor.API.Services
     
     public interface ITokenService
     {
-        string GenerateAccessToken(IEnumerable<Claim> claims);
-        string GenerateRefreshToken();
+        Task<string> GenerateAccessToken(User user);
+        Task<string> GenerateRefreshToken(User user);
+        Task<bool> VerifyRefreshToken(User user, string token);
+        string GenerateRegistrationCode();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
+
     }
 }

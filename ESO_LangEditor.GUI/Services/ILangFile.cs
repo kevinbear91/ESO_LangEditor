@@ -15,7 +15,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<string> ExportLangTextsAsJson(List<LangTextDto> langtextsList, LangChangeType changeType);
         Task ExportToText(List<LangTextDto> langList);
         Task ExportLuaToStr(List<LangTextDto> langList);
-        Task ExportToLang(List<LangTextDto> langList);
+        Task ExportToLang(Dictionary<string, LangTextDto> langList);
 
 
 

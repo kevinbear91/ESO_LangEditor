@@ -11,12 +11,12 @@ namespace ESO_LangEditor.Core.Entities
         [StringLength(20)]
         public string UserNickName { get; set; }
         [StringLength(20)]
-        public string UserEsoId { get; set; }
-        public string UserAvatarPath { get; set; }
+        //public string UserEsoId { get; set; }
+        //public string UserAvatarPath { get; set; }
         public int TranslatedCount { get; set; }
         public int InReviewCount { get; set; }
         public int RemovedCount { get; set; }
-        public string RefreshToken { get; set; }
-        public DateTime RefreshTokenExpireTime { get; set; }
+        //public string RefreshToken { get; set; }
+        //public DateTime RefreshTokenExpireTime { get; set; }
     }
 }

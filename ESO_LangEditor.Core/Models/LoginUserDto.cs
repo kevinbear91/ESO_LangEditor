@@ -11,7 +11,7 @@ namespace ESO_LangEditor.Core.Models
         //[EmailAddress]
         //public string Email { get; set; }
 
-        public Guid UserID { get; set; }
+        //public Guid UserID { get; set; }
 
         public string UserName { get; set; }
 
@@ -19,11 +19,11 @@ namespace ESO_LangEditor.Core.Models
         //[DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public bool LoginWithId { get; set; }
+        //public bool LoginWithId { get; set; }
 
-        public string RefreshToken { get; set; } 
+        //public string RefreshToken { get; set; } 
 
-        public DateTime RefreshTokenExpireTime { get; set; }
+        //public DateTime RefreshTokenExpireTime { get; set; }
 
     }
 }

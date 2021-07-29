@@ -29,6 +29,8 @@ namespace ESO_LangEditor.Core.EnumTypes
         UserRoleSetFailed = 413,
         UserInitFailed = 414,
         UserUpdateFailed = 415,
+        UserNotFound = 416,
+        UserRegistrationFailed = 419,
         LangtextInReview = 450,
         LangtextUpdateFailed = 451,
         LangtextDeletedFailed = 452,
@@ -42,71 +44,41 @@ namespace ESO_LangEditor.Core.EnumTypes
     {
         public static string ApiMessageCodeString(this ApiMessageWithCode messageWithCode)
         {
-            switch (messageWithCode)
+            return messageWithCode switch
             {
-                case ApiMessageWithCode.Success:
-                    return "成功";
-                case ApiMessageWithCode.Created:
-                    return "已有存在项";
-                case ApiMessageWithCode.NoContent:
-                    return "没有获取到内容";
-                case ApiMessageWithCode.TokenInvalid:
-                    return "Token无效，请尝试重新登录";
-                case ApiMessageWithCode.TokenExpired:
-                    return "Token已过期，请尝试重新登录";
-                case ApiMessageWithCode.TokenRequired:
-                    return "Token缺失，请尝试重新登录";
-                case ApiMessageWithCode.PasswordNotMatch:
-                    return "密码不匹配";
-                case ApiMessageWithCode.PasswordTooWeak:
-                    return "弱密码";
-                case ApiMessageWithCode.PasswordNeedToChange:
-                    return "密码必须修改";
-                case ApiMessageWithCode.PasswordRequired:
-                    return "密码缺失";
-                case ApiMessageWithCode.PasswordTooLong:
-                    return "密码太长";
-                case ApiMessageWithCode.PasswordChangeFailed:
-                    return "密码修改失败";
-                case ApiMessageWithCode.GenerateRegistrationCodeFailed:
-                    return "生成注册码失败";
-                case ApiMessageWithCode.RegistrationCodeNotFound:
-                    return "注册码不存在";
-                case ApiMessageWithCode.RegistrationCodeInvalid:
-                    return "注册码无效";
-                case ApiMessageWithCode.NoPermission:
-                    return "没有权限执行当前操作";
-                case ApiMessageWithCode.AuthenticationFailed:
-                    return "验证失败";
-                case ApiMessageWithCode.UserNameExisted:
-                    return "用户名已存在";
-                case ApiMessageWithCode.UserNickNameExisted:
-                    return "用户昵称已存在";
-                case ApiMessageWithCode.UserLocked:
-                    return "当前用户已被锁定，请联系管理员";
-                case ApiMessageWithCode.UserRoleSetFailed:
-                    return "当前用户角色调整失败";
-                case ApiMessageWithCode.UserInitFailed:
-                    return "当前用户初始化失败";
-                case ApiMessageWithCode.UserUpdateFailed:
-                    return "当前用户更新失败";
-                case ApiMessageWithCode.LangtextInReview:
-                    return "当前条目已待审核，你没有权限更改";
-                case ApiMessageWithCode.LangtextUpdateFailed:
-                    return "当前条目更新失败";
-                case ApiMessageWithCode.LangtextDeletedFailed:
-                    return "当前条目删除失败";
-                case ApiMessageWithCode.LangtextAddedFailed:
-                    return "当前条目新增失败";
-                case ApiMessageWithCode.LangtextNotOnServer:
-                    return "当前条目不存在于服务器上";
-                case ApiMessageWithCode.LangtextRevNumberUpdateFailed:
-                    return "文本步进号更新失败";
-                case ApiMessageWithCode.LangtextRevNumberNotExisted:
-                    return "当前文本步进号不存在";
-                default:
-                    return "未知错误";
-            }
+                ApiMessageWithCode.Success => "成功",
+                ApiMessageWithCode.Created => "已有存在项",
+                ApiMessageWithCode.NoContent => "没有获取到内容",
+                ApiMessageWithCode.TokenInvalid => "Token无效，请尝试重新登录",
+                ApiMessageWithCode.TokenExpired => "Token已过期，请尝试重新登录",
+                ApiMessageWithCode.TokenRequired => "Token缺失，请尝试重新登录",
+                ApiMessageWithCode.PasswordNotMatch => "密码不匹配",
+                ApiMessageWithCode.PasswordTooWeak => "弱密码",
+                ApiMessageWithCode.PasswordNeedToChange => "密码必须修改",
+                ApiMessageWithCode.PasswordRequired => "密码缺失",
+                ApiMessageWithCode.PasswordTooLong => "密码太长",
+                ApiMessageWithCode.PasswordChangeFailed => "密码修改失败",
+                ApiMessageWithCode.GenerateRegistrationCodeFailed => "生成注册码失败",
+                ApiMessageWithCode.RegistrationCodeNotFound => "注册码不存在",
+                ApiMessageWithCode.RegistrationCodeInvalid => "注册码无效",
+                ApiMessageWithCode.NoPermission => "没有权限执行当前操作",
+                ApiMessageWithCode.AuthenticationFailed => "验证失败",
+                ApiMessageWithCode.UserNameExisted => "用户名已存在",
+                ApiMessageWithCode.UserNickNameExisted => "用户昵称已存在",
+                ApiMessageWithCode.UserLocked => "当前用户已被锁定，请联系管理员",
+                ApiMessageWithCode.UserRoleSetFailed => "当前用户角色调整失败",
+                ApiMessageWithCode.UserInitFailed => "当前用户初始化失败",
+                ApiMessageWithCode.UserUpdateFailed => "当前用户更新失败",
+                ApiMessageWithCode.LangtextInReview => "当前条目已待审核，你没有权限更改",
+                ApiMessageWithCode.LangtextUpdateFailed => "当前条目更新失败",
+                ApiMessageWithCode.LangtextDeletedFailed => "当前条目删除失败",
+                ApiMessageWithCode.LangtextAddedFailed => "当前条目新增失败",
+                ApiMessageWithCode.LangtextNotOnServer => "当前条目不存在于服务器上",
+                ApiMessageWithCode.LangtextRevNumberUpdateFailed => "文本步进号更新失败",
+                ApiMessageWithCode.LangtextRevNumberNotExisted => "当前文本步进号不存在",
+                ApiMessageWithCode.UserNotFound => "用户不存在",
+                _ => "未知错误",
+            };
         }
     }
 
