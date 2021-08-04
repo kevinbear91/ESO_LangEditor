@@ -13,7 +13,8 @@ namespace ESO_LangEditor.GUI.Services
         Task<IEnumerable<LangTextDto>> GetLangTexts(List<Guid> langtextId);
         Task<List<LangTextDto>> GetLangTexts(int langtextRevised);
         Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId);
-        Task<IEnumerable<LangTextForReviewDto>> GetLangTextsFromReview(Guid Guid, bool isUser);
+        Task<IEnumerable<LangTextForReviewDto>> GetLangTextsFromReview(Guid userGuid);
+        Task<LangTextForReviewDto> GetLangTextFromReview(Guid langtextGuid);
         Task<ApiMessageWithCode> UpdateLangTextZh(LangTextForUpdateZhDto langTextForUpdateZhDto);
         Task<ApiMessageWithCode> UpdateLangTextZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtos);
         Task<ApiMessageWithCode> UpdateLangTextEn(List<LangTextForUpdateEnDto> langTextForUpdateEnDtos);
@@ -22,7 +23,8 @@ namespace ESO_LangEditor.GUI.Services
         Task<ApiMessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids);
         Task<ApiMessageWithCode> RemoveLangTextsInReview(Guid langTextGuid);
         Task<IEnumerable<Guid>> GetUsersInReview();
-        Task<int> GetLangTextRevisedNumber();
+        //Task<int> GetLangTextRevisedNumber();
+        Task<List<LangTextRevNumberDto>> GetAllRevisedNumber();
         Task<IEnumerable<LangTextRevisedDto>> GetLangTextRevisedDtos(int revNumber);
 
     }

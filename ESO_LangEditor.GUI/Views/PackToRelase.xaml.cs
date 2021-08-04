@@ -13,7 +13,6 @@ namespace ESO_LangEditor.GUI.Views
 
         public PackToRelase()
         {
-            DataContext = new PackFileViewModel(this);
             InitializeComponent();
         }
 

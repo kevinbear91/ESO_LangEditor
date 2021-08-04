@@ -51,7 +51,7 @@
 
             <TextBox materialDesign:HintAssist.Hint="注册码" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 TextWrapping="Wrap" Width="200" Height="40" Margin="10" >
+                 TextWrapping="Wrap" Width="200" Height="40" Margin="10" Cursor="IBeam" >
                 <TextBox.Text>
                     <Binding Path="RegisterCode" UpdateSourceTrigger="LostFocus">
                         <Binding.ValidationRules>

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Authorization;
@@ -27,15 +28,26 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<int>> GetRevisedNumberAsync()
+        public async Task<ActionResult<List<LangTextRevNumberDto>>> GetRevisedNumberAsync()
         {
-            var LangRevNumber = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(1);
+            var LangRevNumber = await _repositoryWrapper.LangTextRevNumberRepo.GetAllAsync();
+            var LangRevNumebrDto = _mapper.Map<List<LangTextRevNumberDto>>(LangRevNumber);
 
-            return LangRevNumber.LangTextRev;
+            return LangRevNumebrDto;
         }
 
         [Authorize]
         [HttpGet("{id}")]
+        public async Task<ActionResult<LangTextRevNumberDto>> GetRevisedNumberByIdAsync(int id)
+        {
+            var LangRevNumber = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(id);
+            var LangRevNumebrDto = _mapper.Map<LangTextRevNumberDto>(LangRevNumber);
+
+            return LangRevNumebrDto;
+        }
+
+        [Authorize]
+        [HttpGet("LangTextRev/{id}")]
         public async Task<ActionResult<List<LangTextRevisedDto>>> GetRevisedDtoByIDAsync(int id)
         {
             var LangRevList = await _repositoryWrapper.LangTextRevisedRepo.GetByConditionAsync(langRev => langRev.LangTextRevNumber == id);

@@ -32,7 +32,7 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task ExportLangFile()
         {
-            var langs = await _langTextRepo.GetAlltLangTextsDictionaryAsync(0);
+            var langs = await _langTextRepo.GetAlltLangTextsDictionaryAsync(2);
 
             ILangFile langFile = new LangFile();
 

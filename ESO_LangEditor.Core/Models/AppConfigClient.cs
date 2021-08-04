@@ -10,16 +10,13 @@ namespace ESO_LangEditor.Core.Models
     {
         public string LangEditorVersion { get; set; }
         public string LangUpdaterSha256 { get; set; }
-        public string LangUpdaterDllSha256 { get; set; }
         public string LangUpdaterVersion { get; set; }
         public List<ServerNameDto> LangServerList { get; set; }
         public string DefaultServerName { get; set; }
-        public int LangDatabaseVersion { get; set; }
         public string UserAuthToken { get; set; }
         public string UserRefreshToken { get; set; }
         public Guid UserGuid { get; set; }
         public string UserName { get; set; }
-        public string UserAvatarPath { get; set; }
         public AppSettingClient AppSetting { get; set; }
 
         public AppConfigClient()
@@ -28,7 +25,6 @@ namespace ESO_LangEditor.Core.Models
 
             LangEditorVersion = "3.0.0";
             LangUpdaterSha256 = "6153176c0e166c98940dd4d56412503ee37b7b663e622ca684e9e88b031c12dc";
-            LangUpdaterSha256 = "963A3ECE7219EBFAA24180FD1EE1E191AA1A3BA5ED777757B5718423AC8B900C";
             LangUpdaterVersion = "v1.0";
             LangServerList.Add(new ServerNameDto
             {
@@ -43,13 +39,15 @@ namespace ESO_LangEditor.Core.Models
                 ServerType = "Ipv6"
             });
             DefaultServerName = "LangEditor-IKDC2-v4";
-            LangDatabaseVersion = 1;
             UserAuthToken = "";
             UserRefreshToken = "";
             UserGuid = Guid.Empty;
             UserName = "";
-            UserAvatarPath = "";
-            AppSetting = new AppSettingClient { IsAskToExit = true, };
+            AppSetting = new AppSettingClient 
+            { 
+                IsAskToExit = true, 
+                IsAutoQueryLangTextInReview = true, 
+            };
         }
         private static readonly string CONFIG_FILE = "LangConfig.json";
 
@@ -93,5 +91,11 @@ namespace ESO_LangEditor.Core.Models
         public string ServerName { get; set; }
         public string ServerURL { get; set; }
         public string ServerType { get; set; }
+    }
+
+    public class AppSettingClient
+    {
+        public bool IsAskToExit { get; set; }
+        public bool IsAutoQueryLangTextInReview { get; set; }
     }
 }

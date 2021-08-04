@@ -9,6 +9,6 @@ namespace ESO_LangEditor.Core.Entities
     {
         [Key]
         public int Id { get; set; }
-        public int LangTextRev { get; set; }
+        public int Rev { get; set; }
     }
 }

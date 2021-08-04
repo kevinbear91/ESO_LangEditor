@@ -1,26 +1,19 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views;
-using ESO_LangEditor.GUI.Views.UserControls;
 using Microsoft.Win32;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -52,100 +45,100 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public string UpdateVersionText
         {
-            get { return _updateVersionText; }
-            set { SetProperty(ref _updateVersionText, value); }
+            get => _updateVersionText;
+            set => SetProperty(ref _updateVersionText, value);
         }
 
         public string AddedTag
         {
-            get { return _addedTag; }
-            set { SetProperty(ref _addedTag, "新增(" + value + ")"); }
+            get => _addedTag; 
+            set => SetProperty(ref _addedTag, "新增(" + value + ")");
         }
 
         public string ChangedTag
         {
-            get { return _changedTag; }
-            set { SetProperty(ref _changedTag, "修改(" + value + ")"); }
+            get => _changedTag;
+            set => SetProperty(ref _changedTag, "修改(" + value + ")");
         }
 
         public string RemovedTag
         {
-            get { return _removedTag; }
-            set { SetProperty(ref _removedTag, "移除(" + value + ")"); }
+            get => _removedTag;
+            set => SetProperty(ref _removedTag, "移除(" + value + ")");
         }
 
         public string FileCount
         {
-            get { return _fileCount; }
-            set { SetProperty(ref _fileCount, value); }
+            get => _fileCount;
+            set => SetProperty(ref _fileCount, value);
         }
 
         public string LoadButtonContent
         {
-            get { return _loadButtonContent; }
-            set { SetProperty(ref _loadButtonContent, value); }
+            get => _loadButtonContent;
+            set => SetProperty(ref _loadButtonContent, value);
         }
 
         public string FilePathTooltip
         {
-            get { return _filePathTooltip; }
-            set { SetProperty(ref _filePathTooltip, value); }
+            get => _filePathTooltip;
+            set => SetProperty(ref _filePathTooltip, value);
         }
 
         public string InfoText
         {
-            get { return _infoText; }
-            set { SetProperty(ref _infoText, value); }
+            get => _infoText;
+            set => SetProperty(ref _infoText, value);
         }
 
         public bool UpdatedVersionInputEnable
         {
-            get { return _updatedVersionInputEnable; }
-            set { SetProperty(ref _updatedVersionInputEnable, value); }
+            get => _updatedVersionInputEnable;
+            set => SetProperty(ref _updatedVersionInputEnable, value);
         }
 
         public bool SaveButtonEnable
         {
-            get { return _saveButtonEnable; }
-            set { SetProperty(ref _saveButtonEnable, value); }
+            get => _saveButtonEnable;
+            set => SetProperty(ref _saveButtonEnable, value);
         }
 
-        private ILangTextRepoClient _langTextRepository;
+        //private ILangTextRepoClient _langTextRepository;
 
         public List<LangTextDto> Added 
         {
-            get { return _added; }
-            set { SetProperty(ref _added, value); }
+            get => _added;
+            set => SetProperty(ref _added, value);
         }
 
         public List<LangTextDto> Changed
         {
-            get { return _changed; }
-            set { SetProperty(ref _changed, value); }
+            get => _changed;
+            set => SetProperty(ref _changed, value);
         }
 
         public List<LangTextDto> NonChanged
         {
-            get { return _nonChanged; }
-            set { SetProperty(ref _nonChanged, value); }
+            get => _nonChanged;
+            set => SetProperty(ref _nonChanged, value);
         }
 
         public List<LangTextDto> RemovedList
         {
-            get { return _removedList; }
-            set { SetProperty(ref _removedList, value); }
+            get => _removedList;
+            set => SetProperty(ref _removedList, value);
         }
 
         public Dictionary<string, LangTextDto> RemovedDict
         {
-            get { return _removedDict; }
-            set { SetProperty(ref _removedDict, value); }
+            get => _removedDict;
+            set => SetProperty(ref _removedDict, value);
         }
 
         public ObservableCollection<LangTextDto> GridData
         {
-            get { return _gridData; }
-            set { SetProperty(ref _gridData, value); }
+            get => _gridData;
+            set => SetProperty(ref _gridData, value);
         }
 
         public List<string> FileList { get; set; }
@@ -213,11 +206,9 @@ namespace ESO_LangEditor.GUI.ViewModels
                     InfoText = "正在保存新加内容……";
                     //await Task.Run(() => db.AddNewLangs(Added));
 
-                    if (IsAdminGuid())
-                    {
-                        var filename = saveFileToDisk.ExportLangTextsAsJson(Added, LangChangeType.Added);
-                        Debug.WriteLine(filename);
-                    }
+                    var filename = saveFileToDisk.ExportLangTextsAsJson(Added, LangChangeType.Added);
+                    Debug.WriteLine(filename);
+
                         
                 }
 
@@ -226,11 +217,8 @@ namespace ESO_LangEditor.GUI.ViewModels
                     InfoText = "正在应用修改内容……";
                     //await Task.Run(() => db.UpdateLangsEN(Changed));
 
-                    if (IsAdminGuid())
-                    {
-                        var filename = saveFileToDisk.ExportLangTextsAsJson(Changed, LangChangeType.ChangedEN);
-                        Debug.WriteLine(filename);
-                    }
+                    var filename = saveFileToDisk.ExportLangTextsAsJson(Changed, LangChangeType.ChangedEN);
+                    Debug.WriteLine(filename);
                 }
 
                 if (RemovedList.Count >= 1)   //判断移除内容是否为空
@@ -238,11 +226,8 @@ namespace ESO_LangEditor.GUI.ViewModels
                     InfoText = "正在删除移除内容……";
                     //await Task.Run(() => db.DeleteLangs(RemovedList));
 
-                    if (IsAdminGuid())
-                    {
-                        var filename = saveFileToDisk.ExportLangTextsAsJson(RemovedList, LangChangeType.Removed);
-                        Debug.WriteLine(filename);
-                    }
+                    var filename = saveFileToDisk.ExportLangTextsAsJson(RemovedList, LangChangeType.Removed);
+                    Debug.WriteLine(filename);
                 }
 
                 SaveButtonEnable = true;
@@ -342,7 +327,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             //dialog.Filter = "csv (*.csv)|.csv";
             if (dialog.ShowDialog(compareWithDBWindow) == true)
             {
-                if (dialog.FileName.EndsWith(".csv") || dialog.FileName.EndsWith(".lua"))
+                if (dialog.FileName.EndsWith(".lang") || dialog.FileName.EndsWith(".csv") || dialog.FileName.EndsWith(".lua"))
                 {
                     foreach (var file in dialog.FileNames)
                     {
@@ -358,7 +343,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 }
                 else
                 {
-                    MessageBox.Show("仅支持读取 .csv 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("仅支持读取 .csv、.lang、.lua 文件！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 }
             }
@@ -378,15 +363,26 @@ namespace ESO_LangEditor.GUI.ViewModels
             Dictionary<string, LangTextDto> fileContent = new Dictionary<string, LangTextDto>();
             InfoText = "正在读取数据库……";
 
-            var DbDict = await Task.Run(() => _langTextRepository.GetAlltLangTextsDictionaryAsync(0));
+            var DbDict = await Task.Run(() => _langTextRepo.GetAlltLangTextsDictionaryAsync(0));
 
             InfoText = "正在分析文件……";
             foreach (var file in FileList)
             {
                 if (file.EndsWith(".lua"))
+                {
                     luaList.Add(file);
+                }
                 else
-                    fileContent = await _langfile.ParseCsvFile(file);
+                {
+                    if (file.EndsWith(".csv"))
+                    {
+                        fileContent = await _langfile.ParseCsvFile(file);
+                    }
+                    else
+                    {
+                        fileContent = await _langfile.ParseLangFile(file);
+                    }
+                }
             }
             Dictionary<string, LangTextDto> lualist = await _langfile.ParseLuaFile(luaList);
 
@@ -525,12 +521,6 @@ namespace ESO_LangEditor.GUI.ViewModels
                     }
                     break;
             }
-        }
-
-        private bool IsAdminGuid()
-        {
-            return App.LangConfig.UserGuid == new Guid("8475B578-80F4-4ED0-AE41-C32A45D6D9E6")
-                || App.LangConfig.UserGuid == new Guid("18F825FF-46F5-4A1A-9B10-56BE5FB2398D");
         }
 
     }

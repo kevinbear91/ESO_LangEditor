@@ -25,8 +25,8 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ObservableCollection<MenuItemContent> TopMenu
         {
-            get { return _topMenu; }
-            set { SetProperty(ref _topMenu, value); }
+            get => _topMenu;
+            set => SetProperty(ref _topMenu, value);
         }
 
         private IEventAggregator _ea;
@@ -258,32 +258,32 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public string Header
         {
-            get { return _header; }
-            set { SetProperty(ref _header, value); }
+            get => _header;
+            set => SetProperty(ref _header, value);
         }
 
         public ICommand Command
         {
-            get { return _command; }
-            set { SetProperty(ref _command, value); }
+            get => _command;
+            set => SetProperty(ref _command, value);
         }
 
         public object CommandParameter
         {
-            get { return _commandParameter; }
-            set { SetProperty(ref _commandParameter, value); }
+            get => _commandParameter;
+            set => SetProperty(ref _commandParameter, value);
         }
 
         public bool IsVisible
         {
-            get { return _isVisible; }
-            set { SetProperty(ref _isVisible, value); }
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
         }
 
         public Visibility Visible
         {
-            get { return _visible; }
-            set { SetProperty(ref _visible, value); }
+            get => _visible;
+            set => SetProperty(ref _visible, value);
         }
 
 

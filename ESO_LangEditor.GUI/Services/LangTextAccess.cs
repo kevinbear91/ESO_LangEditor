@@ -42,21 +42,70 @@ namespace ESO_LangEditor.GUI.Services
             throw new NotImplementedException();
         }
 
-        public Task<ApiMessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<LangTextRevisedDto>> GetLangTextRevisedDtos(int revNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<int> GetLangTextRevisedNumber()
+        public async Task<ApiMessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
-            int responded = 0;
+            var content = SerializeDataToHttpContent(langTextGuids);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langtext/review", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+
+            return code;
+        }
+
+        
+
+        public async Task<IEnumerable<LangTextRevisedDto>> GetLangTextRevisedDtos(int revNumber)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<LangTextRevisedDto> respondedList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync("api/revnumber/" + revNumber);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = response.Content.ReadAsStringAsync().Result;
+                respondedList = JsonSerializer.Deserialize<List<LangTextRevisedDto>>(responseContent, _jsonOption);
+            }
+
+            //Debug.WriteLine(responded);
+
+            return respondedList;
+        }
+
+        //public async Task<int> GetLangTextRevisedNumber()
+        //{
+        //    _langHttpClient.DefaultRequestHeaders.Authorization =
+        //        new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+        //    int responded = 0;
+
+        //    //var content = SerializeDataToHttpContent(langtextGuid);
+
+        //    HttpResponseMessage response = await _langHttpClient.GetAsync("api/revise/LangTextRev/");
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var responseContent = response.Content.ReadAsStringAsync().Result;
+        //        responded = JsonSerializer.Deserialize<int>(responseContent, _jsonOption);
+        //    }
+
+        //    Debug.WriteLine(responded);
+
+        //    return responded;
+        //}
+
+        public async Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<LangTextRevNumberDto> responded = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
 
@@ -65,7 +114,7 @@ namespace ESO_LangEditor.GUI.Services
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = response.Content.ReadAsStringAsync().Result;
-                responded = JsonSerializer.Deserialize<int>(responseContent, _jsonOption);
+                responded = JsonSerializer.Deserialize<List<LangTextRevNumberDto>>(responseContent, _jsonOption);
             }
 
             Debug.WriteLine(responded);
@@ -84,14 +133,19 @@ namespace ESO_LangEditor.GUI.Services
             HttpResponseMessage response = await _langHttpClient.GetAsync(
                 "api/langtext/" + langtextId);
 
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+
             if (response.IsSuccessStatusCode)
             {
-                var responseContent = response.Content.ReadAsStringAsync().Result;
                 respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
             }
+            else
+            {
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
+            }    
 
-            Debug.WriteLine(respondedList);
-
+            //Debug.WriteLine(respondedList);
             return respondedList;
         }
 
@@ -111,11 +165,16 @@ namespace ESO_LangEditor.GUI.Services
             };
 
             var response = await _langHttpClient.SendAsync(request);
+            var responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-                var responseContent = await response.Content.ReadAsStringAsync();
                 respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
             }
 
             Debug.WriteLine(respondedList);
@@ -133,11 +192,16 @@ namespace ESO_LangEditor.GUI.Services
 
             HttpResponseMessage response = await _langHttpClient.GetAsync(
                 "api/revise/" + langtextRevised);
+            var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
             {
-                var responseContent = response.Content.ReadAsStringAsync().Result;
                 respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
             }
 
             Debug.WriteLine(respondedList);
@@ -145,24 +209,111 @@ namespace ESO_LangEditor.GUI.Services
             return respondedList;
         }
 
-        public Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId)
+        public async Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<LangTextDto> respondedList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync(
+                "api/revise/" + langtextId);
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
+            }
+
+            Debug.WriteLine(respondedList);
+
+            return respondedList;
+        }
+
+        public Task<IEnumerable<LangTextForReviewDto>> GetLangTextsFromReview(Guid userGuid)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<LangTextForReviewDto>> GetLangTextsFromReview(Guid Guid, bool isUser)
+        public async Task<LangTextForReviewDto> GetLangTextFromReview(Guid langtextGuid)
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            LangTextForReviewDto respondedLangtext = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync(
+                "api/langtext/review/" + langtextGuid);
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                respondedLangtext = JsonSerializer.Deserialize<LangTextForReviewDto>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
+            }
+
+            Debug.WriteLine(respondedLangtext);
+
+            return respondedLangtext;
         }
 
-        public Task<IEnumerable<Guid>> GetUsersInReview()
+        public async Task<IEnumerable<Guid>> GetUsersInReview()
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<Guid> respondedUserList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync(
+                "api/langtext/review/users");
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                respondedUserList = JsonSerializer.Deserialize<List<Guid>>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.ApiMessageCodeString());
+            }
+
+            //Debug.WriteLine(respondedUserList);
+
+            return respondedUserList;
         }
 
-        public Task<ApiMessageWithCode> RemoveLangTexts(List<Guid> langTextGuids)
+        public async Task<ApiMessageWithCode> RemoveLangTexts(List<Guid> langTextGuids)
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            var content = SerializeDataToHttpContent(langTextGuids);
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(_langHttpClient.BaseAddress + "api/langtext"),
+                Content = content,
+            };
+
+            var response = await _langHttpClient.SendAsync(request);
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+
+            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+
+            return code;
         }
 
         public Task<ApiMessageWithCode> RemoveLangTextsInReview(Guid langTextGuid)
@@ -227,5 +378,7 @@ namespace ESO_LangEditor.GUI.Services
 
             return byteContent;
         }
+
+        
     }
 }

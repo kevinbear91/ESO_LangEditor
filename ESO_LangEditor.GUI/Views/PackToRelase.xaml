@@ -6,8 +6,11 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views" 
         xmlns:local1="clr-namespace:ESO_LangEditor.GUI.Converter"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        TextElement.FontSize="14"
         mc:Ignorable="d"
-        Title="一键打包" Height="318" Width="514" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Cursor="">
+        Title="一键打包" Height="318" Width="514" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="75*" />
@@ -44,7 +47,7 @@
             <TextBox x:Name="AddonIntversion_textBox" materialDesign:HintAssist.Hint="插件内部版本Int" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  HorizontalAlignment="Center" Width="120" Height="40" Margin="30 10 0 0"
-                 TextWrapping="Wrap" Cursor="IBeam" >
+                 TextWrapping="Wrap" >
                 <TextBox.Text>
                     <Binding Path="AddonVersionInt" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -74,7 +77,7 @@
             <TextBox x:Name="UpdateLog_textBox" materialDesign:HintAssist.Hint="更新日志" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  HorizontalAlignment="Center" Width="300" Height="120" Margin="30 30 0 0"
-                 TextWrapping="Wrap" Cursor="IBeam" >
+                 TextWrapping="Wrap" >
                 <TextBox.Text>
                     <Binding Path="UpdateLog" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>

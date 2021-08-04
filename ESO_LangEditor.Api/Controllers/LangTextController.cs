@@ -266,32 +266,32 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpPut("{langtextID}/zh")]
-        public async Task<ActionResult> UpdateLangtextZhAsync(LangTextForUpdateZhDto langTextForUpdateZh, string langtextID)
+        public async Task<ActionResult> UpdateLangtextZhAsync(Guid langtextID, LangTextForUpdateZhDto langTextForUpdateZh)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             Guid userIdinGuid = new Guid(userId);
 
-            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langTextForUpdateZh.Id);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
 
             //Debug.WriteLine("langDtoId: {0}, langId: {1}, langtextId: {2}", langTextForUpdateZh.Id, langtextID, langtext.Id);
-            _logger.LogInformation("langtextId: {0}", langtext.Id);
+            _logger.LogInformation("langtextId: {0}", langtextID);
 
             if (langtext == null)
             {
-                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langTextForUpdateZh.Id
+                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langtextID
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
                 return NotFound();
             }
 
             //Check if langtext already in Review.
-            var langtextInReview = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langTextForUpdateZh.Id);
+            var langtextInReview = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langtextID);
 
             if (langtextInReview != null)   //检查是否存在于审核表中
             {
                 if (userIdinGuid != langtextInReview.UserId)    //检查如果存在于表中，提交用户是否是之前用户 
                 {
-                    return BadRequest("当前文本已待审核。"); //如果不是，返回已待审核提示
+                    return BadRequest(ApiMessageWithCode.LangtextInReview); //如果不是，返回已待审核提示
                 }
                 else
                 {
@@ -314,10 +314,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
-                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langTextForUpdateZh.Id
+                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langtextID
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
                 throw new Exception("加入审核表失败");
+                //return BadRequest(ApiMessageWithCode.LangtextUpdateFailed);
             }
 
             return Ok();
@@ -383,7 +384,7 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("en/{langtextID}")]
+        [HttpPut("{langtextID}/en")]
         public async Task<ActionResult> UpdateLangtextEnAsync(Guid langtextID, LangTextForUpdateEnDto langTextForUpdateEn)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -415,7 +416,7 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("en")]
+        [HttpPut("en/list")]
         public async Task<ActionResult> UpdateLangtextEnListAsync(List<LangTextForUpdateEnDto> langTextForUpdateEns)
         {
             var userId = _userManager.GetUserId(HttpContext.User);

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ESO_LangEditorDatabaseModifier
 {
@@ -32,7 +33,7 @@ namespace ESO_LangEditorDatabaseModifier
                     
                 //}
 
-                if (IsEn(langZH))
+                if (!IsZh(langZH))
                 {
                     enCount++;
                     lang.Value.TextZh = null;
@@ -67,16 +68,20 @@ namespace ESO_LangEditorDatabaseModifier
 
         }
 
-        private static bool IsEn(string langText)
+        private static bool IsZh(string langText)
         {
             if (string.IsNullOrWhiteSpace(langText))
             {
                 return true;
             }
 
-            var bytes = Encoding.UTF8.GetBytes(langText);
-            bool result = bytes.Length == langText.Length;
-            return result;
+            Regex RegCHZN = new Regex("[\u4e00-\u9fa5]");
+            Match m = RegCHZN.Match(langText);
+            return m.Success;
+
+            //var bytes = Encoding.UTF8.GetBytes(langText);
+            //bool result = bytes.Length == langText.Length;
+            //return result;
         }
 
 

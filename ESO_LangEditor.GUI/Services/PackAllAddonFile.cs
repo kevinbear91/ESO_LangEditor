@@ -25,7 +25,7 @@ namespace ESO_LangEditor.GUI.Services
         private ILangFile _langFile;
         private ILangTextRepoClient _langTextRepo;
 
-        public PackAllAddonFile(PackFileViewModel packFileViewModel, ILangFile langFile, 
+        public PackAllAddonFile(PackToRelaseViewModel packFileViewModel, ILangFile langFile, 
             ILangTextRepoClient langTextRepoClient)
         {
             _addonVersion = packFileViewModel.AddonVersion;

@@ -93,8 +93,9 @@ namespace ESO_LangEditor.GUI.Services
                 //return 
                 var listData = searchType switch
                 {
-                    0 => await db.Langtexts.Where(d => d.IdType != 100).ToListAsync(),  //搜索游戏内文本
+                    0 => await db.Langtexts.ToListAsync(),  //搜索游戏内文本
                     1 => await db.Langtexts.Where(d => d.IdType == 100).ToListAsync(),  //搜索Lua UI文本
+                    2 => await db.Langtexts.Where(d => d.IdType != 100).ToListAsync(),  //搜索游戏内文本
                     _ => await db.Langtexts.Where(d => d.IdType != 100).ToListAsync(),  //搜索游戏内文本
                 };
 
@@ -184,7 +185,7 @@ namespace ESO_LangEditor.GUI.Services
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
-                langtextRev = langtextRevNumber.LangTextRev;
+                langtextRev = langtextRevNumber.Rev;
                 db.Dispose();
             }
 
@@ -294,7 +295,7 @@ namespace ESO_LangEditor.GUI.Services
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
-                langtextRevNumber.LangTextRev = number;
+                langtextRevNumber.Rev = number;
 
                 db.LangtextRevNumber.Update(langtextRevNumber);
                 saveCount = await db.SaveChangesAsync();

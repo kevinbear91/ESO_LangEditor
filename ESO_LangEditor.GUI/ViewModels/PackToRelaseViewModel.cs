@@ -3,6 +3,7 @@ using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views;
+using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ using System.Windows;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
-    public class PackFileViewModel : BindableBase
+    public class PackToRelaseViewModel : BindableBase
     {
         private string _addonVersion;
         private string _apiVersion;
@@ -28,36 +29,36 @@ namespace ESO_LangEditor.GUI.ViewModels
         private List<FilePaths> _copyFilePaths;
         private List<FilePaths> _filePaths;
 
-        private PackToRelase _packToRelaseWindow;
+        //private PackToRelase _packToRelaseWindow;
 
         public string AddonVersion
         {
-            get { return _addonVersion; }
-            set { SetProperty(ref _addonVersion, value); }
+            get => _addonVersion;
+            set => SetProperty(ref _addonVersion, value);
         }
 
         public string ApiVersion
         {
-            get { return _apiVersion; }
-            set { SetProperty(ref _apiVersion, value); }
+            get => _apiVersion;
+            set => SetProperty(ref _apiVersion, value);
         }
 
         public string AddonVersionInt
         {
-            get { return _addonVersionInt; }
-            set { SetProperty(ref _addonVersionInt, value); }
+            get => _addonVersionInt;
+            set => SetProperty(ref _addonVersionInt, value);
         }
 
         public string UpdateLog
         {
-            get { return _updateLog; }
-            set { SetProperty(ref _updateLog, value); }
+            get => _updateLog;
+            set => SetProperty(ref _updateLog, value);
         }
 
         public bool ButtonProgress
         {
-            get { return _buttonprogress; }
-            set { SetProperty(ref _buttonprogress, value); }
+            get => _buttonprogress;
+            set => SetProperty(ref _buttonprogress, value);
         }
 
         public CHSorCHT ChsOrChtListSelected { get; set; }
@@ -69,11 +70,15 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ExcuteViewModelMethod PackFilesCommand => new ExcuteViewModelMethod(ProcessFilesAsync);
 
+        private ILangTextRepoClient _langTextRepo;
+        private ILogger _logger;
 
-        public PackFileViewModel(PackToRelase packToRelaseWindow)
+        public PackToRelaseViewModel(ILangTextRepoClient langTextRepoClient, ILogger<PackToRelase> logger)
         {
             //exportToFileCommand = new ExportToFileCommand();
-            _packToRelaseWindow = packToRelaseWindow;
+            //_packToRelaseWindow = packToRelaseWindow;
+            _langTextRepo = langTextRepoClient;
+            _logger = logger;
 
             AddonVersionConfig = PackLangVersion.Load();
 
@@ -111,7 +116,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             //var packfile = new PackAllAddonFile(this);
 
             ButtonProgress = true;
-            _packToRelaseWindow.Pack_button.IsEnabled = false;
+            //_packToRelaseWindow.Pack_button.IsEnabled = false;
 
             await Task.Run(() => ProcessFiles());
 
@@ -120,7 +125,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             PackLangVersion.Save(AddonVersionConfig);
 
             ButtonProgress = false;
-            _packToRelaseWindow.Pack_button.IsEnabled = true;
+            //_packToRelaseWindow.Pack_button.IsEnabled = true;
         }
 
         public void ProcessFiles()

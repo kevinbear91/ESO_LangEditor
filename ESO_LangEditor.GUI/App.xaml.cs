@@ -6,7 +6,8 @@ using ESO_LangEditor.GUI.ViewModels;
 using ESO_LangEditor.GUI.Views;
 using ESO_LangEditor.GUI.Views.UserControls;
 using Microsoft.EntityFrameworkCore;
-using NLog;
+using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
@@ -82,8 +83,8 @@ namespace ESO_LangEditor.GUI
                 cfg.AddProfile<LangTextMappingProfile>();
             });
 
-            var factory = new LogFactory();
-            ILogger logger = factory.GetCurrentClassLogger();
+            var factory = new NLogLoggerFactory();
+            ILogger logger = factory.CreateLogger("LangEditor");
 
             //Services Register
 

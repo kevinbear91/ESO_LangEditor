@@ -1,31 +1,20 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.EFCore.RepositoryWrapper;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
-using ESO_LangEditor.GUI.Services.AccessServer;
 using ESO_LangEditor.GUI.Views;
 using ESO_LangEditor.GUI.Views.UserControls;
 using MaterialDesignThemes.Wpf;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using NLog;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -59,53 +48,53 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public string WindowTitle
         {
-            get { return _windowTitle; }
-            set { SetProperty(ref _windowTitle, value); }
+            get => _windowTitle;
+            set => SetProperty(ref _windowTitle, value); 
             //set { _windowTitle = value; NotifyPropertyChanged(); }
         }
 
 
         public string SearchInfo
         {
-            get { return _searchInfo; }
-            set { SetProperty(ref _searchInfo, "查询到 " + value + " 条文本"); }
+            get => _searchInfo;
+            set => SetProperty(ref _searchInfo, "查询到 " + value + " 条文本"); 
                 //set { _searchInfo = "查询到 " + value + " 条文本"; ; NotifyPropertyChanged(); }
             }
 
         public string SelectedInfo
         {
-            get { return _selectedInfo; }
-            set { SetProperty(ref _selectedInfo, value); }
+            get => _selectedInfo;
+            set => SetProperty(ref _selectedInfo, value);
         }
 
         public string ProgressInfo
         {
-            get { return _progressInfo; }
-            set { SetProperty(ref _progressInfo, value); }
+            get => _progressInfo;
+            set => SetProperty(ref _progressInfo, value);
         }
 
         public Visibility ProgressbarVisibility
         {
-            get { return _progessbarVisibility; }
-            set { SetProperty(ref _progessbarVisibility, value); }
+            get => _progessbarVisibility;
+            set => SetProperty(ref _progessbarVisibility, value);
         }
 
         public string Keyword
         {
-            get { return _keyword; }
-            set { SetProperty(ref _keyword, value); }
+            get => _keyword;
+            set => SetProperty(ref _keyword, value);
         }
 
         public ObservableCollection<LangTextDto> GridData
         {
-            get { return _gridData; }
-            set { SetProperty(ref _gridData, value); }
+            get => _gridData;
+            set => SetProperty(ref _gridData, value);
         }
 
         public ClientConnectStatus ConnectStatus
         {
-            get { return _connectStatus; }
-            set { SetProperty(ref _connectStatus, value); }
+            get => _connectStatus;
+            set => SetProperty(ref _connectStatus, value);
         }
 
 
@@ -157,7 +146,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             //
 
 
-            logger.Debug("======启动至主界面======");
+            logger.LogDebug("======启动至主界面======");
             //logger.Error("======报错测试======");
 
             Task.Run(() => BootCheck());
@@ -175,7 +164,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Fatal(ex.ToString);
+                _logger.LogCritical(ex.ToString());
             }
 
             //_startupCheck = null;

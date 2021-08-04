@@ -18,9 +18,9 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"  />
-            <RowDefinition Height="323*" MaxHeight="350"/>
+            <RowDefinition MaxHeight="350"/>
             <RowDefinition Height="60"/>
-            <RowDefinition Height="89*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
@@ -28,8 +28,16 @@
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
                           VerticalAlignment="Center" ToolBarTray.IsLocked="True" Height="50" >
 
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton ToolTip="Save" Margin="10 .5 0 0" IsChecked="{Binding AutoQueryLangTextInReview}" 
+                              Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                        <TextBlock Margin="10 .5 0 0" Text="自动查询审核状态" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <Separator />
+
                     <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
-                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ContentSave" />
                             <TextBlock Margin="10 .5 0 0" Text="保存当前文本" VerticalAlignment="Center" />
@@ -37,33 +45,43 @@
 
                     </Button>
                     <Separator />
+
+
                     <!--<Button Command="Cut" ToolTip="Cut" ToolBar.OverflowMode="AsNeeded">
                         <materialDesign:PackIcon Kind="ContentCut" />
                     </Button>-->
 
                 </ToolBar>
             </ToolBarTray>
-
-            <!--<Button x:Name="button_save" Content="保存" Margin="10 0 20 0" Command="{Binding LangEditorSaveButton}" CommandParameter="{Binding ElementName=textBox_ZH}" Cursor="Hand"  />
-            <Button x:Name="button_cancel" Content="取消" Margin="20 0 20 0" Click="Button_cancel_Click" Cursor="Hand" />-->
         </StackPanel>
 
-
-        <GroupBox Header="英文" Grid.Row="1" Grid.Column="0" >
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="20,0,0,8" 
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10" Grid.Row="1" Grid.Column="0"
                       CanContentScroll="True" >
-                <TextBox x:Name="textBox_EN" Text="{Binding Path=CurrentLangText.TextEn, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox x:Name="textBox_EN" Style="{StaticResource MaterialDesignFilledTextBox}"
+                         materialDesign:HintAssist.Hint="英文"
+                     Text="{Binding Path=CurrentLangText.TextEn, UpdateSourceTrigger=PropertyChanged}" 
                          TextWrapping="Wrap" IsReadOnly="true" />
-            </ScrollViewer>
-        </GroupBox>
+        </ScrollViewer>
 
 
-        <GroupBox Header="中文" Grid.Row="1" Grid.Column="1"  >
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      Margin="20,0,0,8">
-                <TextBox x:Name="textBox_ZH" Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"  TextWrapping="Wrap" BorderBrush="#FFABADB3" />
-            </ScrollViewer>
-        </GroupBox>
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto"
+                      Margin="10">
+            <TextBox x:Name="textBox_ZH" materialDesign:HintAssist.Hint="中文" 
+                     Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" >
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsInReview}" Value="True">
+                                <Setter Property="Background" Value="#0FEA5B5B" />
+                                <Setter Property="BorderBrush" Value="#89EA4D4D" />
+                                <Setter Property="materialDesign:HintAssist.Hint" Value="中文（当前文本已待审核，请确认无撞车）" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </ScrollViewer>
 
 
         <TextBlock x:Name="textblock_information" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" 
@@ -87,43 +105,5 @@
 
         <materialDesign:Snackbar MessageQueue="{Binding EditorMessageQueue}"
                                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
-
-        <!--<Expander Header="待编辑列表" Grid.Row="3" Grid.ColumnSpan="2" IsExpanded="False">
-            <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
-                        Margin="24,8,24,16">
-                <ScrollViewer 
-                          Visibility="{Binding DataListVisbility}" 
-                          Margin="10,5,10,5" 
-                          VerticalScrollBarVisibility="Auto" >
-                    -->
-        <!--<uc:UC_LangDataGrid />-->
-        <!--
-                </ScrollViewer>
-            </StackPanel>
-        </Expander>-->
-
-        <!--<Button x:Name="button_modifyList" Content="批量修改" Click="Button_modifyList_Click" Cursor="Hand"  />
-            <Button x:Name="button_saveModifyList" Content="批量保存" Click="Button_saveModifyList_Click" Margin="120,0,0,0" Cursor="Hand" />-->
-
-
-        <!--<Canvas Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="20,5,15,2">
-            
-        </Canvas>-->
-
-        <!--<GridSplitter Grid.Row="1" Grid.ColumnSpan="2"
-                      x:Name="GridMover"
-                      Height="2" HorizontalAlignment="Stretch" 
-                      ResizeDirection="Rows" 
-                      Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />-->
-
-
-
-
-        <!--<materialDesign:Snackbar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                 MessageQueue="{materialDesign:MessageQueue}"
-                                 x:Name="Snackbar_SaveInfo" HorizontalAlignment="Left" Margin="256,0,0,8" Height="0" Width="288">
-            <materialDesign:SnackbarMessage Content="{Binding MdNotifyContent}"
-                                            ActionContent="ACCENT" />
-        </materialDesign:Snackbar>-->
     </Grid>
 </Window>

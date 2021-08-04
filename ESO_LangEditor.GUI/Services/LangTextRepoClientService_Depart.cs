@@ -266,7 +266,7 @@ namespace ESO_LangEditor.GUI.Services
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
-                langtextRev = langtextRevNumber.LangTextRev;
+                langtextRev = langtextRevNumber.Rev;
                 db.Dispose();
             }
 
@@ -278,7 +278,7 @@ namespace ESO_LangEditor.GUI.Services
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
-                langtextRevNumber.LangTextRev = number;
+                langtextRevNumber.Rev = number;
                 db.LangtextRevNumber.Update(langtextRevNumber);
                 await db.SaveChangesAsync();
                 db.Dispose();

@@ -15,6 +15,7 @@ using ESO_LangEditor.GUI.EventAggres;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -27,48 +28,62 @@ namespace ESO_LangEditor.GUI.ViewModels
         private ObservableCollection<LangTextDto> _gridData;
         private LangTextDto _gridSelectedItem;
         private string _mdNotifyContent;
+        private bool _isInReview;
+        private bool _autoQueryLangTextInReview = App.LangConfig.AppSetting.IsAutoQueryLangTextInReview;
         private int _currentSelectedIndex = 0;
 
         public LangTextDto CurrentLangText
         {
-            get { return _currentLangText; }
-            set { SetProperty(ref _currentLangText, value); }
+            get => _currentLangText;
+            set => SetProperty(ref _currentLangText, value);
         }
 
         public string LangTextZh
         {
-            get { return _langTextZh; }
-            set { SetProperty(ref _langTextZh, value); }
+            get => _langTextZh;
+            set => SetProperty(ref _langTextZh, value);
         }
 
         public Visibility DataListVisbility
         {
-            get { return _dataListVisbility; }
-            set { SetProperty(ref _dataListVisbility, value); }
+            get => _dataListVisbility;
+            set => SetProperty(ref _dataListVisbility, value);
         }
 
         public ObservableCollection<LangTextDto> GridData
         {
-            get { return _gridData; }
-            set { SetProperty(ref _gridData, value); }
+            get => _gridData;
+            set => SetProperty(ref _gridData, value);
         }
 
         public LangTextDto GridSelectedItem
         {
-            get { return _gridSelectedItem; }
-            set { SetProperty(ref _gridSelectedItem, value); }
+            get => _gridSelectedItem;
+            set => SetProperty(ref _gridSelectedItem, value);
         }
 
 
         public string MdNotifyContent
         {
-            get { return _mdNotifyContent; }
-            set { SetProperty(ref _mdNotifyContent, value); }
+            get => _mdNotifyContent;
+            set => SetProperty(ref _mdNotifyContent, value);
+        }
+
+        public bool IsInReview
+        {
+            get => _isInReview;
+            set => SetProperty(ref _isInReview, value);
+        }
+
+        public bool AutoQueryLangTextInReview
+        {
+            get => _autoQueryLangTextInReview;
+            set => SetProperty(ref _autoQueryLangTextInReview, value);
         }
 
         public string LangtextInfo
         {
-            get { return _langtextInfo; }
+            get => _langtextInfo;
             set
             {
                 SetProperty(ref _langtextInfo, "ID：" + CurrentLangText.TextId + "，类型：" + GetIdCategory() + "，"
@@ -84,11 +99,13 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private IEventAggregator _ea;
         private readonly ILangTextRepoClient _langTextRepoClient;
+        private readonly ILangTextAccess _langTextAccess;
 
-        public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
+        public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, ILangTextAccess langTextAccess)
         {
             _ea = ea;
             _langTextRepoClient = langTextRepoClient;
+            _langTextAccess = langTextAccess;
 
             LangEditorSaveButton = new ExcuteViewModelMethod(SaveCurrentToDb);
             EditorMessageQueue = new SnackbarMessageQueue();
@@ -97,12 +114,14 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         }
 
-        public void Load(LangTextDto langTextDto)
+        public async void Load(LangTextDto langTextDto)
         {
             CurrentLangText = langTextDto;
             LangTextZh = langTextDto.TextZh;
             LangtextInfo = "update";
             DataListVisbility = Visibility.Collapsed;
+
+            await QueryCurrentLangFromInReview();
         }
 
         public void Load(List<LangTextDto> langTextDtoList)
@@ -213,7 +232,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             
         }
 
-        public void SetCurrentItemFromList(LangTextDto langTextDto)
+        public async void SetCurrentItemFromList(LangTextDto langTextDto)
         {
             if (langTextDto != null)
             {
@@ -223,8 +242,24 @@ namespace ESO_LangEditor.GUI.ViewModels
                 GridSelectedItem = langTextDto;
                 LangTextZh = CurrentLangText.TextZh;
                 LangtextInfo = "update";
+
+                await QueryCurrentLangFromInReview();
             }
+
             
+        }
+
+        private async Task QueryCurrentLangFromInReview()
+        {
+            if (AutoQueryLangTextInReview)
+            {
+                var lang = await _langTextAccess.GetLangTextsFromReview(CurrentLangText.Id);
+
+                if (lang != null)
+                {
+                    IsInReview = true;
+                }
+            }
         }
 
     }
