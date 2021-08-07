@@ -51,7 +51,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public string AddedTag
         {
-            get => _addedTag; 
+            get => _addedTag;
             set => SetProperty(ref _addedTag, "新增(" + value + ")");
         }
 
@@ -105,7 +105,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         //private ILangTextRepoClient _langTextRepository;
 
-        public List<LangTextDto> Added 
+        public List<LangTextDto> Added
         {
             get => _added;
             set => SetProperty(ref _added, value);
@@ -172,8 +172,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             _mapper = mapper;
 
 
-        //_mapper = App.Mapper;
-        //_langtextNetService = new LangtextNetService(App.ServerPath);
+            //_mapper = App.Mapper;
+            //_langtextNetService = new LangtextNetService(App.ServerPath);
         }
 
         public void PathTooltip()
@@ -209,7 +209,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     var filename = saveFileToDisk.ExportLangTextsAsJson(Added, LangChangeType.Added);
                     Debug.WriteLine(filename);
 
-                        
+
                 }
 
                 if (Changed.Count >= 1)   //判断修改内容是否为空
@@ -233,7 +233,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 SaveButtonEnable = true;
             }
 
-            
+
         }
 
         public void UploadResultToServer(object o)
@@ -241,7 +241,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             Debug.WriteLine("Upload: " + _selectedKey);
             switch (_selectedKey)
             {
-                case"Added":
+                case "Added":
                     MakeAddedListToServer();
                     break;
                 case "Changed":
@@ -251,7 +251,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     MakeDeletedListToServer();
                     break;
             }
-                
+
         }
 
         private async void MakeAddedListToServer()
@@ -268,7 +268,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                     InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
                 }
-                catch(HttpRequestException ex)
+                catch (HttpRequestException ex)
                 {
                     InfoText = ex.Message;
                 }
@@ -395,7 +395,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             var CsvDict = fileContent;
 
             CompareDicts(DbDict, CsvDict);
-            
+
         }
 
         public void CompareDicts(Dictionary<string, LangTextDto> dbDict, Dictionary<string, LangTextDto> csvDict)

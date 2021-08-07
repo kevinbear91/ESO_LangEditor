@@ -1,19 +1,11 @@
-﻿using ESO_LangEditor.Core.EnumTypes;
-using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
+﻿using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
-using ESO_LangEditor.GUI.Views.UserControls;
 using ESO_LangEditor.GUI.ViewModels;
-using Prism.Commands;
 using Prism.Events;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ESO_LangEditor.GUI.Command
 {
@@ -34,7 +26,7 @@ namespace ESO_LangEditor.GUI.Command
             MainWindowSearchbarViewModel _searchBarVM = parameter as MainWindowSearchbarViewModel;
             List<LangTextDto> result;
 
-            if(string.IsNullOrWhiteSpace(_searchBarVM.Keyword))
+            if (string.IsNullOrWhiteSpace(_searchBarVM.Keyword))
             {
                 MessageBox.Show("不支持全局搜索，请输入关键字！", "提示", MessageBoxButton.OK, MessageBoxImage.Warning);
             }

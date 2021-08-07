@@ -1,8 +1,7 @@
-﻿using System;
+﻿using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.GUI.ViewModels;
 using System.Collections.Generic;
 using System.Windows;
-using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.ViewModels;
 
 namespace ESO_LangEditor.GUI.Views
 {

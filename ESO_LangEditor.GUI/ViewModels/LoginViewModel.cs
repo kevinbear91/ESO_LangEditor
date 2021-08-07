@@ -2,6 +2,7 @@
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
+using ESO_LangEditor.GUI.Views;
 using MaterialDesignThemes.Wpf;
 using NLog;
 using Prism.Events;
@@ -19,14 +20,15 @@ namespace ESO_LangEditor.GUI.ViewModels
         private Guid _userGuid;
         private string _userName;
         private PasswordBox _passwordBox;
-        //private AccountService _accountService;
         private bool _loginSuccess;
         private bool _isFirstime;
 
         private IUserAccess _userAccess;
         private ILogger _logger;
 
-        public ICommand SumbitCommand { get; }
+        public ICommand SumbitCommand => new ExcuteViewModelMethod(SubmitLoginInfo);
+        public ICommand PasswordRecoveryCommand => new ExcuteViewModelMethod(OpenPasswordRecoveryWindow);
+        public ICommand RegisterCommand => new ExcuteViewModelMethod(OpenRegisterWindow);
         public ICommand CloseDialogHostCommand { get; }
 
 
@@ -62,8 +64,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             _userAccess = userAccess;
             _logger = logger;
 
-            //UserGuid = GetGuid();
-            //SumbitCommand = new SaveConfigCommand(SaveGuid);
             CloseDialogHostCommand = new SaveConfigCommand(CloseDialogHost);
         }
 
@@ -72,34 +72,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             _passwordBox = passwordBox;
         }
 
-        //private Guid GetGuid()
-        //{
-        //    return App.LangConfig.UserGuid;
-        //}
-
-        private void SaveGuid(object o)
+        private async void SubmitLoginInfo(object obj)
         {
-            //var config = App.LangConfig;
-            //config.UserGuid = UserGuid;
-            //AppConfigClient.Save(config);
-
-            //LoginAsync();
-
-            //SumbitCommand.CanExecute(false);
-
-            //DialogHost.CloseDialogCommand.Execute(null, null);
-            //_mainWindowViewModel.GuidVaildStartupCheck();
-
-        }
-
-        private void CloseDialogHost(object o)
-        {
-            DialogHost.CloseDialogCommand.Execute(null, null);
-        }
-
-        private async Task LoginAsync()
-        {
-
             var Logintoken = await _userAccess.GetTokenByDto(new LoginUserDto
             {
                 UserName = UserName,
@@ -115,6 +89,35 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                 DialogHost.CloseDialogCommand.Execute(null, null);
             }
+        }
+
+        private void OpenPasswordRecoveryWindow(object obj)
+        {
+            var window = new PasswordRecoveryWindow
+            {
+                Owner = Application.Current.MainWindow
+            };
+            window.Show();
+        }
+
+        private void OpenRegisterWindow(object obj)
+        {
+            var window = new RegisterWindow
+            {
+                Owner = Application.Current.MainWindow
+            };
+            window.Show();
+        }
+
+        private void CloseDialogHost(object o)
+        {
+            DialogHost.CloseDialogCommand.Execute(null, null);
+        }
+
+        private async Task LoginAsync()
+        {
+
+
 
 
 

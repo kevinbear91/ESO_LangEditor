@@ -117,6 +117,7 @@ namespace ESO_LangEditorApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             //app.UseDeveloperExceptionPage();
             //app.UseMvc();

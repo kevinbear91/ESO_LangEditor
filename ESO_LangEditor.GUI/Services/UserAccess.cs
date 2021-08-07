@@ -1,7 +1,5 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.EventAggres;
-using ESO_LangEditor.GUI.NetClient;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -10,11 +8,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
-using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Services
 {
@@ -52,8 +48,8 @@ namespace ESO_LangEditor.GUI.Services
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             string responded = "";
 
-            HttpResponseMessage respond = await _userClient.GetAsync("api/account/regcode");
-            
+            HttpResponseMessage respond = await _userClient.GetAsync("api/account/registrationcode");
+
             if (respond.IsSuccessStatusCode)
             {
                 var responseContent = respond.Content.ReadAsStringAsync().Result;
@@ -75,7 +71,7 @@ namespace ESO_LangEditor.GUI.Services
             TokenDto tokenDto = null;   // = new TokenDto();
 
             HttpResponseMessage respond = await _userClient.PostAsync("api/account/token", content);
-            
+
             if (respond.IsSuccessStatusCode)
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
@@ -86,7 +82,7 @@ namespace ESO_LangEditor.GUI.Services
                 string respondContent = await respond.Content.ReadAsStringAsync();
                 var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
                 MessageBox.Show(code.ApiMessageCodeString());
-            }    
+            }
             return tokenDto;
         }
 
@@ -121,19 +117,69 @@ namespace ESO_LangEditor.GUI.Services
             throw new NotImplementedException();
         }
 
-        public Task<string> GetUserPasswordRecoveryCode(Guid userGuid)
+        public async Task<string> GetUserPasswordRecoveryCode(Guid userGuid)
         {
-            throw new NotImplementedException();
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            string code = "";
+
+            HttpResponseMessage respond = await _userClient.GetAsync("api/admin/passwordrecoverycode/" + userGuid);
+
+            if (respond.IsSuccessStatusCode)
+            {
+                code = await respond.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                string respondContent = await respond.Content.ReadAsStringAsync();
+                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(Apicode.ApiMessageCodeString());
+            }
+            return code;
         }
 
-        public Task<List<string>> GetUserRoles(Guid userGuid)
+        public async Task<List<string>> GetUserRoles(Guid userGuid)
         {
-            throw new NotImplementedException();
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            List<string> roles = null;
+
+            HttpResponseMessage response = await _userClient.GetAsync(
+                "api/account/roles/" + userGuid.ToString());
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                roles = JsonSerializer.Deserialize<List<string>>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(Apicode.ApiMessageCodeString());
+            }
+
+            return roles;
         }
 
-        public Task SetUserRoles(Guid userId, List<string> roles)
+        public async Task<ApiMessageWithCode> SetUserRoles(Guid userId, List<string> roles)
         {
-            throw new NotImplementedException();
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            var content = SerializeDataToHttpContent(roles);
+
+            HttpResponseMessage response = await _userClient.PostAsync(
+                "api/admin/roles/" + userId.ToString(), content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            //MessageBox.Show(Apicode.ApiMessageCodeString());
+
+            return Apicode;
         }
 
         public void SaveToken(TokenDto token)
@@ -154,6 +200,109 @@ namespace ESO_LangEditor.GUI.Services
         public List<string> GetUserRoleFromToken(string token)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
+        {
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            var content = SerializeDataToHttpContent(userPasswordChangeDto);
+
+            HttpResponseMessage response = await _userClient.PostAsync(
+                "api/account/passwordchange", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            //MessageBox.Show(Apicode.ApiMessageCodeString());
+
+            return Apicode;
+        }
+
+        public async Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto)
+        {
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            var content = SerializeDataToHttpContent(userInfoChangeDto);
+
+            HttpResponseMessage response = await _userClient.PostAsync(
+                "api/account/infochange", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            //MessageBox.Show(Apicode.ApiMessageCodeString());
+
+            return Apicode;
+        }
+
+        public Task<ApiMessageWithCode> AddNewRole(string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto)
+        {
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            var content = SerializeDataToHttpContent(setUserInfoDto);
+
+            HttpResponseMessage response = await _userClient.PostAsync(
+                "api/admin/modifyUser/" + setUserInfoDto.UserID.ToString(), content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            //MessageBox.Show(Apicode.ApiMessageCodeString());
+
+            return Apicode;
+        }
+
+        public async Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid)
+        {
+            _userClient.DefaultRequestHeaders.Authorization =
+               new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            HttpResponseMessage response = await _userClient.GetAsync(
+                "api/admin/setPasswordRandom/" + userGuid.ToString());
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            //MessageBox.Show(Apicode.ApiMessageCodeString());
+
+            return Apicode;
+        }
+
+        public async Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto)
+        {
+            var content = SerializeDataToHttpContent(registrationUserDto);
+
+            HttpResponseMessage respond = await _userClient.PostAsync("api/account/register", content);
+
+            string respondContent = await respond.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+            //MessageBox.Show(code.ApiMessageCodeString());
+
+            return code;
+        }
+
+        public async Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto)
+        {
+            var content = SerializeDataToHttpContent(userPasswordResetDto);
+
+            HttpResponseMessage response = await _userClient.PostAsync(
+                "api/account/passwordrecovery", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            //MessageBox.Show(Apicode.ApiMessageCodeString());
+
+            return Apicode;
         }
 
         private HttpContent SerializeDataToHttpContent(object data)
@@ -177,39 +326,6 @@ namespace ESO_LangEditor.GUI.Services
             return userName;
         }
 
-        public Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiMessageWithCode> AddNewRole(string roleName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

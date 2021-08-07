@@ -1,19 +1,13 @@
-﻿using AutoMapper;
-using ESO_LangEditor.Core.Entities;
-using ESO_LangEditor.Core.EnumTypes;
-using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views;
-using ESO_LangEditor.GUI.Views.UserControls;
 using Microsoft.Win32;
 using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -55,10 +49,10 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _importFileCount, value); }
         }
 
-        public ObservableCollection<string> FileList 
-        { 
-            get { return _fileList; } 
-            set { SetProperty(ref _fileList, value); } 
+        public ObservableCollection<string> FileList
+        {
+            get { return _fileList; }
+            set { SetProperty(ref _fileList, value); }
         }
 
         public bool ImportAllFileCheckbox
@@ -86,7 +80,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private void ImportLangs(object o)
         {
-            
+
             if (ImportAllFileCheckbox)
             {
                 foreach (var path in _files)
@@ -94,20 +88,20 @@ namespace ESO_LangEditor.GUI.ViewModels
                     if (path.Key.EndsWith(".json"))
                     {
                         ImportDataToDb(parseLangFile.JsonToDtoReader(path.Value));
-                    }    
-                        
+                    }
+
                     //else
                     //    importData = parseLangFile.LangTextReaderToListAsync(path.Key);
                 }
             }
             else
             {
-                if(_files.TryGetValue(SelectedItemFilePath, out string jsonpath))
+                if (_files.TryGetValue(SelectedItemFilePath, out string jsonpath))
                 {
                     Debug.WriteLine("json path: " + jsonpath);
                     ImportDataToDb(parseLangFile.JsonToDtoReader(jsonpath));
                 }
-                    
+
                 //else
                 //    importData = parseLangFile.LangTextReaderToListAsync(SelectedItemFilePath);
             }
@@ -164,7 +158,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                         //new ESO_LangEditorLib.Services.Client.ParseLangFile().JsonReader(file);
                     }
 
-                    if(FileList.Count >= 1)
+                    if (FileList.Count >= 1)
                     {
                         FileList.Clear();
                     }

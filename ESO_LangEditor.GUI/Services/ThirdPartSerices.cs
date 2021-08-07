@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+﻿using System.Diagnostics;
 
 namespace ESO_LangEditor.GUI.Services
 {
@@ -55,7 +52,7 @@ namespace ESO_LangEditor.GUI.Services
             string textFileName;
             string langName;
 
-            if(isCHT)
+            if (isCHT)
             {
                 textFileName = "Text_cht.txt";
                 langName = @"Export\zht.lang";

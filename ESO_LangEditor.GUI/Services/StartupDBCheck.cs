@@ -1,11 +1,4 @@
-﻿using ESO_LangEditor.Core.EnumTypes;
-using ESO_LangEditor.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.IO;
 
 namespace ESO_LangEditor.GUI.Services
 {
@@ -74,7 +67,7 @@ namespace ESO_LangEditor.GUI.Services
         //    //    MessageBox.Show("无法找到数据库文件！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
         //    //    return ProcessDbUpdateResult.UnableToFindDbFile;
         //    //}
-            
+
         //}
 
         public void RenameUpdateDB()

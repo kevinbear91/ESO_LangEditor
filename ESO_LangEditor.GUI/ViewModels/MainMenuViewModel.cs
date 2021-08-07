@@ -1,6 +1,4 @@
-﻿using ESO_LangEditor.Core.EnumTypes;
-using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.Command;
+﻿using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
 using Prism.Events;
@@ -10,7 +8,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -56,7 +53,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private void UpdateRoleList(List<string> roleList)
         {
-            if(_roleList != roleList)
+            if (_roleList != roleList)
             {
                 _roleList = roleList;
                 LoadMemu();
@@ -102,7 +99,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                         },
                         new MenuItemContent
                         {
-                            Header = "导出文本至.lang", 
+                            Header = "导出文本至.lang",
                             Command = new ExcuteViewModelMethod(ExportLang),
                             //CommandParameter = "ESO_LangEditor.GUI.Views.ExportTranslate"
                         },
@@ -119,7 +116,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 {
                     Header="高级", ChildMenuItems=new ObservableCollection<MenuItemContent>
                     {
-                        
+
                         new MenuItemContent {
                             Header = "审核待通过文本",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
@@ -179,11 +176,11 @@ namespace ESO_LangEditor.GUI.ViewModels
                 {
                     Header="帮助", ChildMenuItems=new ObservableCollection<MenuItemContent>
                     {
-                        new MenuItemContent 
-                        { 
-                            Header = "使用说明", 
-                            Command = new ExcuteViewModelMethod(GoToSite), 
-                            CommandParameter = "https://langeditor-doc.bevisbear.com" 
+                        new MenuItemContent
+                        {
+                            Header = "使用说明",
+                            Command = new ExcuteViewModelMethod(GoToSite),
+                            CommandParameter = "https://langeditor-doc.bevisbear.com"
                         }
                     }
 

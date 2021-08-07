@@ -1,11 +1,10 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using NLog;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ESO_LangEditor.GUI.ViewModels
@@ -47,9 +46,9 @@ namespace ESO_LangEditor.GUI.ViewModels
             _passwordBoxConfirm = passwordBoxConfrim;
         }
 
-        private void UserPasswordReset(object obj)
+        private async void UserPasswordReset(object obj)
         {
-            _userAccess.SetUserPasswordByRecoveryCode(new UserPasswordRecoveryDto
+            var respond = await _userAccess.SetUserPasswordByRecoveryCode(new UserPasswordRecoveryDto
             {
                 UserName = UserName,
                 NewPassword = _passwordBox.Password,
@@ -57,8 +56,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 RecoveryCode = RecoveryCode,
             });
 
-            //TO DO
-
+            MessageBox.Show(respond.ApiMessageCodeString());
 
         }
 

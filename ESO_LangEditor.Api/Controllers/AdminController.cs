@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -68,8 +69,8 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("{userGuid}/roles")]
-        public async Task<ActionResult<bool>> ModifyUserRolesAsync(string userGuid, List<string> roles)
+        [HttpPost("roles/{userGuid}")]
+        public async Task<IActionResult> ModifyUserRolesAsync(string userGuid, List<string> roles)
         {
             var user = await _userManager.FindByIdAsync(userGuid);
             var userIdFromToken = _userManager.GetUserId(HttpContext.User);
@@ -115,7 +116,16 @@ namespace ESO_LangEditor.API.Controllers
 
             var result = await _userManager.AddToRolesAsync(user, roleForAdd);
 
-            return result.Succeeded;
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+            
 
         }
 
@@ -139,13 +149,81 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("{userId}/passwordrecoverycode")]
+        [HttpGet("passwordRecoveryCode/{userId}")]
         public async Task<IActionResult> GetUserPasswordRecoveryToken(Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             return Ok(token);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("setPasswordRandom/{userId}")]
+        public async Task<IActionResult> SetUserPasswordToRandom(Guid userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            string randomPassword = _tokenService.GenerateRandomPassword();
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, randomPassword);
+
+            await _tokenService.GenerateRefreshToken(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(ApiMessageWithCode.Success);
+            }
+            else
+            {
+                return BadRequest(ApiMessageWithCode.PasswordChangeFailed);
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("modifyUser/{userId}")]
+        public async Task<IActionResult> ModifyUserInfo(Guid userId, SetUserInfoDto setUserInfoDto)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+
+            if (user.Id != userId && user.Id != setUserInfoDto.UserID)
+            {
+                return BadRequest();
+            }
+
+            var adminSetting = _configuration.GetSection("Admin:Setting");
+            string createrId = adminSetting["Creater"];
+
+            if (user.Id == new Guid(createrId) && userIdFromToken != createrId)
+            {
+                return BadRequest();
+            }
+
+            user.UserName = setUserInfoDto.UserName;
+            user.UserNickName = setUserInfoDto.UserNickName;
+
+            if (setUserInfoDto.LockoutEnabled)
+            {
+                user.LockoutEnabled = true;
+                user.LockoutEnd = DateTimeOffset.MaxValue;
+            }
+            else
+            {
+                user.LockoutEnabled = false;
+                user.LockoutEnd = DateTimeOffset.UtcNow;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return Ok(ApiMessageWithCode.Success);
+            }
+            else
+            {
+                return BadRequest(ApiMessageWithCode.UserUpdateFailed);
+            }
         }
 
 

@@ -1,5 +1,4 @@
-﻿using ESO_LangEditor.GUI.ViewModels;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 
 namespace ESO_LangEditor.GUI.Views

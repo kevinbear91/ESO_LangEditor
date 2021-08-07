@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Services
 {

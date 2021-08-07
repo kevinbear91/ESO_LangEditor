@@ -15,6 +15,7 @@ namespace ESO_LangEditor.API.Services
         Task<string> GenerateRefreshToken(User user);
         Task<bool> VerifyRefreshToken(User user, string token);
         string GenerateRegistrationCode();
+        string GenerateRandomPassword();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
 
     }

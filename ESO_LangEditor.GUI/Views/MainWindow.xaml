@@ -80,7 +80,7 @@
 
                                     </Style>
                                 </Button.Style>
-                                <Image Source="{Binding AvatarPath}" />
+                                <materialDesign:PackIcon Kind="Menu" Height="40" Width="40" Foreground="White" />
                             </Button>
 
                             <ucd:MainWindowSearchbar Grid.Column="1" x:Name="searchBar" />

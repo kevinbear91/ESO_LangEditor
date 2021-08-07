@@ -4,7 +4,6 @@ using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
-using ESO_LangEditor.GUI.Views.UserControls;
 using NLog;
 using Prism.Events;
 using Prism.Mvvm;
@@ -12,9 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -83,7 +80,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ICommand GetMatchCommand => new ExcuteViewModelMethod(SearchIfMatch);
         public ICommand SaveSearchResultCommand => new ExcuteViewModelMethod(ReplaceTextListAsync);
-        
+
         public SearchReplaceWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
             ILogger logger, IMapper mapper)
         {
@@ -151,7 +148,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 _logger.Fatal("替换时发生了错误，错误信息：" + ex.Message);
                 MessageBox.Show("替换时发生了错误，错误信息： " + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            
+
         }
 
 

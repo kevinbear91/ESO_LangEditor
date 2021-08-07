@@ -1,25 +1,18 @@
-﻿using AutoMapper;
-using ESO_LangEditor.Core.Entities;
-using ESO_LangEditor.Core.EnumTypes;
+﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.EventAggres;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Services.AccessServer;
-using ESO_LangEditor.GUI.ViewModels;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace ESO_LangEditor.GUI.Services
 {
@@ -30,7 +23,7 @@ namespace ESO_LangEditor.GUI.Services
 
         //private LangTextRepoClientService _langTextRepo = new LangTextRepoClientService();
         private LangtextNetService _langtextNet = new LangtextNetService(App.ServerPath);
-       //private IMapper _mapper = App.Mapper;
+        //private IMapper _mapper = App.Mapper;
 
         private List<string> DatabaseRevDownloadList = new List<string>();
 
@@ -61,7 +54,7 @@ namespace ESO_LangEditor.GUI.Services
                 _ea.GetEvent<ConnectProgressString>().Publish("正在读取服务器版本数据……");
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Connecting);
                 var result = await _startupNetwork.GetServerRespondAndConfig(App.ServerPath + "AppConfig.json");
-                
+
                 if (result != null)
                 {
                     //App.LangConfigServer = result;
@@ -86,7 +79,7 @@ namespace ESO_LangEditor.GUI.Services
                 //var userService = new AccountService();
                 //userService.DecodeTokenToGetUserName("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYmV2aXMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImNjOTM3MzhjLWE5ZjQtNDZlMy04ZGRjLWI3OWM3NDlkMzcxYiIsImV4cCI6MTYxMTc2MDE4OSwiaXNzIjoiZGVtb19pc3N1ZXIiLCJhdWQiOiJkZW1vX2F1ZGllbmNlIn0.TQ-B19oGPB6O4oYrYy8DTCCvRLGeqaZFSD_SsnubMDo");
 
-                
+
             }
             catch (HttpRequestException)
             {
@@ -113,7 +106,7 @@ namespace ESO_LangEditor.GUI.Services
                     _ea.GetEvent<ConnectProgressString>().Unsubscribe(StartupCompare);
                 }
             }
-            
+
         }
 
         public async Task GetConfigFromDb()
@@ -144,7 +137,7 @@ namespace ESO_LangEditor.GUI.Services
             //Task<bool> compares = await Task.WhenAny(compareArray);
 
 
-            
+
 
 
 
@@ -273,7 +266,7 @@ namespace ESO_LangEditor.GUI.Services
             //        FileName = "ESO_LangEditorUpdater.exe",
             //        Arguments = args,
             //    };
-                
+
 
             //    Process updater = new Process
             //    {

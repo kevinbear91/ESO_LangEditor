@@ -1,9 +1,9 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Services;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ESO_LangEditor.GUI.ViewModels
@@ -16,18 +16,21 @@ namespace ESO_LangEditor.GUI.ViewModels
         private PasswordBox _passwordBox;
         private PasswordBox _passwordBoxConfirm;
 
+        [Required, StringLength(maximumLength: 15, ErrorMessage = "最低5位最高15位", MinimumLength = 5)]
         public string UserName
         {
             get => _userName;
             set => SetProperty(ref _userName, value);
         }
 
+        [Required, MaxLength(30, ErrorMessage = "最高30位")]
         public string UserNickName
         {
             get => _userNickName;
             set => SetProperty(ref _userNickName, value);
         }
 
+        [StringLength(maximumLength: 20, ErrorMessage = "不得低于15个字符。", MinimumLength = 8)]
         public string RegisterCode
         {
             get => _registerCode;
@@ -49,7 +52,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void RegistrationUser()
         {
-            await _userAccess.AddNewUser(new RegistrationUserDto
+            var respond = await _userAccess.AddNewUser(new RegistrationUserDto
             {
                 UserName = UserName,
                 UserNickName = UserNickName,
@@ -57,13 +60,11 @@ namespace ESO_LangEditor.GUI.ViewModels
                 ConfirmPassword = _passwordBoxConfirm.Password,
                 RegisterCode = RegisterCode,
             });
+            _passwordBox.Clear();
+            _passwordBoxConfirm.Clear();
 
-            //TO DO
+            MessageBox.Show(respond.ApiMessageCodeString());
 
         }
-
-
-
-
     }
 }

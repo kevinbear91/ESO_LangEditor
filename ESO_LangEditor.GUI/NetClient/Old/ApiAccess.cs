@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -52,7 +51,7 @@ namespace ESO_LangEditor.GUI.NetClient.Old
             Debug.WriteLine("AuthToken: {0}. RefreshToken: {1} .", json.AuthToken, json.RefreshToken);
 
             return json;
-            
+
         }
 
         public async Task<TokenDto> FirstTimeLogin(LoginUserDto loginUser)

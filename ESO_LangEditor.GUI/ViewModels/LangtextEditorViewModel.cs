@@ -1,21 +1,18 @@
 ﻿using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
+using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
+using MaterialDesignThemes.Wpf;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using MaterialDesignThemes.Wpf;
-using Prism.Events;
-using ESO_LangEditor.GUI.EventAggres;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -92,7 +89,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
         }
 
-        
+
         public ICommand LangEditorSaveButton { get; }
         public SnackbarMessageQueue EditorMessageQueue { get; }
         public event EventHandler OnRequestClose;
@@ -209,7 +206,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                         }
                         else
                         {
-                            
+
                             OnRequestClose(this, new EventArgs());
                             _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！"
                                 + "需重新搜索才会刷新表格。");
@@ -229,7 +226,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
 
 
-            
+
         }
 
         public async void SetCurrentItemFromList(LangTextDto langTextDto)
@@ -246,7 +243,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 await QueryCurrentLangFromInReview();
             }
 
-            
+
         }
 
         private async Task QueryCurrentLangFromInReview()

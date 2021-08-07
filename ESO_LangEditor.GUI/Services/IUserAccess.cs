@@ -2,7 +2,6 @@
 using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.Services
@@ -21,13 +20,13 @@ namespace ESO_LangEditor.GUI.Services
         Task<string> GetRegistrationCode();
         Task<List<string>> GetUserRoles(Guid userGuid);
         List<string> GetUserRoleFromToken(string token);
-        Task SetUserRoles(Guid userId, List<string> roles);
+        Task<ApiMessageWithCode> SetUserRoles(Guid userId, List<string> roles);
         Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto);
         Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto);
         Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid);
         Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto);
         Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto);
         void SaveToken(TokenDto token);
-        
+
     }
 }

@@ -241,7 +241,7 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [ServiceFilter(typeof(ValidationFilter))]
-        [HttpPost("{userId}/passwordrecovery")]
+        [HttpPost("passwordrecovery")]
         public async Task<IActionResult> UserPasswordRecovery(UserPasswordRecoveryDto userPasswordRecoveryDto)
         {
             var user = await _userManager.FindByNameAsync(userPasswordRecoveryDto.UserName);
@@ -261,9 +261,10 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize]
         [HttpGet("registrationcode")]
-        public async Task<IActionResult> GetRegistrationCode(Guid userId)
+        public async Task<IActionResult> GetRegistrationCode()
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+            var user = await _userManager.FindByIdAsync(userIdFromToken);
 
             if (user == null)
             {
@@ -349,7 +350,7 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("{userGuid}/roles")]
+        [HttpGet("roles/{userGuid}")]
         public async Task<ActionResult<List<string>>> GetUserRolesAsync(string userGuid)
         {
 

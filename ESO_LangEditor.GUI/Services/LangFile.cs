@@ -1,7 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -34,7 +33,7 @@ namespace ESO_LangEditor.GUI.Services
             {
                 Debug.WriteLine("Opened file.");
 
-                
+
                 bool passedFirstLine = false;
 
                 if (csvData.Count >= 1)
@@ -548,7 +547,7 @@ namespace ESO_LangEditor.GUI.Services
                     //    Debug.WriteLine($"text bytes: {textbyte}");
                     //}
 
-                    
+
 
                     byte[] idBytes = BitConverter.GetBytes(id);
                     byte[] unknownBytes = BitConverter.GetBytes(unknown);

@@ -1,6 +1,5 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.GUI.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -25,7 +24,7 @@ namespace ESO_LangEditor.GUI.Services
         private ILangFile _langFile;
         private ILangTextRepoClient _langTextRepo;
 
-        public PackAllAddonFile(PackToRelaseViewModel packFileViewModel, ILangFile langFile, 
+        public PackAllAddonFile(PackToRelaseViewModel packFileViewModel, ILangFile langFile,
             ILangTextRepoClient langTextRepoClient)
         {
             _addonVersion = packFileViewModel.AddonVersion;

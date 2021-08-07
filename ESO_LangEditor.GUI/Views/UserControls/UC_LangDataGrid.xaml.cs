@@ -1,17 +1,10 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Converter;
 using ESO_LangEditor.GUI.EventAggres;
-using ESO_LangEditor.GUI.ViewModels;
-using Prism.Events;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -41,14 +34,14 @@ namespace ESO_LangEditor.GUI.Views.UserControls
             get { return Enum.GetValues(typeof(LangDataGridContextMenu)).Cast<LangDataGridContextMenu>(); }
             //set { _searchPostion =  }
         }
-        
+
 
 
         public UC_LangDataGrid()
         {
             InitializeComponent();
             //LangDataGridCommand = new LangDataGridCommand(this);
-            
+
             //Loaded += UC_LangDataGrid_Loaded;
         }
 
@@ -173,7 +166,7 @@ namespace ESO_LangEditor.GUI.Views.UserControls
                             IsEnabled = visibleColumns > 1 || column.Visibility != Visibility.Visible
                         };
                     }
-                    
+
                     // Bind events
                     menuItem.Checked += (object a, RoutedEventArgs ea)
                         => column.Visibility = Visibility.Visible;
@@ -258,7 +251,7 @@ namespace ESO_LangEditor.GUI.Views.UserControls
             return parentWindow.Tag.ToString();
         }
 
-        public static readonly RoutedEvent DataGridDoubleClick = 
+        public static readonly RoutedEvent DataGridDoubleClick =
             EventManager.RegisterRoutedEvent("DataGridDoubleClick", RoutingStrategy.Direct,
                 typeof(RoutedEventHandler), typeof(UC_LangDataGrid));
 

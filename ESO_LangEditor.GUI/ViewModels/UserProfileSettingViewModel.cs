@@ -1,21 +1,12 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
-using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
-using ESO_LangEditor.GUI.Services.AccessServer;
 using ESO_LangEditor.GUI.Views;
-using Microsoft.Win32;
 using NLog;
 using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 

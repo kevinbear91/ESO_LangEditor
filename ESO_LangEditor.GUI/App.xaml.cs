@@ -50,10 +50,10 @@ namespace ESO_LangEditor.GUI
         {
             LangConfig = AppConfigClient.Load();
             AppConfigClient.Save(LangConfig);
-            
-            #if DEBUG
+
+#if DEBUG
             Console.WriteLine("Debug version");
-            #endif
+#endif
 
             foreach (var server in LangConfig.LangServerList)
             {
@@ -112,5 +112,5 @@ namespace ESO_LangEditor.GUI
         }
 
     }
-    
+
 }

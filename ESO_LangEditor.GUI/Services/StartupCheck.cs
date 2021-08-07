@@ -15,7 +15,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -43,9 +42,9 @@ namespace ESO_LangEditor.GUI.Services
         private IMapper _mapper;
         private JsonSerializerOptions _jsonOption;
         private ILogger _logger;
-        
 
-        public StartupCheck(IEventAggregator ea, ILangTextRepoClient langTextRepo, 
+
+        public StartupCheck(IEventAggregator ea, ILangTextRepoClient langTextRepo,
             ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper, ILogger logger)
         {
             _ea = ea;
@@ -60,7 +59,7 @@ namespace ESO_LangEditor.GUI.Services
                 PropertyNameCaseInsensitive = true,
             };
 
-            
+
         }
 
         public async Task StartupTaskList()
@@ -69,11 +68,11 @@ namespace ESO_LangEditor.GUI.Services
             _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Connecting);
 
             _langConfigServer = await GetServerRespondAndConfig();
-            
+
 
             if (_langConfigServer != null)
             {
-               
+
                 _logger.LogDebug("获取服务器配置成功");
 
                 if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion)
@@ -126,9 +125,9 @@ namespace ESO_LangEditor.GUI.Services
         {
             var revDto = await _langTextAccess.GetAllRevisedNumber();
 
-            foreach(var rev in revDto)
+            foreach (var rev in revDto)
             {
-                if( rev.Id == 1)    //ID 1 为 Langtext rev
+                if (rev.Id == 1)    //ID 1 为 Langtext rev
                 {
                     _langRevNumberServer = rev.Rev;
                 }
@@ -320,13 +319,13 @@ namespace ESO_LangEditor.GUI.Services
                             _logger.LogDebug("当前步进新增：" + newLangtexts.Count);
                             _logger.LogDebug("当前步进新增文本完成");
                         }
-                        
+
                         if (await _langTextRepo.UpdateLangtexts(langtextToUpdateList))//应用修改文本
                         {
                             _logger.LogDebug("当前步进修改：" + langtextToUpdateList.Count);
                             _logger.LogDebug("当前步进修改文本完成");
                         }
-                           
+
                         if (langtextDeletedDict.Count >= 1)
                         {
                             if (await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()))//应用删除文本
@@ -336,7 +335,7 @@ namespace ESO_LangEditor.GUI.Services
                             }
                         }
 
-                        if(await _langTextRepo.UpdateRevNumber(revised))    //更新步进号
+                        if (await _langTextRepo.UpdateRevNumber(revised))    //更新步进号
                         {
                             _logger.LogDebug("当前步进号新增完成");
                             revised++;
@@ -411,6 +410,6 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        
+
     }
 }

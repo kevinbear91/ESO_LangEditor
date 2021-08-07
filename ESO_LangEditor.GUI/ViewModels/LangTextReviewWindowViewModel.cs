@@ -1,8 +1,8 @@
 ﻿using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
+using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Services;
 using Prism.Events;
 using Prism.Mvvm;
@@ -13,7 +13,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -102,7 +101,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
 
         IEventAggregator _ea;
-        
+
         public LangTextReviewWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
             _ea = ea;
@@ -130,7 +129,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     NetworkInfo = "读取完成";
                 }
             }
-            catch(HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 NetworkInfo = ex.Message;
             }
@@ -151,10 +150,10 @@ namespace ESO_LangEditor.GUI.ViewModels
             try
             {
                 var list = await _langtextNetService.GetUsersInReviewAllAsync(token);
-                
-                foreach(var user in list)
+
+                foreach (var user in list)
                 {
-                    userDtoList.Add(new UserInClientDto{ Id = user, UserNickName = _userDict[user].UserNickName });
+                    userDtoList.Add(new UserInClientDto { Id = user, UserNickName = _userDict[user].UserNickName });
                 }
                 UserList = new ObservableCollection<UserInClientDto>(userDtoList);
                 NetworkInfo = "读取完成";
@@ -192,7 +191,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                 if (respondCode == HttpStatusCode.OK)
                 {
-                    foreach(var selected in langTextForReviewDtos)
+                    foreach (var selected in langTextForReviewDtos)
                     {
                         GridData.Remove(selected);
                     }
@@ -217,7 +216,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             if (GridSelectedItem != null)
             {
-                if (GridSelectedItem.ReasonFor == ReviewReason.ZhChanged 
+                if (GridSelectedItem.ReasonFor == ReviewReason.ZhChanged
                     || GridSelectedItem.ReasonFor == ReviewReason.Deleted)
                 {
                     localOldTextZh = "修改前中文(本地)：" + localOldLang.TextZh;

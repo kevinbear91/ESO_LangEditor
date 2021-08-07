@@ -132,6 +132,20 @@ namespace ESO_LangEditor.API.Services
 
         }
 
+        public string GenerateRandomPassword()
+        {
+            string charRange = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ,.#@!$%";
+            string randomWord = "";
 
+            Random rng = new Random();
+            int iRandom;
+
+            for (int i = 0; i < 16; i++)
+            {
+                iRandom = rng.Next(charRange.Length);
+                randomWord += charRange[iRandom];
+            }
+            return randomWord;
+        }
     }
 }

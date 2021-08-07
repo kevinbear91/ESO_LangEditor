@@ -1,18 +1,17 @@
-﻿using ESO_LangEditor.Core.Models;
+﻿using ESO_LangEditor.Core.EnumTypes;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
-using ESO_LangEditor.GUI.Services.AccessServer;
+using ESO_LangEditor.GUI.Services;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ESO_LangEditor.GUI.Services;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -29,7 +28,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _userName;
         private string _userNickName;
         private bool _userLockoutEnabled;
-        private DateTimeOffset? _userLockoutEnd;
+        private DateTime? _userLockoutEnd;
         private string _userTranslatedNumber;
         private string _newUserInfo;
         private Guid _newUserId;
@@ -37,7 +36,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private bool _isOpenDialogs;
         private string _recoveryCode;
         private string _registrationCode;
-        
+
 
         private List<string> _roles = new List<string>
         {
@@ -102,7 +101,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _userLockoutEnabled, value);
         }
 
-        public DateTimeOffset? UserLockoutEnd
+        public DateTime? UserLockoutEnd
         {
             get => _userLockoutEnd;
             set => SetProperty(ref _userLockoutEnd, value);
@@ -164,6 +163,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ICommand GetRegistrationCodeCommand => new ExcuteViewModelMethod(GetUserRegistrationCode);
         public ICommand SetUserInfoCommand => new ExcuteViewModelMethod(SetUserInfo);
         public ICommand SetUserPasswordToRandomCommand => new ExcuteViewModelMethod(SetUserPasswordToRandom);
+        //public ICommand SetUserLockoutTimerCommand => new ExcuteViewModelMethod(SetUserLockoutTimer);
 
         private IEventAggregator _ea;
         private IUserAccess _userService;
@@ -218,12 +218,14 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             if (UserInfo != null)
             {
+                var lockouttimer = new DateTime();
+                lockouttimer.ToUniversalTime();
+
                 UserGuid = UserInfo.ID;
                 UserName = UserInfo.UserName;
                 UserNickName = UserInfo.UserNickName;
                 UserTranslatedNumebr = UserInfo.TranslatedCount.ToString();
                 UserLockoutEnabled = UserInfo.LockoutEnabled;
-                UserLockoutEnd = UserInfo.LockoutEnd;
 
                 LoadListboxItem(UserInfo.UserRoles);
             }
@@ -245,18 +247,9 @@ namespace ESO_LangEditor.GUI.ViewModels
                 }
             }
 
-            await _userService.SetUserRoles(SelectedUser.Id, selectedRoles);
+            var respond = await _userService.SetUserRoles(SelectedUser.Id, selectedRoles);
 
-            //TO DO
-
-            //if ()
-            //{
-            //    ProgressSting = "提交请求已完成";
-            //}
-            //else
-            //{
-            //    ProgressSting = "提交请求出错";
-            //}
+            MessageBox.Show(respond.ApiMessageCodeString());
 
         }
 
@@ -334,7 +327,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             if (SelectedUser != null)
             {
-                var aa = await _userService.SetUserInfo(new SetUserInfoDto
+                var respond = await _userService.SetUserInfo(new SetUserInfoDto
                 {
                     UserID = UserGuid,
                     UserName = UserName,
@@ -343,9 +336,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     LockoutEnd = UserLockoutEnd,
                 });
 
-                //TO DO
-
-
+                MessageBox.Show(respond.ApiMessageCodeString());
             }
         }
 
@@ -353,12 +344,27 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             if (SelectedUser != null)
             {
-                var aa = await _userService.SetUserPasswordToRandom(SelectedUser.Id);
-            }
-            //TO DO
+                var respond = await _userService.SetUserPasswordToRandom(SelectedUser.Id);
 
+                MessageBox.Show(respond.ApiMessageCodeString());
+
+            }
 
         }
+
+        //private void SetUserLockoutTimer(object obj)
+        //{
+        //    Debug.WriteLine(UserLockoutEnabled);
+
+        //    if (UserLockoutEnabled)
+        //    {
+        //        UserLockoutEnd = DateTime.MaxValue;
+        //    }
+        //    else
+        //    {
+        //        UserLockoutEnd = DateTime.UtcNow;
+        //    }
+        //}
 
     }
 

@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -42,7 +41,7 @@ namespace ESO_LangEditor.GUI.NetClient.Old
 
             HttpResponseMessage response = await client.GetAsync(
                 "api/langtext" + langtextGuid);
-            
+
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = response.Content.ReadAsStringAsync().Result;
@@ -118,7 +117,7 @@ namespace ESO_LangEditor.GUI.NetClient.Old
             HttpResponseMessage response = await client.GetAsync(
                 "api/langtext/archive/" + langtextGuid);
 
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
                 respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
@@ -289,7 +288,7 @@ namespace ESO_LangEditor.GUI.NetClient.Old
             };
 
             var response = await client.SendAsync(request);
-            
+
             return response.StatusCode;
         }
 

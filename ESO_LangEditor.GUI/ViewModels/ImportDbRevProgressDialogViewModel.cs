@@ -1,8 +1,6 @@
 ﻿using ESO_LangEditor.GUI.EventAggres;
 using Prism.Events;
 using Prism.Mvvm;
-using System;
-using System.Net.Http;
 using System.Windows;
 
 namespace ESO_LangEditor.GUI.ViewModels

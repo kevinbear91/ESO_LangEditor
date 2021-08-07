@@ -3,7 +3,6 @@ using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.Services
@@ -12,7 +11,7 @@ namespace ESO_LangEditor.GUI.Services
     {
         Task<LangTextClient> GetLangTextByGuidAsync(Guid langtextGuid);
         Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, SearchTextType searchType, SearchPostion searchPostion);
-        Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2,SearchTextType searchType, SearchTextType searchType2, SearchPostion searchPostion);
+        Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2, SearchTextType searchType, SearchTextType searchType2, SearchPostion searchPostion);
         Task<Dictionary<string, LangTextDto>> GetAlltLangTextsDictionaryAsync(int searchType);
         Task<List<LangTextDto>> GetAlltLangTexts();
         Task<bool> AddLangtexts(List<LangTextClient> langtextDto);

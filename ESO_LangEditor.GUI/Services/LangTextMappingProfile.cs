@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ESO_LangEditor.GUI.Services
 {

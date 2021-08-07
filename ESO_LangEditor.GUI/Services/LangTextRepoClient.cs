@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static System.Convert;
 
@@ -136,7 +135,7 @@ namespace ESO_LangEditor.GUI.Services
             return langtextDto;
         }
 
-        public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2, 
+        public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2,
             SearchTextType searchType, SearchTextType searchType2, SearchPostion searchPostion)
         {
             List<LangTextClient> langtext;

@@ -1,19 +1,13 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.Command;
-using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
-using ESO_LangEditor.GUI.Views.UserControls;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ESO_LangEditor.GUI.ViewModels
@@ -73,7 +67,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             set { SetProperty(ref _gridSelectedItem, value); }
         }
 
-        public bool IsExportSelectedItems 
+        public bool IsExportSelectedItems
         {
             get { return _isExportSelectedItems; }
             set { SetProperty(ref _isExportSelectedItems, value); }
@@ -170,7 +164,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             //    {
             //        MessageBox.Show("文本上传至服务器时出错！错误码：" + code);
             //    }
-                
+
             //}
             //else
             //{
@@ -201,8 +195,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             //    }
             //}
 
-            
-            
+
+
         }
     }
 }

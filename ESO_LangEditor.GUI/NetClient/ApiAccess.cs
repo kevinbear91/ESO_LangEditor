@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.NetClient
@@ -21,7 +19,7 @@ namespace ESO_LangEditor.GUI.NetClient
             _userClient.DefaultRequestHeaders.Accept.Clear();
             _userClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            
+
         }
 
         public Task<HttpResponseMessage> Get(Guid userId)

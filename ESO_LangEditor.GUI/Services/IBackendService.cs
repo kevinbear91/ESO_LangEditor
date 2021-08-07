@@ -1,7 +1,5 @@
 ﻿using ESO_LangEditor.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.Services

@@ -122,18 +122,18 @@
 
                             <TextBox materialDesign:HintAssist.Hint="User Name" 
                                  materialDesign:HintAssist.IsFloating="True"
-                                 Margin="10" Text="{Binding UserName}" Width="120" />
+                                 Margin="10" Text="{Binding UserName}" Width="140" />
                             <TextBox materialDesign:HintAssist.Hint="User NickName" 
                                  materialDesign:HintAssist.IsFloating="True"
-                                 Margin="10" Text="{Binding UserNickName}" Width="120" />
+                                 Margin="10" Text="{Binding UserNickName}" Width="140" />
                             <TextBlock VerticalAlignment="Center" Text="{Binding UserTranslatedNumebr, FallbackValue='UserTranslatedNumebr'}" Margin="10" />
 
                             <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right" >
                                 <TextBlock VerticalAlignment="Center" Text="禁止登录" />
                                 <ToggleButton Margin="10" IsChecked="{Binding UserLockoutEnabled}" />
-                                <DatePicker Width="160" materialDesign:HintAssist.Hint="选择日期" Language="zh-CN"
+                                <!--<DatePicker Width="160" materialDesign:HintAssist.Hint="选择日期" Language="zh-CN"
                                         Style="{StaticResource MaterialDesignFilledDatePicker}" 
-                                        SelectedDate="{Binding UserLockoutEnd, Mode=TwoWay}" FirstDayOfWeek="Monday" SelectedDateFormat="Long"   />
+                                        SelectedDate="{Binding UserLockoutEnd}" FirstDayOfWeek="Monday" SelectedDateFormat="Long"   />-->
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal">

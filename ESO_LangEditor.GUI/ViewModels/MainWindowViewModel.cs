@@ -35,7 +35,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private ILogger _logger;
         private IStartupCheck _startupCheck;
         private IBackendService _backendService;
-        
+
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
@@ -49,7 +49,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public string WindowTitle
         {
             get => _windowTitle;
-            set => SetProperty(ref _windowTitle, value); 
+            set => SetProperty(ref _windowTitle, value);
             //set { _windowTitle = value; NotifyPropertyChanged(); }
         }
 
@@ -57,9 +57,9 @@ namespace ESO_LangEditor.GUI.ViewModels
         public string SearchInfo
         {
             get => _searchInfo;
-            set => SetProperty(ref _searchInfo, "查询到 " + value + " 条文本"); 
-                //set { _searchInfo = "查询到 " + value + " 条文本"; ; NotifyPropertyChanged(); }
-            }
+            set => SetProperty(ref _searchInfo, "查询到 " + value + " 条文本");
+            //set { _searchInfo = "查询到 " + value + " 条文本"; ; NotifyPropertyChanged(); }
+        }
 
         public string SelectedInfo
         {
@@ -108,12 +108,12 @@ namespace ESO_LangEditor.GUI.ViewModels
         public event EventHandler OnRequestClose;
         public event EventHandler CloseDrawerHostEvent;
 
-        public MainWindowViewModel(IEventAggregator ea, ILogger logger, 
+        public MainWindowViewModel(IEventAggregator ea, ILogger logger,
             IStartupCheck startupCheck, IBackendService backendService)
         {
             LoadMainView();
             GridData = new ObservableCollection<LangTextDto>();
-            
+
             //_langTextSearch = new LangTextSearchService(App.RepoClient, App.Mapper);
 
             _ea = ea;
@@ -252,7 +252,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         //        {
         //             _accountService.LoginByToken();
         //        });
-                
+
         //    }
         //}
 
@@ -274,7 +274,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             view.Show();
 
             //show the dialog
-           // var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            // var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
 
         }
 

@@ -1,10 +1,5 @@
 ﻿using ESO_LangEditor.GUI.ViewModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Views
 {

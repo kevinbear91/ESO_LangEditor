@@ -6,12 +6,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ESO_LangEditor.GUI.ViewModels
@@ -30,9 +25,9 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ICommand SearchLangCommand { get; }
 
-        public SearchPostion SelectedSearchPostion 
+        public SearchPostion SelectedSearchPostion
         {
-            get { return _selectedSearchPostion; } 
+            get { return _selectedSearchPostion; }
             set { SetProperty(ref _selectedSearchPostion, value); }
         }
 
@@ -48,7 +43,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             //set { _searchTextType = value; NotifyPropertyChanged(); }
         }
 
-        public SearchTextType SelectedSearchTextType 
+        public SearchTextType SelectedSearchTextType
         {
             get { return _selectedSearchTextType; }
             set { SetProperty(ref _selectedSearchTextType, value); }

@@ -3,13 +3,11 @@ using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.EFCore;
-using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using static System.Convert;
 
@@ -65,8 +63,8 @@ namespace ESO_LangEditor.GUI.Services
             return langtextDto;
         }
 
-        public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2, 
-            SearchTextType searchType, SearchTextType searchType2, 
+        public async Task<List<LangTextDto>> GetLangTextByConditionAsync(string keyWord, string keyWord2,
+            SearchTextType searchType, SearchTextType searchType2,
             SearchPostion searchPostion)
         {
 
@@ -74,16 +72,16 @@ namespace ESO_LangEditor.GUI.Services
             var secondType = GetSearchTypeToStringRaw(searchType2);
             string searchPosAndWord = GetKeywordWithPostion(searchPostion, keyWord2);
 
-            List <LangTextClient> langtext;
+            List<LangTextClient> langtext;
 
             Debug.WriteLine("Key1: {0}, Key2: {1}, fT: {2}, sT: {3}.", keyWord, searchPosAndWord, firstType, secondType);
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 //0 = firstType, 1 = keyWord, 2 = secondType, 3 = searchPosAndWord.
-                var query = await db.Langtexts.FromSqlRaw("SELECT * FROM Langtexts WHERE " + firstType 
+                var query = await db.Langtexts.FromSqlRaw("SELECT * FROM Langtexts WHERE " + firstType
                     + " = " + "'" + keyWord + "'"
-                    + " AND " + secondType 
+                    + " AND " + secondType
                     + " Like '" + searchPosAndWord + "'").ToListAsync();
 
                 langtext = query;
@@ -189,14 +187,14 @@ namespace ESO_LangEditor.GUI.Services
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                foreach(var lang in langtextDto)
+                foreach (var lang in langtextDto)
                 {
                     var langtext = await db.Langtexts.FindAsync(lang.Id);
                     _mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangTextClient));
 
                     db.Langtexts.Update(langtext);
                 }
-                
+
                 saveCount = await db.SaveChangesAsync();
                 db.Dispose();
             }
@@ -229,7 +227,7 @@ namespace ESO_LangEditor.GUI.Services
             }
             var lang = _mapper.Map<List<LangTextClient>>(langtexts);
 
-            using(var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
                 db.Langtexts.UpdateRange(lang);
                 saveCount = await db.SaveChangesAsync();
@@ -246,7 +244,7 @@ namespace ESO_LangEditor.GUI.Services
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                foreach(var id in langtextId)
+                foreach (var id in langtextId)
                 {
                     var lang = await db.Langtexts.FindAsync(id);
                     langToDelete.Add(lang);
@@ -265,7 +263,7 @@ namespace ESO_LangEditor.GUI.Services
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-               var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
+                var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
                 langtextRev = langtextRevNumber.Rev;
                 db.Dispose();
             }
@@ -326,7 +324,7 @@ namespace ESO_LangEditor.GUI.Services
             int saveCount = 0;
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                foreach(var user in users)
+                foreach (var user in users)
                 {
                     var isUserExist = await db.Users.FindAsync(user.Id);
 

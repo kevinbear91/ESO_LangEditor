@@ -6,7 +6,6 @@ using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.GUI.Services
@@ -20,7 +19,7 @@ namespace ESO_LangEditor.GUI.Services
         private readonly IMapper _mapper;
         private readonly IEventAggregator _ea;
 
-        public BackendService(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, 
+        public BackendService(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
             ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper)
         {
             _langTextRepo = langTextRepoClient;

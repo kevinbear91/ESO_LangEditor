@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -57,7 +56,7 @@ namespace ESO_LangEditor.GUI.Services
             return code;
         }
 
-        
+
 
         public async Task<IEnumerable<LangTextRevisedDto>> GetLangTextRevisedDtos(int revNumber)
         {
@@ -143,7 +142,7 @@ namespace ESO_LangEditor.GUI.Services
             {
                 var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
                 MessageBox.Show(code.ApiMessageCodeString());
-            }    
+            }
 
             //Debug.WriteLine(respondedList);
             return respondedList;
@@ -379,6 +378,6 @@ namespace ESO_LangEditor.GUI.Services
             return byteContent;
         }
 
-        
+
     }
 }

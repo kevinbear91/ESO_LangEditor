@@ -1,8 +1,7 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.GUI.NetClient.Old;
 using ESO_LangEditor.GUI.EventAggres;
-using ESO_LangEditor.GUI.Views;
+using ESO_LangEditor.GUI.NetClient.Old;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -11,10 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Services.AccessServer
 {
@@ -64,16 +60,16 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
                 {
                     return false;
                 }
-                    
+
             }
-            catch(HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
 
                 return false;
             }
-                
+
         }
 
         public async Task<bool> LoginFirstTime(LoginUserDto loginUserDto)
@@ -89,7 +85,7 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
                     //SaveToken(tokenDto);
                     App.LangConfig.UserAuthToken = tokenDto.AuthToken;
                     App.LangConfig.UserRefreshToken = tokenDto.RefreshToken;
-                    
+
                     _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Login);
                     _ea.GetEvent<ConnectProgressString>().Publish("登录成功");
                     var role = GetUserRoleFromToken(tokenDto.AuthToken);
@@ -143,9 +139,9 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
                 {
                     _ea.GetEvent<LoginRequiretEvent>().Publish();
                 }
-                    
+
             }
-            catch(HttpRequestException ex)
+            catch (HttpRequestException ex)
             {
                 if (ex.Message == "Response status code does not indicate success: 400 (Bad Request).")
                 {
@@ -155,7 +151,7 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
                 _ea.GetEvent<ConnectProgressString>().Publish(ex.Message);
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.ConnectError);
             }
-            
+
         }
 
         public async Task<List<UserInClientDto>> GetUserList()
@@ -215,7 +211,7 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
 
             try
             {
-                 userDto = await apiclient.InitUser(userGuid, App.LangConfig.UserAuthToken);
+                userDto = await apiclient.InitUser(userGuid, App.LangConfig.UserAuthToken);
             }
             catch (HttpRequestException ex)
             {
@@ -297,8 +293,8 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
 
             try
             {
-                return await apiclient.UploadUserAvatar(filepath, 
-                    App.LangConfig.UserGuid.ToString(), 
+                return await apiclient.UploadUserAvatar(filepath,
+                    App.LangConfig.UserGuid.ToString(),
                     App.LangConfig.UserAuthToken);
             }
             catch (HttpRequestException ex)
@@ -323,7 +319,7 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
                     await client.DownloadFileTaskAsync(new Uri(App.ServerPath + "images/" + user.UserAvatarPath),
                         App.WorkingDirectory + "/_tmp/" + user.UserAvatarPath);
                     client.DownloadFileCompleted += (s, e) => _ea.GetEvent<UserAvatarDownloadCompleteEvent>().Publish(user.UserAvatarPath);
-                    
+
                     client.Dispose();
                 }
 
@@ -347,7 +343,7 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
             var roleList = jsontoken.Claims.Where(claim => claim.Type == userRoleClaim)
                 .Select(c => c.Value).ToList();
 
-            foreach(var role in roleList)
+            foreach (var role in roleList)
             {
                 Debug.WriteLine(role);
             }
@@ -378,7 +374,7 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
 
             var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(token);
             var userName = jsontoken.Claims.First(claim => claim.Type == userNameClaim).Value;
-            
+
             return userName;
         }
 

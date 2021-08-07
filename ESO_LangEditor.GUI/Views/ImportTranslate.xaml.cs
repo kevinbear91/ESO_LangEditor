@@ -1,7 +1,5 @@
 ﻿using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.ViewModels;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 

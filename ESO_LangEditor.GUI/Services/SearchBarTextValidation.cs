@@ -1,12 +1,8 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Markup;
-using static System.Convert;
 
 namespace ESO_LangEditor.GUI.Services
 {

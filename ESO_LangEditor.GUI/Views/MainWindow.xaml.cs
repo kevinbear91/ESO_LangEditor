@@ -1,15 +1,11 @@
-﻿using System;
-using System.Windows;
-using System.Diagnostics;
-using ESO_LangEditor.GUI.ViewModels;
-using MaterialDesignThemes.Wpf;
-using ESO_LangEditor.GUI.Services;
-using Prism.Events;
-using ESO_LangEditor.GUI.Views.UserControls;
+﻿using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.EventAggres;
-using System.Windows.Controls;
+using ESO_LangEditor.GUI.ViewModels;
+using ESO_LangEditor.GUI.Views.UserControls;
+using MaterialDesignThemes.Wpf;
+using System;
 using System.ComponentModel;
-using ESO_LangEditor.Core.Models;
+using System.Windows;
 
 namespace ESO_LangEditor.GUI.Views
 {
