@@ -21,37 +21,37 @@ namespace ESO_LangEditor.EFCore.TestData
             //        LangTextRev = 1 
             //    });
 
-            modelBuilder.Entity<Role>().HasData(
-                new Role
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "InitUser",
-                    NormalizedName = "INITUSER",
-                },
-                new Role
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Editor",
-                    NormalizedName = "EDITOR",
-                },
-                new Role
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Reviewer",
-                    NormalizedName = "REVIEWER",
-                },
-                new Role
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Admin",
-                    NormalizedName = "ADMIN",
-                },
-                new Role
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Creater",
-                    NormalizedName = "CREATER",
-                });
+            //modelBuilder.Entity<Role>().HasData(
+            //    new Role
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        Name = "InitUser",
+            //        NormalizedName = "INITUSER",
+            //    },
+            //    new Role
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        Name = "Editor",
+            //        NormalizedName = "EDITOR",
+            //    },
+            //    new Role
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        Name = "Reviewer",
+            //        NormalizedName = "REVIEWER",
+            //    },
+            //    new Role
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        Name = "Admin",
+            //        NormalizedName = "ADMIN",
+            //    },
+            //    new Role
+            //    {
+            //        Id = Guid.NewGuid(),
+            //        Name = "Creater",
+            //        NormalizedName = "CREATER",
+            //    });
                 
 
             //modelBuilder.Entity<User>().HasData(

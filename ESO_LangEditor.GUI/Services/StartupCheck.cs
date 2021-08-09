@@ -75,7 +75,8 @@ namespace ESO_LangEditor.GUI.Services
 
                 _logger.LogDebug("获取服务器配置成功");
 
-                if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion)
+                if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion 
+                    || !GetFileExistAndSha256("ESO_LangEditorUpdater.exe", _langConfigServer.LangUpdaterSha256))
                 {
                     await UpdateUpdater();
                 }
@@ -100,7 +101,7 @@ namespace ESO_LangEditor.GUI.Services
         {
             if (App.LangConfig.UserAuthToken != "" & App.LangConfig.UserRefreshToken != "")
             {
-                var Logintoken = await _userAccess.GetTokenByDto(new TokenDto
+                var Logintoken = await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid, new TokenDto
                 {
                     AuthToken = App.LangConfig.UserAuthToken,
                     RefreshToken = App.LangConfig.UserRefreshToken,
@@ -112,6 +113,10 @@ namespace ESO_LangEditor.GUI.Services
 
                     _userAccess.SaveToken(Logintoken);
                     await LoginTaskList();
+                }
+                else
+                {
+                    _ea.GetEvent<LoginRequiretEvent>().Publish();
                 }
             }
 
@@ -138,6 +143,8 @@ namespace ESO_LangEditor.GUI.Services
                 }
             }
 
+            _logger.LogDebug($"langRevNumberServer 为 {_langRevNumberServer}, userRevNumberServer 为 {_userRevNumberServer}");
+
             await GetConfigFromDb();
 
             if (_userRevNumberLocal != _userRevNumberServer)
@@ -154,6 +161,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 _logger.LogDebug("步进号已最新");
+                _ea.GetEvent<ConnectProgressString>().Publish("启动检查完成");
+                _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Login);
             }
             //_ea.GetEvent<LoginFromUcEvent>().Unsubscribe(LoginTaskCallFromUC);
         }
@@ -209,7 +218,7 @@ namespace ESO_LangEditor.GUI.Services
 
                 ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
 
-                App.LangConfig.LangUpdaterSha256 = _langConfigServer.LangUpdaterSha256;
+                //App.LangConfig.LangUpdaterSha256 = _langConfigServer.LangUpdaterSha256;
                 App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
 
                 AppConfigClient.Save(App.LangConfig);
@@ -386,10 +395,25 @@ namespace ESO_LangEditor.GUI.Services
                 //Debug.WriteLine("id: {0}, name: {1}", App.User.Id, App.User.UserNickName);
             }
 
-            _langRevNumberLocal = await _langTextRepo.GetLangtextRevNumber();
+            var revList = await _langTextRepo.GetLangtextRevNumber();
+
+            foreach (var rev in revList)
+            {
+                if (rev.Id == 1)
+                {
+                    _langRevNumberLocal = rev.Rev;
+                }
+
+                if (rev.Id == 2)
+                {
+                    _userRevNumberLocal = rev.Rev;
+                }
+            }
+
+            _logger.LogDebug($"langRevNumberLocal 为 {_langRevNumberLocal}, userRevNumberLocal 为 {_userRevNumberLocal}");
         }
 
-        private bool GetFileExistAndSha256(string filePath, string fileSHA265)
+        private static bool GetFileExistAndSha256(string filePath, string fileSHA265)
         {
             string hashReslut;
 

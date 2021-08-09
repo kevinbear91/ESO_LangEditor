@@ -16,5 +16,6 @@ namespace ESO_LangEditor.Core.Models
         public string LangUpdaterPackPath { get; set; }
         public string LangUpdaterPackSha256 { get; set; }
         public string LangResourcesPackPath { get; set; }
+        public string LangResourcesPackSha256 { get; set; }
     }
 }

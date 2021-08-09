@@ -177,14 +177,14 @@ namespace ESO_LangEditor.GUI.Services
             return langtext;
         }
 
-        public async Task<int> GetLangtextRevNumber()
+        public async Task<List<LangTextRevNumber>> GetLangtextRevNumber()
         {
-            int langtextRev = 0;
+            List<LangTextRevNumber> langtextRev = null;
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
-                langtextRev = langtextRevNumber.Rev;
+                langtextRev = await db.LangtextRevNumber.ToListAsync();
+                //langtextRev = langtextRevNumber;
                 db.Dispose();
             }
 
@@ -335,7 +335,6 @@ namespace ESO_LangEditor.GUI.Services
                     if (isUserExist != null)
                     {
                         isUserExist.UserNickName = user.UserNickName;
-                        isUserExist.UserAvatarPath = user.UserAvatarPath;
                         isUserExist.InReviewCount = user.InReviewCount;
                         isUserExist.RemovedCount = user.RemovedCount;
                         isUserExist.TranslatedCount = user.RemovedCount;

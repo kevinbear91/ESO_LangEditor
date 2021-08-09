@@ -251,43 +251,6 @@ namespace ESO_LangEditor.API.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("0e7ece3a-78d5-479b-9bd9-a91d7913c304"),
-                            ConcurrencyStamp = "d7072f4e-5eb5-41a2-a715-67d15d26c8ef",
-                            Name = "InitUser",
-                            NormalizedName = "INITUSER"
-                        },
-                        new
-                        {
-                            Id = new Guid("08b1a207-286a-4234-ab41-e868bb225705"),
-                            ConcurrencyStamp = "62b84195-eab6-4693-a818-c40eb510ad68",
-                            Name = "Editor",
-                            NormalizedName = "EDITOR"
-                        },
-                        new
-                        {
-                            Id = new Guid("605b543e-e0bb-4e51-b7eb-feddcdd3699f"),
-                            ConcurrencyStamp = "1d83b1a5-259b-4894-ab25-7f3fa3d5ab17",
-                            Name = "Reviewer",
-                            NormalizedName = "REVIEWER"
-                        },
-                        new
-                        {
-                            Id = new Guid("86ecc84a-22e1-4b45-ba5d-91c717706f9e"),
-                            ConcurrencyStamp = "31313adf-e71a-418f-aa41-9e9d2c8b22e6",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = new Guid("77c82170-0672-4b33-b191-61abb33b9750"),
-                            ConcurrencyStamp = "29ada10d-6f57-44ef-abec-2f81ba8a835f",
-                            Name = "Creater",
-                            NormalizedName = "CREATER"
-                        });
                 });
 
             modelBuilder.Entity("ESO_LangEditor.Core.Entities.User", b =>

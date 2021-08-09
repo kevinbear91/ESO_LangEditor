@@ -12,7 +12,7 @@ namespace ESO_LangEditor.GUI.Services
         //Task<T> GetTokenByCurrentToken<T>(TokenDto Dto);
         Task<ApiMessageWithCode> AddNewRole(string roleName);
         Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto);
-        Task<TokenDto> GetTokenByDto<T>(T Dto);
+        Task<TokenDto> GetTokenByTokenDto(Guid userGuid, TokenDto Dto);
         Task<TokenDto> GetTokenByLogin(LoginUserDto loginUserDto);
         Task<List<UserInClientDto>> GetUserList();
         Task<UserDto> GetUserInfoFromServer(Guid userGuid);

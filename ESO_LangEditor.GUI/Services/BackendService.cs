@@ -2,11 +2,13 @@
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.GUI.EventAggres;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ESO_LangEditor.GUI.Services
 {
@@ -27,7 +29,12 @@ namespace ESO_LangEditor.GUI.Services
             _userAccess = userAccess;
             _mapper = Mapper;
             _ea = ea;
+
+
+            _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadlangtextUpdateZh);
         }
+
+        
 
         public async Task ExportLangFile()
         {
@@ -80,11 +87,12 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task SyncToken()
         {
-            var timer = new System.Threading.Timer(async e => await _userAccess.GetTokenByDto(new TokenDto
-            {
-                AuthToken = App.LangConfig.UserAuthToken,
-                RefreshToken = App.LangConfig.UserRefreshToken,
-            }),
+            var timer = new System.Threading.Timer(async e => await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid, 
+                new TokenDto
+                {
+                    AuthToken = App.LangConfig.UserAuthToken,
+                    RefreshToken = App.LangConfig.UserRefreshToken,
+                }),
             null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
 
 
@@ -111,5 +119,66 @@ namespace ESO_LangEditor.GUI.Services
                 await _langTextRepo.UpdateUsers(userList);
             }
         }
+
+        private async void UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)
+        {
+
+            var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
+
+            //var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
+
+            Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
+
+            if (respond == ApiMessageWithCode.Success)
+            {
+                langTextUpdateZhDto.IsTranslated = 3;
+                await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
+            }
+            else
+            {
+                MessageBox.Show(respond.ApiMessageCodeString());
+            }
+        }
+
+        //private async void UploadLangtextZhUpdate(LangTextForUpdateZhDto langTextUpdateZhDto)
+        //{
+        //    LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
+        //    LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
+        //    var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
+
+        //    Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
+
+        //    if (code == System.Net.HttpStatusCode.OK || 
+        //        code == System.Net.HttpStatusCode.Accepted ||
+        //        code == System.Net.HttpStatusCode.Created)
+        //    {
+        //        langTextUpdateZhDto.IsTranslated = 3;
+        //        await langTextRepoClient.UpdateLangtextZh(langTextUpdateZhDto);
+        //    }
+
+        //    MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
+
+        //}
+
+        //private async void UploadLangtextZhUpdate(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
+        //{
+        //    LangtextNetService apiLangtext = new LangtextNetService(App.ServerPath);
+        //    LangTextRepoClientService langTextRepoClient = new LangTextRepoClientService();
+        //    var code = await apiLangtext.UpdateLangtextZh(langTextForUpdateZhDtoList, App.LangConfig.UserAuthToken);
+
+        //    if (code == System.Net.HttpStatusCode.OK ||
+        //        code == System.Net.HttpStatusCode.Accepted ||
+        //        code == System.Net.HttpStatusCode.Created)
+        //    {
+        //        foreach(var lang in langTextForUpdateZhDtoList)
+        //        {
+        //            lang.IsTranslated = 3;
+        //        }
+        //        await langTextRepoClient.UpdateLangtextZh(langTextForUpdateZhDtoList);
+        //    }
+
+        //    MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
+
+        //}
     }
 }

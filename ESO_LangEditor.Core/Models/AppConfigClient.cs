@@ -9,7 +9,7 @@ namespace ESO_LangEditor.Core.Models
     public class AppConfigClient
     {
         public string LangEditorVersion { get; set; }
-        public string LangUpdaterSha256 { get; set; }
+        //public string LangUpdaterSha256 { get; set; }
         public string LangUpdaterVersion { get; set; }
         public List<ServerNameDto> LangServerList { get; set; }
         public string DefaultServerName { get; set; }
@@ -24,7 +24,7 @@ namespace ESO_LangEditor.Core.Models
             LangServerList = new List<ServerNameDto>();
 
             LangEditorVersion = "3.0.0";
-            LangUpdaterSha256 = "6153176c0e166c98940dd4d56412503ee37b7b663e622ca684e9e88b031c12dc";
+            //LangUpdaterSha256 = "6153176c0e166c98940dd4d56412503ee37b7b663e622ca684e9e88b031c12dc";
             LangUpdaterVersion = "v1.0";
             LangServerList.Add(new ServerNameDto
             {

@@ -316,11 +316,11 @@ namespace ESO_LangEditor.GUI.Services.AccessServer
                 {
                     //client.DownloadFile(new Uri(App.ServerPath + "images/" + user.UserAvatarPath), @"c:\temp\image35.png");
                     // OR 
-                    await client.DownloadFileTaskAsync(new Uri(App.ServerPath + "images/" + user.UserAvatarPath),
-                        App.WorkingDirectory + "/_tmp/" + user.UserAvatarPath);
-                    client.DownloadFileCompleted += (s, e) => _ea.GetEvent<UserAvatarDownloadCompleteEvent>().Publish(user.UserAvatarPath);
+                    //await client.DownloadFileTaskAsync(new Uri(App.ServerPath + "images/" + user.UserAvatarPath),
+                    //    App.WorkingDirectory + "/_tmp/" + user.UserAvatarPath);
+                    //client.DownloadFileCompleted += (s, e) => _ea.GetEvent<UserAvatarDownloadCompleteEvent>().Publish(user.UserAvatarPath);
 
-                    client.Dispose();
+                    //client.Dispose();
                 }
 
             }

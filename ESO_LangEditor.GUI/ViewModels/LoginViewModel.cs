@@ -74,7 +74,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void SubmitLoginInfo(object obj)
         {
-            var Logintoken = await _userAccess.GetTokenByDto(new LoginUserDto
+            var Logintoken = await _userAccess.GetTokenByLogin(new LoginUserDto
             {
                 UserName = UserName,
                 Password = _passwordBox.Password,

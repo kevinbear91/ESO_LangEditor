@@ -29,8 +29,9 @@ namespace ESO_LangEditor.GUI.ViewModels
         private List<LangTextForReviewDto> _gridSelectedItems;
         private LangTextForReviewDto _gridSelectedItem;
         private bool _isReviewSelectedItems = true;
-        private LangtextNetService _langtextNetService = new LangtextNetService(App.ServerPath);
+       // private LangtextNetService _langtextNetService = new LangtextNetService(App.ServerPath);
         private ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
+        private ILangTextAccess _langTextAccess;
         private Dictionary<Guid, UserInClient> _userDict;
         private string _selectedItemInfo;
 
@@ -100,12 +101,14 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
 
-        IEventAggregator _ea;
+        private IEventAggregator _ea;
 
-        public LangTextReviewWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
+        public LangTextReviewWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, 
+            ILangTextAccess langTextAccess)
         {
             _ea = ea;
             _langTextRepoClient = langTextRepoClient;
+            _langTextAccess = langTextAccess;
         }
 
         public async void QueryReviewItemsBySelectedUser(object o)
@@ -116,7 +119,8 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             try
             {
-                var list = await _langtextNetService.GetLangtextInReviewAsync(SelectedUser.Id.ToString(), token);
+                var list = await _langTextAccess.GetLangTextsFromReviewer(SelectedUser.Id);
+                
 
                 if (list == null && list.Count == 0)
                 {
@@ -149,7 +153,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             try
             {
-                var list = await _langtextNetService.GetUsersInReviewAllAsync(token);
+                var list = await _langTextAccess.GetUsersInReview();
 
                 foreach (var user in list)
                 {
@@ -187,9 +191,9 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             try
             {
-                var respondCode = await _langtextNetService.PutReviewListIdAsync(langIdList, token);
+                var respondCode = await _langTextAccess.ApproveLangTextsInReview(langIdList);
 
-                if (respondCode == HttpStatusCode.OK)
+                if (respondCode ==  ApiMessageWithCode.Success)
                 {
                     foreach (var selected in langTextForReviewDtos)
                     {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
 {
-    [Route("api/revnumber")]
+    [Route("api/revise")]
     [ApiController]
     public class LangTextSyncByRevNumberController : ControllerBase
     {
@@ -26,12 +26,12 @@ namespace ESO_LangEditor.API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public async Task<ActionResult<List<LangTextRevNumberDto>>> GetRevisedNumberAsync()
         {
             var LangRevNumber = await _repositoryWrapper.LangTextRevNumberRepo.GetAllAsync();
-            var LangRevNumebrDto = _mapper.Map<List<LangTextRevNumberDto>>(LangRevNumber);
+            var LangRevNumebrDto = _mapper.Map<List<LangTextRevNumberDto>>(LangRevNumber.ToList());
 
             return LangRevNumebrDto;
         }

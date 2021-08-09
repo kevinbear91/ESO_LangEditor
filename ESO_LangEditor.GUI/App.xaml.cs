@@ -41,7 +41,7 @@ namespace ESO_LangEditor.GUI
         static App()
         {
             DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
-                .UseSqlite(@"Data Source=Data/LangData_v4.db")
+                .UseSqlite(@"Data Source=Data/LangData_v5.db")
                 //.UseLoggerFactory(MyLoggerFactory)
                 .Options;
         }
@@ -50,10 +50,6 @@ namespace ESO_LangEditor.GUI
         {
             LangConfig = AppConfigClient.Load();
             AppConfigClient.Save(LangConfig);
-
-#if DEBUG
-            Console.WriteLine("Debug version");
-#endif
 
             foreach (var server in LangConfig.LangServerList)
             {

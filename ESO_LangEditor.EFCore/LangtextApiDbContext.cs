@@ -22,10 +22,10 @@ namespace ESO_LangEditor.EFCore
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
         public DbSet<UserRegistrationCode> UserRegistrationCode { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.SeedData();
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+        //    modelBuilder.SeedData();
+        //}
     }
 }

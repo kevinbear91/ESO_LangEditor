@@ -160,6 +160,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             try
             {
                 await startupCheckList;
+                await _startupCheck.Login();
                 //await continuation;
             }
             catch (Exception ex)
@@ -167,7 +168,8 @@ namespace ESO_LangEditor.GUI.ViewModels
                 _logger.LogCritical(ex.ToString());
             }
 
-            //_startupCheck = null;
+            _logger.LogDebug("======启动检查完成======");
+
         }
 
         private async void LoginTaskCallFromUC()

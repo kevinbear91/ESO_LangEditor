@@ -17,10 +17,7 @@ namespace ESO_LangEditor.API.Filters
             _logger = logger;
         }
 
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            throw new NotImplementedException();
-        }
+        public void OnActionExecuted(ActionExecutedContext context) { }
 
         public void OnActionExecuting(ActionExecutingContext context)
         {

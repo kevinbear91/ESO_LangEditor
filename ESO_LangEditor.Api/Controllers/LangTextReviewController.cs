@@ -65,7 +65,7 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpGet("user/{userGuid}")]
-        public async Task<ActionResult<IEnumerable<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid)
+        public async Task<ActionResult<List<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid)
         {
             var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByConditionAsync(lang => lang.UserId == userGuid);
             //var langlist = langtext.ToList();
@@ -86,7 +86,7 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpGet("users")]
-        public async Task<ActionResult<IEnumerable<Guid>>> GetReviewUserListAsync()
+        public async Task<ActionResult<List<Guid>>> GetReviewUserListAsync()
         {
             var langtext = await _repositoryWrapper.LangTextReviewRepo.SelectByConditionWithDistinctAsync(u => u.UserId);
 

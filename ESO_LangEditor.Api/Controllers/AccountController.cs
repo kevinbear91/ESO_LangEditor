@@ -104,7 +104,11 @@ namespace ESO_LangEditor.API.Controllers
             {
                 _loggerMessage = "Can't find user, From client UserName: " + loginUser.UserName;
                 _logger.LogInformation(_loggerMessage);
-                return NotFound(ApiMessageWithCode.UserNotFound);
+                return NotFound(new MessageWithCode 
+                { 
+                    Code = (int)ApiMessageWithCode.UserNotFound, 
+                    Message = ApiMessageWithCodeExtensions.ApiMessageCodeString(ApiMessageWithCode.UserNotFound)
+                });
             }
 
             if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
@@ -134,27 +138,29 @@ namespace ESO_LangEditor.API.Controllers
         //}
 
         [ServiceFilter(typeof(ValidationFilter))]
-        [HttpPost("token", Name = nameof(RefreshToken))]
-        public async Task<ActionResult> RefreshToken(TokenDto tokenDto)
+        [HttpPost("token/{userId}")]
+        public async Task<ActionResult> RefreshToken(string userId, TokenDto tokenDto)
         {
             string authToken = tokenDto.AuthToken;
             string refreshToken = tokenDto.RefreshToken;
-            var principal = _tokenService.GetPrincipalFromExpiredToken(authToken);
-            var username = principal.Identity.Name; //this is mapped to the Name claim by default
-            var user = await _userManager.FindByNameAsync(username);
+            //var principal = _tokenService.GetPrincipalFromExpiredToken(authToken);
+            //var username = principal.Identity.Name; //this is mapped to the Name claim by default
+            
+            var user = await _userManager.FindByIdAsync(userId);
 
-            if (user == null && !await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
+            if (user == null || !await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
             {
                 return BadRequest(ApiMessageWithCode.TokenInvalid);
             }
+            //_tokenService.VerifyRefreshToken(user, authToken);
 
-            var newAuthTokenToken = _tokenService.GenerateAccessToken(user);
+            var newAuthTokenToken = await _tokenService.GenerateAccessToken(user);
             var newRefreshToken = await _tokenService.GenerateRefreshToken(user);
 
-            return new ObjectResult(new
+            return Ok(new TokenDto
             {
-                authToken = newAuthTokenToken,
-                refreshToken = newRefreshToken
+                AuthToken = newAuthTokenToken,
+                RefreshToken = newRefreshToken
             });
         }
 

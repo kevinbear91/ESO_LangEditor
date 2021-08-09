@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using ESO_LangEditor.Core.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Diagnostics;
 
 namespace ESO_LangEditor.API.Services
 {
@@ -53,7 +54,6 @@ namespace ESO_LangEditor.API.Services
             var tokenPurpose = "RefreshToken";
 
             var refreshToken = await _userManager.GenerateUserTokenAsync(user, tokenProvider, tokenPurpose);
-
             return refreshToken;
 
             //var randomNumber = new byte[32];
@@ -88,12 +88,13 @@ namespace ESO_LangEditor.API.Services
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
             var tokenConfigSection = _configuration.GetSection("Security:Token");
+            Debug.WriteLine($"User token: {token}");
 
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateAudience = true, //you might want to validate the audience and issuer depending on your use case
-                ValidateIssuer = true,
-                ValidateIssuerSigningKey = true,
+                ValidateAudience = false, //you might want to validate the audience and issuer depending on your use case
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = false,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigSection["Key"])),
                 ValidateLifetime = false //here we are saying that we don't care about the token's expiration date
                  

@@ -250,7 +250,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             if (AutoQueryLangTextInReview)
             {
-                var lang = await _langTextAccess.GetLangTextsFromReview(CurrentLangText.Id);
+                var lang = await _langTextAccess.GetLangTextFromReview(CurrentLangText.Id);
 
                 if (lang != null)
                 {

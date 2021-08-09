@@ -1,5 +1,7 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.GUI.EventAggres;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -21,20 +23,14 @@ namespace ESO_LangEditor.GUI.Services
         private readonly string apiUri = "api/account/";
         private IEventAggregator _ea;
         private JsonSerializerOptions _jsonOption;
+        private ILogger _logger;
         //private readonly ApiMessageWithCodeExtensions _codeToString;
 
-        public UserAccess(IEventAggregator ea)
+        public UserAccess(IEventAggregator ea, ILogger logger)
         {
             _userClient = App.HttpClient;
-
-            //_userClient = new HttpClient
-            //{
-            //    BaseAddress = new Uri(App.ServerPath),
-            //};
-
-            //_userClient.DefaultRequestHeaders.Accept.Clear();
-            //_userClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _ea = ea;
+            _logger = logger;
 
             _jsonOption = new JsonSerializerOptions
             {
@@ -62,7 +58,7 @@ namespace ESO_LangEditor.GUI.Services
 
         }
 
-        public async Task<TokenDto> GetTokenByDto<T>(T Dto)
+        public async Task<TokenDto> GetTokenByTokenDto(Guid userGuid, TokenDto Dto)
         {
             _userClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -70,12 +66,14 @@ namespace ESO_LangEditor.GUI.Services
             var content = SerializeDataToHttpContent(Dto);
             TokenDto tokenDto = null;   // = new TokenDto();
 
-            HttpResponseMessage respond = await _userClient.PostAsync("api/account/token", content);
-
+            HttpResponseMessage respond = await _userClient.PostAsync("api/account/token/" + userGuid, content);
+           
             if (respond.IsSuccessStatusCode)
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
                 tokenDto = JsonSerializer.Deserialize<TokenDto>(respondContent, _jsonOption);
+                GetUserRoleFromToken(tokenDto.AuthToken);
+                //_logger.LogDebug("获取TokenDto成功。");
             }
             else
             {
@@ -97,6 +95,7 @@ namespace ESO_LangEditor.GUI.Services
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
                 tokenDto = JsonSerializer.Deserialize<TokenDto>(respondContent, _jsonOption);
+                GetUserRoleFromToken(tokenDto.AuthToken);
             }
             else
             {
@@ -107,14 +106,50 @@ namespace ESO_LangEditor.GUI.Services
             return tokenDto;
         }
 
-        public Task<UserDto> GetUserInfoFromServer(Guid userGuid)
+        public async Task<UserDto> GetUserInfoFromServer(Guid userGuid)
         {
-            throw new NotImplementedException();
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            UserDto user = null;
+
+            HttpResponseMessage respond = await _userClient.GetAsync("api/admin/user/" + userGuid);
+
+            if (respond.IsSuccessStatusCode)
+            {
+                var responseContent = await respond.Content.ReadAsStringAsync();
+                user = JsonSerializer.Deserialize<UserDto>(responseContent, _jsonOption);
+            }
+            else
+            {
+                string respondContent = await respond.Content.ReadAsStringAsync();
+                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(Apicode.ApiMessageCodeString());
+            }
+            return user;
         }
 
-        public Task<List<UserInClientDto>> GetUserList()
+        public async Task<List<UserInClientDto>> GetUserList()
         {
-            throw new NotImplementedException();
+            _userClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+
+            List<UserInClientDto> userList = null;
+
+            HttpResponseMessage respond = await _userClient.GetAsync("api/account/users");
+
+            if (respond.IsSuccessStatusCode)
+            {
+                var responseContent = await respond.Content.ReadAsStringAsync();
+                userList = JsonSerializer.Deserialize<List<UserInClientDto>>(responseContent, _jsonOption);
+            }
+            else
+            {
+                string respondContent = await respond.Content.ReadAsStringAsync();
+                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(Apicode.ApiMessageCodeString());
+            }
+            return userList;
         }
 
         public async Task<string> GetUserPasswordRecoveryCode(Guid userGuid)
@@ -199,7 +234,20 @@ namespace ESO_LangEditor.GUI.Services
 
         public List<string> GetUserRoleFromToken(string token)
         {
-            throw new NotImplementedException();
+            string userRoleClaim = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role";
+
+            var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var roleList = jsontoken.Claims.Where(claim => claim.Type == userRoleClaim)
+                .Select(c => c.Value).ToList();
+
+            foreach (var role in roleList)
+            {
+                Debug.WriteLine(role);
+            }
+
+            _ea.GetEvent<RoleListUpdateEvent>().Publish(roleList);
+
+            return roleList;
         }
 
         public async Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)

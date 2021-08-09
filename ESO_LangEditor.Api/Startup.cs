@@ -73,6 +73,7 @@ namespace ESO_LangEditorApi
             services.AddScoped<ValidationFilter>();
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<ILangTextService, LangTextService>();
 
             services.AddIdentity<User, Role>(options =>
             {
@@ -85,7 +86,8 @@ namespace ESO_LangEditorApi
                     new TokenProviderDescriptor(typeof(CustomRefreshTokenProvider<User>)));
             })
                 .AddEntityFrameworkStores<LangtextApiDbContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<CustomRefreshTokenProvider<User>>("RefreshTokenProvider");
 
             var tokenSection = Configuration.GetSection("Security:Token");
 

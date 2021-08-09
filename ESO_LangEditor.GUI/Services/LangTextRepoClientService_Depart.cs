@@ -331,7 +331,6 @@ namespace ESO_LangEditor.GUI.Services
                     if (isUserExist != null)
                     {
                         isUserExist.UserNickName = user.UserNickName;
-                        isUserExist.UserAvatarPath = user.UserAvatarPath;
                         isUserExist.InReviewCount = user.InReviewCount;
                         isUserExist.RemovedCount = user.RemovedCount;
                         isUserExist.TranslatedCount = user.RemovedCount;

@@ -58,6 +58,10 @@ namespace ESO_LangEditor.GUI.ViewModels
                 _roleList = roleList;
                 LoadMemu();
             }
+            foreach(var role in roleList)
+            {
+                Debug.WriteLine(role);
+            }
         }
 
         private void LoadMemu()
@@ -195,10 +199,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private Visibility RoleToVisibility(string roleName)
         {
-            if (_roleList.Contains(roleName))
-                return Visibility.Visible;
-            else
-                return Visibility.Collapsed;
+            return _roleList.Contains(roleName) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void OpenWindowByICommand(object o)
