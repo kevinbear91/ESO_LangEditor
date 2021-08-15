@@ -241,6 +241,11 @@ namespace ESO_LangEditor.GUI.Services
             {
                 var userList = _mapper.Map<List<UserInClient>>(userListFromServer);
                 await _langTextRepo.UpdateUsers(userList);
+
+                if (await _langTextRepo.UpdateRevNumber(2, _userRevNumberServer))
+                {
+                    _logger.LogDebug("用户同步完成");
+                }
             }
         }
 
@@ -344,7 +349,7 @@ namespace ESO_LangEditor.GUI.Services
                             }
                         }
 
-                        if (await _langTextRepo.UpdateRevNumber(revised))    //更新步进号
+                        if (await _langTextRepo.UpdateRevNumber(1, revised))    //更新步进号
                         {
                             _logger.LogDebug("当前步进号新增完成");
                             revised++;

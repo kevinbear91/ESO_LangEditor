@@ -3,7 +3,7 @@ using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Text.RegularExpressions;
@@ -80,6 +80,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             _logger = logger;
 
             UserDto = App.User;
+            NickName = UserDto.UserNickName;
         }
 
         public void Load(PasswordBox passwordBox, PasswordBox passwordBoxConfrim, PasswordBox passwordCurrently)
@@ -102,7 +103,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     UserNickName = NickName,
                 });
 
-                MessageBox.Show(respond.ApiMessageCodeString(), "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(respond.Message, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
                 ChangeUserInfoCommand.CanExecute(true);
             }
@@ -121,7 +122,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 if (regex.IsMatch(_passwordBox.Password))
                 {
 
-                    ApiMessageWithCode respond = await _userAccess.SetUserPasswordChange(new UserPasswordChangeDto
+                    var respond = await _userAccess.SetUserPasswordChange(new UserPasswordChangeDto
                     {
                         UserId = UserDto.Id,
                         OldPassword = _passwordCurrently.Password,
@@ -133,20 +134,20 @@ namespace ESO_LangEditor.GUI.ViewModels
                     _passwordBox.Clear();
                     _passwordBoxConfirm.Clear();
 
-                    if (respond == ApiMessageWithCode.Success)
+                    if (respond.Code == (int)RespondCode.Success)
                     {
                         var config = App.LangConfig;
                         config.UserAuthToken = "";
                         config.UserRefreshToken = "";
                         AppConfigClient.Save(config);
 
-                        MessageBox.Show(respond.ApiMessageCodeString() + "，请退出工具用新密码重新登录！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show(respond.Message + "，请退出工具用新密码重新登录！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
                         //SubmitProgress = "修改成功，请退出工具用密码重新登录！";
                     }
                     else
                     {
-                        MessageBox.Show(respond.ApiMessageCodeString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(respond.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else

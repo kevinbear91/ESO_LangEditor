@@ -17,10 +17,7 @@ namespace ESO_LangEditor.GUI.Views
 
         private bool CheckResFolder()
         {
-            if (Directory.Exists("Resources"))
-                return true;
-            else
-                return false;
+            return Directory.Exists("Resources");
         }
     }
 }

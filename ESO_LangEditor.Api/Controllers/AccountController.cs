@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
@@ -102,20 +104,36 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user == null)
             {
-                _loggerMessage = "Can't find user, From client UserName: " + loginUser.UserName;
-                _logger.LogInformation(_loggerMessage);
-                return NotFound(new MessageWithCode 
-                { 
-                    Code = (int)ApiMessageWithCode.UserNotFound, 
-                    Message = ApiMessageWithCodeExtensions.ApiMessageCodeString(ApiMessageWithCode.UserNotFound)
+                //_loggerMessage = "Can't find user, From client UserName: " + loginUser.UserName;
+                _logger.LogInformation(ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound));
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
                 });
             }
 
-            if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
+            if (await _userManager.IsLockedOutAsync(user))
             {
-                _loggerMessage = "User Password not match! UserName: " + loginUser.UserName;
-                _logger.LogInformation(_loggerMessage);
-                return Unauthorized(ApiMessageWithCode.PasswordNotMatch);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserLocked,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserLocked)
+                });
+            }
+
+
+            if (!await _userManager.CheckPasswordAsync(user, loginUser.Password))
+
+            {
+                //_loggerMessage = "User Password not match! UserName: " + loginUser.UserName;
+                _logger.LogInformation(ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound));
+
+                return Unauthorized(new MessageWithCode 
+                {
+                    Code = (int)RespondCode.PasswordNotMatch,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.PasswordNotMatch)
+                });
             }
 
             var authToken = await _tokenService.GenerateAccessToken(user);
@@ -139,20 +157,51 @@ namespace ESO_LangEditor.API.Controllers
 
         [ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("token/{userId}")]
-        public async Task<ActionResult> RefreshToken(string userId, TokenDto tokenDto)
+        public async Task<IActionResult> RefreshToken(string userId, TokenDto tokenDto)
         {
             string authToken = tokenDto.AuthToken;
             string refreshToken = tokenDto.RefreshToken;
             //var principal = _tokenService.GetPrincipalFromExpiredToken(authToken);
             //var username = principal.Identity.Name; //this is mapped to the Name claim by default
-            
             var user = await _userManager.FindByIdAsync(userId);
 
-            if (user == null || !await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
+            if (user == null)
             {
-                return BadRequest(ApiMessageWithCode.TokenInvalid);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
+                });
             }
-            //_tokenService.VerifyRefreshToken(user, authToken);
+
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserLocked,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserLocked)
+                });
+            }
+
+            if (user.RefreshToken == null || user.RefreshTokenExpireTime == null 
+                || user.RefreshTokenExpireTime < DateTime.UtcNow || refreshToken != user.RefreshToken)
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.TokenInvalid,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.TokenInvalid)
+                });
+            }
+
+
+            if (!await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.TokenInvalid,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.TokenInvalid)
+                });
+            }
 
             var newAuthTokenToken = await _tokenService.GenerateAccessToken(user);
             var newRefreshToken = await _tokenService.GenerateRefreshToken(user);
@@ -163,17 +212,6 @@ namespace ESO_LangEditor.API.Controllers
                 RefreshToken = newRefreshToken
             });
         }
-
-        //[ServiceFilter(typeof(ValidationFilter))]
-        //[HttpPost("newRefreshToken")]
-        //public async Task<IActionResult> RefreshAuthToken(TokenDto tokenDto)
-        //{
-
-
-
-
-
-        //}
 
 
         [ServiceFilter(typeof(ValidationFilter))]
@@ -186,7 +224,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (userIdFromToken != user.Id.ToString())
             {
-                return Unauthorized(ApiMessageWithCode.TokenInvalid);
+                return Unauthorized(new MessageWithCode
+                {
+                    Code = (int)RespondCode.TokenInvalid,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.TokenInvalid)
+                });
             }
 
             if(user.UserName != userInfoChangeDto.UserName)
@@ -201,6 +243,12 @@ namespace ESO_LangEditor.API.Controllers
 
             var result = await _userManager.UpdateAsync(user);
 
+            var userRev = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(2);
+            userRev.Rev++;
+            _repositoryWrapper.LangTextRevNumberRepo.Update(userRev);
+
+            await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync();
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -209,7 +257,11 @@ namespace ESO_LangEditor.API.Controllers
                 }
             }
 
-            return Ok(ApiMessageWithCode.Success);
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
         }
 
 
@@ -223,14 +275,22 @@ namespace ESO_LangEditor.API.Controllers
 
             if (userIdFromToken != user.Id.ToString())
             {
-                return Unauthorized(ApiMessageWithCode.TokenInvalid);
+                return Unauthorized(new MessageWithCode
+                {
+                    Code = (int)RespondCode.TokenInvalid,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.TokenInvalid)
+                });
             }
 
             var checkCurrentPW = await _userManager.CheckPasswordAsync(user, userPasswordChangeDto.OldPassword);
 
             if (!checkCurrentPW)
             {
-                return BadRequest(ApiMessageWithCode.PasswordNotMatch);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.PasswordNotMatch,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.PasswordNotMatch)
+                });
             }
 
             var result = await _userManager.ChangePasswordAsync(user, userPasswordChangeDto.OldPassword,
@@ -238,11 +298,19 @@ namespace ESO_LangEditor.API.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(ApiMessageWithCode.Success);
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
             else
             {
-                return BadRequest(ApiMessageWithCode.PasswordChangeFailed);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.PasswordChangeFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.PasswordChangeFailed)
+                });
             }
         }
 
@@ -256,11 +324,19 @@ namespace ESO_LangEditor.API.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(ApiMessageWithCode.Success);
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
             else
             {
-                return Ok(ApiMessageWithCode.PasswordChangeFailed);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.PasswordChangeFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.PasswordChangeFailed)
+                });
             }
 
         }
@@ -274,7 +350,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user == null)
             {
-                return BadRequest(ApiMessageWithCode.UserNotFound);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
+                });
             }
 
             var regCode = _tokenService.GenerateRegistrationCode();
@@ -297,13 +377,21 @@ namespace ESO_LangEditor.API.Controllers
                 }
                 else
                 {
-                    return BadRequest(ApiMessageWithCode.GenerateRegistrationCodeFailed);
+                    return BadRequest(new MessageWithCode
+                    {
+                        Code = (int)RespondCode.GenerateRegistrationCodeFailed,
+                        Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.GenerateRegistrationCodeFailed)
+                    });
                 }
 
             }
             else
             {
-                return BadRequest(ApiMessageWithCode.GenerateRegistrationCodeFailed);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.GenerateRegistrationCodeFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.GenerateRegistrationCodeFailed)
+                });
             }
 
         }
@@ -317,7 +405,22 @@ namespace ESO_LangEditor.API.Controllers
 
             if (isExistUser != null)
             {
-                return BadRequest(ApiMessageWithCode.UserNameExisted);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNameExisted,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNameExisted)
+                });
+            }
+
+            var regCode = await _repositoryWrapper.RegistrationCodeRepo.GetByIdAsync(registrationUserDto.RegisterCode);
+
+            if (regCode == null || regCode.UserUsed != null)
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.RegistrationCodeInvalid,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.RegistrationCodeInvalid)
+                });
             }
 
             var result = await _userManager.CreateAsync(new User
@@ -325,22 +428,48 @@ namespace ESO_LangEditor.API.Controllers
                 Id = Guid.NewGuid(),
                 UserName = registrationUserDto.UserName,
                 UserNickName = registrationUserDto.UserNickName,
-            });
+                LockoutEnabled = false,
+            }, registrationUserDto.ConfirmPassword);
+
+            var userRev = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(2);
+            userRev.Rev++;
+            _repositoryWrapper.LangTextRevNumberRepo.Update(userRev);
 
             if (result.Succeeded)
             {
                 var userAdded = await _userManager.FindByNameAsync(registrationUserDto.UserName);
                 var addRoleResult = await _userManager.AddToRoleAsync(userAdded, "Editor");
 
+                regCode.UsedTimestamp = DateTime.UtcNow;
+                regCode.UserForUsed = userAdded;
+                regCode.UserUsed = userAdded.Id;
+
+                _repositoryWrapper.RegistrationCodeRepo.Update(regCode);
+
+                await _repositoryWrapper.RegistrationCodeRepo.SaveAsync();
+                await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync();
+
                 if (!addRoleResult.Succeeded)
                 {
-                    return Ok(ApiMessageWithCode.UserRoleSetFailed);
+                    return Ok(new MessageWithCode
+                    {
+                        Code = (int)RespondCode.UserRoleSetFailed,
+                        Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserRoleSetFailed)
+                    });
                 }
-                return Ok(ApiMessageWithCode.Created);
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
             else
             {
-                return BadRequest(ApiMessageWithCode.UserRegistrationFailed);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserRegistrationFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserRegistrationFailed)
+                });
             }
         }
 

@@ -152,7 +152,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public CompareWithDBWindow compareWithDBWindow;
 
         public CompareWithDBWindowViewModel(IBackendService backendService, ILangTextRepoClient langTextRepo,
-            ILangTextAccess langTextAccess, IMapper mapper)
+            ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile)
         {
             _addedTag = "新增";
             _changedTag = "修改";
@@ -165,7 +165,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             UpdatedVersionInputEnable = true;
             GridData = new ObservableCollection<LangTextDto>();
 
-            _langfile = new LangFile();
+            _langfile = langfile;
             _backendService = backendService;
             _langTextRepo = langTextRepo;
             _langTextAccess = langTextAccess;
@@ -266,7 +266,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     InfoText = "正在上传新增文本，等待服务器处理并返回结果中……";
                     var respondCode = await _langTextAccess.AddLangTexts(langTextForCreationDtos);
 
-                    InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
+                    InfoText = respondCode.Message;
                 }
                 catch (HttpRequestException ex)
                 {
@@ -288,7 +288,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     InfoText = "正在上传英文变化文本，等待服务器处理并返回结果中……";
                     var respondCode = await _langTextAccess.UpdateLangTextEn(langTextForUpdateEnDtos);
 
-                    InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
+                    InfoText = respondCode.Message;
                 }
                 catch (HttpRequestException ex)
                 {
@@ -310,7 +310,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                     InfoText = "正在上传删除列表，等待服务器处理并返回结果中……";
                     var respondCode = await _langTextAccess.RemoveLangTexts(langTextForDeletedList);
 
-                    InfoText = ApiMessageWithCodeExtensions.ApiMessageCodeString(respondCode);
+                    InfoText = respondCode.Message;
                 }
                 catch (HttpRequestException ex)
                 {

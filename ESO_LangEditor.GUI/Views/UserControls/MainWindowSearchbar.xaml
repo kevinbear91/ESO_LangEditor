@@ -7,7 +7,8 @@
              xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
              mc:Ignorable="d" 
              xmlns:local1="clr-namespace:ESO_LangEditor.GUI.Converter"
-             xmlns:validationRules="clr-namespace:ESO_LangEditor.GUI.Services"
+             xmlns:vaildation="clr-namespace:ESO_LangEditor.GUI.Services.Validations"
+             xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              TextElement.FontSize="14"
@@ -71,15 +72,15 @@
                                     BorderThickness="0"
                                     TextWrapping="Wrap" VerticalAlignment="Center" Cursor="IBeam" >
                 <TextBox.Resources>
-                    <validationRules:BindingProxy x:Key="TargetProxy" Data="{Binding Path=SelectedValue, ElementName=SearchTypeComboBox}"/>
-                    <validationRules:BindingProxy x:Key="SourceProxy" Data="{Binding Path=Text, ElementName=SearchTextBox, Mode=TwoWay}"/>
+                    <services:BindingProxy x:Key="TargetProxy" Data="{Binding Path=SelectedValue, ElementName=SearchTypeComboBox}"/>
+                    <services:BindingProxy x:Key="SourceProxy" Data="{Binding Path=Text, ElementName=SearchTextBox, Mode=TwoWay}"/>
                 </TextBox.Resources>
                 <Binding Path="Keyword" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <validationRules:SearchBarTextValidation>
-                            <validationRules:ComparisonValue Value="{Binding Data, Source={StaticResource TargetProxy}}" 
+                        <vaildation:SearchBarTextValidation>
+                            <services:ComparisonValue Value="{Binding Data, Source={StaticResource TargetProxy}}" 
                                                                                      BindingToTrigger="{Binding Data, Source={StaticResource SourceProxy}}" />
-                        </validationRules:SearchBarTextValidation>
+                        </vaildation:SearchBarTextValidation>
                     </Binding.ValidationRules>
                 </Binding>
                 <!--<TextBox.Style>
@@ -162,15 +163,15 @@
                                     TextWrapping="Wrap" Visibility="Visible" VerticalAlignment="Center" 
                      IsEnabled="{Binding Path=IsChecked, ElementName=EnabledComboBox}" >
                 <TextBox.Resources>
-                    <validationRules:BindingProxy x:Key="TargetProxy" Data="{Binding Path=SelectedValue, ElementName=SearchTypeComboBox2}"/>
-                    <validationRules:BindingProxy x:Key="SourceProxy" Data="{Binding Path=Text, ElementName=SearchTextBox2, Mode=TwoWay}"/>
+                    <services:BindingProxy x:Key="TargetProxy" Data="{Binding Path=SelectedValue, ElementName=SearchTypeComboBox2}"/>
+                    <services:BindingProxy x:Key="SourceProxy" Data="{Binding Path=Text, ElementName=SearchTextBox2, Mode=TwoWay}"/>
                 </TextBox.Resources>
                 <Binding Path="KeywordSecond" UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <validationRules:SearchBarTextValidation >
-                            <validationRules:ComparisonValue Value="{Binding Data, Source={StaticResource TargetProxy}}" 
+                        <vaildation:SearchBarTextValidation >
+                            <services:ComparisonValue Value="{Binding Data, Source={StaticResource TargetProxy}}" 
                                                                                      BindingToTrigger="{Binding Data, Source={StaticResource SourceProxy}}" />
-                        </validationRules:SearchBarTextValidation>
+                        </vaildation:SearchBarTextValidation>
                     </Binding.ValidationRules>
                 </Binding>
 

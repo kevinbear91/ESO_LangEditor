@@ -12,8 +12,8 @@ namespace ESO_LangEditor.EFCore.TestData
     {
         public static void SeedData(this ModelBuilder modelBuilder)
         {
-            
 
+            
             //modelBuilder.Entity<LangTextRevNumber>().HasData(
             //    new LangTextRevNumber 
             //    { 
@@ -52,7 +52,7 @@ namespace ESO_LangEditor.EFCore.TestData
             //        Name = "Creater",
             //        NormalizedName = "CREATER",
             //    });
-                
+
 
             //modelBuilder.Entity<User>().HasData(
             //    new User
@@ -60,7 +60,7 @@ namespace ESO_LangEditor.EFCore.TestData
             //        Id = new Guid("8475B578-80F4-4ED0-AE41-C32A45D6D9E6"),
             //        UserName = "Bevisbear",
             //    });
-            
+
         }
 
        

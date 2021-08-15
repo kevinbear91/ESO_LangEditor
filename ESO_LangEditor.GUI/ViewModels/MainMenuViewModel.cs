@@ -128,10 +128,10 @@ namespace ESO_LangEditor.GUI.ViewModels
                             Visible = RoleToVisibility("Editor"),
                         },
                         new MenuItemContent {
-                            Header = "一键发布",
+                            Header = "导出为游戏文件",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "PackToRelase",
-                            //Visible = RoleToVisibility("Admin"),
+                            Visible = RoleToVisibility("Editor"),
                         }
                     }
 

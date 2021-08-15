@@ -10,8 +10,8 @@ namespace ESO_LangEditor.GUI.Services
     {
         //Task<T> GetTokenByLogin<T>(T Dto);
         //Task<T> GetTokenByCurrentToken<T>(TokenDto Dto);
-        Task<ApiMessageWithCode> AddNewRole(string roleName);
-        Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto);
+        Task<MessageWithCode> AddNewRole(string roleName);
+        Task<MessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto);
         Task<TokenDto> GetTokenByTokenDto(Guid userGuid, TokenDto Dto);
         Task<TokenDto> GetTokenByLogin(LoginUserDto loginUserDto);
         Task<List<UserInClientDto>> GetUserList();
@@ -20,12 +20,12 @@ namespace ESO_LangEditor.GUI.Services
         Task<string> GetRegistrationCode();
         Task<List<string>> GetUserRoles(Guid userGuid);
         List<string> GetUserRoleFromToken(string token);
-        Task<ApiMessageWithCode> SetUserRoles(Guid userId, List<string> roles);
-        Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto);
-        Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto);
-        Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid);
-        Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto);
-        Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto);
+        Task<MessageWithCode> SetUserRoles(Guid userId, List<string> roles);
+        Task<MessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto);
+        Task<MessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto);
+        Task<MessageWithCode> SetUserPasswordToRandom(Guid userGuid);
+        Task<MessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto);
+        Task<MessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto);
         void SaveToken(TokenDto token);
 
     }

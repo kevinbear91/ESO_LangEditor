@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views"
-        xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services"
+        xmlns:vaildation="clr-namespace:ESO_LangEditor.GUI.Services.Validations"
         xmlns:prism="http://prismlibrary.com/" 
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
@@ -41,7 +41,7 @@
                         <TextBox.Text>
                             <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                    <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -53,7 +53,7 @@
                         <TextBox.Text>
                             <Binding Path="NickName" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                    <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

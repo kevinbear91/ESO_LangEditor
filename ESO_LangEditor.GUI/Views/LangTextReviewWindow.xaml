@@ -19,23 +19,34 @@
             <ColumnDefinition Width="13*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="67*" />
+            <RowDefinition Height="60" />
             <RowDefinition Height="361*" />
             <RowDefinition Height="167*"/>
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
-            <ToolBarTray Margin="0,5,0,5" >
+            <ToolBarTray Margin="0,5,0,5" Height="50" >
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
-                          VerticalAlignment="Center" ToolBarTray.IsLocked="True">
+                          VerticalAlignment="Center" ToolBarTray.IsLocked="True" Height="50" >
 
-                    <Button ToolTip="查询待审核条目" Command="{Binding QueryReviewPendingItems}">
-                        <materialDesign:PackIcon Kind="TableArrowDown" />
+                    <Button ToolTip="查询待审核条目" Command="{Binding QueryReviewPendingItems}" 
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand" >
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="TableArrowDown" />
+                            <TextBlock Margin="10 .5 0 0" Text="拉取待审用户列表" VerticalAlignment="Center" />
+                        </StackPanel>
                     </Button>
                     <Separator />
-                    <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItems}">
-                        <materialDesign:PackIcon Kind="CheckBold" />
+                    <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItems}" 
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="CheckBold" />
+                            <TextBlock Margin="10 .5 0 0" Text="审核文本" VerticalAlignment="Center" />
+                        </StackPanel>
+                        
                     </Button>
                     <!--<Separator />
                     <Button ToolTip="提交审核拒绝条目" Command="{Binding SubmitDenyItems}">

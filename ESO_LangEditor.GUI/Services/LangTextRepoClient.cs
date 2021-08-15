@@ -191,6 +191,20 @@ namespace ESO_LangEditor.GUI.Services
             return langtextRev;
         }
 
+        public async Task<LangTextRevNumber> GetRevNumber(int id)
+        {
+            LangTextRevNumber rev;
+
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                rev = await db.LangtextRevNumber.FindAsync(id);
+                //langtextRev = langtextRevNumber;
+                db.Dispose();
+            }
+
+            return rev;
+        }
+
         public async Task<UserInClient> GetUserInClient(Guid userId)
         {
             UserInClient user;
@@ -287,13 +301,13 @@ namespace ESO_LangEditor.GUI.Services
             return saveCount > 0;
         }
 
-        public async Task<bool> UpdateRevNumber(int number)
+        public async Task<bool> UpdateRevNumber(int id, int number)
         {
             int saveCount = 0;
 
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                var langtextRevNumber = await db.LangtextRevNumber.FindAsync(1);
+                var langtextRevNumber = await db.LangtextRevNumber.FindAsync(id);
                 langtextRevNumber.Rev = number;
 
                 db.LangtextRevNumber.Update(langtextRevNumber);

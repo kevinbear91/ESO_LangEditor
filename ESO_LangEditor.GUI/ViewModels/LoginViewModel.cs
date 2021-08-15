@@ -4,7 +4,7 @@ using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.Views;
 using MaterialDesignThemes.Wpf;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -82,7 +82,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             if (Logintoken != null)
             {
-                _logger.Debug("账号密码登录并获取Token成功");
+                _logger.LogDebug("账号密码登录并获取Token成功");
 
                 _userAccess.SaveToken(Logintoken);
                 _ea.GetEvent<LoginFromUcEvent>().Publish();
@@ -112,53 +112,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         private void CloseDialogHost(object o)
         {
             DialogHost.CloseDialogCommand.Execute(null, null);
-        }
-
-        private async Task LoginAsync()
-        {
-
-
-
-
-
-            //try
-            //{
-            //    if (IsFirstime)
-            //    {
-            //        var loginSuccess = await _accountService.LoginFirstTime(new LoginUserDto
-            //        {
-            //            UserID = App.LangConfig.UserGuid,
-            //            RefreshToken = _passwordBox.Password,
-            //        });
-
-            //        if (loginSuccess)
-            //        {
-            //            //_ea.GetEvent<InitUserRequired>().Publish();
-            //            DialogHost.CloseDialogCommand.Execute(null, null);
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        var loginSuccess = await _accountService.Login(new LoginUserDto
-            //        {
-            //            UserID = App.LangConfig.UserGuid,
-            //            Password = _passwordBox.Password,
-            //        });
-
-            //        if (loginSuccess)
-            //        {
-            //            DialogHost.CloseDialogCommand.Execute(null, null);
-            //        }
-
-            //    }
-
-            //}
-            //catch(Exception ex)
-            //{
-            //    MessageBox.Show(ex.ToString());
-            //}
-
         }
 
     }

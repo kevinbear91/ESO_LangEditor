@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ESO_LangEditor.GUI.ViewModels;
+using System.Windows;
 
 namespace ESO_LangEditor.GUI.Views
 {
@@ -10,6 +11,9 @@ namespace ESO_LangEditor.GUI.Views
         public RegisterWindow()
         {
             InitializeComponent();
+
+            RegisterWindowViewModel _vm = DataContext as RegisterWindowViewModel;
+            _vm.Load(Password, Password_Confirm);
         }
     }
 }

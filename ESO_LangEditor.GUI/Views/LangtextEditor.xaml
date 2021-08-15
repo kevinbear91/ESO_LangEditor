@@ -37,7 +37,7 @@
                     <Separator />
 
                     <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
-                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand">
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ContentSave" />
                             <TextBlock Margin="10 .5 0 0" Text="保存当前文本" VerticalAlignment="Center" />
@@ -66,7 +66,7 @@
 
         <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto"
                       Margin="10">
-            <TextBox x:Name="textBox_ZH" materialDesign:HintAssist.Hint="中文" 
+            <TextBox x:Name="textBox_ZH"
                      Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"
                      TextWrapping="Wrap" >
                 <TextBox.Style>
@@ -76,6 +76,9 @@
                                 <Setter Property="Background" Value="#0FEA5B5B" />
                                 <Setter Property="BorderBrush" Value="#89EA4D4D" />
                                 <Setter Property="materialDesign:HintAssist.Hint" Value="中文（当前文本已待审核，请确认无撞车）" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsInReview}" Value="False">
+                                <Setter Property="materialDesign:HintAssist.Hint" Value="中文" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

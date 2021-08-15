@@ -149,7 +149,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             logger.LogDebug("======启动至主界面======");
             //logger.Error("======报错测试======");
 
-            Task.Run(() => BootCheck());
+            
         }
 
         private async Task BootCheck()
@@ -214,7 +214,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //await GuidVaildStartupCheck();
+            await BootCheck();
         }
 
 

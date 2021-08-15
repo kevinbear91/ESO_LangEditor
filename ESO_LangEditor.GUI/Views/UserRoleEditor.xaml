@@ -60,23 +60,26 @@
                                    Text="新用户注册码" TextAlignment="Center"  />
                         
                         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <TextBox x:Name="RegTextBox" Text="{Binding RegistrationCode, FallbackValue='RegistrationCode'}" Width="230"
+                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
+                            
                             <Button Content="获取注册码" Width="120" Margin="10" Command="{Binding GetRegistrationCodeCommand}" 
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
-                            <TextBox x:Name="RegTextBox" Text="{Binding RegistrationCode, FallbackValue='RegistrationCode'}" Width="230"
-                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
+                            
                         </StackPanel>
 
                         <TextBlock Grid.Row="1" Style="{StaticResource MaterialDesignHeadline6TextBlock}" 
                                    Text="用户密码重置码" TextAlignment="Center" Margin="0,15,0,0" VerticalAlignment="Top"  />
                         
                         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0"  >
+                            <TextBox x:Name="PhoneTextBox" Text="{Binding RecoveryCode, FallbackValue='RecoveryCode'}" Width="230"
+                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" />
+                            
                             <Button Content="获取重置码" Width="120" Margin="10" Command="{Binding UserPwRecoveryCodeCommand}" 
                                     Style="{StaticResource MaterialDesignFlatButton}"
                                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"/>
-                            <TextBox x:Name="PhoneTextBox" Text="{Binding RecoveryCode, FallbackValue='RecoveryCode'}" Width="230"
-                                     materialDesign:TransitionAssist.DisableTransitions="True" Margin="10" Height="35" Cursor="IBeam" />
-
+                           
                         </StackPanel>
                     </Grid>
 
@@ -156,8 +159,8 @@
                                 <TextBox.Text>
                                     <Binding Path="RoleName" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
-                                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
+                                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
+                                                            xmlns:vaildation="clr-namespace:ESO_LangEditor.GUI.Services.Validations" />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>

@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,12 +18,11 @@ namespace ESO_LangEditor.GUI.Services
 {
     public class LangFile : ILangFile
     {
-        //Dictionary<string, LangTextDto> _data;
-        private ILangTextRepoClient _langTextRepo;
+        private ILogger _logger;
 
-        public LangFile(/*ILangTextRepoClient langTextRepo*/)
+        public LangFile(ILogger logger)
         {
-            //_langTextRepo = langTextRepo;
+            _logger = logger;
         }
 
         public async Task<Dictionary<string, LangTextDto>> ParseCsvFile(string filePath)
@@ -313,6 +313,25 @@ namespace ESO_LangEditor.GUI.Services
 
         }
 
+        public async Task<Dictionary<string, string>> ParseTextFile(string filePath)
+        {
+            string result;
+            Dictionary<string, string> langTexts = new Dictionary<string, string>();
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                while ((result = await reader.ReadLineAsync()) != null)
+                {
+                    string[] words = result.Trim().Split(new char[] { '=' }, 2);
+
+                    langTexts.Add(words[0], words[1]);
+                }
+                reader.Close();
+            }
+            _logger.LogDebug($"从Text文件读取了{langTexts.Count}行文本");
+            return langTexts;
+        }
+
         public async Task<string> ExportLangTextsAsJson(List<LangTextDto> langtextsList, LangChangeType changeType)
         {
             string fileName;
@@ -370,51 +389,32 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        public async Task ExportToText(List<LangTextDto> langList)
+        public async Task ExportLangTextsToText(Dictionary<string, LangTextDto> langList, string path)
         {
-            var outputIDFile = new List<string>();
-            var outputTextFile = new List<string>();
-
-            if (!Directory.Exists("_tmp"))
-                Directory.CreateDirectory("_tmp");
-
-            foreach (var l in langList)
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
             {
-                outputIDFile.Add(l.TextId);
-                outputTextFile.Add(l.TextZh);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
             }
 
-            StreamWriter[] writer = new StreamWriter[2];
-            writer[0] = new StreamWriter("_tmp/ID.txt");
-            writer[1] = new StreamWriter("_tmp/Text.txt");
-
-            foreach (var l in langList)
+            using (var sw = new StreamWriter(path, false, Encoding.UTF8))
             {
-                await writer[0].WriteLineAsync(l.TextId);
-                await writer[1].WriteLineAsync(l.TextZh);
+                string langText;
+
+                foreach (var lang in langList)
+                {
+                    if (lang.Value.TextZh == null || lang.Value.TextZh == "")
+                    {
+                        langText = lang.Value.TextEn;
+                    }
+                    else
+                    {
+                        langText = lang.Value.TextZh;
+                    }
+                    await sw.WriteLineAsync(lang.Key + "=" + langText);
+                }
+                sw.Flush();
+                sw.Close();
             }
-            writer[0].Flush();
-            writer[0].Close();
-
-            //using (StreamWriter sw = new StreamWriter("_tmp/ID.txt"))
-            //{
-            //    foreach (var l in langList)
-            //    {
-            //        sw.WriteLine(l.TextId);
-            //    }
-            //    sw.Flush();
-            //    sw.Close();
-            //}
-
-            //using (StreamWriter sw = new StreamWriter("_tmp/Text.txt"))
-            //{
-            //    foreach (string s in outputTextFile)
-            //    {
-            //        sw.WriteLine(s);
-            //    }
-            //    sw.Flush();
-            //    sw.Close();
-            //}
         }
 
         public async Task ExportLuaToStr(List<LangTextDto> langList)
@@ -434,7 +434,9 @@ namespace ESO_LangEditor.GUI.Services
             file.Dispose();
 
             if (!Directory.Exists("Export"))
+            {
                 Directory.CreateDirectory("Export");
+            }
 
             foreach (var d in langList)
             {
@@ -484,8 +486,13 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
-        public async Task ExportToLang(Dictionary<string, LangTextDto> langList)
+        public async Task ExportLangTextsToLang(Dictionary<string, LangTextDto> langList, string path)
         {
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+            }
+
             //var langDict = await _langTextRepo.GetAlltLangTextsDictionaryAsync();
             var orderedLang = langList.OrderBy(lang => lang.Value.IdType);
 
@@ -511,7 +518,7 @@ namespace ESO_LangEditor.GUI.Services
             List<byte> fileByteList = new List<byte>();
             List<byte> textBytesList = new List<byte>();
 
-            using (var b = new BinaryWriter(File.Open("zh.lang", FileMode.Create)))
+            using (var b = new BinaryWriter(File.Open(path, FileMode.Create)))
             {
                 Array.Reverse(headVersion);
                 Array.Reverse(recoredCountByte);
@@ -539,15 +546,6 @@ namespace ESO_LangEditor.GUI.Services
                     text = text.Replace(@"\n", "\x0a");
                     text = text.Replace(@"\r", "\x0d");
                     text = text.Replace("\"\"", "\"");
-
-                    //Debug.WriteLine($"text: {text}, Length: {currentTextLength}");
-
-                    //foreach(var textbyte in textBytes)
-                    //{
-                    //    Debug.WriteLine($"text bytes: {textbyte}");
-                    //}
-
-
 
                     byte[] idBytes = BitConverter.GetBytes(id);
                     byte[] unknownBytes = BitConverter.GetBytes(unknown);
@@ -597,41 +595,110 @@ namespace ESO_LangEditor.GUI.Services
 
                 fileByteList.AddRange(textBytesList);
 
-                var fileByteArray = fileByteList.ToArray();
+                b.Write(fileByteList.ToArray());
+            }
+        }
 
-                //foreach (var t in langSameTextOffsetDict)
-                //{
-                //    //var tKey = t.Key;
-                //    //tKey = tKey.Replace(@"\n", "\x0a");
-                //    //tKey = tKey.Replace(@"\r", "\x0d");
-                //    var textBytes = Encoding.UTF8.GetBytes(t.Key + "\0");
-
-                //    textBytes.CopyTo(fileByteArray, t.Value);
-                //}
-
-                //fileByteList.ToArray();
-                b.Write(fileByteArray);
+        public async Task ExportLangTextsToLang(Dictionary<string, string> langList, string path)
+        {
+            if (!Directory.Exists(Path.GetDirectoryName(path)))
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
             }
 
+            int recoredCount = langList.Count();
+            const int _textIdRecoredSize = 16;
+            int textBeginOffset = recoredCount * _textIdRecoredSize + 8;
 
-            //using (var s = new FileStream("zh.lang", FileMode.Append, FileAccess.Write))
-            //{
-            //    s.WriteAsync
-            //}
+            byte[] headVersion = BitConverter.GetBytes(0x02);
+            byte[] recoredCountByte = BitConverter.GetBytes(recoredCount);
 
+            byte[] langHeadBuffer = new byte[8];
+            byte[] langTextRecoredbuffer = new byte[16];
 
-            //await File.WriteAllBytesAsync("zh.lang",)
-            //FileStream fs = new FileStream("aaa.lang", FileMode.Create);
-            //fs.WriteAsync
+            int id;
+            int unknown;
+            int index;
+            int offset = 0;
+            int lastVaildOffset = 0;
+            string text;
+            List<byte> fileByteList = new List<byte>();
+            List<byte> textBytesList = new List<byte>();
 
+            using (var b = new BinaryWriter(File.Open(path, FileMode.Create)))
+            {
+                Array.Reverse(headVersion);
+                Array.Reverse(recoredCountByte);
 
+                headVersion.CopyTo(langHeadBuffer, 0);
+                recoredCountByte.CopyTo(langHeadBuffer, 4);
 
-            //using (StreamWriter sw = new StreamWriter())
-            //{
-            //    sw.
-            //}
+                fileByteList.AddRange(langHeadBuffer);
 
+                foreach (var lang in langList)
+                {
+                    string[] keySplit = lang.Key.Trim().Split(new char[] { '-' }, 3);
 
+                    id = ToInt32(keySplit[0]);
+                    unknown = ToInt32(keySplit[1]);
+                    index = ToInt32(keySplit[2]);
+
+                    text = lang.Value;
+
+                    text = text.Replace(@"\n", "\x0a");
+                    text = text.Replace(@"\r", "\x0d");
+                    text = text.Replace("\"\"", "\"");
+
+                    byte[] idBytes = BitConverter.GetBytes(id);
+                    byte[] unknownBytes = BitConverter.GetBytes(unknown);
+                    byte[] indexBytes = BitConverter.GetBytes(index);
+                    byte[] currentOffsetBytes = BitConverter.GetBytes(offset);
+
+                    Array.Reverse(idBytes);
+                    Array.Reverse(unknownBytes);
+                    Array.Reverse(indexBytes);
+                    Array.Reverse(currentOffsetBytes);
+
+                    idBytes.CopyTo(langTextRecoredbuffer, 0);
+                    unknownBytes.CopyTo(langTextRecoredbuffer, 4);
+                    indexBytes.CopyTo(langTextRecoredbuffer, 8);
+                    currentOffsetBytes.CopyTo(langTextRecoredbuffer, 12);
+
+                    fileByteList.AddRange(langTextRecoredbuffer);
+
+                    var textBytes = Encoding.UTF8.GetBytes(text + "\0");
+                    int currentTextLength = textBytes.Length;
+
+                    lastVaildOffset += currentTextLength;    //文本偏移 = 当前偏移 + 当前文本长度(包含Null字节)
+                    offset = lastVaildOffset;
+                    //langSameTextOffsetDict.Add(text, lastVaildOffset);
+
+                    textBytesList.AddRange(textBytes);
+
+                    //if (langSameTextOffsetDict.ContainsKey(text))
+                    //{
+                    //    offset = langSameTextOffsetDict[text];
+                    //}
+                    //else
+                    //{
+                    //    var textBytes = Encoding.UTF8.GetBytes(text + "\0");
+                    //    int currentTextLength = textBytes.Length;
+
+                    //    lastVaildOffset += currentTextLength;    //文本偏移 = 当前偏移 + 当前文本长度(包含Null字节)
+                    //    offset = lastVaildOffset;
+                    //    langSameTextOffsetDict.Add(text, lastVaildOffset);
+
+                    //    textBytesList.AddRange(textBytes);
+                    //}
+
+                    //Debug.WriteLine($"ID: {id}, unknown: {unknown}, Index: {index}, offset: {currentOffset}, text: {text}");
+
+                }
+
+                fileByteList.AddRange(textBytesList);
+
+                b.Write(fileByteList.ToArray());
+            }
         }
 
         public JsonFileDto JsonDtoDeserialize(string path)
@@ -682,5 +749,7 @@ namespace ESO_LangEditor.GUI.Services
             bool result = bytes.Length == langText.Length;
             return result;
         }
+
+        
     }
 }

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Markup;
 
-namespace ESO_LangEditor.GUI.Services
+namespace ESO_LangEditor.GUI.Services.Validations
 {
     [ContentProperty("ComparisonValue")]
     public class SearchBarTextValidation : ValidationRule

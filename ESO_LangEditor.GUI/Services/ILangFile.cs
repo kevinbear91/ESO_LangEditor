@@ -10,11 +10,12 @@ namespace ESO_LangEditor.GUI.Services
         Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath);
         Task<Dictionary<string, LangTextDto>> ParseCsvFile(string filePath);
         Task<Dictionary<string, LangTextDto>> ParseLuaFile(List<string> filePath);
+        Task<Dictionary<string, string>> ParseTextFile(string filePath);
         Task<string> ExportLangTextsAsJson(List<LangTextDto> langtextsList, LangChangeType changeType);
-        Task ExportToText(List<LangTextDto> langList);
+        Task ExportLangTextsToText(Dictionary<string, LangTextDto> langList, string path);
         Task ExportLuaToStr(List<LangTextDto> langList);
-        Task ExportToLang(Dictionary<string, LangTextDto> langList);
-
+        Task ExportLangTextsToLang(Dictionary<string, LangTextDto> langList, string path);
+        Task ExportLangTextsToLang(Dictionary<string, string> langList, string path);
 
 
         //JsonFileDto JsonDtoDeserialize(string path);

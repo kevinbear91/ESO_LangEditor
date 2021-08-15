@@ -8,7 +8,7 @@ namespace ESO_LangEditor.Core.Entities
     public class GameVersion
     {
         [Key]
-        public string UpdateNumber { get; set; }
+        public int GameApiVersion { get; set; }
         public string Version_EN { get; set; }
         public string Version_ZH { get; set; }
     }

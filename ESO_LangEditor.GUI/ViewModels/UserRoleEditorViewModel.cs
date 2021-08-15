@@ -187,27 +187,27 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void GetUserList(object obj)
         {
-            //var userlist = await _userService.GetUserList();
+            var userlist = await _userService.GetUserList();
 
-            //UserList = new ObservableCollection<UserInClientDto>(userlist);
+            UserList = new ObservableCollection<UserInClientDto>(userlist);
 
-            ////TO DO
+            //TO DO
 
-            //foreach (var user in _userList)
-            //{
-            //    Debug.WriteLine(user.Id);
-            //}
-
-        }
-
-        public async void GetRolesBySelectedUser(object obj)
-        {
-            _roleListFromServer = null;
-            _roleListFromServer = await _userService.GetUserRoles(SelectedUser.Id);
-
-            LoadListboxItem(_roleListFromServer);
+            foreach (var user in _userList)
+            {
+                Debug.WriteLine(user.Id);
+            }
 
         }
+
+        //public async void GetRolesBySelectedUser(object obj)
+        //{
+        //    _roleListFromServer = null;
+        //    _roleListFromServer = await _userService.GetUserRoles(SelectedUser.Id);
+
+        //    LoadListboxItem(_roleListFromServer);
+
+        //}
 
         public async void GetInfoBySelectedUser(object obj)
         {
@@ -249,7 +249,14 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             var respond = await _userService.SetUserRoles(SelectedUser.Id, selectedRoles);
 
-            MessageBox.Show(respond.ApiMessageCodeString());
+            if (respond.Code == (int)RespondCode.Success)
+            {
+                MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 
@@ -336,7 +343,14 @@ namespace ESO_LangEditor.GUI.ViewModels
                     LockoutEnd = UserLockoutEnd,
                 });
 
-                MessageBox.Show(respond.ApiMessageCodeString());
+                if (respond.Code == (int)RespondCode.Success)
+                {
+                    MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -346,7 +360,14 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 var respond = await _userService.SetUserPasswordToRandom(SelectedUser.Id);
 
-                MessageBox.Show(respond.ApiMessageCodeString());
+                if (respond.Code == (int)RespondCode.Success)
+                {
+                    MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+                }
 
             }
 

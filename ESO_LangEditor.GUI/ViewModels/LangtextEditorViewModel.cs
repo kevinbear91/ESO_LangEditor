@@ -26,7 +26,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private LangTextDto _gridSelectedItem;
         private string _mdNotifyContent;
         private bool _isInReview;
-        private bool _autoQueryLangTextInReview = App.LangConfig.AppSetting.IsAutoQueryLangTextInReview;
+        //private bool _autoQueryLangTextInReview = ;
         private int _currentSelectedIndex = 0;
 
         public LangTextDto CurrentLangText
@@ -74,8 +74,8 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public bool AutoQueryLangTextInReview
         {
-            get => _autoQueryLangTextInReview;
-            set => SetProperty(ref _autoQueryLangTextInReview, value);
+            get => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview;
+            set => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview = value;
         }
 
         public string LangtextInfo

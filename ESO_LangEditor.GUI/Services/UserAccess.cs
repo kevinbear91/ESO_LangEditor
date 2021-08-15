@@ -78,8 +78,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(code.Message, code.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return tokenDto;
         }
@@ -100,8 +100,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(code.Message, code.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return tokenDto;
         }
@@ -123,8 +123,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
-                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
-                MessageBox.Show(Apicode.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(code.Message, code.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return user;
         }
@@ -146,8 +146,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
-                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
-                MessageBox.Show(Apicode.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(code.Message, code.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return userList;
         }
@@ -168,8 +168,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
-                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
-                MessageBox.Show(Apicode.ApiMessageCodeString());
+                var Apicode = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
+                MessageBox.Show(Apicode.Message, Apicode.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
             return code;
         }
@@ -192,14 +192,14 @@ namespace ESO_LangEditor.GUI.Services
             }
             else
             {
-                var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(Apicode.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message, code.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
             return roles;
         }
 
-        public async Task<ApiMessageWithCode> SetUserRoles(Guid userId, List<string> roles)
+        public async Task<MessageWithCode> SetUserRoles(Guid userId, List<string> roles)
         {
             _userClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -207,11 +207,11 @@ namespace ESO_LangEditor.GUI.Services
             var content = SerializeDataToHttpContent(roles);
 
             HttpResponseMessage response = await _userClient.PostAsync(
-                "api/admin/roles/" + userId.ToString(), content);
+                "api/admin/roles/" + userId, content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var Apicode = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
             //MessageBox.Show(Apicode.ApiMessageCodeString());
 
             return Apicode;
@@ -220,11 +220,13 @@ namespace ESO_LangEditor.GUI.Services
         public void SaveToken(TokenDto token)
         {
             var username = GetUserNameFromToken(token.AuthToken);
+            var userGuid = GetUserGuidFromToken(token.AuthToken);
             var config = App.LangConfig;
 
             config.UserAuthToken = token.AuthToken;
             config.UserRefreshToken = token.RefreshToken;
             config.UserName = username;
+            config.UserGuid = userGuid;
 
             App.LangConfig.UserAuthToken = token.AuthToken;
             App.LangConfig.UserRefreshToken = token.RefreshToken;
@@ -250,7 +252,7 @@ namespace ESO_LangEditor.GUI.Services
             return roleList;
         }
 
-        public async Task<ApiMessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
+        public async Task<MessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
         {
             _userClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -262,13 +264,13 @@ namespace ESO_LangEditor.GUI.Services
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var Apicode = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
             //MessageBox.Show(Apicode.ApiMessageCodeString());
 
             return Apicode;
         }
 
-        public async Task<ApiMessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto)
+        public async Task<MessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto)
         {
             _userClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -280,18 +282,18 @@ namespace ESO_LangEditor.GUI.Services
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var Apicode = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
             //MessageBox.Show(Apicode.ApiMessageCodeString());
 
             return Apicode;
         }
 
-        public Task<ApiMessageWithCode> AddNewRole(string roleName)
+        public Task<MessageWithCode> AddNewRole(string roleName)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ApiMessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto)
+        public async Task<MessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto)
         {
             _userClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -299,17 +301,17 @@ namespace ESO_LangEditor.GUI.Services
             var content = SerializeDataToHttpContent(setUserInfoDto);
 
             HttpResponseMessage response = await _userClient.PostAsync(
-                "api/admin/modifyUser/" + setUserInfoDto.UserID.ToString(), content);
+                "api/admin/modifyUser/" + setUserInfoDto.UserID, content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var Apicode = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
             //MessageBox.Show(Apicode.ApiMessageCodeString());
 
             return Apicode;
         }
 
-        public async Task<ApiMessageWithCode> SetUserPasswordToRandom(Guid userGuid)
+        public async Task<MessageWithCode> SetUserPasswordToRandom(Guid userGuid)
         {
             _userClient.DefaultRequestHeaders.Authorization =
                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -319,26 +321,26 @@ namespace ESO_LangEditor.GUI.Services
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var Apicode = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
             //MessageBox.Show(Apicode.ApiMessageCodeString());
 
             return Apicode;
         }
 
-        public async Task<ApiMessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto)
+        public async Task<MessageWithCode> AddNewUser(RegistrationUserDto registrationUserDto)
         {
             var content = SerializeDataToHttpContent(registrationUserDto);
 
             HttpResponseMessage respond = await _userClient.PostAsync("api/account/register", content);
 
             string respondContent = await respond.Content.ReadAsStringAsync();
-            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(respondContent, _jsonOption);
+            var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
             //MessageBox.Show(code.ApiMessageCodeString());
 
             return code;
         }
 
-        public async Task<ApiMessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto)
+        public async Task<MessageWithCode> SetUserPasswordByRecoveryCode(UserPasswordRecoveryDto userPasswordResetDto)
         {
             var content = SerializeDataToHttpContent(userPasswordResetDto);
 
@@ -347,7 +349,7 @@ namespace ESO_LangEditor.GUI.Services
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var Apicode = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var Apicode = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
             //MessageBox.Show(Apicode.ApiMessageCodeString());
 
             return Apicode;
@@ -372,6 +374,17 @@ namespace ESO_LangEditor.GUI.Services
             var userName = jsontoken.Claims.First(claim => claim.Type == userNameClaim).Value;
 
             return userName;
+        }
+
+        private Guid GetUserGuidFromToken(string token)
+        {
+            string userGuidClaim = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+
+            var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+            var userGuidString = jsontoken.Claims.First(claim => claim.Type == userGuidClaim).Value;
+            var userGuid = new Guid(userGuidString);
+
+            return userGuid;
         }
 
 

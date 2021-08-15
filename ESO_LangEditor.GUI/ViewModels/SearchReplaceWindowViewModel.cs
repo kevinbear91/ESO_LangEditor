@@ -4,7 +4,7 @@ using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
@@ -120,7 +120,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                         if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
                         {
-                            _logger.Debug("批量替换完成，共 " + replacedListToEnity.Count + " 条文本");
+                            _logger.LogDebug("批量替换完成，共 " + replacedListToEnity.Count + " 条文本");
 
                             var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
                             _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
@@ -145,7 +145,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             catch (Exception ex)
             {
-                _logger.Fatal("替换时发生了错误，错误信息：" + ex.Message);
+                _logger.LogCritical("替换时发生了错误，错误信息：" + ex.Message);
                 MessageBox.Show("替换时发生了错误，错误信息： " + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 

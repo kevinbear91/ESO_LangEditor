@@ -3,6 +3,7 @@ using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +27,12 @@ namespace ESO_LangEditor.API.Controllers
         private ITokenService _tokenService;
         private IMapper _mapper;
         private ILogger<AdminController> _logger;
-        private string _loggerMessage;
         private IConfiguration _configuration;
+        private IRepositoryWrapper _repositoryWrapper;
 
         public AdminController(RoleManager<Role> roleManager, UserManager<User> userManager, 
             IMapper mapper, ITokenService tokenService, ILogger<AdminController> logger,
-            IConfiguration configuration)
+            IConfiguration configuration, IRepositoryWrapper repositoryWrapper)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -39,6 +40,7 @@ namespace ESO_LangEditor.API.Controllers
             _tokenService = tokenService;
             _logger = logger;
             _configuration = configuration;
+            _repositoryWrapper = repositoryWrapper;
         }
 
         [Authorize(Roles = "Admin")]
@@ -63,7 +65,11 @@ namespace ESO_LangEditor.API.Controllers
                 return NotFound();
             }
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+
             var userDto = _mapper.Map<UserDto>(user);
+
+            userDto.UserRoles = userRoles.ToList();
 
             return userDto;
         }
@@ -78,7 +84,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user == null)
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
+                });
             }
 
             var adminSetting = _configuration.GetSection("Admin:Setting");
@@ -86,7 +96,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user.Id == new Guid(createrId) && userIdFromToken != createrId)
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserRoleSetFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserRoleSetFailed)
+                });
             }
 
             var roleInServer = _roleManager.Roles.ToDictionary(r => r.Name);
@@ -111,18 +125,30 @@ namespace ESO_LangEditor.API.Controllers
 
             if (roleForAdd.Count == 0)
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserRoleSetFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserRoleSetFailed)
+                });
             }
 
             var result = await _userManager.AddToRolesAsync(user, roleForAdd);
 
             if (result.Succeeded)
             {
-                return Ok();
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
             else
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserRoleSetFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserRoleSetFailed)
+                });
             }
 
             
@@ -138,13 +164,32 @@ namespace ESO_LangEditor.API.Controllers
 
             if (await _roleManager.RoleExistsAsync(role))
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.RoleExisted,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.RoleExisted)
+                });
             }
 
 
             var result = await _roleManager.CreateAsync(new Role { Name = role });
 
-            return result.Succeeded;
+            if (result.Succeeded)
+            {
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
+            }
+            else
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.RoleAddFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.RoleAddFailed)
+                });
+            }
 
         }
 
@@ -172,16 +217,24 @@ namespace ESO_LangEditor.API.Controllers
 
             if (result.Succeeded)
             {
-                return Ok(ApiMessageWithCode.Success);
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
             else
             {
-                return BadRequest(ApiMessageWithCode.PasswordChangeFailed);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.PasswordChangeFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.PasswordChangeFailed)
+                });
             }
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("modifyUser/{userId}")]
+        [HttpPost("modifyUser/{userId}")]
         public async Task<IActionResult> ModifyUserInfo(Guid userId, SetUserInfoDto setUserInfoDto)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -189,7 +242,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user.Id != userId && user.Id != setUserInfoDto.UserID)
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
+                });
             }
 
             var adminSetting = _configuration.GetSection("Admin:Setting");
@@ -197,7 +254,11 @@ namespace ESO_LangEditor.API.Controllers
 
             if (user.Id == new Guid(createrId) && userIdFromToken != createrId)
             {
-                return BadRequest();
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserUpdateFailed)
+                });
             }
 
             user.UserName = setUserInfoDto.UserName;
@@ -216,13 +277,29 @@ namespace ESO_LangEditor.API.Controllers
 
             var result = await _userManager.UpdateAsync(user);
 
+            var userRev = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(2);
+            userRev.Rev++;
+            _repositoryWrapper.LangTextRevNumberRepo.Update(userRev);
+
+            
+
             if (result.Succeeded)
             {
-                return Ok(ApiMessageWithCode.Success);
+                await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync();
+
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
             else
             {
-                return BadRequest(ApiMessageWithCode.UserUpdateFailed);
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserUpdateFailed)
+                });
             }
         }
 

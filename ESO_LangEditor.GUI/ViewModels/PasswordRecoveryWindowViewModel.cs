@@ -2,7 +2,7 @@
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.Services;
-using NLog;
+using Microsoft.Extensions.Logging;
 using Prism.Mvvm;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,7 +56,14 @@ namespace ESO_LangEditor.GUI.ViewModels
                 RecoveryCode = RecoveryCode,
             });
 
-            MessageBox.Show(respond.ApiMessageCodeString());
+            if (respond.Code == (int)RespondCode.Success)
+            {
+                MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(respond.Message, respond.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
         }
 

@@ -35,13 +35,21 @@ namespace ESO_LangEditor.GUI.Services
         }
 
 
-
-        public Task<ApiMessageWithCode> AddLangTexts(List<LangTextForCreationDto> langTextForCreationDtos)
+        public async Task<MessageWithCode> AddLangTexts(List<LangTextForCreationDto> langTextForCreationDtos)
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(langTextForCreationDtos);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langtext/list", content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
         }
 
-        public async Task<ApiMessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids)
+        public async Task<MessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -51,7 +59,7 @@ namespace ESO_LangEditor.GUI.Services
                 "api/langtext/review", content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
 
             return code;
         }
@@ -140,8 +148,8 @@ namespace ESO_LangEditor.GUI.Services
             }
             else
             {
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
             }
 
             //Debug.WriteLine(respondedList);
@@ -172,8 +180,8 @@ namespace ESO_LangEditor.GUI.Services
             }
             else
             {
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
             }
 
             Debug.WriteLine(respondedList);
@@ -199,8 +207,8 @@ namespace ESO_LangEditor.GUI.Services
             }
             else
             {
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
             }
 
             Debug.WriteLine(respondedList);
@@ -226,8 +234,8 @@ namespace ESO_LangEditor.GUI.Services
             }
             else
             {
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
             }
 
             Debug.WriteLine(respondedList);
@@ -254,8 +262,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
             }
 
             return respondedLangtext;
@@ -277,13 +285,11 @@ namespace ESO_LangEditor.GUI.Services
             {
                 respondedLangtext = JsonSerializer.Deserialize<LangTextForReviewDto>(responseContent, _jsonOption);
             }
-            else
-            {
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
-            }
-
-            Debug.WriteLine(respondedLangtext);
+            //else
+            //{
+            //    var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                
+            //}
 
             return respondedLangtext;
         }
@@ -307,8 +313,8 @@ namespace ESO_LangEditor.GUI.Services
             else
             {
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.ApiMessageCodeString());
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
             }
 
             //Debug.WriteLine(respondedUserList);
@@ -316,7 +322,7 @@ namespace ESO_LangEditor.GUI.Services
             return respondedUserList;
         }
 
-        public async Task<ApiMessageWithCode> RemoveLangTexts(List<Guid> langTextGuids)
+        public async Task<MessageWithCode> RemoveLangTexts(List<Guid> langTextGuids)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -332,17 +338,17 @@ namespace ESO_LangEditor.GUI.Services
             var response = await _langHttpClient.SendAsync(request);
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
-            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
 
             return code;
         }
 
-        public Task<ApiMessageWithCode> RemoveLangTextsInReview(Guid langTextGuid)
+        public Task<MessageWithCode> RemoveLangTextsInReview(Guid langTextGuid)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<ApiMessageWithCode> UpdateLangTextEn(List<LangTextForUpdateEnDto> langTextForUpdateEnDtos)
+        public async Task<MessageWithCode> UpdateLangTextEn(List<LangTextForUpdateEnDto> langTextForUpdateEnDtos)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -352,12 +358,12 @@ namespace ESO_LangEditor.GUI.Services
                 "api/langtext/en/list", content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
 
             return code;
         }
 
-        public async Task<ApiMessageWithCode> UpdateLangTextZh(LangTextForUpdateZhDto langTextForUpdateZhDto)
+        public async Task<MessageWithCode> UpdateLangTextZh(LangTextForUpdateZhDto langTextForUpdateZhDto)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -365,15 +371,15 @@ namespace ESO_LangEditor.GUI.Services
             string langTextId = langTextForUpdateZhDto.Id.ToString();
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
-                "api/langtext/" + langTextId, content);
+                "api/langtext/zh/" + langTextId, content);
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            MessageWithCode code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
 
             return code;
         }
 
-        public async Task<ApiMessageWithCode> UpdateLangTextZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtos)
+        public async Task<MessageWithCode> UpdateLangTextZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtos)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
@@ -383,7 +389,7 @@ namespace ESO_LangEditor.GUI.Services
                 "api/langtext/zh/list", content);
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            var code = JsonSerializer.Deserialize<ApiMessageWithCode>(responseContent, _jsonOption);
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
 
             return code;
         }

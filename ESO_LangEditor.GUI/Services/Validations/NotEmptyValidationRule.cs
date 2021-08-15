@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Controls;
 
-namespace ESO_LangEditor.GUI.Services
+namespace ESO_LangEditor.GUI.Services.Validations
 {
     public class NotEmptyValidationRule : ValidationRule
     {

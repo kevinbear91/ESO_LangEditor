@@ -1,4 +1,5 @@
 ﻿using ESO_LangEditor.API.Helpers;
+using ESO_LangEditor.Core.Models;
 using ESO_LangEditorApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,16 +27,16 @@ namespace ESO_LangEditor.API.Filters
         }
         public void OnException(ExceptionContext context)
         {
-            var error = new ApiError();
+            var error = new MessageWithCode();
             if (Environment.IsDevelopment())
             {
-                error.Message = context.Exception.Message;
-                error.Detail = context.Exception.ToString();
+                error.Message = context.Exception.Message + "\n" + context.Exception.ToString();
+                //error.Detail = context.Exception.ToString();
             }
             else
             {
-                error.Message = "服务器出错";
-                error.Detail = context.Exception.Message;
+                error.Message = "服务器出错" + "\n" + context.Exception.Message;
+                //error.Detail = context.Exception.Message;
             }
 
             context.Result = new ObjectResult(error)

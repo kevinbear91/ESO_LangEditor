@@ -28,6 +28,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private List<FilePaths> _copyFilePaths;
         private List<FilePaths> _filePaths;
+        private List<string> _roleList = new List<string>();
 
         //private PackToRelase _packToRelaseWindow;
 
@@ -61,6 +62,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _buttonprogress, value);
         }
 
+        public Visibility IsAdmin => RoleToVisibility("Admin");
+
         public CHSorCHT ChsOrChtListSelected { get; set; }
 
         public IEnumerable<CHSorCHT> ChsOrChtList
@@ -69,74 +72,55 @@ namespace ESO_LangEditor.GUI.ViewModels
         }
 
         public ExcuteViewModelMethod PackFilesCommand => new ExcuteViewModelMethod(ProcessFilesAsync);
+        public ExcuteViewModelMethod ExportLangCommand => new ExcuteViewModelMethod(ExportLangTextToLang);
+        public ExcuteViewModelMethod ExportLuaCommand => new ExcuteViewModelMethod(ExportLangLuaToStr);
 
         private ILangTextRepoClient _langTextRepo;
+        private ILangFile _langFile;
         private ILogger _logger;
+        private IUserAccess _userAccess;
 
-        public PackToRelaseViewModel(ILangTextRepoClient langTextRepoClient, ILogger<PackToRelase> logger)
+        public PackToRelaseViewModel(ILangTextRepoClient langTextRepoClient, ILangFile langFile, 
+            IUserAccess userAccess, ILogger logger)
         {
-            //exportToFileCommand = new ExportToFileCommand();
-            //_packToRelaseWindow = packToRelaseWindow;
             _langTextRepo = langTextRepoClient;
+            _langFile = langFile;
+            _userAccess = userAccess;
             _logger = logger;
 
             AddonVersionConfig = PackLangVersion.Load();
 
             AddonVersion = AddonVersionConfig.AddonVersion;
             ApiVersion = AddonVersionConfig.AddonApiVersion;
+
+            _roleList = _userAccess.GetUserRoleFromToken(App.LangConfig.UserAuthToken);
+
+            var rev = Task.Run(() => _langTextRepo.GetRevNumber(1)).Result;
+
+            AddonVersionInt = rev.Rev.ToString();
         }
-
-        //private void Pack_button_Click()
-        //{
-
-
-        //    if (CheckResFolder())
-        //    {
-        //        //if (CheckField())
-        //        //    packFiles.ProcessFiles(esoZhVersion, apiVersion);
-        //        //else
-        //        //    MessageBox.Show("汉化版本号与API版本号不得为空！");
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("无法找到必要文件夹，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-
-
-
-        //    //ModifyFiles();
-        //    //CopyResList();
-
-        //    //packFiles.ModifyFiles();
-
-        //}
 
         public async void ProcessFilesAsync(object o)
         {
-            //var packfile = new PackAllAddonFile(this);
-
             ButtonProgress = true;
-            //_packToRelaseWindow.Pack_button.IsEnabled = false;
 
-            await Task.Run(() => ProcessFiles());
+            await Task.Run(() => ProcessFiles().ContinueWith(ExportDoneNotify));
 
             AddonVersionConfig.AddonVersion = AddonVersion;
             AddonVersionConfig.AddonApiVersion = ApiVersion;
             PackLangVersion.Save(AddonVersionConfig);
-
-            ButtonProgress = false;
-            //_packToRelaseWindow.Pack_button.IsEnabled = true;
         }
 
-        public void ProcessFiles()
+        public async Task ProcessFiles()
         {
             try
             {
-                ExportDbFiles();
+                await ExportLang(ChsOrChtListSelected);
+                await ExportLua(ChsOrChtListSelected);
+
                 CopyResList();
                 ModifyFiles();
                 PackTempFiles();
-                MessageBox.Show("打包完成！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (DirectoryNotFoundException)
             {
@@ -146,35 +130,61 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 MessageBox.Show("无法找到必要文件，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("发生错误，信息：" + Environment.NewLine + ex.ToString(), "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
         }
 
-        private async void ExportDbFiles()
+        private async Task ExportLang(CHSorCHT chsOrcht)
         {
-            //var readDb = new LangTextRepoClientService();
-            //var export = new ExportDbToFile();
-            //var tolang = new ThirdPartSerices();
+            var langtext = await _langTextRepo.GetAlltLangTextsDictionaryAsync(2);
 
-            //var langtexts = await readDb.GetAlltLangTexts(0);
-            //var langlua = await readDb.GetAlltLangTexts(1);
+            if (chsOrcht == CHSorCHT.chs)
+            {
+                await _langFile.ExportLangTextsToLang(langtext, @"Export\zh.lang");
+            }
+            else
+            {
+                await _langFile.ExportLangTextsToText(langtext, @"_tmp\zh.text");
 
-            //export.ExportText(langtexts);
-            //export.ExportLua(langlua);
+                await OpenccToCHT(@"_tmp\zh.text", @"_tmp\zht.text");
 
-            //if (ChsOrChtListSelected == CHSorCHT.chs)
-            //    tolang.ConvertTxTtoLang(false);
-            //else
-            //{
-            //    tolang.OpenCCtoCHT();
-            //    tolang.ConvertTxTtoLang(true);
-            //    tolang.LuaStrToCHT();
-            //}
+                var langtextCHT = await _langFile.ParseTextFile(@"_tmp\zht.text");
 
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+                await _langFile.ExportLangTextsToLang(langtextCHT, @"Export\zht.lang");
+            }
+        }
+
+        private async Task ExportLua(CHSorCHT chsOrcht)
+        {
+            var langLua = await _langTextRepo.GetAlltLangTextsDictionaryAsync(1);
+
+            if (chsOrcht == CHSorCHT.chs)
+            {
+                await _langFile.ExportLuaToStr(langLua.Values.ToList());
+            }
+            else
+            {
+                await _langFile.ExportLuaToStr(langLua.Values.ToList());
+
+                await OpenccToCHT(@"Export\zh_pregame.str", @"Export\zht_pregame.str");
+                await OpenccToCHT(@"Export\zh_client.str", @"Export\zht_client.str");
+            }
+            
+        }
+
+        private void ExportLangTextToLang(object o)
+        {
+            ButtonProgress = true;
+            Task.Run(() => ExportLang(ChsOrChtListSelected).ContinueWith(ExportDoneNotify));
+        }
+
+        private void ExportLangLuaToStr(object o)
+        {
+            ButtonProgress = true;
+            Task.Run(() => ExportLua(ChsOrChtListSelected).ContinueWith(ExportDoneNotify));
+        }
+        private void ExportDoneNotify(object o)
+        {
+            ButtonProgress = false;
+            MessageBox.Show("导出完成！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void ModifyFiles()
@@ -347,5 +357,25 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         }
 
+        private async Task OpenccToCHT(string inputPath, string outputPath)
+        {
+            ProcessStartInfo startOpenCCInfo = new ProcessStartInfo
+            {
+                FileName = @"opencc\opencc.exe",
+                Arguments = @" -i " + inputPath + " -o " + outputPath + @" -c opencc\s2twp.json"
+            };
+
+            Process opencc = new Process
+            {
+                StartInfo = startOpenCCInfo
+            };
+            opencc.Start();
+            opencc.WaitForExit();
+        }
+
+        private Visibility RoleToVisibility(string roleName)
+        {
+            return _roleList.Contains(roleName) ? Visibility.Visible : Visibility.Collapsed;
+        }
     }
 }

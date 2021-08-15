@@ -26,8 +26,8 @@
                 <TextBox.Text>
                     <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
+                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
+                                                            xmlns:vaildation="clr-namespace:ESO_LangEditor.GUI.Services.Validations" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>

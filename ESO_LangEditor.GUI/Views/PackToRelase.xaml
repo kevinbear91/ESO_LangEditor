@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views" 
         xmlns:local1="clr-namespace:ESO_LangEditor.GUI.Converter"
+        xmlns:vaildation="clr-namespace:ESO_LangEditor.GUI.Services.Validations"
         xmlns:prism="http://prismlibrary.com/" 
         prism:ViewModelLocator.AutoWireViewModel="True"
         TextElement.FontSize="14"
@@ -23,8 +24,7 @@
                 <TextBox.Text>
                     <Binding Path="AddonVersion" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
+                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -37,8 +37,7 @@
                 <TextBox.Text>
                     <Binding Path="ApiVersion" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
+                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -51,8 +50,7 @@
                 <TextBox.Text>
                     <Binding Path="AddonVersionInt" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
+                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -81,67 +79,74 @@
                 <TextBox.Text>
                     <Binding Path="UpdateLog" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
+                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
 
         </WrapPanel>
-        <!--<StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,16">
-            <TextBox x:Name="EsoZhVersion" materialDesign:HintAssist.Hint="汉化版本号" 
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 TextWrapping="Wrap" Width="120" Height="40" Margin="0 10 0 0" HorizontalAlignment="Center" >
-                <TextBox.Text>
-                    <Binding Path="AddonVersion" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-
-            </TextBox>
-            <TextBox x:Name="APIversion_textBox" materialDesign:HintAssist.Hint="API版本" 
-                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 HorizontalAlignment="Center" Width="120" Height="40" Margin="0 20 0 0"
-                 TextWrapping="Wrap" >
-                <TextBox.Text>
-                    <Binding Path="ApiVersion" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <services:NotEmptyValidationRule ValidatesOnTargetUpdated="True" 
-                                                            xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services" />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
-        </StackPanel>-->
-
-
-
-        <Button x:Name="Pack_button" Grid.Row="1" Content="一键导出"
-                Margin="0,10,0,0"
-                materialDesign:ButtonProgressAssist.Value="-1"
-                materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-                materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding ButtonProgress}"
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="Pack_button" Content="一键导出"
+                Margin="20"
+                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
                 Command="{Binding PackFilesCommand}"
-                HorizontalAlignment="Center" VerticalAlignment="Top" Cursor="Hand" Height="32" Width="88">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="IsEnabled" Value="True"/>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=EsoZhVersion}" Value="True">
-                            <Setter Property="IsEnabled" Value="False" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=APIversion_textBox}" Value="True">
-                            <Setter Property="IsEnabled" Value="False" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+                Visibility="{Binding IsAdmin}"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Height="32" Width="88">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                        <Setter Property="IsEnabled" Value="True"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=EsoZhVersion}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=APIversion_textBox}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ButtonProgress}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
 
-        </Button>
+            </Button>
+            <Button x:Name="ExportLang_button" Content="导出 zh.lang"
+                Margin="20"
+                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                Command="{Binding ExportLangCommand}"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Height="32" >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ButtonProgress}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+            </Button>
+            <Button x:Name="ExportLua_button" Content="导出界面 Lua"
+                Margin="20"
+                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                Command="{Binding ExportLuaCommand}"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Height="32" >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ButtonProgress}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                
+            </Button>
+        </StackPanel>
+        
 
     </Grid>
 </Window>

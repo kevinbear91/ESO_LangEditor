@@ -158,7 +158,7 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [DisableRequestSizeLimit]
-        [HttpPost("new/list")]
+        [HttpPost("list")]
         public async Task<ActionResult> CreateLangtextListAsync(List<LangTextForCreationDto> langTextForCreation)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -176,13 +176,22 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
-                _loggerMessage = "Create Langtext review list faild, list count: " + langTextForCreation.Count
+                _loggerMessage = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextAddedFailed)
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("创建审核资源langtext失败");
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextAddedFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextAddedFailed)
+                });
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
 
         }
 
@@ -196,12 +205,20 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
-                return NotFound();
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextNotOnServer,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextNotOnServer)
+                });
             }
             //Check if langtext already in Review.
             if (await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langtextID) != null)
             {
-                return BadRequest("当前文本已待审核。");
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextInReview,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextInReview)
+                });
                 //throw new Exception("当前文本已待审核。");
             }
 
@@ -220,10 +237,21 @@ namespace ESO_LangEditor.API.Controllers
                 _loggerMessage = "Create Langtext review fro delete faild, list count: " + langtextID
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextUpdateFailed)
+                });
+
+                //throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
 
         }
 
@@ -257,31 +285,43 @@ namespace ESO_LangEditor.API.Controllers
                 _loggerMessage = "Create Langtext review for delete list faild, list count: " + langtextIds.Count
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("加入审核表失败");
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextUpdateFailed)
+                });
+                //throw new Exception("加入审核表失败");
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
 
         }
 
         [Authorize(Roles = "Editor")]
-        [HttpPut("{langtextID}/zh")]
-        public async Task<ActionResult> UpdateLangtextZhAsync(Guid langtextID, LangTextForUpdateZhDto langTextForUpdateZh)
+        [HttpPost("zh/{langtextID}")]
+        public async Task<IActionResult> UpdateLangtextZhAsync(Guid langtextID, LangTextForUpdateZhDto langTextForUpdateZh)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             Guid userIdinGuid = new Guid(userId);
 
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
 
-            //Debug.WriteLine("langDtoId: {0}, langId: {1}, langtextId: {2}", langTextForUpdateZh.Id, langtextID, langtext.Id);
-            _logger.LogInformation("langtextId: {0}", langtextID);
-
             if (langtext == null)
             {
-                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langtextID
+                _loggerMessage = "当前更新文本不存在于Langtext表内, langtext Id: " + langtextID
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                return NotFound();
+
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextNotOnServer,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextNotOnServer)
+                });
             }
 
             //Check if langtext already in Review.
@@ -291,7 +331,11 @@ namespace ESO_LangEditor.API.Controllers
             {
                 if (userIdinGuid != langtextInReview.UserId)    //检查如果存在于表中，提交用户是否是之前用户 
                 {
-                    return BadRequest(ApiMessageWithCode.LangtextInReview); //如果不是，返回已待审核提示
+                    return BadRequest(new MessageWithCode
+                    {
+                        Code = (int)RespondCode.LangtextInReview,
+                        Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextInReview)
+                    }); //如果不是，返回已待审核提示
                 }
                 else
                 {
@@ -314,19 +358,28 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
-                _loggerMessage = "Create Langtext review for update faild, langtext Id: " + langtextID
+                _loggerMessage = "当前更新文本保存至LangtextReview表失败，langtext Id: " + langtextID
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("加入审核表失败");
-                //return BadRequest(ApiMessageWithCode.LangtextUpdateFailed);
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextInReview)
+                });
+                
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
 
         }
 
         [Authorize(Roles = "Editor")]
-        [HttpPut("zh/list")]
+        [HttpPost("zh/list")]
         public async Task<ActionResult> UpdateLangtextZhListAsync(List<LangTextForUpdateZhDto> langTextForUpdateZhList)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
@@ -354,7 +407,7 @@ namespace ESO_LangEditor.API.Controllers
                         _mapper.Map(lang, langtextInReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
                         _repositoryWrapper.LangTextReviewRepo.Update(langtextInReview);  //Update ReviewRepo wating for review.                                                           
                     }
-                    else  
+                    else
                     {
                         langTextInReviews.Add(langtextInReview);    //如果ID不相同，加入待返回列表
                     }
@@ -374,13 +427,22 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
             {
-                _loggerMessage = "Create Langtext review for update list faild, langtext count: " + langTextForUpdateZhList.Count
+                _loggerMessage = "当前更新文本保存至LangtextReview表失败， langtext count: " + langTextForUpdateZhList.Count
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("加入审核表失败");
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextInReview)
+                });
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
         }
 
         [Authorize(Roles = "Admin")]
@@ -392,7 +454,15 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
-                return NotFound();
+                _loggerMessage = "当前更新文本不存在于Langtext表内, langtext Id: " + langtextID
+                    + ", User: " + userId;
+                _logger.LogError(_loggerMessage);
+
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextNotOnServer,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextNotOnServer)
+                });
             }
             _mapper.Map(langTextForUpdateEn, langtext, typeof(LangTextForUpdateEnDto), typeof(LangText));
 
@@ -406,13 +476,22 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
-                _loggerMessage = "Create Langtext review for update EN faild, langtext id: " + langtextID.ToString()
+                _loggerMessage = "当前更新文本保存至LangtextReview表失败，langtext Id: " + langtextID
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("加入审核表失败，langtextID: " + langtextReview.Id.ToString());
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextInReview)
+                });
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
         }
 
         [Authorize(Roles = "Admin")]
@@ -444,13 +523,22 @@ namespace ESO_LangEditor.API.Controllers
 
             if (!await _repositoryWrapper.LangTextRepo.SaveAsync())
             {
-                _loggerMessage = "Create Langtext review for update EN list faild, langtext count: " + langTextForUpdateEns.Count
+                _loggerMessage = "当前更新文本保存至LangtextReview表失败，langtext count: " + langTextForUpdateEns.Count
                     + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("加入审核表失败");
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextInReview)
+                });
             }
 
-            return Ok();
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
         }
 
 

@@ -7,7 +7,6 @@ namespace ESO_LangEditor.Core.Models
 {
     public class RegistrationUserDto
     {
-
         [Required, MinLength(4)]
         public string UserName { get; set; }
 
@@ -24,8 +23,10 @@ namespace ESO_LangEditor.Core.Models
             ErrorMessage = "密码与确认密码不一致，请重新输入.")]
         public string ConfirmPassword { get; set; }
 
+        [Required]
         public string UserNickName { get; set; }
 
+        [Required]
         public string RegisterCode { get; set; }
 
     }

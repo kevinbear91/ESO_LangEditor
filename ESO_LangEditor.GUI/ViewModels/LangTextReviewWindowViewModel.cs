@@ -29,10 +29,8 @@ namespace ESO_LangEditor.GUI.ViewModels
         private List<LangTextForReviewDto> _gridSelectedItems;
         private LangTextForReviewDto _gridSelectedItem;
         private bool _isReviewSelectedItems = true;
-       // private LangtextNetService _langtextNetService = new LangtextNetService(App.ServerPath);
         private ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
         private ILangTextAccess _langTextAccess;
-        private Dictionary<Guid, UserInClient> _userDict;
         private string _selectedItemInfo;
 
         public string SearchResultInfo
@@ -113,7 +111,6 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void QueryReviewItemsBySelectedUser(object o)
         {
-            var token = App.LangConfig.UserAuthToken;
             GridData = null;
             NetworkInfo = "正在尝试读取……";
 
@@ -141,15 +138,11 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void QueryReviewUserList(object o)
         {
-            var token = App.LangConfig.UserAuthToken;
             UserList = null;
             NetworkInfo = "正在尝试读取……";
             var userDtoList = new List<UserInClientDto>();
-
-            if (_userDict == null)
-            {
-                //_userDict = await _langTextRepoClient.GetUsersToDict();
-            }
+            var users = await _langTextRepoClient.GetUsers();
+            Dictionary<Guid, UserInClient> userDict = users.ToDictionary(u => u.Id);
 
             try
             {
@@ -157,7 +150,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                 foreach (var user in list)
                 {
-                    userDtoList.Add(new UserInClientDto { Id = user, UserNickName = _userDict[user].UserNickName });
+                    userDtoList.Add(new UserInClientDto { Id = user, UserNickName = userDict[user].UserNickName });
                 }
                 UserList = new ObservableCollection<UserInClientDto>(userDtoList);
                 NetworkInfo = "读取完成";
@@ -171,7 +164,6 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public async void SubmitApproveItemsToServer(object o)
         {
-            var token = App.LangConfig.UserAuthToken;
             NetworkInfo = "正在上传并等待服务器执行……";
 
             List<Guid> langIdList;
@@ -191,9 +183,9 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             try
             {
-                var respondCode = await _langTextAccess.ApproveLangTextsInReview(langIdList);
+                var respond = await _langTextAccess.ApproveLangTextsInReview(langIdList);
 
-                if (respondCode ==  ApiMessageWithCode.Success)
+                if (respond.Code == (int)RespondCode.Success)
                 {
                     foreach (var selected in langTextForReviewDtos)
                     {
@@ -240,8 +232,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             else
             {
-                localOldTextZh = "当前文本不存在于本地数据库。";
-                SelectedItemInfo = localOldTextZh;
+                SelectedItemInfo = "无选择文本或当前文本不存在于本地数据库。";
             }
 
 

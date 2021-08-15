@@ -47,18 +47,22 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpGet("{langtextGuid}")]
-        public async Task<ActionResult<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
+        public async Task<ActionResult<LangTextForReviewDto>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langtextGuid);
 
             if (langtext == null)
             {
-                return NotFound();
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextNotOnServer,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextNotOnServer)
+                });
             }
             else
             {
                 //var langDto = _mapper.Map<LangTextDto>(langtext);
-                return _mapper.Map<LangTextDto>(langtext);
+                return _mapper.Map<LangTextForReviewDto>(langtext);
             }
 
         }
@@ -72,9 +76,14 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
-                _loggerMessage = "Get Langtext in review by user faild, langtext not found, User: " + userGuid;
+                _loggerMessage = "当前用户待审核列表查找失败，用户Id： " + userGuid;
                 _logger.LogError(_loggerMessage);
-                return NotFound();
+
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextNotOnServer,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextNotOnServer)
+                });
             }
             else
             {
@@ -92,9 +101,14 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtext == null)
             {
-                _loggerMessage = "Get Langtext in review user list not found! ";
+                _loggerMessage = "当前待审核列表为空！ ";
                 _logger.LogError(_loggerMessage);
-                return NotFound();
+
+                return NotFound(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextNotOnServer)
+                });
             }
             else
             {
@@ -177,7 +191,7 @@ namespace ESO_LangEditor.API.Controllers
         //}
 
         [Authorize(Roles = "Reviewer")]
-        [HttpPut()]
+        [HttpPost()]
         public async Task<ActionResult> ReviewLangTextAsync(List<Guid> langtextIdList)
         {
             var userId = _userManager.GetUserId(HttpContext.User);  //获取操作者ID
