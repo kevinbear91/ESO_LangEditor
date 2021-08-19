@@ -30,12 +30,12 @@ namespace ESO_LangEditor.API.Filters
             var error = new MessageWithCode();
             if (Environment.IsDevelopment())
             {
-                error.Message = context.Exception.Message + "\n" + context.Exception.ToString();
+                error.Message = context.Exception.Message + context.Exception.ToString();
                 //error.Detail = context.Exception.ToString();
             }
             else
             {
-                error.Message = "服务器出错" + "\n" + context.Exception.Message;
+                error.Message = "服务器出错" + context.Exception.Message;
                 //error.Detail = context.Exception.Message;
             }
 

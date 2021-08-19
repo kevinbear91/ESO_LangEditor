@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace ESO_LangEditorUpdater
 {
@@ -28,54 +29,54 @@ namespace ESO_LangEditorUpdater
 
             _fileName = "ESO_LangEditor_v" + _langEditorServerVersion + ".zip";
         }
-        public void StartDownload()
+
+        public async Task UpdateSequence()
         {
-            System.Net.ServicePointManager.DefaultConnectionLimit = 5;
+            KillGUIProcess();
 
             if (File.Exists(_fileName))
             {
-                HashAndUnzip();
+                await HashAndUnzip();
             }
             else
             {
-                using (WebClient client = new WebClient())
-                {
-                    client.DownloadProgressChanged += Editor_DownloadProgressChanged;
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
-                    client.DownloadFileAsync(new Uri(_downloadPath), _fileName);
-                }
+                await StartDownload();
             }
         }
 
-        private void DelegateHashAndUnzip(object s, AsyncCompletedEventArgs e)
+        public async Task StartDownload()
         {
-            HashAndUnzip();
+            System.Net.ServicePointManager.DefaultConnectionLimit = 5;
+
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadProgressChanged += Editor_DownloadProgressChanged;
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
+                await client.DownloadFileTaskAsync(new Uri(_downloadPath), _fileName);
+            }
         }
 
-        private void HashAndUnzip()
+        private async void DelegateHashAndUnzip(object s, AsyncCompletedEventArgs e)
+        {
+            await HashAndUnzip();
+        }
+
+        private async Task HashAndUnzip()
         {
             Console.WriteLine("下载完成！");
             if (HashDownloadFile())
             {
                 Console.WriteLine("SHA256校验通过，准备解压文件。");
-                LangUnzip();
+                await UnzipAndProcessFiles();
             }
             else
             {
                 Console.WriteLine("SHA256校验失败，请重新下载！");
 
-                using (WebClient client = new WebClient())
-                {
-                    client.DownloadProgressChanged += Editor_DownloadProgressChanged;
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
-                    client.DownloadFileAsync(new Uri(_downloadPath), _fileName);
-                }
+                await StartDownload();
             }
                 
         }
-
-
-
         private bool HashDownloadFile()
         {
             string hashReslut;
@@ -92,58 +93,111 @@ namespace ESO_LangEditorUpdater
             }
             return _fileSHA256 == hashReslut;
         }
-        private void LangUnzip()
+
+        private void KillGUIProcess()
         {
             Process[] EditorGUI = Process.GetProcessesByName("ESO_LangEditorGUI");
+            Process[] EditorGUINew = Process.GetProcessesByName("ESO_LangEditor.GUI");
 
-            foreach(var editor in EditorGUI)
+            foreach (var editor in EditorGUI)
             {
                 editor.Kill();
                 editor.WaitForExit();
                 editor.Dispose();
             }
+
+            foreach (var editor in EditorGUINew)
+            {
+                editor.Kill();
+                editor.WaitForExit();
+                editor.Dispose();
+            }
+        }
+
+
+        private async Task UnzipAndProcessFiles()
+        {
             Console.WriteLine("正在解压已下载的压缩包。");
             
             try
             {
                 ZipFile.ExtractToDirectory(_fileName, WorkingDirectory, true);
-                //UpdateJsonVersion();
-
                 File.Delete(_fileName);
 
-                //string args = _langEditorServerVersion, //服务器端版本号
-                //Debug.WriteLine(args);
-
-
-                ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
-                {
-                    FileName = "ESO_LangEditorGUI.exe",
-                    Arguments = _langEditorServerVersion, //服务器端版本号
-                };
-
-                Process updater = new Process
-                {
-                    StartInfo = startUpdaterInfo,
-                };
-                updater.Start();
-                Environment.Exit(0);
-
+                await FileProcess().ContinueWith(StartGuiProcess);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            
         }
 
-        //private void UpdateJsonVersion()
-        //{
-        //    AppConfigClient LangConfig = AppConfigClient.Load();
-        //    LangConfig.LangEditorVersion = _langEditorServerVersion;
-        //    AppConfigClient.Save(LangConfig);
-        //}
+        private void StartGuiProcess(object o)
+        {
+            string args = "/NewVersion " + _langEditorServerVersion;  //服务器端版本号
 
-        
+            ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
+            {
+                FileName = "ESO_LangEditor.GUI.exe",
+                Arguments = args, //服务器端版本号
+            };
+
+            Process updater = new Process
+            {
+                StartInfo = startUpdaterInfo,
+            };
+            updater.Start();
+            Environment.Exit(0);
+        }
+
+        /// <summary>
+        /// int mode
+        /// 1 = 删除
+        /// </summary>
+        /// <returns></returns>
+        private async Task FileProcess()
+        {
+            string result;
+            string path;
+            int mode;
+            Dictionary<string, int> fileList = new Dictionary<string, int>();
+
+            if (File.Exists("Files.txt"))
+            {
+                using (StreamReader sw = new StreamReader("Files.txt"))
+                {
+                    while ((result = await sw.ReadLineAsync()) != null)
+                    {
+                        string[] line = result.Split(new char[] { '=' }, 2);
+                        fileList.Add(line[0], Convert.ToInt32(line[1]));
+                    }
+                    sw.Close();
+                    sw.Dispose();
+                }
+
+                foreach (var filePath in fileList)
+                {
+                    path = filePath.Key;
+                    mode = filePath.Value;
+
+                    if (mode == 1 && File.Exists(path))
+                    {
+                        File.Delete(path);
+                    }
+                    else
+                    {
+                        Console.WriteLine("残留文件 " + path + " 不存在或无法删除！");
+                    }
+                }
+                File.Delete("Files.txt");
+            }
+            else
+            {
+                Console.WriteLine("无法找到待处理文件列表！");
+            }
+        }
+
+
 
 
         void Editor_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)

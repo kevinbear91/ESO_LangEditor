@@ -54,6 +54,7 @@ namespace ESO_LangEditor.API.Services
             var tokenPurpose = "RefreshToken";
 
             var refreshToken = await _userManager.GenerateUserTokenAsync(user, tokenProvider, tokenPurpose);
+
             return refreshToken;
 
             //var randomNumber = new byte[32];

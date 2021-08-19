@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,14 +38,26 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task<MessageWithCode> AddLangTexts(List<LangTextForCreationDto> langTextForCreationDtos)
         {
+            //EncodingProvider provider = CodePagesEncodingProvider.Instance;
+            //Encoding.RegisterProvider(provider);
+
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextForCreationDtos);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
-                "api/langtext/list", content);
+                "api/langtext/new/list", content);
+
             var responseContent = await response.Content.ReadAsStringAsync();
+            
+            //byte[] buf = await response.Content.ReadAsByteArrayAsync();
+            //string responseContent2 = Encoding.UTF8.GetString(buf);
+
+            //MessageBox.Show(responseContent);
+            //MessageBox.Show(responseContent2);
+
             var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+            //var code = new MessageWithCode{ Code = 111, Message = "111" };
 
             return code;
         }
@@ -74,7 +87,7 @@ namespace ESO_LangEditor.GUI.Services
 
             //var content = SerializeDataToHttpContent(langtextGuid);
 
-            HttpResponseMessage response = await _langHttpClient.GetAsync("api/revise/" + revNumber);
+            HttpResponseMessage response = await _langHttpClient.GetAsync("api/revise/LangTextRev/" + revNumber);
 
             if (response.IsSuccessStatusCode)
             {
@@ -198,8 +211,8 @@ namespace ESO_LangEditor.GUI.Services
             //var content = SerializeDataToHttpContent(langtextGuid);
 
             HttpResponseMessage response = await _langHttpClient.GetAsync(
-                "api/revise/" + langtextRevised);
-            var responseContent = response.Content.ReadAsStringAsync().Result;
+                "api/langtext/rev/" + langtextRevised);
+            var responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {

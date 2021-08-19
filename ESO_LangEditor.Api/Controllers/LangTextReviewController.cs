@@ -204,7 +204,7 @@ namespace ESO_LangEditor.API.Controllers
 
             foreach (var id in langtextIdList)
             {
-                var langtextReview = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(id);   //查询待审核文本Dto
+                var langtextReview = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(id);   //查询待审核文本
                 var langtextReviewDel = langtextReview; //设置当前审核文本待删除
 
                 if (langtextReview != null)
@@ -255,22 +255,25 @@ namespace ESO_LangEditor.API.Controllers
                 _loggerMessage = "Pass Langtext in review failed, lang count: " + langtextIdList.Count
                                 + ", User: " + userId;
                 _logger.LogError(_loggerMessage);
-                throw new Exception("审核资源失败。" + "操作人：" + userId.ToString() + "。");
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextReviewFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextReviewFailed)
+                });
+
+                //throw new Exception("审核资源失败。" + "操作人：" + userId.ToString() + "。");
             }
             else
             {
                 await _langTextService.LangtextReviseListAsync(LangtextRevNumberCurrent, langTextRevisedDtos);
                 await _langTextService.ArchiveListAsync(new Guid(userId), langTextArchives);
-                //await LangtextReviseAsync(LangtextRevNumberCurrent, langTextRevisedDtos);
-                //await ListMoveToArchiveAsync(langTextArchives);
 
-                //await RepositoryWrapper.LangTextReviewRepo.SaveAsync();
-                //if (!await RepositoryWrapper.LangTextReviewRepo.SaveAsync())
-                //{
-                //    throw new Exception("删除审核资源 失败。操作人：" + userId.ToString() + "。");
-                //}
-
-                return Ok();
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+                });
             }
 
 

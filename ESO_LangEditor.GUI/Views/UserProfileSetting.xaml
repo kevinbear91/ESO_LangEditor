@@ -41,7 +41,7 @@
                         <TextBox.Text>
                             <Binding Path="UserName" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                    <vaildation:UserNameValidation ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -61,16 +61,12 @@
 
                     <Button x:Name="UserInfoChangeButton" Content="提交修改"
                         Width="200" Margin="0,20,0,10"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
-                        materialDesign:ButtonProgressAssist.IsIndeterminate="False"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
                         Command="{Binding ChangeUserInfoCommand}" >
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding WaitingResult}" Value="True">
-                                        <Setter Property="materialDesign:ButtonProgressAssist.IsIndicatorVisible" Value="True" />
-                                        <Setter Property="materialDesign:ButtonProgressAssist.IsIndeterminate" Value="True" />
+                                    <DataTrigger Binding="{Binding WaitResult}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=UserName_Textbox}" Value="True">
@@ -91,13 +87,13 @@
                              materialDesign:HintAssist.Foreground="Green"
                              materialDesign:TextFieldAssist.UnderlineBrush="Green"
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
-                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" Cursor="IBeam" />
+                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" />
 
                     <PasswordBox x:Name="PasswordChange" materialDesign:HintAssist.Hint="新密码"
                              materialDesign:HintAssist.Foreground="Green"
                              materialDesign:TextFieldAssist.UnderlineBrush="Green"
                              Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" 
-                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" Cursor="IBeam" />
+                             VerticalAlignment="Center" Width="200" Margin="0,10,0,10" />
 
                     <PasswordBox x:Name="PasswordConfirm" materialDesign:HintAssist.Hint="新密码确认"
                              materialDesign:HintAssist.Foreground="Green"
@@ -107,22 +103,12 @@
 
                     <Button x:Name="UserInfoPasswordButton" Content="提交修改"
                         Width="200" Margin="0,20,0,10"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
-                        materialDesign:ButtonProgressAssist.IsIndeterminate="False"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
                         Command="{Binding ChangeUserPasswordCommand}" >
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding WaitingResult}" Value="True">
-                                        <Setter Property="materialDesign:ButtonProgressAssist.IsIndicatorVisible" Value="True" />
-                                        <Setter Property="materialDesign:ButtonProgressAssist.IsIndeterminate" Value="True" />
-                                        <Setter Property="IsEnabled" Value="False" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=UserName_Textbox}" Value="True">
-                                        <Setter Property="IsEnabled" Value="False" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=NickName_Textbox}" Value="True">
+                                    <DataTrigger Binding="{Binding WaitResult}" Value="True">
                                         <Setter Property="IsEnabled" Value="False" />
                                     </DataTrigger>
                                 </Style.Triggers>

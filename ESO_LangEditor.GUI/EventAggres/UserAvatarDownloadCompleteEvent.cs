@@ -2,7 +2,7 @@
 
 namespace ESO_LangEditor.GUI.EventAggres
 {
-    public class UserAvatarDownloadCompleteEvent : PubSubEvent<string>
+    public class RefreshTokenEvent : PubSubEvent
     {
 
     }

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ESO_LangEditor.Core\ESO_LangEditor.Core.csproj" />
+    <ProjectReference Include="..\ESO_LangEditor.EFCore\ESO_LangEditor.EFCore.csproj" />
   </ItemGroup>
 
 </Project>

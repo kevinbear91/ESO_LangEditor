@@ -10,8 +10,12 @@ namespace ESO_LangEditorDatabaseModifier.Controller.Server
     public class LangServerDbContext : IdentityDbContext<User, Role, Guid>
     {
         public DbSet<LangText> Langtexts { get; set; }
-        //public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
-        //public DbSet<User> Users { get; set; }
+        public DbSet<LangTextReview> LangtextReview { get; set; }
+        public DbSet<LangTextArchive> LangtextArchive { get; set; }
+        public DbSet<LangTextRevised> LangtextRevised { get; set; }
+        public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
+        public DbSet<UserRegistrationCode> UserRegistrationCode { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(@"User ID=pguser;Password=pguserpw;Host=localhost;Port=5432;Database=pgDatabaseName;Pooling=true;");

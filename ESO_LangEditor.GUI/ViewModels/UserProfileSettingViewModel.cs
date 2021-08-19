@@ -18,17 +18,15 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _userGuid = "GUID：" + App.LangConfig.UserGuid.ToString();
         private string _nickName;
         private UserInClientDto _userDto;
+        private bool _waitResult;
 
         private PasswordBox _passwordBox;
         private PasswordBox _passwordBoxConfirm;
         private PasswordBox _passwordCurrently;
-        //private AccountService _accountService;
 
 
         public ExcuteViewModelMethod ChangeUserInfoCommand => new ExcuteViewModelMethod(UserInfoChange);
         public ExcuteViewModelMethod ChangeUserPasswordCommand => new ExcuteViewModelMethod(UserPasswordChange);
-        //public ExcuteViewModelMethod UploadAvatarCommand => new ExcuteViewModelMethod(UploadUserAvatar);
-        public UserProfileSetting UserProfileSettingWindow;
 
 
         public string UserName
@@ -69,6 +67,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _userDto, value);
         }
 
+        public bool WaitResult
+        {
+            get => _waitResult;
+            set => SetProperty(ref _waitResult, value);
+        }
+
         private IEventAggregator _ea;
         private IUserAccess _userAccess;
         private ILogger _logger;
@@ -94,7 +98,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(NickName))
             {
-                ChangeUserInfoCommand.CanExecute(false);
+                WaitResult = true;
 
                 var respond = await _userAccess.SetUserInfoChange(new UserInfoChangeDto
                 {
@@ -107,6 +111,8 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                 ChangeUserInfoCommand.CanExecute(true);
             }
+
+            WaitResult = false;
         }
 
         private async void UserPasswordChange(object obj)
@@ -121,7 +127,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 if (regex.IsMatch(_passwordBox.Password))
                 {
-
+                    WaitResult = true;
                     var respond = await _userAccess.SetUserPasswordChange(new UserPasswordChangeDto
                     {
                         UserId = UserDto.Id,
@@ -157,6 +163,8 @@ namespace ESO_LangEditor.GUI.ViewModels
                     MessageBox.Show("密码必须大于8位小于30位，包含数字、英文字母与特殊符号！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+
+            WaitResult = false;
         }
 
     }

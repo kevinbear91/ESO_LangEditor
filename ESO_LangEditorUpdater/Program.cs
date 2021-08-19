@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace ESO_LangEditorUpdater
 {
@@ -11,7 +12,9 @@ namespace ESO_LangEditorUpdater
         {
             if (args.Length == 3)
             {
-                new LangDownloader(args).StartDownload();
+                var downloader = new LangDownloader(args);
+                //await downloader.UpdateSequence();
+                Task.Run(() => downloader.UpdateSequence());
                 Console.ReadKey();
             }
             else

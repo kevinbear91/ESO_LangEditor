@@ -37,6 +37,7 @@ namespace ESO_LangEditor.Core.EnumTypes
         LangtextNotOnServer = 454,
         LangtextRevNumberUpdateFailed = 455,
         LangtextRevNumberNotExisted = 456,
+        LangtextReviewFailed = 457,
 
     }
     public static class ApiRespondCodeExtensions
@@ -76,6 +77,10 @@ namespace ESO_LangEditor.Core.EnumTypes
                 RespondCode.LangtextRevNumberUpdateFailed => "文本步进号更新失败",
                 RespondCode.LangtextRevNumberNotExisted => "当前文本步进号不存在",
                 RespondCode.UserNotFound => "用户不存在",
+                RespondCode.UserRegistrationFailed => "账号注册失败，请检查是否符合要求",
+                RespondCode.RoleAddFailed => "角色添加失败",
+                RespondCode.RoleExisted => "角色已存在",
+                RespondCode.LangtextReviewFailed => "文本审核失败",
                 _ => "未知错误",
             };
         }

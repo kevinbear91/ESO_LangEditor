@@ -62,7 +62,5 @@ namespace ESO_LangEditor.EFCore.TestData
             //    });
 
         }
-
-       
     }
 }

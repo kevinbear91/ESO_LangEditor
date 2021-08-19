@@ -32,18 +32,7 @@ namespace ESO_LangEditor.GUI.Services
 
             _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadlangtextUpdateZh);
             _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadlangtextsUpdateZh);
-        }
-
-        
-
-        public async Task ExportLangFile()
-        {
-            //var langs = await _langTextRepo.GetAlltLangTextsDictionaryAsync(2);
-
-            //ILangFile langFile = new LangFile();
-
-            //await langFile.ExportLangTextsToLang(langs, @"Export\zh.lang");
-
+            _ea.GetEvent<RefreshTokenEvent>().Subscribe(SyncToken);
         }
 
         public async Task LangtextZhUpdateUpload(LangTextForUpdateZhDto langTextUpdateZhDto)
@@ -85,7 +74,7 @@ namespace ESO_LangEditor.GUI.Services
 
         //}
 
-        public async Task SyncToken()
+        public void SyncToken()
         {
             var timer = new System.Threading.Timer(async e => await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid, 
                 new TokenDto
@@ -95,29 +84,6 @@ namespace ESO_LangEditor.GUI.Services
                 }),
             null, TimeSpan.Zero, TimeSpan.FromMinutes(10));
 
-
-            //while (ConnectStatus == ClientConnectStatus.Login)
-            //{
-            //    await Task.Delay(TimeSpan.FromMinutes(10));
-
-            //    await Task.Run(() =>
-            //    {
-            //        _accountService.LoginByToken();
-            //    });
-
-            //}
-        }
-
-        public async Task SyncUser()
-        {
-            Debug.WriteLine("SYNC USER");
-            var userListFromServer = await _userAccess.GetUserList();
-
-            if (userListFromServer != null)
-            {
-                var userList = _mapper.Map<List<UserInClient>>(userListFromServer);
-                await _langTextRepo.UpdateUsers(userList);
-            }
         }
 
         private async void UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)

@@ -139,6 +139,11 @@ namespace ESO_LangEditor.API.Controllers
             var authToken = await _tokenService.GenerateAccessToken(user);
             var refreshToken = await _tokenService.GenerateRefreshToken(user);
 
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpireTime = DateTime.Now.AddDays(30);
+
+            await _userManager.UpdateAsync(user);
+
             return Ok(new TokenDto
             {
                 AuthToken = authToken,
@@ -205,6 +210,11 @@ namespace ESO_LangEditor.API.Controllers
 
             var newAuthTokenToken = await _tokenService.GenerateAccessToken(user);
             var newRefreshToken = await _tokenService.GenerateRefreshToken(user);
+
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpireTime = DateTime.Now.AddDays(30);
+
+            await _userManager.UpdateAsync(user);
 
             return Ok(new TokenDto
             {
@@ -319,6 +329,16 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<IActionResult> UserPasswordRecovery(UserPasswordRecoveryDto userPasswordRecoveryDto)
         {
             var user = await _userManager.FindByNameAsync(userPasswordRecoveryDto.UserName);
+
+            if (user == null)
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
+                });
+            }
+
             var result = await _userManager.ResetPasswordAsync(user, userPasswordRecoveryDto.RecoveryCode, 
                 userPasswordRecoveryDto.NewPasswordConfirm);
 

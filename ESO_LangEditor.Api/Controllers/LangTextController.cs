@@ -123,50 +123,53 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public async Task<ActionResult> CreateLangtextAsync(LangTextForCreationDto langTextForCreation)
-        {
-            var userIdFromToken = _userManager.GetUserId(HttpContext.User);
-            //var langtext = Mapper.Map<LangText>(langTextForCreation);
-            var langtext = _mapper.Map<LangTextReview>(langTextForCreation);
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //public async Task<ActionResult> CreateLangtextAsync(LangTextForCreationDto langTextForCreation)
+        //{
+        //    var userIdFromToken = _userManager.GetUserId(HttpContext.User);
+        //    //var langtext = Mapper.Map<LangText>(langTextForCreation);
+        //    var langtext = _mapper.Map<LangTextReview>(langTextForCreation);
 
-            //RepositoryWrapper.LangTextRepo.Create(langtext);
+        //    //RepositoryWrapper.LangTextRepo.Create(langtext);
 
-            langtext.ReasonFor = ReviewReason.NewAdded;
-            langtext.ReviewerId = new Guid(userIdFromToken);
-            langtext.ReviewTimestamp = DateTime.UtcNow;
+        //    langtext.ReasonFor = ReviewReason.NewAdded;
+        //    langtext.ReviewerId = new Guid(userIdFromToken);
+        //    langtext.ReviewTimestamp = DateTime.UtcNow;
 
-            _repositoryWrapper.LangTextReviewRepo.Create(langtext);
+        //    _repositoryWrapper.LangTextReviewRepo.Create(langtext);
 
-            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
-            {
-                _loggerMessage = "Langtext create faild, guid: " + langtext.Id 
-                    + ", textId: " + langtext.TextId
-                    + ", textEn: " + langtext.TextEn
-                    + ", User: " + userIdFromToken;
-                _logger.LogError(_loggerMessage);
+        //    if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
+        //    {
+        //        _loggerMessage = "Langtext create faild, guid: " + langtext.Id 
+        //            + ", textId: " + langtext.TextId
+        //            + ", textEn: " + langtext.TextEn
+        //            + ", User: " + userIdFromToken;
+        //        _logger.LogError(_loggerMessage);
 
-                throw new Exception("创建资源langtext失败");
-            }
+        //        throw new Exception("创建资源langtext失败");
+        //    }
 
-            //var langtextDto = Mapper.Map<LangTextDto>(langtext);
+        //    //var langtextDto = Mapper.Map<LangTextDto>(langtext);
 
-            return Ok(); //CreatedAtRoute(nameof(GetLangTextByGuidAsync), new { langtextID = langtextDto.Id }, langtextDto);
+        //    return Ok(); //CreatedAtRoute(nameof(GetLangTextByGuidAsync), new { langtextID = langtextDto.Id }, langtextDto);
 
-        }
+        //}
 
         [Authorize(Roles = "Admin")]
         [DisableRequestSizeLimit]
-        [HttpPost("list")]
-        public async Task<ActionResult> CreateLangtextListAsync(List<LangTextForCreationDto> langTextForCreation)
+        [HttpPost("new/list")]
+        public async Task<IActionResult> CreateLangtextListAsync(List<LangTextForCreationDto> langTextsForCreation)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
+            var user = await _userManager.FindByIdAsync(userId);
             //var langtext = Mapper.Map<LangText>(langTextForCreation);
-            var langtexts = _mapper.Map<List<LangTextReview>>(langTextForCreation);
+            var langtexts = _mapper.Map<List<LangTextReview>>(langTextsForCreation);
 
             foreach(var lang in langtexts)
             {
+                lang.UserForModify = user;
+                lang.UserForModify = user;
                 lang.ReviewerId = new Guid(userId);
                 lang.ReviewTimestamp = DateTime.UtcNow;
                 lang.ReasonFor = ReviewReason.NewAdded;
@@ -198,7 +201,7 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{langtextID}")]
-        public async Task<ActionResult> DeleteLangTextAsync(Guid langtextID)
+        public async Task<IActionResult> DeleteLangTextAsync(Guid langtextID)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
@@ -257,7 +260,7 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete()]
-        public async Task<ActionResult> DeleteLangTextListAsync(List<Guid> langtextIds)
+        public async Task<IActionResult> DeleteLangTextListAsync(List<Guid> langtextIds)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             List<LangTextReview> langTexts = new List<LangTextReview>();
@@ -380,7 +383,7 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpPost("zh/list")]
-        public async Task<ActionResult> UpdateLangtextZhListAsync(List<LangTextForUpdateZhDto> langTextForUpdateZhList)
+        public async Task<IActionResult> UpdateLangtextZhListAsync(List<LangTextForUpdateZhDto> langTextForUpdateZhList)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             Guid userIdinGuid = new Guid(userId);
@@ -446,8 +449,8 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("{langtextID}/en")]
-        public async Task<ActionResult> UpdateLangtextEnAsync(Guid langtextID, LangTextForUpdateEnDto langTextForUpdateEn)
+        [HttpPost("{langtextID}/en")]
+        public async Task<IActionResult> UpdateLangtextEnAsync(Guid langtextID, LangTextForUpdateEnDto langTextForUpdateEn)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
@@ -495,8 +498,8 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPut("en/list")]
-        public async Task<ActionResult> UpdateLangtextEnListAsync(List<LangTextForUpdateEnDto> langTextForUpdateEns)
+        [HttpPost("en/list")]
+        public async Task<IActionResult> UpdateLangtextEnListAsync(List<LangTextForUpdateEnDto> langTextForUpdateEns)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
             List<LangTextReview> langTexts = new List<LangTextReview>();

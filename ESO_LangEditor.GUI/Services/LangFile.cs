@@ -104,25 +104,25 @@ namespace ESO_LangEditor.GUI.Services
 
         public async Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath)
         {
-            uint _filesize;
-            const uint _textIdRecoredSize = 16;
-            uint _recoredCount;
-            uint _fileId;
+            int _filesize;
+            const int _textIdRecoredSize = 16;
+            int _recoredCount;
+            int _fileId;
             byte[] buffer = new byte[8];
             byte[] langIdBuffer = new byte[16];
-            uint textBeginOffset;
+            int textBeginOffset;
 
             byte[] data = File.ReadAllBytes(filePath);
 
             Dictionary<string, LangTextDto> _data = new Dictionary<string, LangTextDto>();
 
-            _filesize = (uint)data.Length;
+            _filesize = data.Length;
 
             Array.Copy(data, buffer, 8);
             Array.Reverse(buffer, 0, buffer.Length);  //Reverse bytes order, new readed on head.
 
-            _fileId = (uint)BitConverter.ToInt32(buffer, 4);
-            _recoredCount = (uint)BitConverter.ToInt32(buffer, 0);
+            _fileId = BitConverter.ToInt32(buffer, 4);
+            _recoredCount = BitConverter.ToInt32(buffer, 0);
 
             Debug.WriteLine("field Id: {0}", _fileId);
             Debug.WriteLine("count int: {0}", _recoredCount);
@@ -152,29 +152,30 @@ namespace ESO_LangEditor.GUI.Services
             //    _data.Clear();
             //}
 
-            for (uint i = 0; i < _recoredCount; ++i)
+            for (int i = 0; i < _recoredCount; ++i)
             {
-                uint offset = 8 + i * _textIdRecoredSize;
+                int offset = 8 + i * _textIdRecoredSize;
 
                 //Debug.WriteLine("Offset: {0}", offset);
 
                 Array.Copy(data, offset, langIdBuffer, 0, langIdBuffer.Length);
                 Array.Reverse(langIdBuffer, 0, langIdBuffer.Length);
 
-                uint langId = (uint)BitConverter.ToInt32(langIdBuffer, 12);
-                uint unknown = (uint)BitConverter.ToInt32(langIdBuffer, 8);
-                uint index = (uint)BitConverter.ToInt32(langIdBuffer, 4);
-                uint offeset = (uint)BitConverter.ToInt32(langIdBuffer, 0);
+                int langId = BitConverter.ToInt32(langIdBuffer, 12);
+                int unknown = BitConverter.ToInt32(langIdBuffer, 8);
+                int index = BitConverter.ToInt32(langIdBuffer, 4);
+                int offeset = BitConverter.ToInt32(langIdBuffer, 0);
                 string text;
 
                 LangTextDto lang = new LangTextDto
                 {
                     TextId = langId + "-" + unknown + "-" + index,
-                    LangTextType = LangType.LangText
+                    IdType = langId,
+                    LangTextType = LangType.LangText,
                     //Text = text,
                 };
 
-                uint textOffset = offeset + textBeginOffset;
+                int textOffset = offeset + textBeginOffset;
 
                 if (textOffset < _filesize)
                 {
@@ -182,7 +183,7 @@ namespace ESO_LangEditor.GUI.Services
 
                     for (int c = 0; c + textOffset < _filesize; ++c)
                     {
-                        int ost = c + (int)textOffset;
+                        int ost = c + textOffset;
                         Array.Copy(data, ost, textUtf8Buffer, 0, textUtf8Buffer.Length);
 
                         var hex = BitConverter.ToString(textUtf8Buffer);

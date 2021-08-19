@@ -72,6 +72,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _isInReview, value);
         }
 
+        public Visibility ReasonForVisibility => Visibility.Collapsed;
+
         public bool AutoQueryLangTextInReview
         {
             get => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview;

@@ -195,9 +195,12 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("passwordRecoveryCode/{userId}")]
-        public async Task<IActionResult> GetUserPasswordRecoveryToken(Guid userId)
+        public async Task<ActionResult<string>> GetUserPasswordRecoveryToken(Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
+
+
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
             return Ok(token);
@@ -208,10 +211,17 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<IActionResult> SetUserPasswordToRandom(Guid userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (!await _userManager.HasPasswordAsync(user))
+            {
+                await _userManager.AddPasswordAsync(user, Guid.NewGuid().ToString());
+            }
+
+
             var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            string randomPassword = _tokenService.GenerateRandomPassword();
-            var result = await _userManager.ResetPasswordAsync(user, resetToken, randomPassword);
+            //string randomPassword = _tokenService.GenerateRandomPassword();
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, Guid.NewGuid().ToString());
 
             await _tokenService.GenerateRefreshToken(user);
 

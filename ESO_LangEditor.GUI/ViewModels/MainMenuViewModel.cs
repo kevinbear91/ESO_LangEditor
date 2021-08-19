@@ -101,18 +101,24 @@ namespace ESO_LangEditor.GUI.ViewModels
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),      //菜单Command 打开窗口
                             CommandParameter = windowNamespace + "ExportTranslate",  //窗口名 - 必须包含命名空间
                         },
-                        new MenuItemContent
-                        {
-                            Header = "导出文本至.lang",
-                            Command = new ExcuteViewModelMethod(ExportLang),
-                            //CommandParameter = "ESO_LangEditor.GUI.Views.ExportTranslate"
-                        },
-                        new MenuItemContent
-                        {
-                            Header = "导出UI Str内容",
-                            Command = new ExcuteViewModelMethod(ExportLuaToStr), 
-                            //CommandParameter = "ESO_LangEditor.GUI.Views.ExportTranslate"
-                        },
+                        new MenuItemContent {
+                            Header = "导出为游戏文件",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "PackToRelase",
+                            Visible = RoleToVisibility("Editor"),
+                        }
+                        //new MenuItemContent
+                        //{
+                        //    Header = "导出文本至.lang",
+                        //    Command = new ExcuteViewModelMethod(ExportLang),
+                        //    //CommandParameter = "ESO_LangEditor.GUI.Views.ExportTranslate"
+                        //},
+                        //new MenuItemContent
+                        //{
+                        //    Header = "导出UI Str内容",
+                        //    Command = new ExcuteViewModelMethod(ExportLuaToStr), 
+                        //    //CommandParameter = "ESO_LangEditor.GUI.Views.ExportTranslate"
+                        //},
                     }
 
                 },
@@ -127,12 +133,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                             CommandParameter = windowNamespace + "LangTextReviewWindow",
                             Visible = RoleToVisibility("Editor"),
                         },
-                        new MenuItemContent {
-                            Header = "导出为游戏文件",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "PackToRelase",
-                            Visible = RoleToVisibility("Editor"),
-                        }
+                        
                     }
 
                 },
@@ -144,7 +145,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                             Header = "用户角色编辑",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "UserRoleEditor",
-                            //Visible = RoleToVisibility("Admin"),
+                            Visible = RoleToVisibility("Admin"),
                         },
                         new MenuItemContent {
                             Header="资料修改",
@@ -212,22 +213,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         private void LogoutByICommand(object o)
         {
             _ea.GetEvent<LogoutEvent>().Publish();
-        }
-
-        private async void ExportLang(object o)
-        {
-            await _backendService.ExportLangFile();
-        }
-
-        private async void ExportLuaToStr(object o)
-        {
-            //var readDb = new LangTextRepoClientService();
-            //var export = new ExportDbToFile();
-
-            //var langlua = await readDb.GetLangTextByConditionAsync("100", SearchTextType.Type, SearchPostion.Full);
-            //export.ExportLua(langlua);
-
-            //MessageBox.Show("导出完成！");
         }
 
         public static void GoToSite(object urlo)

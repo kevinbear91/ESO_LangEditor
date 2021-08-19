@@ -169,6 +169,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
 
             _logger.LogDebug("======启动检查完成======");
+            
 
         }
 

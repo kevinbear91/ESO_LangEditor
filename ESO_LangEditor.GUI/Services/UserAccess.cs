@@ -157,7 +157,7 @@ namespace ESO_LangEditor.GUI.Services
             _userClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
-            string code = "";
+            string code = null;
 
             HttpResponseMessage respond = await _userClient.GetAsync("api/admin/passwordrecoverycode/" + userGuid);
 

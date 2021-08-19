@@ -14,7 +14,9 @@ namespace ESO_LangEditorDatabaseModifier
 
             if (input.Key == ConsoleKey.C)
             {
-                new CleanEnInZh();
+                //new CleanEnInZh();
+                var cleaner = new CleanEnInZhOnServer();
+                cleaner.ProcessData();
                 //converter.SeedServerByV4SqliteDatabase();
 
                 //var converter = new ConvertV3toV4();

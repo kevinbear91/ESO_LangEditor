@@ -163,6 +163,7 @@ namespace ESO_LangEditor.GUI.Services
                 _logger.LogDebug("步进号已最新");
                 _ea.GetEvent<ConnectProgressString>().Publish("启动检查完成");
                 _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Login);
+                _ea.GetEvent<RefreshTokenEvent>().Publish();
             }
             //_ea.GetEvent<LoginFromUcEvent>().Unsubscribe(LoginTaskCallFromUC);
         }
@@ -325,7 +326,6 @@ namespace ESO_LangEditor.GUI.Services
                                 langtextToUpdateList.Add(langtext);
                             }
                         }
-
                         _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("更新文本列表正在写入数据库(" + i + "/" + RevCount + ")");
 
                         if (await _langTextRepo.AddLangtexts(newLangtexts))//应用新增文本
@@ -340,25 +340,26 @@ namespace ESO_LangEditor.GUI.Services
                             _logger.LogDebug("当前步进修改文本完成");
                         }
 
-                        if (langtextDeletedDict.Count >= 1)
-                        {
-                            if (await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()))//应用删除文本
-                            {
-                                _logger.LogDebug("当前步进删除：" + langtextDeletedDict.Count);
-                                _logger.LogDebug("当前步进删除文本完成");
-                            }
-                        }
-
-                        if (await _langTextRepo.UpdateRevNumber(1, revised))    //更新步进号
-                        {
-                            _logger.LogDebug("当前步进号新增完成");
-                            revised++;
-                        }
-
-                        langtextDeletedDict.Clear();
-                        langtextAddedDict.Clear();
-                        langtextUpdateDict.Clear();
                     }
+                    
+                    if (langtextDeletedDict.Count >= 1)
+                    {
+                        if (await _langTextRepo.DeleteLangtexts(langtextDeletedDict.Keys.ToList()))//应用删除文本
+                        {
+                            _logger.LogDebug("当前步进删除：" + langtextDeletedDict.Count);
+                            _logger.LogDebug("当前步进删除文本完成");
+                        }
+                    }
+
+                    if (await _langTextRepo.UpdateRevNumber(1, revised))    //更新步进号
+                    {
+                        _logger.LogDebug("当前步进号新增完成");
+                        revised++;
+                    }
+
+                    langtextDeletedDict.Clear();
+                    langtextAddedDict.Clear();
+                    langtextUpdateDict.Clear();
                 }
                 else
                 {

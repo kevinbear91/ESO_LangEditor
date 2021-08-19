@@ -12,6 +12,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Unity;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
@@ -48,8 +49,29 @@ namespace ESO_LangEditor.GUI
 
         public void App_Startup(object sender, StartupEventArgs e)
         {
+            Dictionary<string, string> argsDict = new Dictionary<string, string>();
+
             LangConfig = AppConfigClient.Load();
-            AppConfigClient.Save(LangConfig);
+            
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            for (int index = 1; index < args.Length; index += 2)
+            {
+                argsDict.Add(args[index], args[index + 1]);
+            }
+
+            foreach(var arg in argsDict)
+            {
+                //MessageBox.Show($"命令: {arg.Key}, 参数: {arg.Value}");
+
+                if (arg.Key == "/NewVersion")
+                {
+                    LangConfig.LangEditorVersion = arg.Value;
+                }
+
+                //Debug.WriteLine($"arg: {arg.Key}, value: {arg.Value}");
+            }
 
             foreach (var server in LangConfig.LangServerList)
             {
@@ -65,6 +87,8 @@ namespace ESO_LangEditor.GUI
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
+
+            AppConfigClient.Save(LangConfig);
         }
 
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

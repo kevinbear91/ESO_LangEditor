@@ -40,7 +40,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         private IBackendService _backendService;
         private ILangTextRepoClient _langTextRepo;
         private ILangTextAccess _langTextAccess;
-        //private LangtextNetService _langtextNetService;
         private string _selectedKey;
 
         public string UpdateVersionText
@@ -454,7 +453,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                         TextId = other.Value.TextId,
                         IdType = other.Value.IdType,
                         TextEn = other.Value.TextEn,
-                        TextZh = other.Value.TextEn,
+                        TextZh = null,
                         UpdateStats = UpdateVersionText,
                         IsTranslated = 0,
                         EnLastModifyTimestamp = DateTime.Now,
