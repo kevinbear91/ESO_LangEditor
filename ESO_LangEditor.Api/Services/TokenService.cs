@@ -39,7 +39,7 @@ namespace ESO_LangEditor.API.Services
                 issuer: tokenConfigSection["Issuer"],
                 audience: tokenConfigSection["Audience"],
                 claims: claim,
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: signCredential);
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(jwtToken);

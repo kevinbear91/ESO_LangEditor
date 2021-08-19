@@ -188,8 +188,7 @@ namespace ESO_LangEditor.API.Controllers
                 });
             }
 
-            if (user.RefreshToken == null || user.RefreshTokenExpireTime == null 
-                || user.RefreshTokenExpireTime < DateTime.UtcNow || refreshToken != user.RefreshToken)
+            if (user.RefreshToken == null || user.RefreshTokenExpireTime == null)
             {
                 return BadRequest(new MessageWithCode
                 {
@@ -198,8 +197,7 @@ namespace ESO_LangEditor.API.Controllers
                 });
             }
 
-
-            if (!await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
+            if (user.RefreshTokenExpireTime < DateTime.UtcNow || refreshToken != user.RefreshToken)
             {
                 return BadRequest(new MessageWithCode
                 {
@@ -207,20 +205,40 @@ namespace ESO_LangEditor.API.Controllers
                     Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.TokenInvalid)
                 });
             }
+
+            //if (!await _userManager.VerifyUserTokenAsync(user, "RefreshTokenProvider", "RefreshToken", refreshToken))
+            //{
+            //    return BadRequest(new MessageWithCode
+            //    {
+            //        Code = (int)RespondCode.TokenInvalid,
+            //        Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.TokenInvalid)
+            //    });
+            //}
 
             var newAuthTokenToken = await _tokenService.GenerateAccessToken(user);
             var newRefreshToken = await _tokenService.GenerateRefreshToken(user);
 
             user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpireTime = DateTime.Now.AddDays(30);
+            user.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(30);
 
-            await _userManager.UpdateAsync(user);
+            var result = await _userManager.UpdateAsync(user);
 
-            return Ok(new TokenDto
+            if (result.Succeeded)
             {
-                AuthToken = newAuthTokenToken,
-                RefreshToken = newRefreshToken
-            });
+                return Ok(new TokenDto
+                {
+                    AuthToken = newAuthTokenToken,
+                    RefreshToken = newRefreshToken
+                });
+            }
+            else
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserUpdateFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserUpdateFailed)
+                });
+            }
         }
 
 

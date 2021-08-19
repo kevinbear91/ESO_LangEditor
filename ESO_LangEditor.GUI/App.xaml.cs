@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.EFCore;
 using ESO_LangEditor.GUI.Services;
@@ -26,7 +27,6 @@ namespace ESO_LangEditor.GUI
     /// </summary>
     public partial class App : PrismApplication
     {
-        public static bool OnlineMode { get; set; }
         public static IDCatalog iDCatalog = new IDCatalog();
         public static GameVersion gameUpdateVersionName = new GameVersion();
         public static AppConfigClient LangConfig;
@@ -35,6 +35,7 @@ namespace ESO_LangEditor.GUI
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
         public static HttpClient HttpClient;
+        public static ClientConnectStatus ConnectStatus;
 
         public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
         //public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });

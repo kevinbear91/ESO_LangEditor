@@ -6,9 +6,9 @@ namespace ESO_LangEditor.GUI.Services
 {
     public interface IBackendService
     {
-        Task LangtextZhUpdateUpload(LangTextForUpdateZhDto langTextUpdateZhDto);
-        Task LangtextZhUpdateUpload(List<LangTextForUpdateZhDto> langTextUpdateZhDto);
-        void SyncToken();
+        //Task LangtextZhUpdateUpload(LangTextForUpdateZhDto langTextUpdateZhDto);
+        //Task LangtextZhUpdateUpload(List<LangTextForUpdateZhDto> langTextUpdateZhDto);
+        //void SyncToken();
         //Task StartupConnectSequenceCheck();
 
     }

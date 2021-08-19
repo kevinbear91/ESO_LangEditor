@@ -29,22 +29,14 @@ namespace ESO_LangEditor.GUI.ViewModels
         private Visibility _progessbarVisibility;
         private string _keyword;
         private ObservableCollection<LangTextDto> _gridData;
-        private ClientConnectStatus _connectStatus;
-        //private AccountService _accountService;
         private IEventAggregator _ea;
         private ILogger _logger;
         private IStartupCheck _startupCheck;
-        private IBackendService _backendService;
-
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
         public ICommand ExportToLangCommand { get; }
-        //public ICommand RunDialogCommand => new LangOpenDialogCommand(ExecuteRunDialog);
         public ICommand OpenDoalogCommand => new LangOpenDialogCommand(ExportToLang);
-        //public ICommand DataGridDoubleClickCommand => new LangOpenDialogCommand(OpenLangEditor);
-        public ExcuteViewModelMethod ExportLuaToStrCommand => new ExcuteViewModelMethod(ExportLuaToStr);
-
 
         public string WindowTitle
         {
@@ -93,8 +85,8 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ClientConnectStatus ConnectStatus
         {
-            get => _connectStatus;
-            set => SetProperty(ref _connectStatus, value);
+            get => App.ConnectStatus;
+            set => SetProperty(ref App.ConnectStatus, value);
         }
 
 
@@ -109,7 +101,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public event EventHandler CloseDrawerHostEvent;
 
         public MainWindowViewModel(IEventAggregator ea, ILogger logger,
-            IStartupCheck startupCheck, IBackendService backendService)
+            IStartupCheck startupCheck)
         {
             LoadMainView();
             GridData = new ObservableCollection<LangTextDto>();
@@ -119,8 +111,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea = ea;
             _logger = logger;
             _startupCheck = startupCheck;
-            _backendService = backendService;
-
 
             _ea.GetEvent<LangtextPostToMainDataGrid>().Subscribe(LangtextDataReceived);
             _ea.GetEvent<MainDataGridSelectedItemsToMainWindowVM>().Subscribe(LangtextDataSelected);
@@ -129,8 +119,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
             _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
-            //_ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
-            //_ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadLangtextZhUpdate);
             _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
             _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
@@ -286,24 +274,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             Console.WriteLine("You can intercept the closing event, and cancel here.");
         }
-
-
-
-        private async void ExportLuaToStr(object o)
-        {
-            //var readDb = new LangTextRepoClientService();
-            //var export = new ExportDbToFile();
-
-            //var langlua = await readDb.GetAlltLangTexts(1);
-            //export.ExportLua(langlua);
-
-            //MessageBox.Show("导出完成！");
-        }
-
-        //private bool CompareDatabaseRev()
-        //{
-        //    return App.LangConfig.DatabaseRev != App.LangConfigServer.LangDatabaseRevised;
-        //}
 
         private void LangtextDataReceived(List<LangTextDto> langtexList)
         {
