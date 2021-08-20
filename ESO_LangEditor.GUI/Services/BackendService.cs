@@ -113,6 +113,8 @@ namespace ESO_LangEditor.GUI.Services
             if (token != null)
             {
                 _userAccess.SaveToken(token);
+                //var timer = _userAccess.GetTokenExpireTimer();
+                //_logger.LogDebug(timer.ToString());
                 _logger.LogDebug("已刷新Token");
             }
             

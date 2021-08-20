@@ -6,13 +6,9 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dg="clr-namespace:ESO_LangEditor.GUI.ViewModels"
              xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
-             xmlns:prism="http://prismlibrary.com/"
-             prism:ViewModelLocator.AutoWireViewModel="True"
+             xmlns:services="clr-namespace:ESO_LangEditor.GUI.Services"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <DiscreteObjectKeyFrame x:Key="FlagKey" Value="{Binding ReasonForVisibility}" />
-    </UserControl.Resources>
     <Grid>
         <DataGrid x:Name="LangDataGrid" ItemsSource="{Binding GridData}"
                   SelectedItem="{Binding GridSelectedItem}"
@@ -21,6 +17,9 @@
                   MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
                   SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                   ColumnWidth="200*">
+            <DataGrid.Resources>
+                <services:BindingProxy x:Key="ReasonForVisiable" Data="{Binding ReasonForVisibility}" />
+            </DataGrid.Resources>
             <DataGrid.Columns>
                 <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="文本GUID"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding TextId}" Header="文本ID"  Visibility="Visible"/>
@@ -32,7 +31,7 @@
                 <materialDesign:DataGridTextColumn Binding="{Binding EnLastModifyTimestamp}" Header="最后修改日期(英文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding ZhLastModifyTimestamp}" Header="最后修改日期(中文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding UserId}" Header="用户" Visibility="Collapsed"/>
-                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="{Binding Value, Source={StaticResource FlagKey}, FallbackValue='Collapsed'}"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="{Binding Data, Source={StaticResource ReasonForVisiable}, FallbackValue='Collapsed'}" />
             </DataGrid.Columns>
         </DataGrid>
         

@@ -1,4 +1,5 @@
 ﻿using ESO_LangEditor.GUI.EventAggres;
+using MaterialDesignThemes.Wpf;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Windows;
@@ -8,8 +9,8 @@ namespace ESO_LangEditor.GUI.ViewModels
     public class ImportDbRevProgressDialogViewModel : BindableBase
     {
         private string _currentExcuteText;
-        private Visibility _closeButtonVisibility = Visibility.Collapsed;
-        private bool _closeButtonEnable = false;
+        private Visibility _closeButtonVisibility;
+        private bool _closeButtonEnable;
         private bool _progressbarDisplay;
         private string _subExcuteText;
 
@@ -47,7 +48,6 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ImportDbRevProgressDialogViewModel(IEventAggregator ea)
         {
-            //CurrentExcuteText = "导出为.lang，等待点击开始按钮执行";
             ProgressbarDisplay = true;
             CloseButtonEnable = false;
             CloseButtonVisibility = Visibility.Collapsed;
@@ -64,6 +64,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             CloseButtonEnable = true;
             CloseButtonVisibility = Visibility.Visible;
+            DialogHost.CloseDialogCommand.Execute(null, null);
         }
 
         private void UpdateSubString(string obj)

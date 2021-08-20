@@ -367,11 +367,12 @@ namespace ESO_LangEditor.GUI.Services
                     _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("文本列表下载失败！");
                     _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("请尝试重启工具");
                 }
-                _logger.LogDebug("全部步进号更新完成");
-                _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("更新完成！");
-                _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("如果本窗口没有自动关闭，请点击下边的关闭按钮");
-                _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
+                
             }
+            _logger.LogDebug("全部步进号更新完成");
+            _ea.GetEvent<ImportDbRevDialogStringMainEvent>().Publish("更新完成！");
+            _ea.GetEvent<ImportDbRevDialogStringSubEvent>().Publish("如果本窗口没有自动关闭，请点击下边的关闭按钮");
+            _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
         }
 
         private async Task<AppConfigServer> GetServerRespondAndConfig()

@@ -27,6 +27,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<MessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto);
         Task<MessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto);
         void SaveToken(TokenDto token);
+        DateTimeOffset GetTokenExpireTimer();
 
     }
 }

@@ -387,6 +387,15 @@ namespace ESO_LangEditor.GUI.Services
             return userGuid;
         }
 
+        public DateTimeOffset GetTokenExpireTimer()
+        {
+            string TokenExpireClaim = "exp";
 
+            var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(App.LangConfig.UserAuthToken);
+            var userExpireTimerString = jsontoken.Claims.First(claim => claim.Type == TokenExpireClaim).Value;
+            var expireTimer = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(userExpireTimerString));
+
+            return expireTimer;
+        }
     }
 }

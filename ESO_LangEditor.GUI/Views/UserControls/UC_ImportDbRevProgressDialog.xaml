@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
-             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -15,26 +14,27 @@
     <Grid Margin="16">
 
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="16*" />
+            <RowDefinition Height="31*" />
 
         </Grid.RowDefinitions>
         <ProgressBar Style="{DynamicResource MaterialDesignCircularProgressBar}"
                      HorizontalAlignment="Center"
                      Grid.Row="0"
                      IsIndeterminate="{Binding ProgressbarDisplay}"
-                     Value="0" />
+                     Value="0" Margin="0,36,0,8" Width="20" />
         <StackPanel Grid.Row="1">
             <TextBlock  Margin="0 16 0 0" Text="{Binding CurrentExcuteText, FallbackValue='CurrentExcuteText'}" TextAlignment="Center" HorizontalAlignment="Center" />
-            <TextBlock  Margin="0 16 0 0" Text="{Binding DownloadSpeed, FallbackValue='DownloadSpeed'}" HorizontalAlignment="Center" />
+            <TextBlock  Margin="0 16 0 0" Text="{Binding SubExcuteText, FallbackValue='SubExcuteText'}" HorizontalAlignment="Center" />
             <Button Margin="0 16 0 0" Content="关闭窗口" Style="{DynamicResource MaterialDesignFlatButton}"
-                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" IsEnabled="{Binding CloseButtonEnable}" Visibility="{Binding CloseButtonVisibility}" Cursor="Hand" />
+                    Command="{x:Static wpf:DialogHost.CloseDialogCommand}" IsEnabled="{Binding CloseButtonEnable}" 
+                    Visibility="{Binding CloseButtonVisibility}" />
         </StackPanel>
-        
 
-    
-        
 
-        
+
+
+
+
     </Grid>
 </UserControl>

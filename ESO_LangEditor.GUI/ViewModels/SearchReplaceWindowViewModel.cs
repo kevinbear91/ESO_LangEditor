@@ -181,10 +181,21 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             foreach (var text in _inputList)
             {
-                if (Regex.IsMatch(text.TextZh, pattern, option))
+                if (text.TextZh == null)
                 {
-                    resultList.Add(text);
+                    if (Regex.IsMatch(text.TextEn, pattern, option))
+                    {
+                        resultList.Add(text);
+                    }
                 }
+                else
+                {
+                    if (Regex.IsMatch(text.TextZh, pattern, option))
+                    {
+                        resultList.Add(text);
+                    }
+                }
+                
             }
 
             return resultList;
@@ -202,19 +213,39 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             foreach (var text in _resultList)
             {
-                if (Regex.IsMatch(text.TextZh, pattern, option))
+                if (text.TextZh != null)    //如果中文列不为空
                 {
-                    string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
+                    if (Regex.IsMatch(text.TextZh, pattern, option))
+                    {
+                        string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
 
-                    text.IsTranslated = 1;
-                    text.ZhLastModifyTimestamp = DateTime.Now;
-                    text.UserId = App.LangConfig.UserGuid;
-                    text.TextZh = replacedWord;
+                        text.IsTranslated = 1;
+                        text.ZhLastModifyTimestamp = DateTime.Now;
+                        text.UserId = App.LangConfig.UserGuid;
+                        text.TextZh = replacedWord;
 
-                    resultList.Add(text);
+                        resultList.Add(text);
 
-                    //Debug.WriteLine("Text GUID: {0}, TextID: {1}, TextEN: {2}, TextZH: {3}, Translated: {4}, LastModifyTimeZH: {5}, UserGUID: {6}",
-                    //    text.Id, text.TextId, text.TextEn, text.TextZh, text.IsTranslated, text.ZhLastModifyTimestamp, text.UserId);
+                        //Debug.WriteLine("Text GUID: {0}, TextID: {1}, TextEN: {2}, TextZH: {3}, Translated: {4}, LastModifyTimeZH: {5}, UserGUID: {6}",
+                        //    text.Id, text.TextId, text.TextEn, text.TextZh, text.IsTranslated, text.ZhLastModifyTimestamp, text.UserId);
+                    }
+                }
+                else   //如果中文列为空
+                {
+                    if (Regex.IsMatch(text.TextEn, pattern, option)) //直接匹配英文字段，然后将关键词写入中文字段
+                    {
+                        //string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
+
+                        text.IsTranslated = 1;
+                        text.ZhLastModifyTimestamp = DateTime.Now;
+                        text.UserId = App.LangConfig.UserGuid;
+                        text.TextZh = replaceWord;
+
+                        resultList.Add(text);
+
+                        Debug.WriteLine("Text GUID: {0}, TextID: {1}, TextEN: {2}, TextZH: {3}, Translated: {4}, LastModifyTimeZH: {5}, UserGUID: {6}",
+                            text.Id, text.TextId, text.TextEn, text.TextZh, text.IsTranslated, text.ZhLastModifyTimestamp, text.UserId);
+                    }
                 }
             }
 

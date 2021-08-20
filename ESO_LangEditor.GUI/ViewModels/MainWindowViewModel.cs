@@ -35,8 +35,6 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
-        public ICommand ExportToLangCommand { get; }
-        public ICommand OpenDoalogCommand => new LangOpenDialogCommand(ExportToLang);
 
         public string WindowTitle
         {
@@ -105,8 +103,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             LoadMainView();
             GridData = new ObservableCollection<LangTextDto>();
-
-            //_langTextSearch = new LangTextSearchService(App.RepoClient, App.Mapper);
 
             _ea = ea;
             _logger = logger;
@@ -233,28 +229,6 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         }
 
-        //private async void TimerForRefreshToken()
-        //{
-        //    while (ConnectStatus == ClientConnectStatus.Login)
-        //    {
-        //        await Task.Delay(TimeSpan.FromMinutes(10));
-
-        //        await Task.Run(() =>
-        //        {
-        //             _accountService.LoginByToken();
-        //        });
-
-        //    }
-        //}
-
-        private async void ExportToLang(object o)
-        {
-            var view = new ProgressDialog();
-
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-
-        }
 
         public async void OpenLangEditor(LangTextDto langtext)
         {
@@ -293,40 +267,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             CloseDrawerHostEvent(this, new EventArgs());
         }
-
-        public void EventHookTester()
-        {
-            MessageBox.Show("Respond From EventHook");
-        }
-
-        //public void EventHookWithParmTester(List<LangTextDto> langtextList)
-        //{
-        //    var list = o as List<LangTextDto>;
-
-        //    SelectedInfo = langtextList.Count.ToString();
-
-        //    MessageBox.Show("Respond From EventHook, parm: {0}", langtextList.Count.ToString());
-
-        //}
-
-        //private void ExtendedOpenedEventHandler(object sender, DialogOpenedEventArgs eventargs)
-        //{
-        //    Console.WriteLine("You could intercept the open and affect the dialog using eventArgs.Session.");
-        //}
-
-        //private void ExtendedClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
-        //{
-        //    if ((bool)eventArgs.Parameter == false) return;
-
-        //    eventArgs.Cancel();
-
-        //}
-
-
-        //public void GetLangSearchInfo(int count)
-        //{
-        //    SearchInfo = "查询到 " + count.ToString() + " 条文本";
-        //}
 
     }
 }

@@ -29,7 +29,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ICommand SumbitCommand => new ExcuteViewModelMethod(SubmitLoginInfo);
         public ICommand PasswordRecoveryCommand => new ExcuteViewModelMethod(OpenPasswordRecoveryWindow);
         public ICommand RegisterCommand => new ExcuteViewModelMethod(OpenRegisterWindow);
-        public ICommand CloseDialogHostCommand { get; }
+        public ICommand CloseDialogHostCommand => new ExcuteViewModelMethod(CloseDialogHost);
 
 
         public Guid UserGuid
@@ -64,7 +64,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             _userAccess = userAccess;
             _logger = logger;
 
-            CloseDialogHostCommand = new SaveConfigCommand(CloseDialogHost);
+            //CloseDialogHostCommand = new SaveConfigCommand(CloseDialogHost);
         }
 
         public void Load(PasswordBox passwordBox)
