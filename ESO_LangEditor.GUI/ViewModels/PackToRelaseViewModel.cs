@@ -142,11 +142,11 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             else
             {
-                await _langFile.ExportLangTextsToText(langtext, @"_tmp\zh.text");
+                await _langFile.ExportLangTextsToText(langtext, @"_tmp\zh.txt");
 
-                await OpenccToCHT(@"_tmp\zh.text", @"_tmp\zht.text");
+                OpenccToCHT(@"_tmp\zh.txt", @"_tmp\zht.txt");
 
-                var langtextCHT = await _langFile.ParseTextFile(@"_tmp\zht.text");
+                var langtextCHT = await _langFile.ParseTextFile(@"_tmp\zht.txt");
 
                 await _langFile.ExportLangTextsToLang(langtextCHT, @"Export\zht.lang");
             }
@@ -164,8 +164,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 await _langFile.ExportLuaToStr(langLua.Values.ToList());
 
-                await OpenccToCHT(@"Export\zh_pregame.str", @"Export\zht_pregame.str");
-                await OpenccToCHT(@"Export\zh_client.str", @"Export\zht_client.str");
+                OpenccToCHT(@"Export\zh_pregame.str", @"Export\zht_pregame.str");
+                OpenccToCHT(@"Export\zh_client.str", @"Export\zht_client.str");
             }
             
         }
@@ -357,7 +357,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         }
 
-        private async Task OpenccToCHT(string inputPath, string outputPath)
+        private void OpenccToCHT(string inputPath, string outputPath)
         {
             ProcessStartInfo startOpenCCInfo = new ProcessStartInfo
             {

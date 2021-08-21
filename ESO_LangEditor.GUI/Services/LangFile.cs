@@ -441,25 +441,36 @@ namespace ESO_LangEditor.GUI.Services
 
             foreach (var d in langList)
             {
+                string text;
+
+                if (d.TextZh != null)
+                {
+                    text = d.TextZh;
+                }
+                else
+                {
+                    text = d.TextEn;
+                }
+
                 switch (d.LangTextType)
                 {
                     case LangType.LuaPreGame:
                         pregameData.Add("[" + d.TextId + "]"
                         + " = "
-                        + "\"" + d.TextZh + "\"");
+                        + "\"" + text + "\"");
                         break;
                     case LangType.LuaClient:
                         clientData.Add("[" + d.TextId + "]"
                         + " = "
-                        + "\"" + d.TextZh + "\"");
+                        + "\"" + text + "\"");
                         break;
                     case LangType.LuaBoth:
                         pregameData.Add("[" + d.TextId + "]"
                         + " = "
-                        + "\"" + d.TextZh + "\"");
+                        + "\"" + text + "\"");
                         clientData.Add("[" + d.TextId + "]"
                         + " = "
-                        + "\"" + d.TextZh + "\"");
+                        + "\"" + text + "\"");
                         break;
                 }
 

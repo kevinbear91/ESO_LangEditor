@@ -38,7 +38,6 @@ namespace ESO_LangEditor.GUI
         public static ClientConnectStatus ConnectStatus;
 
         public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
-        //public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddDebug(); });
 
         static App()
         {
@@ -90,6 +89,7 @@ namespace ESO_LangEditor.GUI
             HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
 
             AppConfigClient.Save(LangConfig);
+            
         }
 
         private void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -110,7 +110,6 @@ namespace ESO_LangEditor.GUI
             //Services Register
 
             containerRegistry.Register<IStartupCheck, StartupCheck>();
-
             containerRegistry.RegisterInstance<IMapper>(new Mapper(config));
             containerRegistry.RegisterInstance(logger);
             containerRegistry.RegisterSingleton<ILangTextRepoClient, LangTextRepoClient>();

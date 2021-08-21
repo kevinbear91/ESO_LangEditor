@@ -18,7 +18,7 @@
                   SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                   ColumnWidth="200*">
             <DataGrid.Resources>
-                <services:BindingProxy x:Key="ReasonForVisiable" Data="{Binding ReasonForVisibility}" />
+                <services:BindingProxy x:Key="ReasonForVisiable" Data="{Binding ReasonForVisibility, FallbackValue='Collapsed'}" />
             </DataGrid.Resources>
             <DataGrid.Columns>
                 <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="文本GUID"  Visibility="Collapsed"/>
@@ -31,18 +31,8 @@
                 <materialDesign:DataGridTextColumn Binding="{Binding EnLastModifyTimestamp}" Header="最后修改日期(英文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding ZhLastModifyTimestamp}" Header="最后修改日期(中文)"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding UserId}" Header="用户" Visibility="Collapsed"/>
-                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="{Binding Data, Source={StaticResource ReasonForVisiable}, FallbackValue='Collapsed'}" />
+                <materialDesign:DataGridTextColumn Binding="{Binding ReasonFor}" Header="变更原因" Visibility="{Binding Data, Source={StaticResource ReasonForVisiable}}" />
             </DataGrid.Columns>
         </DataGrid>
-        
-        <!--<DataGrid x:Name="LangData"
-                      MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
-                      SelectionChanged="LangSearchDataGrid_SelectionChanged" 
-                      MouseRightButtonUp="LangSearch_MouseRightUp"
-                      AutoGenerateColumns="False" Margin="10,10,10,10"
-                      ColumnWidth="200*"
-                    MinRowHeight="20" VerticalAlignment="Top" HorizontalAlignment="Stretch" DockPanel.Dock="Top">
-
-        </DataGrid>-->
     </Grid>
 </UserControl>

@@ -26,7 +26,6 @@ namespace ESO_LangEditor.GUI.ViewModels
         private LangTextDto _gridSelectedItem;
         private string _mdNotifyContent;
         private bool _isInReview;
-        //private bool _autoQueryLangTextInReview = ;
         private int _currentSelectedIndex = 0;
 
         public LangTextDto CurrentLangText
@@ -91,22 +90,19 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
         }
 
-
-        public ICommand LangEditorSaveButton { get; }
+        public ExcuteViewModelMethod LangEditorSaveButton => new ExcuteViewModelMethod(SaveCurrentToDb);
         public SnackbarMessageQueue EditorMessageQueue { get; }
         public event EventHandler OnRequestClose;
 
         private IEventAggregator _ea;
-        private readonly ILangTextRepoClient _langTextRepoClient;
-        private readonly ILangTextAccess _langTextAccess;
+        private ILangTextRepoClient _langTextRepoClient;
+        private ILangTextAccess _langTextAccess;
 
         public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, ILangTextAccess langTextAccess)
         {
             _ea = ea;
             _langTextRepoClient = langTextRepoClient;
             _langTextAccess = langTextAccess;
-
-            LangEditorSaveButton = new ExcuteViewModelMethod(SaveCurrentToDb);
             EditorMessageQueue = new SnackbarMessageQueue();
 
             _ea.GetEvent<DataGridSelectedItemInEditor>().Subscribe(SetCurrentItemFromList);
@@ -132,7 +128,6 @@ namespace ESO_LangEditor.GUI.ViewModels
                 CurrentLangText = GridData.ElementAt(0);
                 GridSelectedItem = CurrentLangText;
                 DataListVisbility = Visibility.Visible;
-
             }
             LangTextZh = CurrentLangText.TextZh;
             LangtextInfo = "update";
@@ -172,9 +167,9 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void SaveCurrentToDb(object o)
         {
-            var user = App.User;
+            //var user = App.User;
 
-            if (user == null)
+            if (App.User == null)
             {
                 MessageBox.Show("用户无效，保存失败！");
             }
@@ -189,7 +184,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                         TextZh = LangTextZh,
                         IsTranslated = 1,
                         ZhLastModifyTimestamp = time,
-                        UserId = user.Id,
+                        UserId = App.User.Id,
                     };
 
                     if (await _langTextRepoClient.UpdateLangtextZh(langtextUpdateZh))
@@ -226,8 +221,6 @@ namespace ESO_LangEditor.GUI.ViewModels
                     EditorMessageQueue.Enqueue("哦豁，没检测到和原来的文本有什么区别，所以没保存。");
                 }
             }
-
-
 
         }
 

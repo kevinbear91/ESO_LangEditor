@@ -18,14 +18,44 @@ namespace ESO_LangEditorUpdater
         private string _fileName;
         private string _fileSHA256;
         private string _langEditorServerVersion;
+        private Dictionary<string, string> argsDict = new Dictionary<string, string>();
+
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
 
+        
+
         public LangDownloader(string[] args)
         {
-            _downloadPath = args[0];
-            _fileSHA256 = args[1];
-            _langEditorServerVersion = args[2];
+            for (int index = 1; index < args.Length; index += 2)
+            {
+                argsDict.Add(args[index], args[index + 1]);
+            }
+
+            foreach (var arg in argsDict)
+            {
+                //MessageBox.Show($"命令: {arg.Key}, 参数: {arg.Value}");
+
+                if (arg.Key == "/DownloadPath")
+                {
+                    _downloadPath = arg.Value;
+                }
+
+                if (arg.Key == "/FileName")
+                {
+                    _fileName = arg.Value;
+                }
+
+                if (arg.Key == "/FileSHA256")
+                {
+                    _fileSHA256 = arg.Value;
+                }
+
+                //Debug.WriteLine($"arg: {arg.Key}, value: {arg.Value}");
+            }
+            //_downloadPath = args[0];
+            //_fileSHA256 = args[1];
+            //_langEditorServerVersion = args[2];
 
             _fileName = "ESO_LangEditor_v" + _langEditorServerVersion + ".zip";
         }

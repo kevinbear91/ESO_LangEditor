@@ -16,22 +16,17 @@
             <ColumnDefinition Width="307*" />
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition  />
-        </Grid.RowDefinitions>
-
         <ListBox x:Name="UserListBox" SelectionChanged="ListBox_SelectionChanged" 
                          ItemsSource="{Binding UserList}"
                          Grid.Column="0" Margin="0,10,0,10" >
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <TextBlock Text="{Binding Path=UserNickName}" />
-                    </StackPanel>
+                    <TextBlock Text="{Binding Path=UserNickName}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
-        </ListBox>
 
+        </ListBox>
+        
         <TabControl Grid.Column="1" Style="{StaticResource MaterialDesignNavigatilRailTabControl}" 
                     TabStripPlacement="Top" materialDesign:ColorZoneAssist.Mode="PrimaryMid" 
                     materialDesign:ShadowAssist.ShadowDepth="Depth1">

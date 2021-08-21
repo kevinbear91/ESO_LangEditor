@@ -115,7 +115,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
             _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
-            _ea.GetEvent<InitUserRequired>().Subscribe(OpenUserProfileSettingWindow);
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
             _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
             _ea.GetEvent<LoginFromUcEvent>().Subscribe(LoginTaskCallFromUC);
@@ -170,11 +169,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             AppConfigClient.Save(config);
 
             ConnectStatus = ClientConnectStatus.Logout;
-        }
-
-        private void OpenUserProfileSettingWindow()
-        {
-            new UserProfileSetting().Show();
         }
 
         private void ChangeConnectStatus(ClientConnectStatus connectStatus)
