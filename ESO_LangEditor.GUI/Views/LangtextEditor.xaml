@@ -102,7 +102,7 @@
             <ScrollViewer 
                           Visibility="{Binding DataListVisbility}" 
                           VerticalScrollBarVisibility="Auto" >
-                <uc:UC_LangDataGrid />
+                <uc:UC_LangDataGrid x:Name="langDataGrid" />
             </ScrollViewer>
         </StackPanel>
 

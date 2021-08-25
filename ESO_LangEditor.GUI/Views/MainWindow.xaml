@@ -88,6 +88,8 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <DockPanel Grid.Row="1" >
+                    <!--<Expander ExpandDirection="Right" Header="aaa" IsExpanded="True">
+                        <TreeView Width="100"></TreeView></Expander>-->
                     <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent" />
                 </DockPanel>
 

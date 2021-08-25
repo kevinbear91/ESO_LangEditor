@@ -22,7 +22,7 @@ namespace ESO_LangEditor.GUI.Views
 
             //Closed += TextEditorWindow_Closed;
 
-            vm.OnRequestClose += (s, e) => this.Close();
+            vm.OnRequestClose += (s, e) => Close();
 
         }
 
@@ -32,6 +32,8 @@ namespace ESO_LangEditor.GUI.Views
 
             var vm = DataContext as LangtextEditorViewModel;
             vm.Load(langTextDtoList);
+
+            vm.OnRequestClose += (s, e) => Close();
 
             AddHandler(UC_LangDataGrid.DataGridSelectionChangedEvent,
                 new RoutedEventHandler(DataGridSelectionChangedEvent));
