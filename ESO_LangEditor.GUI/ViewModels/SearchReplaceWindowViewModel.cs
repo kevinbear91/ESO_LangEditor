@@ -25,6 +25,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private bool _onlyMatchword;
         private bool _ingoreCase;
         private bool _ingoreSearchFirst;
+        private bool _matchEn;
         private List<LangTextDto> _inputList;
         private List<LangTextDto> _currentSearchList;
         private List<LangTextDto> _resultList;
@@ -59,6 +60,12 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             get => _ingoreSearchFirst;
             set => SetProperty(ref _ingoreSearchFirst, value);
+        }
+
+        public bool MatchEn
+        {
+            get => _matchEn;
+            set => SetProperty(ref _matchEn, value);
         }
 
         public List<LangTextDto> CurrentSearchList
@@ -181,7 +188,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             foreach (var text in _inputList)
             {
-                if (text.TextZh == null)
+                if (text.TextZh == null || MatchEn)
                 {
                     if (Regex.IsMatch(text.TextEn, pattern, option))
                     {
@@ -209,28 +216,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             string pattern = SetMatchRule(keyword, isOnlyMatchWord);
             var resultList = new List<LangTextDto>();
 
-            Debug.WriteLine("isOnlyMatchWord = {0}", isOnlyMatchWord);
+            Debug.WriteLine($"isOnlyMatchWord = {isOnlyMatchWord}");
+            Debug.WriteLine($"MatchEn = {MatchEn}");
 
             foreach (var text in _resultList)
             {
-                if (text.TextZh != null)    //如果中文列不为空
-                {
-                    if (Regex.IsMatch(text.TextZh, pattern, option))
-                    {
-                        string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
-
-                        text.IsTranslated = 1;
-                        text.ZhLastModifyTimestamp = DateTime.Now;
-                        text.UserId = App.LangConfig.UserGuid;
-                        text.TextZh = replacedWord;
-
-                        resultList.Add(text);
-
-                        //Debug.WriteLine("Text GUID: {0}, TextID: {1}, TextEN: {2}, TextZH: {3}, Translated: {4}, LastModifyTimeZH: {5}, UserGUID: {6}",
-                        //    text.Id, text.TextId, text.TextEn, text.TextZh, text.IsTranslated, text.ZhLastModifyTimestamp, text.UserId);
-                    }
-                }
-                else   //如果中文列为空
+                if (text.TextZh == null || MatchEn)    //如果中文列为空
                 {
                     if (Regex.IsMatch(text.TextEn, pattern, option)) //直接匹配英文字段，然后将关键词写入中文字段
                     {
@@ -245,6 +236,24 @@ namespace ESO_LangEditor.GUI.ViewModels
 
                         Debug.WriteLine("Text GUID: {0}, TextID: {1}, TextEN: {2}, TextZH: {3}, Translated: {4}, LastModifyTimeZH: {5}, UserGUID: {6}",
                             text.Id, text.TextId, text.TextEn, text.TextZh, text.IsTranslated, text.ZhLastModifyTimestamp, text.UserId);
+                    }
+                    
+                }
+                else   //如果中文列不为空
+                {
+                    if (Regex.IsMatch(text.TextZh, pattern, option))
+                    {
+                        string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
+
+                        text.IsTranslated = 1;
+                        text.ZhLastModifyTimestamp = DateTime.Now;
+                        text.UserId = App.LangConfig.UserGuid;
+                        text.TextZh = replacedWord;
+
+                        resultList.Add(text);
+
+                        //Debug.WriteLine("Text GUID: {0}, TextID: {1}, TextEN: {2}, TextZH: {3}, Translated: {4}, LastModifyTimeZH: {5}, UserGUID: {6}",
+                        //    text.Id, text.TextId, text.TextEn, text.TextZh, text.IsTranslated, text.ZhLastModifyTimestamp, text.UserId);
                     }
                 }
             }
