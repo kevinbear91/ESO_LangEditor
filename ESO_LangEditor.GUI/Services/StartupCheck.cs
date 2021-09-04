@@ -42,10 +42,12 @@ namespace ESO_LangEditor.GUI.Services
         private IMapper _mapper;
         private JsonSerializerOptions _jsonOption;
         private ILogger _logger;
+        private IBackendService _backendService;
 
 
         public StartupCheck(IEventAggregator ea, ILangTextRepoClient langTextRepo,
-            ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper, ILogger logger)
+            ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper, 
+            ILogger logger, IBackendService backendService)
         {
             _ea = ea;
             _langTextRepo = langTextRepo;
@@ -53,11 +55,12 @@ namespace ESO_LangEditor.GUI.Services
             _userAccess = userAccess;
             _mapper = Mapper;
             _logger = logger;
+            _backendService = backendService;
 
-            _jsonOption = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
+            //_jsonOption = new JsonSerializerOptions
+            //{
+            //    PropertyNameCaseInsensitive = true,
+            //};
 
 
         }
@@ -67,7 +70,7 @@ namespace ESO_LangEditor.GUI.Services
             _ea.GetEvent<ConnectProgressString>().Publish("正在读取服务器版本数据……");
             _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Connecting);
 
-            _langConfigServer = await GetServerRespondAndConfig();
+            _langConfigServer = await _backendService.GetServerRespondAndConfig();
 
 
             if (_langConfigServer != null)
@@ -76,7 +79,7 @@ namespace ESO_LangEditor.GUI.Services
                 _logger.LogDebug("获取服务器配置成功");
 
                 if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion 
-                    || !GetFileExistAndSha256("ESO_LangEditorUpdater.exe", _langConfigServer.LangUpdaterSha256))
+                    || !_backendService.GetFileExistAndSha256("ESO_LangEditorUpdater.exe", _langConfigServer.LangUpdaterSha256))
                 {
                     await UpdateUpdater();
                 }
@@ -197,41 +200,43 @@ namespace ESO_LangEditor.GUI.Services
             _logger.LogDebug("发现更新器版本更新");
             _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
 
-            using (WebClient client = new WebClient())
-            {
-                client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
-                await client.DownloadFileTaskAsync(new Uri(App.ServerPath + _langConfigServer.LangUpdaterPackPath),
-                "UpdaterPack.zip");
-            }
+            //using (WebClient client = new WebClient())
+            //{
+            //    client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
+            //    await client.DownloadFileTaskAsync(new Uri(App.ServerPath + _langConfigServer.LangUpdaterPackPath),
+            //    "UpdaterPack.zip");
+            //}
+            await _backendService.DownloadFileFromServer(App.ServerPath + _langConfigServer.LangUpdaterPackPath,
+                _langConfigServer.LangUpdaterPackPath, _langConfigServer.LangUpdaterPackSha256);
         }
 
-        private void DelegateHashAndUnzip(object sender, AsyncCompletedEventArgs e)
-        {
-            _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
-            Debug.WriteLine("下载完成！");
+        //private void DelegateHashAndUnzip(object sender, AsyncCompletedEventArgs e)
+        //{
+        //    _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
+        //    Debug.WriteLine("下载完成！");
 
-            Task.Delay(1000);
+        //    Task.Delay(1000);
 
-            if (GetFileExistAndSha256("UpdaterPack.zip", _langConfigServer.LangUpdaterPackSha256))
-            {
-                _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
-                Debug.WriteLine("SHA256校验通过，准备解压文件。");
+        //    if (GetFileExistAndSha256("UpdaterPack.zip", _langConfigServer.LangUpdaterPackSha256))
+        //    {
+        //        _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
+        //        Debug.WriteLine("SHA256校验通过，准备解压文件。");
 
-                ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
+        //        ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
 
-                //App.LangConfig.LangUpdaterSha256 = _langConfigServer.LangUpdaterSha256;
-                App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
+        //        //App.LangConfig.LangUpdaterSha256 = _langConfigServer.LangUpdaterSha256;
+        //        App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
 
-                AppConfigClient.Save(App.LangConfig);
+        //        AppConfigClient.Save(App.LangConfig);
 
-                File.Delete("UpdaterPack.zip");
-            }
-            else
-            {
-                _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
-                _logger.LogCritical("=====新版更新器更新失败======");
-            }
-        }
+        //        File.Delete("UpdaterPack.zip");
+        //    }
+        //    else
+        //    {
+        //        _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
+        //        _logger.LogCritical("=====新版更新器更新失败======");
+        //    }
+        //}
 
         public async Task SyncUsers()
         {
@@ -375,20 +380,20 @@ namespace ESO_LangEditor.GUI.Services
             _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
         }
 
-        private async Task<AppConfigServer> GetServerRespondAndConfig()
-        {
-            AppConfigServer result = null;
-            HttpClient client = App.HttpClient;
+        //private async Task<AppConfigServer> GetServerRespondAndConfig()
+        //{
+        //    AppConfigServer result = null;
+        //    HttpClient client = App.HttpClient;
 
-            HttpResponseMessage response = await client.GetAsync("AppConfig.json");
+        //    HttpResponseMessage response = await client.GetAsync("AppConfig.json");
 
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
-            }
-            return result;
-        }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var responseContent = await response.Content.ReadAsStringAsync();
+        //        result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
+        //    }
+        //    return result;
+        //}
 
         private async Task GetConfigFromDb()
         {
@@ -420,26 +425,26 @@ namespace ESO_LangEditor.GUI.Services
             _logger.LogDebug($"langRevNumberLocal 为 {_langRevNumberLocal}, userRevNumberLocal 为 {_userRevNumberLocal}");
         }
 
-        private static bool GetFileExistAndSha256(string filePath, string fileSHA265)
-        {
-            string hashReslut;
+        //private static bool GetFileExistAndSha256(string filePath, string fileSHA265)
+        //{
+        //    string hashReslut;
 
-            if (File.Exists(filePath))
-            {
-                using (FileStream stream = File.OpenRead(filePath))
-                {
-                    Debug.WriteLine(filePath);
-                    SHA256Managed sha = new SHA256Managed();
-                    byte[] hash = sha.ComputeHash(stream);
-                    hashReslut = BitConverter.ToString(hash).Replace("-", String.Empty);
-                }
-                return fileSHA265 == hashReslut;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        //    if (File.Exists(filePath))
+        //    {
+        //        using (FileStream stream = File.OpenRead(filePath))
+        //        {
+        //            Debug.WriteLine(filePath);
+        //            SHA256Managed sha = new SHA256Managed();
+        //            byte[] hash = sha.ComputeHash(stream);
+        //            hashReslut = BitConverter.ToString(hash).Replace("-", String.Empty);
+        //        }
+        //        return fileSHA265 == hashReslut;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
 
 
     }

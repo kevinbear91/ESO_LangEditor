@@ -218,6 +218,108 @@ namespace ESO_LangEditor.GUI.Services
             return _data;
         }
 
+        public async Task<Dictionary<string, string>> ParseJpLangFile(string filePath)
+        {
+            int _filesize;
+            const int _textIdRecoredSize = 16;
+            int _recoredCount;
+            int _fileId;
+            byte[] buffer = new byte[8];
+            byte[] langIdBuffer = new byte[16];
+            int textBeginOffset;
+
+            byte[] data = File.ReadAllBytes(filePath);
+
+            Dictionary<string, string> _data = new Dictionary<string, string>();
+
+            _filesize = data.Length;
+
+            Array.Copy(data, buffer, 8);
+            Array.Reverse(buffer, 0, buffer.Length);  //Reverse bytes order, new readed on head.
+
+            _fileId = BitConverter.ToInt32(buffer, 4);
+            _recoredCount = BitConverter.ToInt32(buffer, 0);
+
+            Debug.WriteLine("field Id: {0}", _fileId);
+            Debug.WriteLine("count int: {0}", _recoredCount);
+
+            textBeginOffset = _recoredCount * _textIdRecoredSize + 8;
+            Debug.WriteLine("textBeginOffset: {0}", textBeginOffset);
+
+            if (data == null || data.Length <= 0)
+            {
+                throw new Exception("Error: Invaild data!");
+            }
+
+            if (_filesize < 8)
+            {
+                throw new Exception("Error: Invaild Lang file size!");
+            }
+
+            if (_filesize > int.MaxValue)
+            {
+                throw new Exception("Error: Lang file too big");
+            }
+
+            byte[] textUtf8Buffer = new byte[1];
+
+            for (int i = 0; i < _recoredCount; ++i)
+            {
+                int offset = 8 + i * _textIdRecoredSize;
+
+                //Debug.WriteLine("Offset: {0}", offset);
+
+                Array.Copy(data, offset, langIdBuffer, 0, langIdBuffer.Length);
+                Array.Reverse(langIdBuffer, 0, langIdBuffer.Length);
+
+                int langId = BitConverter.ToInt32(langIdBuffer, 12);
+                int unknown = BitConverter.ToInt32(langIdBuffer, 8);
+                int index = BitConverter.ToInt32(langIdBuffer, 4);
+                int offeset = BitConverter.ToInt32(langIdBuffer, 0);
+
+
+                int textOffset = offeset + textBeginOffset;
+
+                if (textOffset < _filesize)
+                {
+                    string textbuffer = "";
+
+                    for (int c = 0; c + textOffset < _filesize; ++c)
+                    {
+                        int ost = c + textOffset;
+                        Array.Copy(data, ost, textUtf8Buffer, 0, textUtf8Buffer.Length);
+
+                        var hex = BitConverter.ToString(textUtf8Buffer);
+
+                        if (hex == "00")
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            textbuffer += hex;
+                        }
+                    }
+
+                    byte[] stringByte = FromHex(textbuffer);
+                    string text = Encoding.UTF8.GetString(stringByte);
+
+                    text = text.Replace("\x0a", @"\n");
+                    text = text.Replace("\x0d", @"\r");
+
+                    string langtextId = langId + "-" + unknown + "-" + index;
+                    string langText = text;
+
+                    //Debug.WriteLine("text: {0}", text);
+                    _data.Add(langtextId, langText);
+                }
+                //Debug.WriteLine("id: {0}, unknwon: {1}, index: {2}, offset: {3}, text: {4}",
+                //    langId, unknown, index, offeset, lang.TextEn);
+            }
+
+            return _data;
+        }
+
         public async Task<Dictionary<string, LangTextDto>> ParseLuaFile(List<string> filePath)
         {
             bool isClient;
@@ -229,9 +331,13 @@ namespace ESO_LangEditor.GUI.Services
             foreach (var file in filePath)
             {
                 if (file.EndsWith("en_client.lua"))
+                {
                     isClient = true;
+                } 
                 else
+                {
                     isClient = false;
+                }
 
                 using StreamReader sr = new StreamReader(file);
                 while ((input = await sr.ReadLineAsync()) != null)
@@ -312,6 +418,34 @@ namespace ESO_LangEditor.GUI.Services
 
             //Debug.WriteLine(luaResult.Count);
 
+        }
+
+        public async Task<Dictionary<string, string>> ParseJpLuaFile(List<string> filePath)
+        {
+            string input;
+            string pattern = @"^[\s]*SafeAddString\(?[\s]*(\w+)[,\s]+\""(.+)\""[^\""]+$";
+
+            var luaResult = new Dictionary<string, string>();
+
+            foreach (var file in filePath)
+            {
+                using StreamReader sr = new StreamReader(file);
+                while ((input = await sr.ReadLineAsync()) != null)
+                {
+                    foreach (Match match in Regex.Matches(input, pattern, RegexOptions.IgnoreCase))
+                    {
+                        string id = match.Groups[1].Value;
+                        string text = match.Groups[2].Value;
+
+                        if (!luaResult.ContainsKey(id))
+                        {
+                            luaResult.Add(id, text);
+                        }
+                    }
+
+                }
+            }
+            return luaResult;
         }
 
         public async Task<Dictionary<string, string>> ParseTextFile(string filePath)
@@ -761,7 +895,5 @@ namespace ESO_LangEditor.GUI.Services
             bool result = bytes.Length == langText.Length;
             return result;
         }
-
-        
     }
 }

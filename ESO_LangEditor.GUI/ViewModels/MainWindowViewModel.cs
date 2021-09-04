@@ -1,4 +1,5 @@
-﻿using ESO_LangEditor.Core.EnumTypes;
+﻿using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
@@ -32,6 +33,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private IEventAggregator _ea;
         private ILogger _logger;
         private IStartupCheck _startupCheck;
+        private Visibility _jpVisibility = Visibility.Collapsed;
 
         public ICommand MainviewCommand { get; }
         public ICommand SearchLangCommand { get; }
@@ -42,7 +44,6 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _windowTitle, value);
             //set { _windowTitle = value; NotifyPropertyChanged(); }
         }
-
 
         public string SearchInfo
         {
@@ -87,16 +88,24 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref App.ConnectStatus, value);
         }
 
+        public Visibility JpVisibility
+        {
+            get => _jpVisibility;
+            set => SetProperty(ref _jpVisibility, value);
+        }
 
         public LangTextDto GridSelectedItem { get; set; }
 
         public List<LangTextDto> GridSelectedItems { get; set; }
 
         public Visibility ReasonForVisibility => Visibility.Collapsed;
+        
 
         public SnackbarMessageQueue MainWindowMessageQueue { get; }
         public event EventHandler OnRequestClose;
         public event EventHandler CloseDrawerHostEvent;
+
+        public ObservableCollection<LangTreeCategory> LangTreeCategories { get; }
 
         public MainWindowViewModel(IEventAggregator ea, ILogger logger,
             IStartupCheck startupCheck)
@@ -118,6 +127,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
             _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
             _ea.GetEvent<LoginFromUcEvent>().Subscribe(LoginTaskCallFromUC);
+            _ea.GetEvent<JpColumnVisibilityEvent>().Subscribe(SetJpCplumnVisibility);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
 
@@ -132,7 +142,159 @@ namespace ESO_LangEditor.GUI.ViewModels
             logger.LogDebug("======启动至主界面======");
             //logger.Error("======报错测试======");
 
-            
+            List<LangTreeList> location1 = new List<LangTreeList>
+            {
+                new LangTreeList("装备",
+                        new LangTreeContent("妈伤", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 242841733,
+                            LangTypeName = "装备物品名",
+                            TreeCategory = LangTypeTreeCategory.ItemGear
+                        }),
+                        new LangTreeContent("爸伤", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 242841733,
+                            LangTypeName = "装备物品名",
+                            TreeCategory = LangTypeTreeCategory.ItemGear
+                        }),
+                        new LangTreeContent("子伤", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 242841733,
+                            LangTypeName = "装备物品名",
+                            TreeCategory = LangTypeTreeCategory.ItemGear
+                        })),
+                new LangTreeList("地标",
+                        new LangTreeContent("主城", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 10860933,
+                            LangTypeName = "地标名",
+                            TreeCategory = LangTypeTreeCategory.Location
+                        }),
+                        new LangTreeContent("真菌石窟", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 10860933,
+                            LangTypeName = "副本名",
+                            TreeCategory = LangTypeTreeCategory.Location
+                        }),
+                        new LangTreeContent("墓穴", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 10860933,
+                            LangTypeName = "洞穴名",
+                            TreeCategory = LangTypeTreeCategory.Location
+                        })),
+                    new LangTreeList("NPC名",
+                        new LangTreeContent("薇薇安", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 8290981,
+                            LangTypeName = "NPC名字",
+                            TreeCategory = LangTypeTreeCategory.NpcAndDialogue
+                        }),
+                        new LangTreeContent("甲", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 8290981,
+                            LangTypeName = "NPC名字",
+                            TreeCategory = LangTypeTreeCategory.NpcAndDialogue
+                        }),
+                        new LangTreeContent("乙", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 8290981,
+                            LangTypeName = "NPC名字",
+                            TreeCategory = LangTypeTreeCategory.NpcAndDialogue
+                        })),
+            };
+
+            List<LangTreeList> location2 = new List<LangTreeList>
+            {
+                new LangTreeList("装备",
+                        new LangTreeContent("装备1", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 242841733,
+                            LangTypeName = "装备物品名",
+                            TreeCategory = LangTypeTreeCategory.ItemGear
+                        }),
+                        new LangTreeContent("装备2", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 242841733,
+                            LangTypeName = "装备物品名",
+                            TreeCategory = LangTypeTreeCategory.ItemGear
+                        }),
+                        new LangTreeContent("装备3", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 242841733,
+                            LangTypeName = "装备物品名",
+                            TreeCategory = LangTypeTreeCategory.ItemGear
+                        })),
+                    new LangTreeList("地标",
+                        new LangTreeContent("头顶飘石城", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 10860933,
+                            LangTypeName = "地标名",
+                            TreeCategory = LangTypeTreeCategory.Location
+                        }),
+                        new LangTreeContent("锻造大厅", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 10860933,
+                            LangTypeName = "试炼名",
+                            TreeCategory = LangTypeTreeCategory.Location
+                        }),
+                        new LangTreeContent("锻莫墓穴", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 10860933,
+                            LangTypeName = "洞穴名",
+                            TreeCategory = LangTypeTreeCategory.Location
+                        })),
+                    new LangTreeList("NPC名",
+                        new LangTreeContent("光头圣光", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 8290981,
+                            LangTypeName = "NPC名字",
+                            TreeCategory = LangTypeTreeCategory.NpcAndDialogue
+                        }),
+                        new LangTreeContent("奇装异服男", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 8290981,
+                            LangTypeName = "NPC名字",
+                            TreeCategory = LangTypeTreeCategory.NpcAndDialogue
+                        }),
+                        new LangTreeContent("吟游诗人", new LangTypeCategory
+                        {
+                            Id = 1,
+                            LangTextIdType = 8290981,
+                            LangTypeName = "NPC名字",
+                            TreeCategory = LangTypeTreeCategory.NpcAndDialogue
+                        }))
+            };
+
+            LangTreeCategories = new ObservableCollection<LangTreeCategory>
+            {
+                new LangTreeCategory("石坠", location1.ToArray()),
+                new LangTreeCategory("瓦登费尔", location2.ToArray()),
+                
+            };
+
+
+        }
+
+        private void SetJpCplumnVisibility(Visibility obj)
+        {
+            JpVisibility = obj;
         }
 
         private async Task BootCheck()
@@ -196,6 +358,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             await BootCheck();
         }
 
+        
 
         private async void ShowLoginUC()
         {

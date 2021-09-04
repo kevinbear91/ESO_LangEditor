@@ -12,7 +12,7 @@
              xmlns:prism="http://prismlibrary.com/"
              prism:ViewModelLocator.AutoWireViewModel="True"
              TextElement.FontSize="14"
-             d:DesignHeight="80" d:DesignWidth="800">
+             d:DesignHeight="100" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="49*"/>
@@ -54,18 +54,6 @@
                                                   Panel.ZIndex="1"
                                                   Margin="130,0,0,0"
                                                   materialDesign:ShadowAssist.ShadowDepth="Depth1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-            <!--<materialDesign:ColorZone.Style>
-                <Style TargetType="materialDesign:ColorZone">
-                    --><!--<Setter Property="Width" Value="775" />-->
-                    <!--<Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="True">
-                            <Setter Property="Width" Value="250" />
-                        </DataTrigger>
-                    </Style.Triggers>--><!--
-                </Style>
-            </materialDesign:ColorZone.Style>-->
-
-
             <TextBox x:Name="SearchTextBox"
                                     materialDesign:HintAssist.Hint="输入搜索文本"
                                     materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
@@ -83,19 +71,6 @@
                         </vaildation:SearchBarTextValidation>
                     </Binding.ValidationRules>
                 </Binding>
-                <!--<TextBox.Style>
-                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignTextBox}">
-                        <Setter Property="Width"  Value="500" />
-                        <Style.Triggers >
-                            <DataTrigger Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="True">
-                                <Setter Property="Width" Value="300" />
-                            </DataTrigger>
-                        </Style.Triggers>
-
-                    </Style>
-                </TextBox.Style>-->
-
-
             </TextBox>
 
         </materialDesign:ColorZone>
@@ -203,25 +178,11 @@
             </ComboBox>
         </materialDesign:ColorZone>
 
-
-
-        <!--<materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
-                                              Grid.Column="4"
-                                                  Panel.ZIndex="1"
-                                                  Margin="10 5 0 0"
-                                                  HorizontalAlignment="Left"
-                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1">
-                            <ComboBox x:Name="SearchIdListComboBox" HorizontalAlignment="Left" Width="90">
-                                <CheckBox Content="ddaaa测试"/>
-                            </ComboBox>
-                        </materialDesign:ColorZone>-->
-
         <Button x:Name="SearchButton" 
                             Grid.Column="3"
                             Command="{Binding SearchLangCommand}"
-                            CommandParameter="{Binding}"
                             IsDefault="True"
-                             Cursor="Hand" VerticalAlignment="Center" Height="40" Margin="10,0,10,0" >
+                            VerticalAlignment="Center" Height="40" Margin="10,0,10,0" >
             <materialDesign:PackIcon Kind="Magnify" Width="40" Height="40" />
             <Button.Style>
                 <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}" >
@@ -243,32 +204,42 @@
             </Button.Style>
         </Button>
 
-        <CheckBox x:Name="EnabledComboBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
-                  Content="双条件搜索" Margin="10,0,0,0" IsChecked="{Binding DoubleKeyWordSearch}"  Grid.Row="1" 
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <CheckBox x:Name="EnabledComboBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
+                  Content="双条件搜索" Margin="10" IsChecked="{Binding DoubleKeyWordSearch}"   
                   ToolTip="开启后，文本位置选项仅适用于第二个搜索文本"/>
 
-        <CheckBox x:Name="EnabledServerSearch" 
-                  Content="远程搜索" Margin="130,0,0,0" Grid.Row="1" IsChecked="{Binding ServerSideSearch}" 
+            <CheckBox Grid.Row="1" Content="读取日文翻译" Margin="10"
+                      Style="{StaticResource MaterialDesignAccentCheckBox}"
+                      Command="{Binding LoadJpLangCommand}" 
+                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+            <CheckBox Grid.Row="1" Content="树状图查询" Margin="10" Style="{StaticResource MaterialDesignAccentCheckBox}" IsEnabled="False"  />
+
+            <CheckBox x:Name="EnabledServerSearch" 
+                  Content="远程搜索" Margin="10" Grid.Row="1" IsChecked="{Binding ServerSideSearch}" 
                   IsEnabled="False"
                   ToolTip="从服务器上搜索文本，仅支持单条件搜索">
-            <CheckBox.Style>
-                <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignAccentCheckBox}">
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="False" />
-                                <Condition Binding="{Binding ConnectStatus}" Value="Login" />
-                            </MultiDataTrigger.Conditions>
-                            <Setter Property="IsEnabled" Value="True" />
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </CheckBox.Style>
-        </CheckBox>
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignAccentCheckBox}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="False" />
+                                    <Condition Binding="{Binding ConnectStatus}" Value="Login" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
 
-        <CheckBox x:Name="AskExit" Style="{StaticResource MaterialDesignAccentCheckBox}"
-                  Content="关闭程序时询问" Grid.Row="1" IsChecked="{Binding AskExit}" HorizontalAlignment="Right" >
-        </CheckBox>
+            <CheckBox x:Name="AskExit" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                  Content="关闭程序时询问" IsChecked="{Binding AskExit}" Margin="10" HorizontalAlignment="Right" >
+            </CheckBox>
+        </StackPanel>
+
+        
 
         <!--<Label x:Name="label" Content="文本：" Margin="40,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>-->
     </Grid>

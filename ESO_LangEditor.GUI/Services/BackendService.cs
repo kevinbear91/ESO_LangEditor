@@ -7,7 +7,14 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Net;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -22,6 +29,13 @@ namespace ESO_LangEditor.GUI.Services
         private readonly IMapper _mapper;
         private readonly IEventAggregator _ea;
         private readonly ILogger _logger;
+
+        //public AppConfigServer _appConfigServer;
+        private string _localFileName;
+        private string _fileSha256;
+
+        public event EventHandler<string> SetSha256;
+        public event EventHandler<string> SetAppConfigClientJpLangSha256;
 
         public BackendService(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
             ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper,
@@ -38,46 +52,6 @@ namespace ESO_LangEditor.GUI.Services
             _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadlangtextsUpdateZh);
             _ea.GetEvent<RefreshTokenEvent>().Subscribe(SyncToken);
         }
-
-        //public async Task LangtextZhUpdateUpload(LangTextForUpdateZhDto langTextUpdateZhDto)
-        //{
-        //    var code = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
-
-        //    Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
-
-        //    if (code.Code == (int)RespondCode.Success)
-        //    {
-        //        langTextUpdateZhDto.IsTranslated = 3;
-        //        await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
-        //    }
-
-        //    //MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
-        //}
-
-        //public async Task LangtextZhUpdateUpload(List<LangTextForUpdateZhDto> langTextUpdateZhDtos)
-        //{
-        //    var code = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDtos);
-
-        //    if (code.Code == (int)RespondCode.Success)
-        //    {
-        //        foreach (var lang in langTextUpdateZhDtos)
-        //        {
-        //            lang.IsTranslated = 3;
-        //        }
-        //        await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDtos);
-        //    }
-
-        //    //MainWindowMessageQueue.Enqueue("状态码：" + code.ToString());
-        //}
-
-        //public Task StartupConnectSequenceCheck()
-        //{
-        //    IStartupCheck startupService = new StartupCheck();
-
-
-
-        //}
-
 
         private async void SyncToken()
         {
@@ -162,5 +136,95 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
+        public async Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256)
+        {
+            _fileSha256 = fileSha256;
+            _localFileName = localFileName;
+
+            _ea.GetEvent<ConnectProgressString>().Publish($"正在下载 {localFileName}");
+
+            using (WebClient client = new WebClient())
+            {
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
+                client.DownloadProgressChanged += Client_DownloadProgressChanged;
+                await client.DownloadFileTaskAsync(new Uri(downloadPath), localFileName);
+            }
+        }
+
+        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            _ea.GetEvent<ConnectProgressString>().Publish($"({e.ProgressPercentage}%) 正在下载 {_localFileName}");
+        }
+
+        private void DelegateHashAndUnzip(object sender, AsyncCompletedEventArgs e)
+        {
+            _ea.GetEvent<ConnectProgressString>().Publish($"{_localFileName} 下载完成！");
+            Debug.WriteLine("下载完成！");
+
+            Task.Delay(1000);
+
+            if (GetFileExistAndSha256(_localFileName, _fileSha256))
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish($"{_localFileName} SHA256校验通过，准备解压文件。");
+                Debug.WriteLine("SHA256校验通过，准备解压文件。");
+
+                ZipFile.ExtractToDirectory(_localFileName, App.WorkingDirectory, true);
+
+                SetSha256(this, _fileSha256);
+
+                File.Delete(_localFileName);
+            }
+            else
+            {
+                _ea.GetEvent<ConnectProgressString>().Publish($"校验 {_localFileName} SHA256失败！");
+                _logger.LogCritical($"====={_localFileName} 更新失败======");
+            }
+        }
+
+        public bool GetFileExistAndSha256(string filePath, string fileSHA265)
+        {
+            string hashReslut;
+
+            if (File.Exists(filePath))
+            {
+                using (FileStream stream = File.OpenRead(filePath))
+                {
+                    Debug.WriteLine(filePath);
+                    SHA256Managed sha = new SHA256Managed();
+                    byte[] hash = sha.ComputeHash(stream);
+                    hashReslut = BitConverter.ToString(hash).Replace("-", String.Empty);
+                }
+                return fileSHA265 == hashReslut;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<AppConfigServer> GetServerRespondAndConfig()
+        {
+            var _jsonOption = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            AppConfigServer result = null;
+            HttpClient client = App.HttpClient;
+
+            HttpResponseMessage response = await client.GetAsync("AppConfig.json");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
+            }
+            return result;
+        }
+
+        //public async Task TestEvent()
+        //{
+        //    SetAppConfigClientJpLangSha256(this, "sha265here");
+        //}
     }
 }

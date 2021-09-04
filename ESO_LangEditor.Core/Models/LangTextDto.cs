@@ -12,6 +12,7 @@ namespace ESO_LangEditor.Core.Models
         public int IdType { get; set; }
         public string TextEn { get; set; }
         public string TextZh { get; set; }
+        public string? TextJp { get; set; }
         public LangType LangTextType { get; set; }
         public byte IsTranslated { get; set; }
         public string UpdateStats { get; set; }

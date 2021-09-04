@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:ucd="clr-namespace:ESO_LangEditor.GUI.Views.UserControls"
+        xmlns:service="clr-namespace:ESO_LangEditor.GUI.Services"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
@@ -24,12 +25,12 @@
             
             <Grid Background="#FFEEEEEE">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="110"/>
                     <RowDefinition/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
-                <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" Height="110">
+                <materialDesign:ColorZone Mode="PrimaryMid" Padding="10" Height="110">
                     <DockPanel MinWidth="780">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -37,12 +38,15 @@
                                 <ColumnDefinition />
                                 <!--<ColumnDefinition Width="100" />-->
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="90" />
+                            </Grid.RowDefinitions>
 
                             <Button materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
                                     Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
                                     CommandParameter="{x:Static Dock.Top}"
-                                    Height="50" Width="50" Cursor="Hand" Background="#FF3F51B5" VerticalAlignment="Top" >
+                                    Height="50" Width="50" Background="#FF3F51B5" VerticalAlignment="Top" >
 
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
@@ -84,12 +88,27 @@
                             </Button>
 
                             <ucd:MainWindowSearchbar Grid.Column="1" x:Name="searchBar" />
+                            
+                            
                         </Grid>
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <DockPanel Grid.Row="1" >
-                    <!--<Expander ExpandDirection="Right" Header="aaa" IsExpanded="True">
-                        <TreeView Width="100"></TreeView></Expander>-->
+                    <TreeView Width="300" ItemsSource="{Binding LangTreeCategories}" Visibility="Collapsed">
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type service:LangTreeCategory}"
+                                                          ItemsSource="{Binding LangTree}">
+                                <TextBlock Text="{Binding Name}" Margin="3,2" />
+                            </HierarchicalDataTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type service:LangTreeList}"
+                                                          ItemsSource="{Binding LangContent}">
+                                <TextBlock Text="{Binding ListName}" Margin="3,2" />
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type service:LangTreeContent}">
+                                <TextBlock Text="{Binding TypeName}" Margin="3 2" ToolTip="{Binding TypeCategory}" />
+                            </DataTemplate>
+                        </TreeView.Resources>
+                    </TreeView>
                     <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent" />
                 </DockPanel>
 
