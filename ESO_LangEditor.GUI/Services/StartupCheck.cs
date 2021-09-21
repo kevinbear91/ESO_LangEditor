@@ -206,8 +206,17 @@ namespace ESO_LangEditor.GUI.Services
             //    await client.DownloadFileTaskAsync(new Uri(App.ServerPath + _langConfigServer.LangUpdaterPackPath),
             //    "UpdaterPack.zip");
             //}
-            await _backendService.DownloadFileFromServer(App.ServerPath + _langConfigServer.LangUpdaterPackPath,
+            _backendService.DownloadAndExtractComplete += SetUpdaterSha256;
+           await _backendService.DownloadFileFromServer(App.ServerPath + _langConfigServer.LangUpdaterPackPath,
                 _langConfigServer.LangUpdaterPackPath, _langConfigServer.LangUpdaterPackSha256);
+        }
+
+        private void SetUpdaterSha256(object sender, string e)
+        {
+            _backendService.DownloadAndExtractComplete -= SetUpdaterSha256;
+
+            App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
+            AppConfigClient.Save(App.LangConfig);
         }
 
         //private void DelegateHashAndUnzip(object sender, AsyncCompletedEventArgs e)

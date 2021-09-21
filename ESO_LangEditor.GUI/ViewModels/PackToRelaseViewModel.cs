@@ -74,6 +74,8 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ExcuteViewModelMethod PackFilesCommand => new ExcuteViewModelMethod(ProcessFilesAsync);
         public ExcuteViewModelMethod ExportLangCommand => new ExcuteViewModelMethod(ExportLangTextToLang);
         public ExcuteViewModelMethod ExportLuaCommand => new ExcuteViewModelMethod(ExportLangLuaToStr);
+        public ExcuteViewModelMethod ExportLocationCommand => new ExcuteViewModelMethod(ExportTypeDataToLua);
+
 
         private ILangTextRepoClient _langTextRepo;
         private ILangFile _langFile;
@@ -372,6 +374,62 @@ namespace ESO_LangEditor.GUI.ViewModels
             opencc.Start();
             opencc.WaitForExit();
         }
+
+        private async void ExportTypeDataToLua(object obj)
+        {
+            Dictionary<string, string> exportDict = new Dictionary<string, string>();
+            string replaceWord = @"\" + "\x22";  //replace " to \" for export Lua.
+
+            var locationNameList = await _langTextRepo.GetLangTextByConditionAsync("10860933", SearchTextType.Type, SearchPostion.Full);
+            locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("146361138", SearchTextType.Type, SearchPostion.Full));
+            locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("157886597", SearchTextType.Type, SearchPostion.Full));
+
+            Debug.WriteLine($"locationNameList count: {locationNameList.Count}");
+
+            foreach (var location in locationNameList)
+            {
+                if (location.TextZh != null && !exportDict.ContainsKey(location.TextZh))
+                {
+                    if (location.TextZh.Contains("\x22"))
+                    {
+                        location.TextZh = location.TextZh.Replace("\x22", replaceWord);
+                        Debug.WriteLine(location.TextZh);
+                    }
+                    if (location.TextEn.Contains("\x22"))
+                    {
+                        location.TextEn = location.TextEn.Replace("\x22", replaceWord);
+                        Debug.WriteLine(location.TextEn);
+                    }
+                    exportDict.Add(location.TextZh, location.TextEn);
+                }
+            }
+            await _langFile.ExportAddonDictToLua(exportDict, 0);
+            exportDict.Clear();
+
+            var itemName = await _langTextRepo.GetLangTextByConditionAsync("242841733", SearchTextType.Type, SearchPostion.Full);
+
+            
+            foreach (var item in itemName)
+            {
+                if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
+                {
+                    if(item.TextZh.Contains("\x22"))
+                    {
+                        item.TextZh = item.TextZh.Replace("\x22", replaceWord);
+                        Debug.WriteLine(item.TextZh);
+                    }
+                    if (item.TextEn.Contains("\x22"))
+                    {
+                        item.TextEn = item.TextEn.Replace("\x22", replaceWord);
+                        Debug.WriteLine(item.TextEn);
+                    }
+                    exportDict.Add(item.TextZh, item.TextEn);
+                }
+            }
+
+            await _langFile.ExportAddonDictToLua(exportDict, 1);
+        }
+
 
         private Visibility RoleToVisibility(string roleName)
         {

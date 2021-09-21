@@ -140,6 +140,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _gridData, value);
         }
 
+        public Visibility JpVisibility => Visibility.Collapsed;
+
         public List<string> FileList { get; set; }
 
         public ExcuteViewModelMethod OpenFileCommand => new ExcuteViewModelMethod(OpenFileWindow);

@@ -11,6 +11,9 @@
         mc:Ignorable="d"
         TextElement.FontSize="14"
         Title="文本编辑" Height="450" Width="800" WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner" Tag="LangtextEditor">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
     <Grid Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -35,6 +38,14 @@
                     </StackPanel>
 
                     <Separator />
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton ToolTip="Save" Margin="10 .5 0 0" IsChecked="{Binding IsDisplayJp}" 
+                              Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                        <TextBlock Margin="10 .5 0 0" Text="显示日文(如果可用)" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <Separator />
 
                     <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
@@ -55,14 +66,49 @@
             </ToolBarTray>
         </StackPanel>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10" Grid.Row="1" Grid.Column="0"
-                      CanContentScroll="True" >
-            <TextBox x:Name="textBox_EN" Style="{StaticResource MaterialDesignFilledTextBox}"
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10"
+                      CanContentScroll="True" Grid.Row="0" >
+                <TextBox x:Name="textBox_EN" MinHeight="111"
+                         Style="{StaticResource MaterialDesignFilledTextBox}"
                          materialDesign:HintAssist.Hint="英文"
-                     Text="{Binding Path=CurrentLangText.TextEn, UpdateSourceTrigger=PropertyChanged}" 
+                         Text="{Binding Path=CurrentLangText.TextEn, UpdateSourceTrigger=PropertyChanged}" 
                          TextWrapping="Wrap" IsReadOnly="true" />
-        </ScrollViewer>
+            </ScrollViewer>
 
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      CanContentScroll="True" Grid.Row="1" >
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer" >
+                        <Setter Property="Margin" Value="10,0,10,10" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=CurrentLangText.TextJp}" Value="{x:Null}">
+                                <Setter Property="Margin" Value="10,0,10,0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Style>
+                <TextBox x:Name="textBox_jp" 
+                         materialDesign:HintAssist.Hint="日文"
+                         Text="{Binding Path=CurrentLangText.TextJp, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap" IsReadOnly="true" >
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
+                            <Setter Property="Visibility" Value="{Binding IsDisplayJp, Converter={StaticResource BoolToVis}}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=CurrentLangText.TextJp}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </ScrollViewer>
+        </Grid>
 
         <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto"
                       Margin="10">

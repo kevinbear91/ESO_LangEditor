@@ -109,7 +109,7 @@
                             </DataTemplate>
                         </TreeView.Resources>
                     </TreeView>
-                    <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent" />
+                    <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent"  />
                 </DockPanel>
 
                 <materialDesign:Snackbar MessageQueue="{Binding MainWindowMessageQueue}"

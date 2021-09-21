@@ -13,6 +13,7 @@ namespace ESO_LangEditor.Core.Entities
         public string LangTypeName { get; set; }
         public LangTypeTreeCategory TreeCategory { get; set; }
         public int LangTextIdType { get; set; }
+        public int TreeLevel { get; set; }
         //public Guid? LangTextId { get; set; }
 
     }

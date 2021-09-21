@@ -145,6 +145,24 @@
                 </Button.Style>
                 
             </Button>
+
+            <Button x:Name="ExportLocation_button" Content="导出地标"
+                Margin="20"
+                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                Command="{Binding ExportLocationCommand}"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Height="32" Cursor="Hand" >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
+                        <Setter Property="IsEnabled" Value="True" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ButtonProgress}" Value="True">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+
+            </Button>
         </StackPanel>
         
 

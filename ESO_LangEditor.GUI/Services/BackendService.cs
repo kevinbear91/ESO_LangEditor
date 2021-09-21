@@ -34,7 +34,7 @@ namespace ESO_LangEditor.GUI.Services
         private string _localFileName;
         private string _fileSha256;
 
-        public event EventHandler<string> SetSha256;
+        public event EventHandler<string> DownloadAndExtractComplete;
         public event EventHandler<string> SetAppConfigClientJpLangSha256;
 
         public BackendService(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
@@ -170,7 +170,7 @@ namespace ESO_LangEditor.GUI.Services
 
                 ZipFile.ExtractToDirectory(_localFileName, App.WorkingDirectory, true);
 
-                SetSha256(this, _fileSha256);
+                DownloadAndExtractComplete(this, _fileSha256);
 
                 File.Delete(_localFileName);
             }

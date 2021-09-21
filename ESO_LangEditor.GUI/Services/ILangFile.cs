@@ -16,6 +16,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<string> ExportLangTextsAsJson(List<LangTextDto> langtextsList, LangChangeType changeType);
         Task ExportLangTextsToText(Dictionary<string, LangTextDto> langList, string path);
         Task ExportLuaToStr(List<LangTextDto> langList);
+        Task ExportAddonDictToLua(Dictionary<string, string> langDict, int luaType);
         Task ExportLangTextsToLang(Dictionary<string, LangTextDto> langList, string path);
         Task ExportLangTextsToLang(Dictionary<string, string> langList, string path);
 

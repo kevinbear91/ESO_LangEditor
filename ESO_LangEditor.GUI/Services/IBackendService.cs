@@ -16,7 +16,7 @@ namespace ESO_LangEditor.GUI.Services
         bool GetFileExistAndSha256(string filePath, string fileSHA265);
         //delegate void SetAppConfigClientUpdaterSha256(string sha256);
         //Task TestEvent();
-        event EventHandler<string> SetSha256;
+        event EventHandler<string> DownloadAndExtractComplete;
         //event EventHandler<string> SetAppConfigClientJpLangSha256;
     }
 }

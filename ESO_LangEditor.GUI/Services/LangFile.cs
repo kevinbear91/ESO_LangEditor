@@ -847,6 +847,52 @@ namespace ESO_LangEditor.GUI.Services
             }
         }
 
+        public async Task ExportAddonDictToLua(Dictionary<string, string> langDict, int luaType)
+        {
+
+            if (!Directory.Exists("Export"))
+            {
+                Directory.CreateDirectory("Export");
+            }
+
+            string writerName = luaType switch
+            {
+                0 => "locationNameDict",
+                1 => "itemNameDict",
+                _ => "locationNameDict",
+            };
+
+            string fileName = luaType switch
+            {
+                0 => "location.lua",
+                1 => "itemsname.lua",
+                _ => "location.lua",
+            };
+
+            //List<string> line = new List<string>();
+
+            //string line;
+            //string zh;
+            //string en;
+            using (StreamWriter sw = new StreamWriter(@"Export\" + fileName))
+            {
+                await sw.WriteLineAsync(writerName + " = {}");
+                await sw.WriteLineAsync(writerName + " = {");
+                
+                foreach (var lang in langDict)
+                {
+                    string line = "  [\"" + lang.Key + "\"] = \"" + lang.Value + "\",";    //  ["中文名"] = "英文名"
+
+                    await sw.WriteLineAsync(line);
+                }
+
+                await sw.WriteLineAsync("}");
+
+                sw.Flush();
+                sw.Close();
+            }
+        }
+
         public JsonFileDto JsonDtoDeserialize(string path)
         {
             string jsonString;
@@ -895,5 +941,7 @@ namespace ESO_LangEditor.GUI.Services
             bool result = bytes.Length == langText.Length;
             return result;
         }
+
+        
     }
 }

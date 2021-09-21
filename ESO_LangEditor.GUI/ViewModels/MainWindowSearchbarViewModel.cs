@@ -164,7 +164,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async void LoadJpLang(object obj)
         {
-            //MessageBox.Show(obj.ToString());
+            var serverConfig = await _backendService.GetServerRespondAndConfig();
 
             bool isChecked = (bool)obj;
 
@@ -174,7 +174,7 @@ namespace ESO_LangEditor.GUI.ViewModels
                 @"Data\jp_pregame.lua"
             };
 
-            if (File.Exists(@"Data\jp.lang"))
+            if (File.Exists(@"Data\jp.lang") && App.LangConfig.LangJpSha256 == serverConfig.LangJpPackSHA256)
             {
                 if (isChecked)
                 {
@@ -202,30 +202,30 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             else
             {
-                var dialogResult = MessageBox.Show("没有找到日语本地化文件，现在是否要下载？", "错误", 
+                var dialogResult = MessageBox.Show("没有找到日语本地化文件或有新版，现在是否要下载？", "错误", 
                     MessageBoxButton.YesNo, MessageBoxImage.Error);
 
                 if (dialogResult == MessageBoxResult.Yes)
                 {
-                    await DownloadJpFiles();
+                    await DownloadJpFiles(serverConfig);
                 }
             }
         }
 
-        private async Task DownloadJpFiles()
+        private async Task DownloadJpFiles(AppConfigServer appConfigServer)
         {
             LoadJpLangCommand.IsExecuting = true;
 
-            var serverConfig = await _backendService.GetServerRespondAndConfig();
+            //var serverConfig = await _backendService.GetServerRespondAndConfig();
 
-            _backendService.SetSha256 += SetAppConfigClientJpLangSha256;
-            await _backendService.DownloadFileFromServer(App.ServerPath + serverConfig.LangJpPackPath,
-                serverConfig.LangJpPackPath, serverConfig.LangJpPackSHA256);
+            _backendService.DownloadAndExtractComplete += SetAppConfigClientJpLangSha256;
+            await _backendService.DownloadFileFromServer(App.ServerPath + appConfigServer.LangJpPackPath,
+                appConfigServer.LangJpPackPath, appConfigServer.LangJpPackSHA256);
         }
 
         private void SetAppConfigClientJpLangSha256(object sender, string e)
         {
-            _backendService.SetSha256 -= SetAppConfigClientJpLangSha256;
+            _backendService.DownloadAndExtractComplete -= SetAppConfigClientJpLangSha256;
 
             App.LangConfig.LangJpSha256 = e;
             AppConfigClient.Save(App.LangConfig);

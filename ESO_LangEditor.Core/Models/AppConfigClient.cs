@@ -45,10 +45,11 @@ namespace ESO_LangEditor.Core.Models
             UserRefreshToken = "";
             UserGuid = Guid.Empty;
             UserName = "";
-            AppSetting = new AppSettingClient 
-            { 
-                IsAskToExit = true, 
-                IsAutoQueryLangTextInReview = true, 
+            AppSetting = new AppSettingClient
+            {
+                IsAskToExit = true,
+                IsAutoQueryLangTextInReview = true,
+                IsDisplayJp = false,
             };
         }
         private static readonly string CONFIG_FILE = "LangConfig.json";
@@ -99,5 +100,6 @@ namespace ESO_LangEditor.Core.Models
     {
         public bool IsAskToExit { get; set; }
         public bool IsAutoQueryLangTextInReview { get; set; }
+        public bool IsDisplayJp { get; set; }
     }
 }

@@ -93,6 +93,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         }
 
         public Visibility ReasonForVisibility => Visibility.Visible;
+        public Visibility JpVisibility => Visibility.Collapsed;
 
         public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewUserList);
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);

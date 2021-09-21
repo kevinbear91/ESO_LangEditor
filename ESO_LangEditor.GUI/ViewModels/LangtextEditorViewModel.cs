@@ -26,7 +26,9 @@ namespace ESO_LangEditor.GUI.ViewModels
         private LangTextDto _gridSelectedItem;
         private string _mdNotifyContent;
         private bool _isInReview;
+        private bool _isDisplayJp;
         private int _currentSelectedIndex = 0;
+        private Visibility _jpVisibility = Visibility.Collapsed;
 
         public LangTextDto CurrentLangText
         {
@@ -69,6 +71,18 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             get => _isInReview;
             set => SetProperty(ref _isInReview, value);
+        }
+
+        public bool IsDisplayJp
+        {
+            get => App.LangConfig.AppSetting.IsDisplayJp;
+            set => App.LangConfig.AppSetting.IsDisplayJp = value;
+        }
+
+        public Visibility JpVisibility
+        {
+            get => _jpVisibility;
+            set => SetProperty(ref _jpVisibility, value);
         }
 
         public Visibility ReasonForVisibility => Visibility.Collapsed;

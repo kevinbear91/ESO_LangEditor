@@ -80,6 +80,8 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _gridData, value);
         }
 
+        public Visibility JpVisibility => Visibility.Collapsed;
+
         private ILangTextRepoClient _langTextRepository; // = new LangTextRepoClientService();
         private IEventAggregator _ea;
         private ILogger _logger;
