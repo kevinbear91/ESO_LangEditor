@@ -2,6 +2,8 @@
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Converter;
 using ESO_LangEditor.GUI.EventAggres;
+using ESO_LangEditor.GUI.ViewModels;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,27 +37,10 @@ namespace ESO_LangEditor.GUI.Views.UserControls
             //set { _searchPostion =  }
         }
 
-
-
         public UC_LangDataGrid()
         {
             InitializeComponent();
-            //LangDataGridCommand = new LangDataGridCommand(this);
-
-            //Loaded += UC_LangDataGrid_Loaded;
         }
-
-        //private void UC_LangDataGrid_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    foreach (var column in LangDataGrid.Columns)
-        //    {
-        //        if (column.Header.ToString() == "变更原因" && GetDataGridInWindowTag() == "LangtextReviewWindow")
-        //        {
-        //            column.Visibility = Visibility.Visible;
-        //        }
-        //    }
-
-        //}
 
         private void LangSearch_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -128,6 +113,29 @@ namespace ESO_LangEditor.GUI.Views.UserControls
                     if (datagrid.SelectedIndex != -1)
                     {
                         RowRightClickMenuGenerater();
+                    }
+                }
+                else if (target is DataGridRow & GetDataGridInWindowTag() == "LangtextReviewWindow")
+                {
+                    if (datagrid.SelectedIndex != -1)
+                    {
+                        if (_rowRightClickMenu.Items.Count == 0)
+                        {
+                            foreach (var item in RowRightClickMenuEnum)
+                            {
+                                if (item == LangDataGridContextMenu.DeleteUnderReview)
+                                {
+                                    var menuItem = new MenuItem
+                                    {
+                                        Header = _enumDescriptionConverter.GetEnumDescription(item),
+                                        DataContext = item,
+                                    };
+                                    menuItem.Click += RowRightClickMenu_OnClick;
+                                    _rowRightClickMenu.Items.Add(menuItem);
+                                }
+                            }
+                        }
+                        _rowRightClickMenu.IsOpen = true;
                     }
                 }
                 target = VisualTreeHelper.GetParent(target);
@@ -203,17 +211,37 @@ namespace ESO_LangEditor.GUI.Views.UserControls
             {
                 foreach (var item in RowRightClickMenuEnum)
                 {
-                    var menuItem = new MenuItem
+                    if (item != LangDataGridContextMenu.DeleteUnderReview)
                     {
-                        Header = _enumDescriptionConverter.GetEnumDescription(item),
-                        DataContext = item,
-                    };
-                    menuItem.Click += RowRightClickMenu_OnClick;
-                    _rowRightClickMenu.Items.Add(menuItem);
+                        var menuItem = new MenuItem
+                        {
+                            Header = _enumDescriptionConverter.GetEnumDescription(item),
+                            DataContext = item,
+                        };
+                        menuItem.Click += RowRightClickMenu_OnClick;
+                        _rowRightClickMenu.Items.Add(menuItem);
+                    }
                 }
             }
             _rowRightClickMenu.IsOpen = true;
         }
+        //private void RowRightClickMenuGenerater_ReviewWindow()
+        //{
+        //    if (_rowRightClickMenu.Items.Count == 0)
+        //    {
+        //        foreach (var item in RowRightClickMenuEnum)
+        //        {
+        //            var menuItem = new MenuItem
+        //            {
+        //                Header = _enumDescriptionConverter.GetEnumDescription(item),
+        //                DataContext = item,
+        //            };
+        //            menuItem.Click += RowRightClickMenu_OnClick;
+        //            _rowRightClickMenu.Items.Add(menuItem);
+        //        }
+        //    }
+        //    _rowRightClickMenu.IsOpen = true;
+        //}
 
         private void RowRightClickMenu_OnClick(object sender, RoutedEventArgs e)
         {
@@ -227,6 +255,10 @@ namespace ESO_LangEditor.GUI.Views.UserControls
                     break;
                 case LangDataGridContextMenu.SearchAndReplace:
                     new SearchReplaceWindow(GetSeletedItems()).Show();
+                    break;
+                case LangDataGridContextMenu.DeleteUnderReview:
+                    var context = this.DataContext as LangTextReviewWindowViewModel;
+                    context.SubmitDeleteSelectedItemsToServer();
                     break;
             };
 

@@ -13,5 +13,7 @@ namespace ESO_LangEditor.Core.EnumTypes
         EditMutilItem = 2,
         [Description("查找替换已选项")]
         SearchAndReplace = 3,
+        [Description("删除已选择待审核文本")]
+        DeleteUnderReview = 4,
     }
 }

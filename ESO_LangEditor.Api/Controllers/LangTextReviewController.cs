@@ -301,6 +301,88 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        [Authorize(Roles = "Editor")]
+        [HttpPost("del/list")]
+        public async Task<IActionResult> DeleteLangTextInReview(List<Guid> langtextIds)
+        {
+            var userId = _userManager.GetUserId(HttpContext.User);  //获取操作者ID
+            var user = await _userManager.FindByIdAsync(userId);
+
+            bool isAdmin = false;
+
+            List<LangTextReview> langTextReviewsNoPermission = new List<LangTextReview>();
+
+            if (user == null)
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.UserNotFound,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.UserNotFound)
+                });
+            }
+
+            if (await _userManager.IsInRoleAsync(user, "Admin"))
+            {
+                isAdmin = true;
+            }
+
+            foreach (var langId in langtextIds)
+            {
+
+                var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByIdAsync(langId);
+
+                if (langtext != null)
+                {
+                    if (langtext.UserId == user.Id)
+                    {
+                        _repositoryWrapper.LangTextReviewRepo.Delete(langtext);
+                    }
+                    else if (isAdmin)
+                    {
+                        _repositoryWrapper.LangTextReviewRepo.Delete(langtext);
+                    }
+                    else
+                    {
+                        langTextReviewsNoPermission.Add(langtext);
+                    }
+                }
+            }
+            
+            if (langtextIds.Count == langTextReviewsNoPermission.Count)
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextReviewDeleteNoPermission,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextReviewDeleteNoPermission)
+                });
+            }
+
+            if (!await _repositoryWrapper.LangTextReviewRepo.SaveAsync())
+            {
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextReviewFailed,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextReviewFailed)
+                });
+            }
+
+            if (langTextReviewsNoPermission.Count >= 1)
+            {
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextReviewDeleteIncludeNoPermission,
+                    Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.LangtextReviewDeleteIncludeNoPermission)
+                });
+            }
+
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = ApiRespondCodeExtensions.ApiRespondCodeString(RespondCode.Success)
+            });
+
+
+        }
 
         //private async Task<LangText> NewAddedLangtextReview(Guid userId, LangTextReview langTextReview)
         //{

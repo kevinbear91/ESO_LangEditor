@@ -38,7 +38,8 @@ namespace ESO_LangEditor.Core.EnumTypes
         LangtextRevNumberUpdateFailed = 455,
         LangtextRevNumberNotExisted = 456,
         LangtextReviewFailed = 457,
-
+        LangtextReviewDeleteNoPermission = 458,
+        LangtextReviewDeleteIncludeNoPermission = 459,
     }
     public static class ApiRespondCodeExtensions
     {
@@ -81,7 +82,9 @@ namespace ESO_LangEditor.Core.EnumTypes
                 RespondCode.RoleAddFailed => "角色添加失败",
                 RespondCode.RoleExisted => "角色已存在",
                 RespondCode.LangtextReviewFailed => "文本审核失败",
-                _ => "未知错误",
+                RespondCode.LangtextReviewDeleteNoPermission => "没有权限删除当前选择的待审核文本",
+                RespondCode.LangtextReviewDeleteIncludeNoPermission => "选择的待审核文本已删除但包含部分无权限删除的文本",
+                //_ => "未知错误",
             };
         }
     }

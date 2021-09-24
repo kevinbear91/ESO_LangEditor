@@ -356,9 +356,25 @@ namespace ESO_LangEditor.GUI.Services
             return code;
         }
 
-        public Task<MessageWithCode> RemoveLangTextsInReview(Guid langTextGuid)
+        public async Task<MessageWithCode> RemoveLangTextsInReview(Guid langTextGuid)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<MessageWithCode> RemoveLangTextsInReview(List<Guid> langTextGuids)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(langTextGuids);
+            //string langTextId = langTextForUpdateZhDto.Id.ToString();
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langtext/review/del/list", content);
+
+            string responseContent = await response.Content.ReadAsStringAsync();
+            MessageWithCode code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
         }
 
         public async Task<MessageWithCode> UpdateLangTextEn(List<LangTextForUpdateEnDto> langTextForUpdateEnDtos)

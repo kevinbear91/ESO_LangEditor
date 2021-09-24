@@ -2,6 +2,7 @@
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
 using ESO_LangEditor.GUI.Command;
+using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
 using Prism.Events;
 using Prism.Mvvm;
@@ -31,6 +32,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
         private ILangTextAccess _langTextAccess;
         private string _selectedItemInfo;
+        private bool _isSubmitItems = false;
 
         public string SearchResultInfo
         {
@@ -99,14 +101,16 @@ namespace ESO_LangEditor.GUI.ViewModels
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
 
-        private IEventAggregator _ea;
+        public EventHandler DeleteSelectedItems;
 
         public LangTextReviewWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, 
             ILangTextAccess langTextAccess)
         {
-            _ea = ea;
+            //_ea = ea;
             _langTextRepoClient = langTextRepoClient;
             _langTextAccess = langTextAccess;
+
+            //_ea.GetEvent<LangtextReviewWindowDeleteSelectedItems>().Subscribe(SubmitDeleteSelectedItems);
         }
 
         public async void QueryReviewItemsBySelectedUser(object o)
@@ -198,6 +202,52 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 NetworkInfo = ex.Message;
             }
+        }
+
+        public async void SubmitDeleteSelectedItemsToServer()
+        {
+            if (_isSubmitItems)
+            {
+                MessageBox.Show("已有上传指令正在执行，请等待完成后再提交！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                _isSubmitItems = true;
+                NetworkInfo = "正在上传并等待服务器执行……";
+
+                List<Guid> langIdList;
+                List<LangTextForReviewDto> langTextForReviewDtos = GridSelectedItems;
+
+                if (langTextForReviewDtos.Count >= 1)
+                {
+                    langIdList = langTextForReviewDtos.Select(lang => lang.Id).ToList();
+                    Debug.WriteLine("langIdList count: " + langIdList.Count);
+
+                    try
+                    {
+                        var respond = await _langTextAccess.RemoveLangTextsInReview(langIdList);
+
+                        if (respond.Code == (int)RespondCode.Success)
+                        {
+                            foreach (var selected in langTextForReviewDtos)
+                            {
+                                GridData.Remove(selected);
+                            }
+                            NetworkInfo = "执行完成";
+                        }
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        NetworkInfo = ex.Message;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("请选择要删除的文本！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                _isSubmitItems = false;
+            }
+
         }
 
         public async void SubmitDenyItemsToServer(object o)

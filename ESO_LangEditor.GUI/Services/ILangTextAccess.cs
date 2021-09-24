@@ -21,6 +21,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<MessageWithCode> RemoveLangTexts(List<Guid> langTextGuids);
         Task<MessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids);
         Task<MessageWithCode> RemoveLangTextsInReview(Guid langTextGuid);
+        Task<MessageWithCode> RemoveLangTextsInReview(List<Guid> langTextGuids);
         Task<List<Guid>> GetUsersInReview();
         //Task<int> GetLangTextRevisedNumber();
         Task<List<LangTextRevNumberDto>> GetAllRevisedNumber();
