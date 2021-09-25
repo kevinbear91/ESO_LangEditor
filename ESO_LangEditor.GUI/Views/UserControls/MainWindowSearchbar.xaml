@@ -33,11 +33,11 @@
                                                   Margin="10,0,0,0"
                                       Grid.Column="0"
                                                   HorizontalAlignment="Left"
-                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="100" VerticalAlignment="Center">
-            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Left" Width="90"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="110" VerticalAlignment="Center">
+            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Center" Width="90"
                                       ItemsSource="{Binding SearchTextTypeCombox}" 
                           SelectedItem="{Binding SelectedSearchTextType, Mode=TwoWay}" 
-                          SelectedIndex="3" >
+                          SelectedIndex="3" VerticalAlignment="Center" >
                 <ComboBox.Resources>
                     <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
                 </ComboBox.Resources>
@@ -164,9 +164,9 @@
                                                   Panel.ZIndex="1"
                                                   Margin="10,0,0,0"
                                                   HorizontalAlignment="Left"
-                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="90" VerticalAlignment="Center">
-            <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" 
-                                      ItemsSource="{Binding SearchPostionCombox}" SelectedItem="{Binding SelectedSearchPostion, Mode=TwoWay}" SelectedIndex="0">
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="110" VerticalAlignment="Center">
+            <ComboBox x:Name="SearchTextPositionComboBox"  Width="100" 
+                                      ItemsSource="{Binding SearchPostionCombox}" SelectedItem="{Binding SelectedSearchPostion, Mode=TwoWay}" SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <ComboBox.Resources>
                     <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
                 </ComboBox.Resources>

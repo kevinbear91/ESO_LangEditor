@@ -119,6 +119,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 await ExportLang(ChsOrChtListSelected);
                 await ExportLua(ChsOrChtListSelected);
+                await ExportTypeDataToLua();
 
                 CopyResList();
                 ModifyFiles();
@@ -291,6 +292,18 @@ namespace ESO_LangEditor.GUI.ViewModels
                     DestPath = @"_tmp\pack\" + esozhPath + @"\gamedata\lang\zh.lang",
                 });
 
+                _copyFilePaths.Add(new FilePaths
+                {
+                    SourcePath = @"Export\location.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\location.lua",
+                });
+
+                _copyFilePaths.Add(new FilePaths
+                {
+                    SourcePath = @"Export\itemsname.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\itemsname.lua",
+                });
+
                 //File.Copy(@"Export\zh_client.str", @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str", true);
                 //File.Copy(@"Export\zh.lang", @"_tmp\pack\" + esozhPath + @"\gamedata\lang\zh.lang", true);
             }
@@ -312,6 +325,18 @@ namespace ESO_LangEditor.GUI.ViewModels
                     SourcePath = @"Export\zht.lang",
                     DestPath = @"_tmp\pack\" + esozhPath + @"\gamedata\lang\zh.lang",
                 });
+
+                _copyFilePaths.Add(new FilePaths
+                {
+                    SourcePath = @"Export\location_cht.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\location.lua",
+                });
+
+                _copyFilePaths.Add(new FilePaths
+                {
+                    SourcePath = @"Export\itemsname_cht.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\itemsname.lua",
+                });
                 //File.Copy(@"Export\zht_client.str", @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str", true);
             }
         }
@@ -321,9 +346,13 @@ namespace ESO_LangEditor.GUI.ViewModels
             List<string> fileList;
 
             if (ChsOrChtListSelected == CHSorCHT.chs)
+            {
                 fileList = File.ReadAllLines(@"Resources\PackCHS.txt").ToList();
-            else
-                fileList = File.ReadAllLines(@"Resources\PackCHT.txt").ToList();
+            }
+            else 
+            { 
+                fileList = File.ReadAllLines(@"Resources\PackCHT.txt").ToList(); 
+            }
 
             foreach (var source in fileList)
             {
@@ -351,10 +380,13 @@ namespace ESO_LangEditor.GUI.ViewModels
             string dirPath = @"_tmp\pack\" + ChsOrChtListSelected.ToString();
 
             if (ChsOrChtListSelected == CHSorCHT.chs)
+            {
                 zipPath = @"Export\微攻略汉化" + _addonVersion + "_简体.zip";
+            }
             else
+            {
                 zipPath = @"Export\微攻略汉化" + _addonVersion + "_繁体.zip";
-
+            }
             ZipFile.CreateFromDirectory(dirPath, zipPath);
 
         }
@@ -375,7 +407,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             opencc.WaitForExit();
         }
 
-        private async void ExportTypeDataToLua(object obj)
+        private void ExportTypeDataToLua(object obj)
+        {
+            Task.Run(() => ExportTypeDataToLua());
+        }
+
+        private async Task ExportTypeDataToLua()
         {
             Dictionary<string, string> exportDict = new Dictionary<string, string>();
             string replaceWord = @"\" + "\x22";  //replace " to \" for export Lua.
@@ -383,7 +420,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             var locationNameList = await _langTextRepo.GetLangTextByConditionAsync("10860933", SearchTextType.Type, SearchPostion.Full);
             locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("146361138", SearchTextType.Type, SearchPostion.Full));
             locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("157886597", SearchTextType.Type, SearchPostion.Full));
-
+            locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("162658389", SearchTextType.Type, SearchPostion.Full));
             Debug.WriteLine($"locationNameList count: {locationNameList.Count}");
 
             foreach (var location in locationNameList)
@@ -408,12 +445,12 @@ namespace ESO_LangEditor.GUI.ViewModels
 
             var itemName = await _langTextRepo.GetLangTextByConditionAsync("242841733", SearchTextType.Type, SearchPostion.Full);
 
-            
+
             foreach (var item in itemName)
             {
                 if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
                 {
-                    if(item.TextZh.Contains("\x22"))
+                    if (item.TextZh.Contains("\x22"))
                     {
                         item.TextZh = item.TextZh.Replace("\x22", replaceWord);
                         Debug.WriteLine(item.TextZh);
@@ -428,6 +465,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
 
             await _langFile.ExportAddonDictToLua(exportDict, 1);
+
+            if (ChsOrChtListSelected == CHSorCHT.cht)
+            {
+                OpenccToCHT(@"Export\location.lua", @"Export\location_cht.lua");
+                OpenccToCHT(@"Export\itemsname.lua", @"Export\itemsname_cht.lua");
+            }
         }
 
 
