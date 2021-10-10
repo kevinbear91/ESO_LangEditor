@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ESO_LangEditor.EFCore
+namespace ESO_LangEditor.GUI.Services
 {
     public class LangtextClientDbContext : DbContext
     {

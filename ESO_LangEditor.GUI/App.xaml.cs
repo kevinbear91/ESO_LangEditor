@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.EFCore;
 using ESO_LangEditor.GUI.Services;
 using ESO_LangEditor.GUI.ViewModels;
 using ESO_LangEditor.GUI.Views;

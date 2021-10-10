@@ -50,6 +50,7 @@ namespace ESO_LangEditor.Core.Models
                 IsAskToExit = true,
                 IsAutoQueryLangTextInReview = true,
                 IsDisplayJp = false,
+                IsServerSideSearch = false,
             };
         }
         private static readonly string CONFIG_FILE = "LangConfig.json";
@@ -101,5 +102,7 @@ namespace ESO_LangEditor.Core.Models
         public bool IsAskToExit { get; set; }
         public bool IsAutoQueryLangTextInReview { get; set; }
         public bool IsDisplayJp { get; set; }
+        public bool IsServerSideSearch { get; set; }
+        public int ServerSideSearchPageSize { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
-using ESO_LangEditor.EFCore.DataRepositories;
+using ESO_LangEditor.Core.RequestParameters;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
@@ -37,11 +38,41 @@ namespace ESO_LangEditor.API.Controllers
             _logger = logger;
         }
         
-        public async Task<ActionResult<IEnumerable<LangText>>> GetLangTextAllAsync()
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextAllAsync([FromQuery]PageParameters pageParameters)
         {
-            var langtextList = await _repositoryWrapper.LangTextRepo.GetAllAsync();
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetAllAsync(pageParameters);
 
-            return langtextList.ToList();
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
+        [HttpGet("zh/{searchTerm}")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsZhByConditionAsync([FromQuery] LangTextParameters langTextParameters, string searchTerm)
+        {
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsZhByConditionAsync(langTextParameters, searchTerm);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
+        [HttpGet("en/{searchTerm}")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsEnByConditionAsync([FromQuery] LangTextParameters langTextParameters, string searchTerm)
+        {
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsEnByConditionAsync(langTextParameters, searchTerm);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return PagedList<LangTextDto>.ToPageList(langtextDto, langTextParameters.PageNumber, langTextParameters.PageSize);
+
+            //return langtextDto;
         }
 
         [Authorize(Roles = "Editor")]
@@ -66,9 +97,9 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize]
         [HttpGet("rev/{revisednumber}")]
-        public async Task<ActionResult<List<LangTextDto>>> GetLangTextByRevisedAsync(int revisednumber)
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextByRevisedAsync(int revisednumber,[FromQuery] PageParameters pageParameters)
         {
-            var langtext = await _repositoryWrapper.LangTextRepo.GetByConditionAsync(lang => lang.Revised == revisednumber);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByConditionAsync(lang => lang.Revised == revisednumber, pageParameters);
             var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
 
             if (langtextDto.Count == 0)

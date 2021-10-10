@@ -47,7 +47,7 @@
 
                     <Separator />
 
-                    <Button ToolTip="Save" Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
+                    <Button Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ContentSave" />

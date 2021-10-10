@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.Core.RequestParameters;
 using ESO_LangEditor.GUI.Command;
 using ESO_LangEditor.GUI.EventAggres;
 using ESO_LangEditor.GUI.Services;
@@ -7,11 +8,13 @@ using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using static System.Convert;
 
 namespace ESO_LangEditor.GUI.ViewModels
 {
@@ -24,14 +27,10 @@ namespace ESO_LangEditor.GUI.ViewModels
         private string _keyword;
         private string _keywordSecond;
         private bool _doubleKeyWordSearch;
-        private bool _serverSideSearch;
         private ClientConnectStatus _connectStatus;
-
         private bool _isLoadJp;
         private Dictionary<string, string> _jpLangDict;
-
-        public ICommand SearchLangCommand => new ExcuteViewModelMethod(SearchLangText);
-        public ExcuteViewModelMethod LoadJpLangCommand => new ExcuteViewModelMethod(LoadJpLang);
+        private ObservableCollection<ClientPageModel> _pageInfo;
 
         public SearchPostion SelectedSearchPostion
         {
@@ -83,14 +82,14 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public bool ServerSideSearch
         {
-            get => _serverSideSearch;
-            set => SetProperty(ref _serverSideSearch, value);
+            get => App.LangConfig.AppSetting.IsServerSideSearch;
+            set => App.LangConfig.AppSetting.IsServerSideSearch = value;
         }
 
         public bool AskExit
         {
-            get { return App.LangConfig.AppSetting.IsAskToExit; }
-            set { App.LangConfig.AppSetting.IsAskToExit = value; }
+            get => App.LangConfig.AppSetting.IsAskToExit;
+            set => App.LangConfig.AppSetting.IsAskToExit = value;
         }
 
         public ClientConnectStatus ConnectStatus
@@ -99,18 +98,38 @@ namespace ESO_LangEditor.GUI.ViewModels
             set => SetProperty(ref _connectStatus, value);
         }
 
+        public int SelectedPageSize
+        {
+            get => IsSelectedPageSizeNumberInList();
+            set => App.LangConfig.AppSetting.ServerSideSearchPageSize = value;
+        }
+
+        public ObservableCollection<ClientPageModel> PageInfo
+        {
+            get => _pageInfo;
+            set => SetProperty(ref _pageInfo, value);
+        }
+
+        public List<int> PageSizeList { get; } = new List<int> { 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000 };
+
         private IEventAggregator _ea;
         private ILangTextRepoClient _langTextRepo;
         private ILangFile _langFile;
+        private ILangTextAccess _langTextAccess;
         private IBackendService _backendService;
 
+        public ICommand SearchLangCommand => new ExcuteViewModelMethod(SearchLangText);
+        public ExcuteViewModelMethod LoadJpLangCommand => new ExcuteViewModelMethod(LoadJpLang);
+        public ICommand GetPageCommand => new ExcuteViewModelMethod(GetPage);
+
         public MainWindowSearchbarViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
-            ILangFile LangFile, IBackendService backendService)
+            ILangFile LangFile, IBackendService backendService, ILangTextAccess langTextAccess)
         {
             _ea = ea;
             _langTextRepo = langTextRepoClient;
             _langFile = LangFile;
             _backendService = backendService;
+            _langTextAccess = langTextAccess;
 
             _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
             
@@ -126,29 +145,33 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             else
             {
-                if (DoubleKeyWordSearch)
+                if (ServerSideSearch)
                 {
-                    result = await _langTextRepo.GetLangTextByConditionAsync(Keyword, KeywordSecond,
-                        SelectedSearchTextType, SelectedSearchTextTypeSecond, SelectedSearchPostion);
+                    result = await ServerSearch();
                 }
                 else
                 {
-                    result = await _langTextRepo.GetLangTextByConditionAsync(Keyword,
-                        SelectedSearchTextType, SelectedSearchPostion);
+                    if (DoubleKeyWordSearch)
+                    {
+                        result = await _langTextRepo.GetLangTextByConditionAsync(Keyword, KeywordSecond,
+                            SelectedSearchTextType, SelectedSearchTextTypeSecond, SelectedSearchPostion);
+                    }
+                    else
+                    {
+                        result = await _langTextRepo.GetLangTextByConditionAsync(Keyword,
+                            SelectedSearchTextType, SelectedSearchPostion);
+                    }
                 }
+                
 
                 if (_isLoadJp)
                 {
                     foreach (var lang in result)
                     {
-                        //string langJp;
-
                         if(_jpLangDict.TryGetValue(lang.TextId, out string langJp))
                         {
                             lang.TextJp = langJp;
                         }
-                        
-                        //lang.TextJp = _jpLangDict[lang.TextId];
                     }
                 }
 
@@ -202,7 +225,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             else
             {
-                var dialogResult = MessageBox.Show("没有找到日语本地化文件或有新版，现在是否要下载？", "错误", 
+                var dialogResult = MessageBox.Show("没有找到日语本地化文件或有新版可用，现在是否要下载？", "错误", 
                     MessageBoxButton.YesNo, MessageBoxImage.Error);
 
                 if (dialogResult == MessageBoxResult.Yes)
@@ -210,6 +233,14 @@ namespace ESO_LangEditor.GUI.ViewModels
                     await DownloadJpFiles(serverConfig);
                 }
             }
+        }
+
+        private void GetPage(object obj)
+        {
+            var para = (int)obj;
+
+
+            MessageBox.Show(para.ToString());
         }
 
         private async Task DownloadJpFiles(AppConfigServer appConfigServer)
@@ -234,6 +265,107 @@ namespace ESO_LangEditor.GUI.ViewModels
             _ea.GetEvent<ConnectProgressString>().Publish("文件下载完成！");
 
             Task.Run(() => LoadJpLang(true));
+        }
+
+        private int IsSelectedPageSizeNumberInList()
+        {
+            int pageSize = App.LangConfig.AppSetting.ServerSideSearchPageSize;
+
+            if (PageSizeList.Contains(pageSize))
+            {
+                return pageSize;
+            }
+
+            return PageSizeList.FirstOrDefault();
+        }
+
+        private async Task<List<LangTextDto>> ServerSearch()
+        {
+            string lang = "en";
+            LangTextParameters searchPara = new LangTextParameters
+            {
+                PageNumber = 1,
+                PageSize = SelectedPageSize,
+                SearchPostion = SelectedSearchPostion,
+            };
+
+            if (SelectedSearchTextType == SearchTextType.TextChineseS)
+            {
+                lang = "zh";
+            }
+
+            if (DoubleKeyWordSearch)
+            {
+                switch (SelectedSearchTextType)
+                {
+                    case SearchTextType.Type:
+                        searchPara.IdType = ToInt32(KeywordSecond);
+                        break;
+                    case SearchTextType.UpdateStatus:
+                        searchPara.GameVersionInfo = KeywordSecond;
+                        break;
+                    case SearchTextType.ByUser:
+                        searchPara.UserId = new Guid(KeywordSecond);
+                        break;
+                }
+            }
+
+            var langtext = await _langTextAccess.GetLangTexts(lang, searchPara, Keyword);
+
+            GetPageInfoFromServer(langtext.PageData);
+
+            return langtext;
+
+        }
+
+        private void GetPageInfoFromServer(PageData pageData)
+        {
+            PageInfo = null;
+            PageInfo = new ObservableCollection<ClientPageModel>();
+            //PageInfo = new List<ClientPageModel>();
+
+            for (int i = 1; i <= pageData.TotalPages; i++)
+            {
+                if (pageData.CurrentPage == i)
+                {
+                    PageInfo.Add(new ClientPageModel { IsCurrentPage = true, PageNumber = i, GetPageCommand = GetPageCommand });
+                }
+                else
+                {
+                    PageInfo.Add(new ClientPageModel { IsCurrentPage = false, PageNumber = i, GetPageCommand = GetPageCommand });
+                }
+
+            }
+
+            //if (pageData.TotalPages > 1)
+            //{
+            //    if (pageData.CurrentPage > 4)
+            //    {
+            //        PageInfo.Add(new ClientPageModel { IsChecked = false, PageNumber = 1 });
+
+            //        for (int i = 1; i > 5; i++)
+            //        {
+            //            if (pageData.CurrentPage == i)
+            //            {
+            //                PageInfo.Add(new ClientPageModel { IsChecked = true, PageNumber = i });
+            //            }
+            //            else
+            //            {
+            //                PageInfo.Add(new ClientPageModel { IsChecked = false, PageNumber = 1 });
+            //            }
+
+            //        }
+            //    }
+
+
+
+
+
+            //}
+
+
+
+
         }
     }
 }

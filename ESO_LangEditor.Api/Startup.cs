@@ -49,6 +49,7 @@ namespace ESO_LangEditorApi
 
                 config.ReturnHttpNotAcceptable = true;
                 //config.OutputFormatters.Add(new XmlSerializerOutputFormatter());
+                
 
                 config.CacheProfiles.Add("Default",
                     new CacheProfile()

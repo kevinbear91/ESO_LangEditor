@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using ESO_LangEditor.Core.Entities;
+using ESO_LangEditor.Core.RequestParameters;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ESO_LangEditor.API.Controllers
@@ -23,9 +25,12 @@ namespace ESO_LangEditor.API.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult<IEnumerable<LangTextArchive>>> GetLangTextAllAsync()
+        public async Task<ActionResult<IEnumerable<LangTextArchive>>> GetLangTextAllAsync([FromQuery]PageParameters pageParameters)
         {
-            var langtextList = await _repositoryWrapper.LangTextArchiveRepo.GetAllAsync();
+            var langtextList = await _repositoryWrapper.LangTextArchiveRepo.GetAllAsync(pageParameters);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
 
             return langtextList.ToList();
         }

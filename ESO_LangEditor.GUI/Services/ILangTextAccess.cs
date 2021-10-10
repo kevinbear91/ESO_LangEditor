@@ -1,5 +1,6 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.Core.RequestParameters;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace ESO_LangEditor.GUI.Services
     {
         Task<IEnumerable<LangTextDto>> GetLangTexts(Guid langtextId);
         Task<IEnumerable<LangTextDto>> GetLangTexts(List<Guid> langtextId);
+        Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters, string searchTerm);
         Task<List<LangTextDto>> GetLangTexts(int langtextRevised);
         Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId);
         Task<List<LangTextForReviewDto>> GetLangTextsFromReviewer(Guid userGuid);
@@ -26,6 +28,6 @@ namespace ESO_LangEditor.GUI.Services
         //Task<int> GetLangTextRevisedNumber();
         Task<List<LangTextRevNumberDto>> GetAllRevisedNumber();
         Task<IEnumerable<LangTextRevisedDto>> GetLangTextRevisedDtos(int revNumber);
-
+        
     }
 }

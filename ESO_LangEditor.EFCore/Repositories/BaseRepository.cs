@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ESO_LangEditor.Core.RequestParameters;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,19 +28,42 @@ namespace ESO_LangEditor.EFCore.Repositories
             return await DbContext.Set<T>().FindAsync(id) != null;
         }
 
-        public Task<IEnumerable<T>> GetAllAsync()
+        public async Task<PagedList<T>> GetAllAsync(PageParameters pageParameters)
         {
-            return Task.FromResult(DbContext.Set<T>().AsEnumerable());
+            var items = await DbContext.Set<T>()
+                .Skip((pageParameters.PageNumber - 1) * pageParameters.PageSize)
+                .Take(pageParameters.PageSize)
+                .ToListAsync();
+
+            var count = await DbContext.Set<T>().CountAsync();
+
+            return new PagedList<T>(items, count, pageParameters.PageNumber, pageParameters.PageSize);
+
+
+            //return Task.FromResult();
+            //return Task.FromResult(DbContext.Set<T>().AsEnumerable());
         }
 
-        public Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
+        public async Task<PagedList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression, PageParameters pageParameters)
         {
-            return Task.FromResult(DbContext.Set<T>().Where(expression).AsEnumerable());
+            var items = await DbContext.Set<T>()
+                .Where(expression)
+                .Skip((pageParameters.PageNumber - 1) * pageParameters.PageSize)
+                .Take(pageParameters.PageSize)
+                .ToListAsync();
+
+            var count = await DbContext.Set<T>().CountAsync();
+
+            return new PagedList<T>(items, count, pageParameters.PageNumber, pageParameters.PageSize);
+
+            //return Task.FromResult(DbContext.Set<T>().Where(expression));
+            //return Task.FromResult(DbContext.Set<T>().Where(expression).AsEnumerable());
         }
 
-        public Task<IEnumerable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression)
+        public Task<IQueryable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression)
         {
-            return Task.FromResult(DbContext.Set<T>().Select(expression).Distinct().AsEnumerable());
+            return Task.FromResult(DbContext.Set<T>().Select(expression).Distinct());
+            //return Task.FromResult(DbContext.Set<T>().Select(expression).Distinct().AsEnumerable());
         }
 
         public async Task<bool> SaveAsync()

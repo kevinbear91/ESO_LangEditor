@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ESO_LangEditor.Core.RequestParameters;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +10,9 @@ namespace ESO_LangEditor.EFCore.Repositories
 {
     public interface IBaseRepository<T>
     {
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
-        Task<IEnumerable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression);
+        Task<PagedList<T>> GetAllAsync(PageParameters pageParameters);
+        Task<PagedList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression, PageParameters pageParameters);
+        Task<IQueryable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression);
         void Create(T entity);
         void CreateList(List<T> entity);
         void Update(T entity);

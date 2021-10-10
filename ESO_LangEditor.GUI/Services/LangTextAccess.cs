@@ -1,8 +1,10 @@
 ﻿using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.Core.RequestParameters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -435,6 +437,68 @@ namespace ESO_LangEditor.GUI.Services
             return byteContent;
         }
 
+        public async Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters, string searchTerm)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            PagedList<LangTextDto> respondedLangtext = null;
+            PageData respondedPageData = null;
 
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            string para = GetLangTextRequestParaString(langTextParameters);
+            Debug.WriteLine($"lang: {lang}, {searchTerm}{para}");
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync(
+                "api/langtext/" + lang + "/" + searchTerm + para);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            string responseHeader = response.Headers.GetValues("X-Pagination").FirstOrDefault();
+
+            if (response.IsSuccessStatusCode)
+            {
+                var langtext = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+                respondedPageData = JsonSerializer.Deserialize<PageData>(responseHeader, _jsonOption);
+                //Debug.WriteLine($"respondedLangtext: {respondedLangtext.Count}");
+                respondedLangtext = new PagedList<LangTextDto>(langtext, langtext.Count, respondedPageData.PageCount, respondedPageData.PageSize)
+                {
+                    PageData = respondedPageData
+                };
+            }
+
+            return respondedLangtext;
+        }
+
+        private static string GetLangTextRequestParaString(LangTextParameters langTextParameters)
+        {
+            string para = "?PageSize=" + langTextParameters.PageSize
+                            + "&SearchPostion=" + langTextParameters.SearchPostion;
+
+            if (langTextParameters.PageNumber != 0)
+            {
+                para = para + "&PageNumber=" + langTextParameters.PageNumber;
+            }
+
+            if (langTextParameters.IdType != 0)
+            {
+                para = para + "&IdType=" + langTextParameters.IdType;
+            }
+
+            if (!string.IsNullOrEmpty(langTextParameters.GameVersionInfo))
+            {
+                para = para + "&GameVersionInfo=" + langTextParameters.GameVersionInfo;
+            }
+
+            if (Guid.Empty != langTextParameters.UserId)
+            {
+                para = para + "&UserId=" + langTextParameters.UserId;
+            }
+
+            if (Guid.Empty != langTextParameters.ReviewerId)
+            {
+                para = para + "&ReviewerId=" + langTextParameters.ReviewerId;
+            }
+
+            return para;
+        }
     }
 }

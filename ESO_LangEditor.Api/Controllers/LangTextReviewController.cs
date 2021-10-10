@@ -3,6 +3,7 @@ using ESO_LangEditor.API.Services;
 using ESO_LangEditor.Core.Entities;
 using ESO_LangEditor.Core.EnumTypes;
 using ESO_LangEditor.Core.Models;
+using ESO_LangEditor.Core.RequestParameters;
 using ESO_LangEditor.EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -38,9 +39,9 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Reviewer")]
-        public async Task<ActionResult<IEnumerable<LangTextReview>>> GetLangTextAllAsync()
+        public async Task<ActionResult<IEnumerable<LangTextReview>>> GetLangTextAllAsync([FromQuery] PageParameters pageParameters)
         {
-            var langtextList = await _repositoryWrapper.LangTextReviewRepo.GetAllAsync();
+            var langtextList = await _repositoryWrapper.LangTextReviewRepo.GetAllAsync(pageParameters);
 
             return langtextList.ToList();
         }
@@ -69,9 +70,9 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpGet("user/{userGuid}")]
-        public async Task<ActionResult<List<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid)
+        public async Task<ActionResult<List<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid, [FromQuery] PageParameters pageParameters)
         {
-            var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByConditionAsync(lang => lang.UserId == userGuid);
+            var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByConditionAsync(lang => lang.UserId == userGuid, pageParameters);
             //var langlist = langtext.ToList();
 
             if (langtext == null)

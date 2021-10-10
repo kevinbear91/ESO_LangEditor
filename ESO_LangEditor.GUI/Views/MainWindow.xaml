@@ -16,31 +16,27 @@
     <materialDesign:DialogHost Name="RootDialogWindow"
         Identifier="RootDialog"
         DialogTheme="Inherit">
-        
+
         <materialDesign:DrawerHost TopDrawerBackground="{DynamicResource MaterialDesignPaper}" x:Name="DrawerHostMainWindow" >
             <materialDesign:DrawerHost.TopDrawerContent>
                 <ucd:MainMenu />
             </materialDesign:DrawerHost.TopDrawerContent>
 
-            
+
             <Grid Background="#FFEEEEEE">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="110"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
 
-                <materialDesign:ColorZone Mode="PrimaryMid" Padding="10" Height="110">
+                <materialDesign:ColorZone Mode="PrimaryMid" Padding="10">
                     <DockPanel MinWidth="780">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60" />
                                 <ColumnDefinition />
-                                <!--<ColumnDefinition Width="100" />-->
                             </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="90" />
-                            </Grid.RowDefinitions>
 
                             <Button materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
                                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
@@ -88,12 +84,13 @@
                             </Button>
 
                             <ucd:MainWindowSearchbar Grid.Column="1" x:Name="searchBar" />
-                            
-                            
+
+
                         </Grid>
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <DockPanel Grid.Row="1" >
+
                     <TreeView Width="300" ItemsSource="{Binding LangTreeCategories}" Visibility="Collapsed">
                         <TreeView.Resources>
                             <HierarchicalDataTemplate DataType="{x:Type service:LangTreeCategory}"
@@ -146,7 +143,7 @@
                     </StatusBarItem>
 
                 </StatusBar>
-                
+
 
             </Grid>
         </materialDesign:DrawerHost>

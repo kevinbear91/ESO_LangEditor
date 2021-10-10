@@ -105,6 +105,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         public event EventHandler OnRequestClose;
         public event EventHandler CloseDrawerHostEvent;
 
+
         public ObservableCollection<LangTreeCategory> LangTreeCategories { get; }
 
         public MainWindowViewModel(IEventAggregator ea, ILogger logger,
@@ -299,19 +300,19 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async Task BootCheck()
         {
-            var startupCheckList = Task.Run(() => _startupCheck.StartupTaskList());
-            //var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
+            //var startupCheckList = Task.Run(() => _startupCheck.StartupTaskList());
+            ////var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
 
-            try
-            {
-                await startupCheckList;
-                await _startupCheck.Login();
-                //await continuation;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.ToString());
-            }
+            //try
+            //{
+            //    await startupCheckList;
+            //    await _startupCheck.Login();
+            //    //await continuation;
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogCritical(ex.ToString());
+            //}
 
             _logger.LogDebug("======启动检查完成======");
             
