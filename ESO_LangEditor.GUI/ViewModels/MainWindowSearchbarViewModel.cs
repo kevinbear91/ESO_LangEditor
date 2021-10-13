@@ -30,7 +30,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private ClientConnectStatus _connectStatus;
         private bool _isLoadJp;
         private Dictionary<string, string> _jpLangDict;
-        private ObservableCollection<ClientPageModel> _pageInfo;
+        private ObservableCollection<ClientPageModel> _pageInfo = new ObservableCollection<ClientPageModel>();
 
         public SearchPostion SelectedSearchPostion
         {
@@ -120,7 +120,7 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         public ICommand SearchLangCommand => new ExcuteViewModelMethod(SearchLangText);
         public ExcuteViewModelMethod LoadJpLangCommand => new ExcuteViewModelMethod(LoadJpLang);
-        public ICommand GetPageCommand => new ExcuteViewModelMethod(GetPage);
+        public ICommand GetPageCommand => new ExcuteViewModelMethod(SearchLangText);
 
         public MainWindowSearchbarViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
             ILangFile LangFile, IBackendService backendService, ILangTextAccess langTextAccess)
@@ -138,6 +138,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private async void SearchLangText(object obj)
         {
             List<LangTextDto> result;
+            int pageNumber;
 
             if (string.IsNullOrWhiteSpace(Keyword))
             {
@@ -147,7 +148,9 @@ namespace ESO_LangEditor.GUI.ViewModels
             {
                 if (ServerSideSearch)
                 {
-                    result = await ServerSearch();
+                    pageNumber = obj == null ? 1 : (int)obj;
+
+                    result = await ServerSearch(pageNumber);
                 }
                 else
                 {
@@ -279,12 +282,12 @@ namespace ESO_LangEditor.GUI.ViewModels
             return PageSizeList.FirstOrDefault();
         }
 
-        private async Task<List<LangTextDto>> ServerSearch()
+        private async Task<List<LangTextDto>> ServerSearch(int pageNumber)
         {
             string lang = "en";
             LangTextParameters searchPara = new LangTextParameters
             {
-                PageNumber = 1,
+                PageNumber = pageNumber,
                 PageSize = SelectedPageSize,
                 SearchPostion = SelectedSearchPostion,
             };
@@ -320,9 +323,10 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private void GetPageInfoFromServer(PageData pageData)
         {
-            PageInfo = null;
-            PageInfo = new ObservableCollection<ClientPageModel>();
-            //PageInfo = new List<ClientPageModel>();
+            if (PageInfo.Count >= 1)
+            {
+                PageInfo.Clear();
+            }
 
             for (int i = 1; i <= pageData.TotalPages; i++)
             {

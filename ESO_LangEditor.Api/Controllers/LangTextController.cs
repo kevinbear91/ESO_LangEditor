@@ -70,9 +70,7 @@ namespace ESO_LangEditor.API.Controllers
 
             var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
 
-            return PagedList<LangTextDto>.ToPageList(langtextDto, langTextParameters.PageNumber, langTextParameters.PageSize);
-
-            //return langtextDto;
+            return langtextDto;
         }
 
         [Authorize(Roles = "Editor")]
