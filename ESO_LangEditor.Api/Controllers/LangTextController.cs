@@ -37,7 +37,8 @@ namespace ESO_LangEditor.API.Controllers
             _userManager = userManager;
             _logger = logger;
         }
-        
+
+        [Authorize]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextAllAsync([FromQuery]PageParameters pageParameters)
         {
             var langtextList = await _repositoryWrapper.LangTextRepo.GetAllAsync(pageParameters);
@@ -49,6 +50,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
+        [Authorize]
         [HttpGet("zh/{searchTerm}")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsZhByConditionAsync([FromQuery] LangTextParameters langTextParameters, string searchTerm)
         {
@@ -61,6 +63,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
+        [Authorize]
         [HttpGet("en/{searchTerm}")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsEnByConditionAsync([FromQuery] LangTextParameters langTextParameters, string searchTerm)
         {
@@ -380,11 +383,14 @@ namespace ESO_LangEditor.API.Controllers
             else //如果不在审核表内
             {
                 //创建待审核文本
-                _mapper.Map(langTextForUpdateZh, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+                //var langToReview = _mapper.Map(langTextForUpdateZh, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+
+                //var langToReview = _mapper.Map<LangText>(langTextForUpdateZh);
 
                 var langtextReview = _mapper.Map<LangTextReview>(langtext);
                 langtextReview.ReasonFor = ReviewReason.ZhChanged;
 
+                _mapper.Map(langTextForUpdateZh, langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
                 _repositoryWrapper.LangTextReviewRepo.Create(langtextReview);    //Move to ReviewRepo wating for review.
             }
 
@@ -448,10 +454,12 @@ namespace ESO_LangEditor.API.Controllers
                 else //如果不在审核表内
                 {
                     //创建待审核文本
-                    _mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
+                    //_mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
 
                     var langtextReview = _mapper.Map<LangTextReview>(langtext);
                     langtextReview.ReasonFor = ReviewReason.ZhChanged;
+
+                    _mapper.Map(lang, langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 
                     _repositoryWrapper.LangTextReviewRepo.Create(langtextReview);    //Move to ReviewRepo wating for review.
                 }

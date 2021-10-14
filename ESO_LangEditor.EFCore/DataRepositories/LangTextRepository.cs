@@ -23,7 +23,7 @@ namespace ESO_LangEditor.EFCore.DataRepositories
         {
             var items = await DbContext.Set<LangText>()
                 .Where(expression).FilterLangTexts(pageParameters)
-                .Skip((pageParameters.PageNumber - 1) * pageParameters.PageSize)
+                .Skip((pageParameters.PageNumber - 1) * pageParameters.PageSize).AsNoTracking()
                 .Take(pageParameters.PageSize)
                 .ToListAsync();
 
@@ -35,7 +35,7 @@ namespace ESO_LangEditor.EFCore.DataRepositories
         public async Task<PagedList<LangText>> GetLangTextsZhByConditionAsync(LangTextParameters langTextParameters, string searchTerm)
         {
             var items = await DbContext.Set<LangText>()
-                .SearchLangTextsZh(langTextParameters, searchTerm)
+                .SearchLangTextsZh(langTextParameters, searchTerm).AsNoTracking()
                 .FilterLangTexts(langTextParameters)
                 .ToListAsync();
 
@@ -45,7 +45,7 @@ namespace ESO_LangEditor.EFCore.DataRepositories
         public async Task<PagedList<LangText>> GetLangTextsEnByConditionAsync(LangTextParameters langTextParameters, string searchTerm)
         {
             var items = await DbContext.Set<LangText>()
-                .SearchLangTextsEn(langTextParameters, searchTerm)
+                .SearchLangTextsEn(langTextParameters, searchTerm).AsNoTracking()
                 .FilterLangTexts(langTextParameters)
                 .ToListAsync();
 
