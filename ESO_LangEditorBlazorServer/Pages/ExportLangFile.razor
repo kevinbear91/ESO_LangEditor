@@ -1,0 +1,19 @@
+﻿@page "/exportlang"
+
+<h1>导出数据库到游戏文件</h1>
+
+@*<p>Current count: @currentCount</p>*@
+
+<button class="btn btn-primary" @onclick="IncrementCount">导出lang文件</button>
+<button class="btn btn-primary" @onclick="IncrementCount">导出lua文件</button>
+<button class="btn btn-primary" @onclick="IncrementCount">导出双语数据文件</button>
+<button class="btn btn-primary" @onclick="IncrementCount">打包至zip文件</button>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

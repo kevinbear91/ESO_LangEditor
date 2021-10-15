@@ -383,10 +383,6 @@ namespace ESO_LangEditor.API.Controllers
             else //如果不在审核表内
             {
                 //创建待审核文本
-                //var langToReview = _mapper.Map(langTextForUpdateZh, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
-
-                //var langToReview = _mapper.Map<LangText>(langTextForUpdateZh);
-
                 var langtextReview = _mapper.Map<LangTextReview>(langtext);
                 langtextReview.ReasonFor = ReviewReason.ZhChanged;
 
@@ -454,8 +450,6 @@ namespace ESO_LangEditor.API.Controllers
                 else //如果不在审核表内
                 {
                     //创建待审核文本
-                    //_mapper.Map(lang, langtext, typeof(LangTextForUpdateZhDto), typeof(LangText));
-
                     var langtextReview = _mapper.Map<LangTextReview>(langtext);
                     langtextReview.ReasonFor = ReviewReason.ZhChanged;
 
