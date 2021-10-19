@@ -48,5 +48,6 @@ namespace ESO_LangEditor.Core.Entities
 
         //文本修订号
         public int Revised { get; set; }
+
     }
 }

@@ -29,6 +29,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private bool _doubleKeyWordSearch;
         private ClientConnectStatus _connectStatus;
         private bool _isLoadJp;
+        private bool _isCaseSensitive = false;
         private Dictionary<string, string> _jpLangDict;
         private ObservableCollection<ClientPageModel> _pageInfo = new ObservableCollection<ClientPageModel>();
 
@@ -96,6 +97,12 @@ namespace ESO_LangEditor.GUI.ViewModels
         {
             get => _connectStatus;
             set => SetProperty(ref _connectStatus, value);
+        }
+
+        public bool IsCaseSensitive
+        {
+            get => _isCaseSensitive;
+            set => SetProperty(ref _isCaseSensitive, value);
         }
 
         public int SelectedPageSize
@@ -284,17 +291,36 @@ namespace ESO_LangEditor.GUI.ViewModels
 
         private async Task<List<LangTextDto>> ServerSearch(int pageNumber)
         {
-            string lang = "en";
+            string category = "";
             LangTextParameters searchPara = new LangTextParameters
             {
                 PageNumber = pageNumber,
                 PageSize = SelectedPageSize,
                 SearchPostion = SelectedSearchPostion,
+                CaseSensitive = IsCaseSensitive,
             };
 
-            if (SelectedSearchTextType == SearchTextType.TextChineseS)
+
+            switch (SelectedSearchTextType)
             {
-                lang = "zh";
+                case SearchTextType.TextEnglish:
+                    category = "en";
+                    break;
+                case SearchTextType.TextChineseS:
+                    category = "zh";
+                    break;
+                case SearchTextType.UpdateStatus:
+                    category = "gameupdate";
+                    break;
+                case SearchTextType.Type:
+                    category = "idType";
+                    break;
+                case SearchTextType.ByUser:
+                    category = "user";
+                    break;
+                case SearchTextType.Reviewer:
+                    category = "reviewer";
+                    break;
             }
 
             if (DoubleKeyWordSearch)
@@ -313,12 +339,30 @@ namespace ESO_LangEditor.GUI.ViewModels
                 }
             }
 
-            var langtext = await _langTextAccess.GetLangTexts(lang, searchPara, Keyword);
+            if (category == "")
+            {
+                List<LangTextDto> langTextDtos = new List<LangTextDto>();
+                LangTextDto langtextDto = null;
+                if (SelectedSearchTextType == SearchTextType.Guid)
+                {
+                    langtextDto = await _langTextAccess.GetLangText(new Guid(Keyword));
+                }
 
-            GetPageInfoFromServer(langtext.PageData);
+                if (SelectedSearchTextType == SearchTextType.UniqueID)
+                {
+                    langtextDto = await _langTextAccess.GetLangText(Keyword);
+                }
+                langTextDtos.Add(langtextDto);
 
-            return langtext;
+                return langTextDtos;
+            }
+            else
+            {
+                var langtext = await _langTextAccess.GetLangTexts(category, searchPara, Keyword);
+                GetPageInfoFromServer(langtext.PageData);
 
+                return langtext;
+            }
         }
 
         private void GetPageInfoFromServer(PageData pageData)

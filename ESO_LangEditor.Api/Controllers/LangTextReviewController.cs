@@ -70,9 +70,9 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize(Roles = "Editor")]
         [HttpGet("user/{userGuid}")]
-        public async Task<ActionResult<List<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid, [FromQuery] PageParameters pageParameters)
+        public async Task<ActionResult<List<LangTextForReviewDto>>> GetLangTextByUserGuidAsync(Guid userGuid)
         {
-            var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByConditionAsync(lang => lang.UserId == userGuid, pageParameters);
+            var langtext = await _repositoryWrapper.LangTextReviewRepo.GetByConditionAsync(lang => lang.UserId == userGuid);
             //var langlist = langtext.ToList();
 
             if (langtext == null)

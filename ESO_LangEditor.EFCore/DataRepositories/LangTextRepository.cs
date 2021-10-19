@@ -19,37 +19,56 @@ namespace ESO_LangEditor.EFCore.DataRepositories
 
         }
 
-        public async Task<PagedList<LangText>> GetLangTextsByConditionAsync(Expression<Func<LangText, bool>> expression, LangTextParameters pageParameters)
+        public async Task<PagedList<LangText>> GetLangTextsByConditionAsync(Expression<Func<LangText, bool>> expression, LangTextParameters langTextParameters)
         {
             var items = await DbContext.Set<LangText>()
-                .Where(expression).FilterLangTexts(pageParameters)
-                .Skip((pageParameters.PageNumber - 1) * pageParameters.PageSize).AsNoTracking()
-                .Take(pageParameters.PageSize)
+                .Where(expression).AsNoTracking()
+                .FilterLangTexts(langTextParameters)
                 .ToListAsync();
 
-            var count = await DbContext.Set<LangText>().CountAsync();
+            //var count = await DbContext.Set<LangText>().CountAsync();
 
-            return new PagedList<LangText>(items, count, pageParameters.PageNumber, pageParameters.PageSize);
+            return PagedList<LangText>.ToPageList(items, langTextParameters.PageNumber, langTextParameters.PageSize);
         }
 
-        public async Task<PagedList<LangText>> GetLangTextsZhByConditionAsync(LangTextParameters langTextParameters, string searchTerm)
+        public async Task<PagedList<LangText>> GetLangTextsZhByConditionAsync(LangTextParameters langTextParameters)
         {
             var items = await DbContext.Set<LangText>()
-                .SearchLangTextsZh(langTextParameters, searchTerm).AsNoTracking()
+                .SearchLangTextsZh(langTextParameters).AsNoTracking()
                 .FilterLangTexts(langTextParameters)
                 .ToListAsync();
 
             return PagedList<LangText>.ToPageList(items, langTextParameters.PageNumber, langTextParameters.PageSize);
         }
 
-        public async Task<PagedList<LangText>> GetLangTextsEnByConditionAsync(LangTextParameters langTextParameters, string searchTerm)
+        public async Task<PagedList<LangText>> GetLangTextsEnByConditionAsync(LangTextParameters langTextParameters)
         {
             var items = await DbContext.Set<LangText>()
-                .SearchLangTextsEn(langTextParameters, searchTerm).AsNoTracking()
+                .SearchLangTextsEn(langTextParameters).AsNoTracking()
                 .FilterLangTexts(langTextParameters)
                 .ToListAsync();
 
             return PagedList<LangText>.ToPageList(items, langTextParameters.PageNumber, langTextParameters.PageSize);
         }
+
+        //public async Task<PagedList<LangText>> GetLangTextsByIdTypeAsync(LangTextParameters langTextParameters)
+        //{
+        //    var items = await DbContext.Set<LangText>()
+        //        .Where(lang => lang.IdType == ToInt32(langTextParameters.SearchTerm)).AsNoTracking()
+        //        .FilterLangTexts(langTextParameters)
+        //        .ToListAsync();
+
+        //    return PagedList<LangText>.ToPageList(items, langTextParameters.PageNumber, langTextParameters.PageSize);
+        //}
+
+        //public async Task<PagedList<LangText>> GetLangTextsByGameVersionAsync(LangTextParameters langTextParameters)
+        //{
+        //    var items = await DbContext.Set<LangText>()
+        //        .Where(lang => lang.UpdateStats == langTextParameters.SearchTerm).AsNoTracking()
+        //        .FilterLangTexts(langTextParameters)
+        //        .ToListAsync();
+
+        //    return PagedList<LangText>.ToPageList(items, langTextParameters.PageNumber, langTextParameters.PageSize);
+        //}
     }
 }

@@ -51,10 +51,13 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("zh/{searchTerm}")]
-        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsZhByConditionAsync([FromQuery] LangTextParameters langTextParameters, string searchTerm)
+        [HttpGet("zh")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsZhByConditionAsync()
         {
-            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsZhByConditionAsync(langTextParameters, searchTerm);
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsZhByConditionAsync(para);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
 
@@ -63,11 +66,14 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
-        [Authorize]
-        [HttpGet("en/{searchTerm}")]
-        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsEnByConditionAsync([FromQuery] LangTextParameters langTextParameters, string searchTerm)
+        //[Authorize]
+        [HttpGet("en")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsEnByConditionAsync()
         {
-            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsEnByConditionAsync(langTextParameters, searchTerm);
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsEnByConditionAsync(para);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
 
@@ -77,7 +83,7 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize(Roles = "Editor")]
-        [HttpGet("{langtextGuid}")]
+        [HttpGet("id/{langtextGuid}")]
         public async Task<ActionResult<LangTextDto>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextGuid);
@@ -96,11 +102,76 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
+        //[Authorize]
+        [HttpGet("idType")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByIdTypeAsync()
+        {
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.IdType == Convert.ToInt32(para.SearchTerm), para);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
+        //[Authorize]
+        [HttpGet("gameupdate")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByGameVersionAsync()
+        {
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.UpdateStats == para.SearchTerm, para);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
+        //[Authorize]
+        [HttpGet("user")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByUserAsync()
+        {
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.UserId == new Guid(para.SearchTerm), para);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
+        //[Authorize]
+        [HttpGet("reviewer")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByReviewerAsync()
+        {
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.ReviewerId == new Guid(para.SearchTerm), para);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
+
         [Authorize]
         [HttpGet("rev/{revisednumber}")]
-        public async Task<ActionResult<List<LangTextDto>>> GetLangTextByRevisedAsync(int revisednumber,[FromQuery] PageParameters pageParameters)
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextByRevisedAsync(int revisednumber)
         {
-            var langtext = await _repositoryWrapper.LangTextRepo.GetByConditionAsync(lang => lang.Revised == revisednumber, pageParameters);
+            var langtext = await _repositoryWrapper.LangTextRepo.GetByConditionAsync(lang => lang.Revised == revisednumber);
             var langtextDto = _mapper.Map<List<LangTextDto>>(langtext);
 
             if (langtextDto.Count == 0)
@@ -342,7 +413,9 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<IActionResult> UpdateLangtextZhAsync(Guid langtextID, LangTextForUpdateZhDto langTextForUpdateZh)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            Guid userIdinGuid = new Guid(userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            //_userManager.IsInRoleAsync()
+
 
             var langtext = await _repositoryWrapper.LangTextRepo.GetByIdAsync(langtextID);
 
@@ -364,7 +437,7 @@ namespace ESO_LangEditor.API.Controllers
 
             if (langtextInReview != null)   //检查是否存在于审核表中
             {
-                if (userIdinGuid != langtextInReview.UserId)    //检查如果存在于表中，提交用户是否是之前用户 
+                if (user.Id != langtextInReview.UserId)    //检查如果存在于表中，提交用户是否是之前用户 
                 {
                     return BadRequest(new MessageWithCode
                     {

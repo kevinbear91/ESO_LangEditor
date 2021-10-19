@@ -44,20 +44,9 @@ namespace ESO_LangEditor.EFCore.Repositories
             //return Task.FromResult(DbContext.Set<T>().AsEnumerable());
         }
 
-        public async Task<PagedList<T>> GetByConditionAsync(Expression<Func<T, bool>> expression, PageParameters pageParameters)
+        public Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
         {
-            var items = await DbContext.Set<T>()
-                .Where(expression)
-                .Skip((pageParameters.PageNumber - 1) * pageParameters.PageSize)
-                .Take(pageParameters.PageSize)
-                .ToListAsync();
-
-            var count = await DbContext.Set<T>().CountAsync();
-
-            return new PagedList<T>(items, count, pageParameters.PageNumber, pageParameters.PageSize);
-
-            //return Task.FromResult(DbContext.Set<T>().Where(expression));
-            //return Task.FromResult(DbContext.Set<T>().Where(expression).AsEnumerable());
+            return Task.FromResult(DbContext.Set<T>().Where(expression).AsEnumerable());
         }
 
         public Task<IQueryable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression)

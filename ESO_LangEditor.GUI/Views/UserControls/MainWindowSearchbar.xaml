@@ -241,7 +241,23 @@
                 </CheckBox.Style>
             </CheckBox>
 
+            <CheckBox Content="区分大小写" Margin="10"
+                      IsChecked="{Binding IsCaseSensitive}" >
+                <CheckBox.Style>
+                    <Style BasedOn="{StaticResource MaterialDesignAccentCheckBox}" TargetType="CheckBox">
+                        <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
+                        Converter={StaticResource BoolToVis}}" />
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+
             <StackPanel Orientation="Horizontal" Width="220" Margin="10,0,10,0" >
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
+                        Converter={StaticResource BoolToVis}}" />
+                    </Style>
+                </StackPanel.Style>
                 <TextBlock Text="每页最多条目数：" Margin="0,2,0,0" VerticalAlignment="Center"  />
                 <ComboBox Width="60" ItemsSource="{Binding PageSizeList}" SelectedValue="{Binding SelectedPageSize}" 
                            VerticalAlignment="Center" Style="{StaticResource MaterialDesignComboBox}" />

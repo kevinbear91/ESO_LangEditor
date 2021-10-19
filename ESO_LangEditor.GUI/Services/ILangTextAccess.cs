@@ -9,7 +9,8 @@ namespace ESO_LangEditor.GUI.Services
 {
     public interface ILangTextAccess
     {
-        Task<IEnumerable<LangTextDto>> GetLangTexts(Guid langtextId);
+        Task<LangTextDto> GetLangText(Guid langtextGuid);
+        Task<LangTextDto> GetLangText(string langtextUniqueId);
         Task<IEnumerable<LangTextDto>> GetLangTexts(List<Guid> langtextId);
         Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters, string searchTerm);
         Task<List<LangTextDto>> GetLangTexts(int langtextRevised);

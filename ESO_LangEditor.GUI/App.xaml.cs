@@ -85,6 +85,7 @@ namespace ESO_LangEditor.GUI
 
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("LangEditorWPF/" + LangConfig.LangEditorVersion);
             HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
 
             AppConfigClient.Save(LangConfig);

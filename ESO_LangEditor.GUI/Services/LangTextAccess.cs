@@ -22,14 +22,6 @@ namespace ESO_LangEditor.GUI.Services
         public LangTextAccess()
         {
             _langHttpClient = App.HttpClient;
-            //_langHttpClient = new HttpClient
-            //{
-            //    BaseAddress = new Uri(App.ServerPath),
-            //};
-
-            //_langHttpClient.DefaultRequestHeaders.Accept.Clear();
-            //_langHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            //_langHttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
 
             _jsonOption = new JsonSerializerOptions
             {
@@ -144,22 +136,49 @@ namespace ESO_LangEditor.GUI.Services
             return responded;
         }
 
-        public async Task<IEnumerable<LangTextDto>> GetLangTexts(Guid langtextId)
+        public async Task<LangTextDto> GetLangText(Guid langtextGuid)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
-            List<LangTextDto> respondedList = null;
+            LangTextDto respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
 
             HttpResponseMessage response = await _langHttpClient.GetAsync(
-                "api/langtext/" + langtextId);
+                "api/langtext/" + langtextGuid);
 
-            var responseContent = response.Content.ReadAsStringAsync().Result;
+            var responseContent = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)
             {
-                respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+                respondedList = JsonSerializer.Deserialize<LangTextDto>(responseContent, _jsonOption);
+            }
+            else
+            {
+                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+                MessageBox.Show(code.Message);
+            }
+
+            //Debug.WriteLine(respondedList);
+            return respondedList;
+        }
+
+        public async Task<LangTextDto> GetLangText(string langtextUniqueId)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            LangTextDto respondedList = null;
+
+            //var content = SerializeDataToHttpContent(langtextGuid);
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync(
+                "api/langtext/" + langtextUniqueId);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+
+            if (response.IsSuccessStatusCode)
+            {
+                respondedList = JsonSerializer.Deserialize<LangTextDto>(responseContent, _jsonOption);
             }
             else
             {
@@ -437,20 +456,24 @@ namespace ESO_LangEditor.GUI.Services
             return byteContent;
         }
 
-        public async Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters, string searchTerm)
+        public async Task<PagedList<LangTextDto>> GetLangTexts(string category, LangTextParameters langTextParameters, string searchTerm)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             PagedList<LangTextDto> respondedLangtext = null;
-            PageData respondedPageData = null;
+            PageData respondedPageData;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
 
             string para = GetLangTextRequestParaString(langTextParameters);
-            Debug.WriteLine($"lang: {lang}, {searchTerm}{para}");
+
+            _langHttpClient.DefaultRequestHeaders.Add("langTextParameters", JsonSerializer.Serialize(langTextParameters));
+            //Response.Headers.Add("langTextParameters", JsonSerializer.Serialize(langTextParameters));
+
+            Debug.WriteLine($"lang: {category}, {searchTerm}{para}");
 
             HttpResponseMessage response = await _langHttpClient.GetAsync(
-                "api/langtext/" + lang + "/" + searchTerm + para);
+                "api/langtext/" + category + "/" + searchTerm + para);
             var responseContent = await response.Content.ReadAsStringAsync();
             string responseHeader = response.Headers.GetValues("X-Pagination").FirstOrDefault();
 

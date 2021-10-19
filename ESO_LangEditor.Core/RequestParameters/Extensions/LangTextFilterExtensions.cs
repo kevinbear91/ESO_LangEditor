@@ -41,47 +41,50 @@ namespace ESO_LangEditor.Core.RequestParameters.Extensions
 
         }
 
-        public static IQueryable<LangText> SearchLangTextsEn(this IQueryable<LangText> langTexts, LangTextParameters langTextParameters, string searchTerm)
+        public static IQueryable<LangText> SearchLangTextsEn(this IQueryable<LangText> langTexts, LangTextParameters langTextParameters)
         {
-            //if (string.IsNullOrEmpty(searchTerm))
-            //{
-            //    return langTexts;
-            //}
 
             if (langTextParameters.SearchPostion == SearchPostion.Full)
             {
-                return langTexts.Where(lang => lang.TextEn.Contains(searchTerm));
+                return langTextParameters.CaseSensitive
+                    ? langTexts.Where(lang => lang.TextEn.Contains(langTextParameters.SearchTerm))
+                    : langTexts.Where(lang => lang.TextEn.ToLower().Contains(langTextParameters.SearchTerm.ToLower()));
+
             }
 
             if (langTextParameters.SearchPostion == SearchPostion.OnlyOnFront)
             {
-                return langTexts.Where(lang => lang.TextEn.StartsWith(searchTerm));
+                return langTextParameters.CaseSensitive
+                    ? langTexts.Where(lang => lang.TextEn.StartsWith(langTextParameters.SearchTerm))
+                    : langTexts.Where(lang => lang.TextEn.ToLower().StartsWith(langTextParameters.SearchTerm.ToLower()));
             }
 
             if (langTextParameters.SearchPostion == SearchPostion.OnlyOnEnd)
             {
-                return langTexts.Where(lang => lang.TextEn.EndsWith(searchTerm));
+                return langTextParameters.CaseSensitive
+                    ? langTexts.Where(lang => lang.TextEn.EndsWith(langTextParameters.SearchTerm))
+                    : langTexts.Where(lang => lang.TextEn.ToLower().EndsWith(langTextParameters.SearchTerm.ToLower()));
             }
 
             return langTexts;
 
         }
 
-        public static IQueryable<LangText> SearchLangTextsZh(this IQueryable<LangText> langTexts, LangTextParameters langTextParameters, string searchTerm)
+        public static IQueryable<LangText> SearchLangTextsZh(this IQueryable<LangText> langTexts, LangTextParameters langTextParameters)
         {
             if (langTextParameters.SearchPostion == SearchPostion.Full)
             {
-                return langTexts.Where(lang => lang.TextZh.Contains(searchTerm));
+                return langTexts.Where(lang => lang.TextZh.Contains(langTextParameters.SearchTerm));
             }
 
             if (langTextParameters.SearchPostion == SearchPostion.OnlyOnFront)
             {
-                return langTexts.Where(lang => lang.TextZh.StartsWith(searchTerm));
+                return langTexts.Where(lang => lang.TextZh.StartsWith(langTextParameters.SearchTerm));
             }
 
             if (langTextParameters.SearchPostion == SearchPostion.OnlyOnEnd)
             {
-                return langTexts.Where(lang => lang.TextZh.EndsWith(searchTerm));
+                return langTexts.Where(lang => lang.TextZh.EndsWith(langTextParameters.SearchTerm));
             }
 
             return langTexts;

@@ -23,8 +23,8 @@ namespace ESO_LangEditor.Core.EnumTypes
         TranslateStatus = 7,
         [Description("游戏版本")]
         UpdateStatus = 8,
-        [Description("审核状态")]
-        ReviewStatus = 9,
+        [Description("审核人")]
+        Reviewer = 9,
         [Description("用户")]
         ByUser = 10,
     }
