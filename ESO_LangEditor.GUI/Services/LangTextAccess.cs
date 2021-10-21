@@ -456,26 +456,32 @@ namespace ESO_LangEditor.GUI.Services
             return byteContent;
         }
 
-        public async Task<PagedList<LangTextDto>> GetLangTexts(string category, LangTextParameters langTextParameters, string searchTerm)
+        public async Task<PagedList<LangTextDto>> GetLangTexts(string category, LangTextParameters langTextParameters)
         {
+            //_langHttpClient.DefaultRequestHeaders.Clear();
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             PagedList<LangTextDto> respondedLangtext = null;
             PageData respondedPageData;
+            string paraJson = null;
 
-            //var content = SerializeDataToHttpContent(langtextGuid);
+            paraJson = JsonSerializer.Serialize(langTextParameters);
 
-            string para = GetLangTextRequestParaString(langTextParameters);
-
-            _langHttpClient.DefaultRequestHeaders.Add("langTextParameters", JsonSerializer.Serialize(langTextParameters));
+            if (_langHttpClient.DefaultRequestHeaders.Contains("langTextParameters"))
+            {
+                _langHttpClient.DefaultRequestHeaders.Remove("langTextParameters");
+            }
+            
+            _langHttpClient.DefaultRequestHeaders.Add("langTextParameters", paraJson);
             //Response.Headers.Add("langTextParameters", JsonSerializer.Serialize(langTextParameters));
-
-            Debug.WriteLine($"lang: {category}, {searchTerm}{para}");
+            Debug.WriteLine(paraJson);
 
             HttpResponseMessage response = await _langHttpClient.GetAsync(
-                "api/langtext/" + category + "/" + searchTerm + para);
+                "api/langtext/" + category);
             var responseContent = await response.Content.ReadAsStringAsync();
             string responseHeader = response.Headers.GetValues("X-Pagination").FirstOrDefault();
+
+            Debug.WriteLine(responseHeader);
 
             if (response.IsSuccessStatusCode)
             {

@@ -9,6 +9,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace ESO_LangEditor.GUI.ViewModels
         private bool _doubleKeyWordSearch;
         private ClientConnectStatus _connectStatus;
         private bool _isLoadJp;
-        private bool _isCaseSensitive = false;
+        private bool _isCaseSensitive;
         private Dictionary<string, string> _jpLangDict;
         private ObservableCollection<ClientPageModel> _pageInfo = new ObservableCollection<ClientPageModel>();
 
@@ -298,8 +299,10 @@ namespace ESO_LangEditor.GUI.ViewModels
                 PageSize = SelectedPageSize,
                 SearchPostion = SelectedSearchPostion,
                 CaseSensitive = IsCaseSensitive,
+                SearchTerm = Keyword,
             };
 
+            
 
             switch (SelectedSearchTextType)
             {
@@ -339,6 +342,8 @@ namespace ESO_LangEditor.GUI.ViewModels
                 }
             }
 
+            //Debug.WriteLine($"searchTerm: {Keyword},CaseSensitive: {IsCaseSensitive}, category: {category}.");
+
             if (category == "")
             {
                 List<LangTextDto> langTextDtos = new List<LangTextDto>();
@@ -358,7 +363,7 @@ namespace ESO_LangEditor.GUI.ViewModels
             }
             else
             {
-                var langtext = await _langTextAccess.GetLangTexts(category, searchPara, Keyword);
+                var langtext = await _langTextAccess.GetLangTexts(category, searchPara);
                 GetPageInfoFromServer(langtext.PageData);
 
                 return langtext;

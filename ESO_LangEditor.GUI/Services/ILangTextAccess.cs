@@ -12,7 +12,7 @@ namespace ESO_LangEditor.GUI.Services
         Task<LangTextDto> GetLangText(Guid langtextGuid);
         Task<LangTextDto> GetLangText(string langtextUniqueId);
         Task<IEnumerable<LangTextDto>> GetLangTexts(List<Guid> langtextId);
-        Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters, string searchTerm);
+        Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters);
         Task<List<LangTextDto>> GetLangTexts(int langtextRevised);
         Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId);
         Task<List<LangTextForReviewDto>> GetLangTextsFromReviewer(Guid userGuid);

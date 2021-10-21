@@ -224,7 +224,6 @@
 
             <CheckBox x:Name="EnabledServerSearch" 
                   Content="服务器端搜索" Margin="10" IsChecked="{Binding ServerSideSearch}" 
-                  IsEnabled="True"
                   ToolTip="从服务器上搜索文本，视文本数量可能要等待返回数据">
                 <CheckBox.Style>
                     <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignAccentCheckBox}">

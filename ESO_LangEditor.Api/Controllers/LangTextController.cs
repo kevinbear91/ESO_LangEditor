@@ -75,7 +75,11 @@ namespace ESO_LangEditor.API.Controllers
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsEnByConditionAsync()
         {
             Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
-            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+            _loggerMessage = "RequestPara: " + langTextParameters;
+            _logger.LogError(_loggerMessage);
+
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters, 
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsEnByConditionAsync(para);
 

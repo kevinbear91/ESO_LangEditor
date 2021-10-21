@@ -10,7 +10,7 @@ namespace ESO_LangEditor.Core.RequestParameters
     public class LangTextParameters : PageParameters
     {
         public string SearchTerm { get; set; }
-        public bool CaseSensitive { get; set; } = false;
+        public bool CaseSensitive { get; set; }
         public int IdType { get; set; }
         public string GameVersionInfo { get; set; }
         public Guid UserId { get; set; }
