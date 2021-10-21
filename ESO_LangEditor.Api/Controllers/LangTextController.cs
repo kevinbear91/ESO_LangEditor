@@ -39,9 +39,13 @@ namespace ESO_LangEditor.API.Controllers
         }
 
         [Authorize]
-        public async Task<ActionResult<List<LangTextDto>>> GetLangTextAllAsync([FromQuery]PageParameters pageParameters)
+        [HttpGet("all")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextAllAsync()
         {
-            var langtextList = await _repositoryWrapper.LangTextRepo.GetAllAsync(pageParameters);
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetAllAsync(para);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
 
@@ -66,7 +70,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("en")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsEnByConditionAsync()
         {
@@ -102,7 +106,7 @@ namespace ESO_LangEditor.API.Controllers
 
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("idType")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByIdTypeAsync()
         {
@@ -118,7 +122,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("gameupdate")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByGameVersionAsync()
         {
@@ -134,7 +138,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("user")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByUserAsync()
         {
@@ -150,7 +154,7 @@ namespace ESO_LangEditor.API.Controllers
             return langtextDto;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("reviewer")]
         public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByReviewerAsync()
         {

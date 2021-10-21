@@ -49,9 +49,9 @@ namespace ESO_LangEditor.API.Controllers
 
         [Authorize]
         [HttpGet("LangTextRev/{id}")]
-        public async Task<ActionResult<List<LangTextRevisedDto>>> GetRevisedDtoByIDAsync(int id, [FromQuery] PageParameters pageParameters)
+        public async Task<ActionResult<List<LangTextRevisedDto>>> GetRevisedDtoByIDAsync(int id)
         {
-            var LangRevList = await _repositoryWrapper.LangTextRevisedRepo.GetByConditionAsync(langRev => langRev.LangTextRevNumber == id, pageParameters);
+            var LangRevList = await _repositoryWrapper.LangTextRevisedRepo.GetByConditionAsync(langRev => langRev.LangTextRevNumber == id);
             var langRevListDto = _mapper.Map<List<LangTextRevisedDto>>(LangRevList);
 
             return langRevListDto;

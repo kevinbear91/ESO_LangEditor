@@ -437,6 +437,18 @@ namespace ESO_LangEditor.GUI.ViewModels
                         location.TextEn = location.TextEn.Replace("\x22", replaceWord);
                         Debug.WriteLine(location.TextEn);
                     }
+
+                    if (location.TextEn.Contains("^"))
+                    {
+                        location.TextEn = location.TextEn.Replace("^ns", "");
+                        location.TextEn = location.TextEn.Replace("^np", "");
+                        location.TextEn = location.TextEn.Replace("^n", "");
+                        location.TextEn = location.TextEn.Replace("^p", "");
+                        location.TextEn = location.TextEn.Replace("^m", "");
+                    }
+
+                    
+
                     exportDict.Add(location.TextZh, location.TextEn);
                 }
             }
@@ -459,6 +471,15 @@ namespace ESO_LangEditor.GUI.ViewModels
                     {
                         item.TextEn = item.TextEn.Replace("\x22", replaceWord);
                         Debug.WriteLine(item.TextEn);
+                    }
+
+                    if (item.TextEn.Contains("^"))
+                    {
+                        item.TextEn = item.TextEn.Replace("^ns", "");
+                        item.TextEn = item.TextEn.Replace("^np", "");
+                        item.TextEn = item.TextEn.Replace("^n", "");
+                        item.TextEn = item.TextEn.Replace("^p", "");
+                        item.TextEn = item.TextEn.Replace("^m", "");
                     }
                     exportDict.Add(item.TextZh, item.TextEn);
                 }
