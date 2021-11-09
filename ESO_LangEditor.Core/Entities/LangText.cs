@@ -15,8 +15,12 @@ namespace ESO_LangEditor.Core.Entities
         public DateTime ReviewTimestamp { get; set; }
 
         //修改权限
-        //public Guid RoleId { get; set; }
-        //[ForeignKey("RoleId")]
-        //public Role RoleToEdit { get; set; }
+        public Guid RoleId { get; set; }
+        [ForeignKey("RoleId")]
+        public Role RoleToEdit { get; set; }
+
+        public Guid? LangtextInReivewId { get; set; }
+        [ForeignKey("LangtextInReivewId")]
+        public LangTextReview LangtextInReview { get; set; }
     }
 }
