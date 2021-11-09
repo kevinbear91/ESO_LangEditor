@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29613.14
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditor.GUI", "ESO_LangEditor.GUI\ESO_LangEditor.GUI.csproj", "{E51B6D60-76E3-410A-99D8-2C5B256AB832}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorDatabaseModifier", "ESO_LangEditorDatabaseModifier\ESO_LangEditorDatabaseModifier.csproj", "{18C9EAA4-7B53-4071-80EA-C398702BDBD1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorUpdater", "ESO_LangEditorUpdater\ESO_LangEditorUpdater.csproj", "{495FD35C-C361-46F4-9474-8A2529EF9323}"
 EndProject
@@ -40,14 +38,6 @@ Global
 		{E51B6D60-76E3-410A-99D8-2C5B256AB832}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E51B6D60-76E3-410A-99D8-2C5B256AB832}.Release|x64.ActiveCfg = Release|x64
 		{E51B6D60-76E3-410A-99D8-2C5B256AB832}.Release|x64.Build.0 = Release|x64
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Debug|x64.ActiveCfg = Debug|x64
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Debug|x64.Build.0 = Debug|x64
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Release|x64.ActiveCfg = Release|x64
-		{18C9EAA4-7B53-4071-80EA-C398702BDBD1}.Release|x64.Build.0 = Release|x64
 		{495FD35C-C361-46F4-9474-8A2529EF9323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{495FD35C-C361-46F4-9474-8A2529EF9323}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{495FD35C-C361-46F4-9474-8A2529EF9323}.Debug|x64.ActiveCfg = Debug|x64
