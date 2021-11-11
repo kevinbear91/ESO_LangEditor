@@ -3,24 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditor.GUI", "ESO_LangEditor.GUI\ESO_LangEditor.GUI.csproj", "{E51B6D60-76E3-410A-99D8-2C5B256AB832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GUI", "GUI\GUI.csproj", "{E51B6D60-76E3-410A-99D8-2C5B256AB832}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorUpdater", "ESO_LangEditorUpdater\ESO_LangEditorUpdater.csproj", "{495FD35C-C361-46F4-9474-8A2529EF9323}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Updater", "Updater\Updater.csproj", "{495FD35C-C361-46F4-9474-8A2529EF9323}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditor.API", "ESO_LangEditor.Api\ESO_LangEditor.API.csproj", "{DC910328-2894-43E8-BB54-67D3A02244E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "Api\API.csproj", "{DC910328-2894-43E8-BB54-67D3A02244E7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{032636E8-03AF-47C7-8BCF-9B7B6ECCB5D9} = {032636E8-03AF-47C7-8BCF-9B7B6ECCB5D9}
 		{BAD706F2-F47F-441D-AAD9-7DE22B97B164} = {BAD706F2-F47F-441D-AAD9-7DE22B97B164}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditor.Core", "ESO_LangEditor.Core\ESO_LangEditor.Core.csproj", "{BAD706F2-F47F-441D-AAD9-7DE22B97B164}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{BAD706F2-F47F-441D-AAD9-7DE22B97B164}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditor.EFCore", "ESO_LangEditor.EFCore\ESO_LangEditor.EFCore.csproj", "{032636E8-03AF-47C7-8BCF-9B7B6ECCB5D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore", "EFCore\EFCore.csproj", "{032636E8-03AF-47C7-8BCF-9B7B6ECCB5D9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BAD706F2-F47F-441D-AAD9-7DE22B97B164} = {BAD706F2-F47F-441D-AAD9-7DE22B97B164}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ESO_LangEditorBlazorServer", "ESO_LangEditorBlazorServer\ESO_LangEditorBlazorServer.csproj", "{0BB14277-6428-408D-9734-F94AC1751975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.TaskService", "API.TaskService\API.TaskService.csproj", "{DD569DD0-222C-46E5-BCF1-8F0A17379D51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,14 @@ Global
 		{0BB14277-6428-408D-9734-F94AC1751975}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BB14277-6428-408D-9734-F94AC1751975}.Release|x64.ActiveCfg = Release|Any CPU
 		{0BB14277-6428-408D-9734-F94AC1751975}.Release|x64.Build.0 = Release|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Debug|x64.Build.0 = Debug|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Release|x64.ActiveCfg = Release|Any CPU
+		{DD569DD0-222C-46E5-BCF1-8F0A17379D51}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

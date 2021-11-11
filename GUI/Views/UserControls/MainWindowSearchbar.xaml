@@ -1,0 +1,309 @@
+﻿<UserControl x:Class="GUI.Views.UserControls.MainWindowSearchbar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:GUI.Views.UserControls"
+             mc:Ignorable="d" 
+             xmlns:local1="clr-namespace:GUI.Converter"
+             xmlns:vaildation="clr-namespace:GUI.Services.Validations"
+             xmlns:services="clr-namespace:GUI.Services"
+             xmlns:prism="http://prismlibrary.com/" 
+             xmlns:models="clr-namespace:Core.Models;assembly=Core"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             TextElement.FontSize="14"
+             d:DesignHeight="150" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="49"/>
+            <RowDefinition Height="41"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="120" />
+            <!--<ColumnDefinition Width="100" />-->
+            <ColumnDefinition Width="60" />
+        </Grid.ColumnDefinitions>
+
+
+
+        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10,0,0,0"
+                                      Grid.Column="0"
+                                                  HorizontalAlignment="Left"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="110" VerticalAlignment="Center">
+            <ComboBox x:Name="SearchTypeComboBox" HorizontalAlignment="Center" Width="90"
+                                      ItemsSource="{Binding SearchTextTypeCombox}" 
+                          SelectedItem="{Binding SelectedSearchTextType, Mode=TwoWay}" 
+                          SelectedIndex="3" VerticalAlignment="Center" >
+                <ComboBox.Resources>
+                    <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+                </ComboBox.Resources>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Mode="Standard" Padding="8 4 0 0"
+                                              Height="40" Grid.Column="0"
+                                                  Panel.ZIndex="1"
+                                                  Margin="130,0,0,0"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+            <TextBox x:Name="SearchTextBox"
+                                    materialDesign:HintAssist.Hint="输入搜索文本"
+                                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                    BorderThickness="0"
+                                    TextWrapping="Wrap" VerticalAlignment="Center" Cursor="IBeam" >
+                <TextBox.Resources>
+                    <services:BindingProxy x:Key="TargetProxy" Data="{Binding Path=SelectedValue, ElementName=SearchTypeComboBox}"/>
+                    <services:BindingProxy x:Key="SourceProxy" Data="{Binding Path=Text, ElementName=SearchTextBox, Mode=TwoWay}"/>
+                </TextBox.Resources>
+                <Binding Path="Keyword" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vaildation:SearchBarTextValidation>
+                            <services:ComparisonValue Value="{Binding Data, Source={StaticResource TargetProxy}}" 
+                                                                                     BindingToTrigger="{Binding Data, Source={StaticResource SourceProxy}}" />
+                        </vaildation:SearchBarTextValidation>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox>
+
+        </materialDesign:ColorZone>
+
+
+
+        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10,0,0,0"
+                                      Grid.Column="1"
+                                                  HorizontalAlignment="Left"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="100" 
+                                   VerticalAlignment="Center">
+            <materialDesign:ColorZone.Style>
+                <Style TargetType="materialDesign:ColorZone">
+                    <Setter Property="Visibility"  Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </materialDesign:ColorZone.Style>
+
+            <ComboBox x:Name="SearchTypeComboBox2" HorizontalAlignment="Left" Width="90"
+                                      ItemsSource="{Binding SearchTextTypeCombox}" 
+                      SelectedItem="{Binding SelectedSearchTextTypeSecond, Mode=TwoWay}" 
+                      SelectedIndex="3" IsEnabled="{Binding Path=IsChecked, ElementName=EnabledComboBox}" >
+                <ComboBox.Resources>
+                    <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+                </ComboBox.Resources>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </materialDesign:ColorZone>
+
+        <materialDesign:ColorZone Mode="Standard" Padding="8 4 0 0"
+                                              Height="40"
+                                      Grid.Column="1"
+                                  Width="400"
+                                                  Panel.ZIndex="1"
+                                                  Margin="120,0,5,0"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" 
+                                   VerticalAlignment="Center">
+
+            <materialDesign:ColorZone.Style>
+                <Style TargetType="materialDesign:ColorZone">
+                    <Setter Property="Visibility"  Value="Collapsed" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </materialDesign:ColorZone.Style>
+
+
+            <TextBox x:Name="SearchTextBox2"
+                                    materialDesign:HintAssist.Hint="输入搜索文本"
+                                    materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                                    BorderThickness="0"
+                                    TextWrapping="Wrap" Visibility="Visible" VerticalAlignment="Center" 
+                     IsEnabled="{Binding Path=IsChecked, ElementName=EnabledComboBox}" >
+                <TextBox.Resources>
+                    <services:BindingProxy x:Key="TargetProxy" Data="{Binding Path=SelectedValue, ElementName=SearchTypeComboBox2}"/>
+                    <services:BindingProxy x:Key="SourceProxy" Data="{Binding Path=Text, ElementName=SearchTextBox2, Mode=TwoWay}"/>
+                </TextBox.Resources>
+                <Binding Path="KeywordSecond" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vaildation:SearchBarTextValidation >
+                            <services:ComparisonValue Value="{Binding Data, Source={StaticResource TargetProxy}}" 
+                                                                                     BindingToTrigger="{Binding Data, Source={StaticResource SourceProxy}}" />
+                        </vaildation:SearchBarTextValidation>
+                    </Binding.ValidationRules>
+                </Binding>
+
+
+            </TextBox>
+
+        </materialDesign:ColorZone>
+
+
+
+        <!--<Button x:Name="SearchButton" Content="搜索" HorizontalAlignment="Left"  VerticalAlignment="Top" />-->
+
+        <materialDesign:ColorZone Mode="Standard" Padding="8 2 8 2"
+                                              Grid.Column="2"
+                                                  Panel.ZIndex="1"
+                                                  Margin="10,0,0,0"
+                                                  HorizontalAlignment="Left"
+                                                  materialDesign:ShadowAssist.ShadowDepth="Depth1" Height="40" Width="110" VerticalAlignment="Center">
+            <ComboBox x:Name="SearchTextPositionComboBox"  Width="90" 
+                                      ItemsSource="{Binding SearchPostionCombox}" SelectedItem="{Binding SelectedSearchPostion, Mode=TwoWay}" 
+                      SelectedIndex="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ComboBox.Resources>
+                    <local1:EnumDescriptionConverter x:Key="EnumDescriptionConverter" />
+                </ComboBox.Resources>
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Converter={StaticResource EnumDescriptionConverter}}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </materialDesign:ColorZone>
+
+        <Button x:Name="SearchButton" 
+                            Grid.Column="3"
+                            Command="{Binding SearchLangCommand}"
+                            IsDefault="True"
+                            VerticalAlignment="Center" Height="40" Margin="10,0,10,0" >
+            <materialDesign:PackIcon Kind="Magnify" Width="40" Height="40" />
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignToolForegroundButton}" >
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(Validation.HasError), ElementName=SearchTextBox}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+
+                                <Condition Binding="{Binding Path=(Validation.HasError), ElementName=SearchTextBox2}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="False" />
+                        </MultiDataTrigger>
+
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="4" Orientation="Horizontal">
+            <CheckBox x:Name="EnabledComboBox" Style="{StaticResource MaterialDesignAccentCheckBox}" 
+                  Content="双条件搜索" Margin="10" IsChecked="{Binding DoubleKeyWordSearch}"   
+                  ToolTip="开启后，文本位置选项仅适用于第二个搜索文本"/>
+
+            <CheckBox Content="读取日文翻译" Margin="10"
+                      Style="{StaticResource MaterialDesignAccentCheckBox}"
+                      Command="{Binding LoadJpLangCommand}" 
+                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}" />
+
+            <!--<CheckBox Grid.Row="1" Content="树状图查询" Margin="10" Style="{StaticResource MaterialDesignAccentCheckBox}" IsEnabled="False"  />-->
+
+            <CheckBox x:Name="EnabledServerSearch" 
+                  Content="服务器端搜索" Margin="10" IsChecked="{Binding ServerSideSearch}" 
+                  ToolTip="从服务器上搜索文本，视文本数量可能要等待返回数据">
+                <CheckBox.Style>
+                    <Style TargetType="CheckBox" BasedOn="{StaticResource MaterialDesignAccentCheckBox}">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=IsChecked, ElementName=EnabledComboBox}" Value="False" />
+                                    <Condition Binding="{Binding ConnectStatus}" Value="Login" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="IsEnabled" Value="True" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+
+            <CheckBox Content="区分大小写" Margin="10"
+                      IsChecked="{Binding IsCaseSensitive}" >
+                <CheckBox.Style>
+                    <Style BasedOn="{StaticResource MaterialDesignAccentCheckBox}" TargetType="CheckBox">
+                        <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
+                        Converter={StaticResource BoolToVis}}" />
+                    </Style>
+                </CheckBox.Style>
+            </CheckBox>
+
+            <StackPanel Orientation="Horizontal" Width="220" Margin="10,0,10,0" >
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
+                        Converter={StaticResource BoolToVis}}" />
+                    </Style>
+                </StackPanel.Style>
+                <TextBlock Text="每页最多条目数：" Margin="0,2,0,0" VerticalAlignment="Center"  />
+                <ComboBox Width="60" ItemsSource="{Binding PageSizeList}" SelectedValue="{Binding SelectedPageSize}" 
+                           VerticalAlignment="Center" Style="{StaticResource MaterialDesignComboBox}" />
+            </StackPanel>
+
+            <CheckBox x:Name="AskExit" Style="{StaticResource MaterialDesignAccentCheckBox}"
+                  Content="关闭程序时询问" IsChecked="{Binding AskExit}" Margin="10" HorizontalAlignment="Right" >
+            </CheckBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="4" Height="50" Orientation="Horizontal" Background="White" >
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
+                        Converter={StaticResource BoolToVis}}" />
+                </Style>
+            </StackPanel.Style>
+            <!--<Button x:Name="PreviousPageButton" IsEnabled="{Binding PreviousPageButtonEnable}" 
+                                    Style="{StaticResource MaterialDesignIconButton}" Height="20"
+                                     Visibility="{Binding PreviousPageButtonVisiable}" Command="{Binding ToPreviousCommand}" >
+                                <materialDesign:PackIcon Kind="Play" Foreground="#FFBD2323" />
+                            </Button>-->
+
+            <ItemsControl ItemsSource="{Binding PageInfo}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Height="50" Orientation="Horizontal" HorizontalAlignment="Center"  />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate >
+                        <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}" 
+                                              Width="40" IsChecked="{Binding IsCurrentPage}"
+                                              Content="{Binding PageNumber}" 
+                                              Command="{Binding GetPageCommand}" CommandParameter="{Binding Path=PageNumber}" />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!--<Button x:Name="NextPageButton" IsEnabled="{Binding NextPageButtonEnable}"
+                                    Style="{StaticResource MaterialDesignIconButton}"
+                                    Visibility="{Binding NextPageButtonVisiable}" Command="{Binding ToNextCommand}" >
+                                <materialDesign:PackIcon Kind="Play" />
+                            </Button>-->
+        </StackPanel>
+
+
+        <!--<Label x:Name="label" Content="文本：" Margin="40,10,0,0"  Width="33" Height="21" Padding="0" VerticalContentAlignment="Center"/>-->
+    </Grid>
+</UserControl>

@@ -1,0 +1,158 @@
+﻿<Window x:Class="GUI.Views.LangtextEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GUI.Views"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:uc="clr-namespace:GUI.Views.UserControls"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
+        mc:Ignorable="d"
+        TextElement.FontSize="14"
+        Title="文本编辑" Height="450" Width="800" WindowStyle="SingleBorderWindow" ResizeMode="CanResizeWithGrip" WindowStartupLocation="CenterOwner" Tag="LangtextEditor">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+    <Grid Background="#FFEEEEEE">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"  />
+            <RowDefinition MaxHeight="350"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" >
+            <ToolBarTray Margin="0,5,0,5" Width="800" Height="50">
+                <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
+                          VerticalAlignment="Center" ToolBarTray.IsLocked="True" Height="50" >
+
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton ToolTip="Save" Margin="10 .5 0 0" IsChecked="{Binding AutoQueryLangTextInReview}" 
+                              Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                        <TextBlock Margin="10 .5 0 0" Text="自动查询审核状态" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <Separator />
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <ToggleButton ToolTip="Save" Margin="10 .5 0 0" IsChecked="{Binding IsDisplayJp}" 
+                              Style="{StaticResource MaterialDesignSwitchToggleButton}" />
+                        <TextBlock Margin="10 .5 0 0" Text="显示日文(如果可用)" VerticalAlignment="Center" />
+                    </StackPanel>
+
+                    <Separator />
+
+                    <Button Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" />
+                            <TextBlock Margin="10 .5 0 0" Text="保存当前文本" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                    </Button>
+                    <Separator />
+
+
+                    <!--<Button Command="Cut" ToolTip="Cut" ToolBar.OverflowMode="AsNeeded">
+                        <materialDesign:PackIcon Kind="ContentCut" />
+                    </Button>-->
+
+                </ToolBar>
+            </ToolBarTray>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10"
+                      CanContentScroll="True" Grid.Row="0" >
+                <TextBox x:Name="textBox_EN" MinHeight="111"
+                         Style="{StaticResource MaterialDesignFilledTextBox}"
+                         materialDesign:HintAssist.Hint="英文"
+                         Text="{Binding Path=CurrentLangText.TextEn, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap" IsReadOnly="true" />
+            </ScrollViewer>
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      CanContentScroll="True" Grid.Row="1" >
+                <ScrollViewer.Style>
+                    <Style TargetType="ScrollViewer" >
+                        <Setter Property="Margin" Value="10,0,10,10" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=CurrentLangText.TextJp}" Value="{x:Null}">
+                                <Setter Property="Margin" Value="10,0,10,0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ScrollViewer.Style>
+                <TextBox x:Name="textBox_jp" 
+                         materialDesign:HintAssist.Hint="日文"
+                         Text="{Binding Path=CurrentLangText.TextJp, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap" IsReadOnly="true" >
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
+                            <Setter Property="Visibility" Value="{Binding IsDisplayJp, Converter={StaticResource BoolToVis}}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=CurrentLangText.TextJp}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </ScrollViewer>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto"
+                      Margin="10">
+            <TextBox x:Name="textBox_ZH"
+                     Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" >
+                <TextBox.Style>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsInReview}" Value="True">
+                                <Setter Property="Background" Value="#0FEA5B5B" />
+                                <Setter Property="BorderBrush" Value="#89EA4D4D" />
+                                <Setter Property="materialDesign:HintAssist.Hint" Value="中文（当前文本已待审核，请确认无撞车）" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsInReview}" Value="False">
+                                <Setter Property="materialDesign:HintAssist.Hint" Value="中文" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+        </ScrollViewer>
+
+
+        <TextBlock x:Name="textblock_information" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" 
+                       Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" Grid.ColumnSpan="2" />
+
+        <GridSplitter Grid.Row="2" Grid.ColumnSpan="2"
+                      x:Name="GridMover"
+                      Height="2" HorizontalAlignment="Stretch" 
+                      Visibility="{Binding DataListVisbility}"
+                      ResizeDirection="Rows" 
+                      Background="Black" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Margin="0,0,0,2" />
+
+        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}"
+                        Margin="0,8,0,16" Grid.Row="3" Grid.ColumnSpan="2">
+            <ScrollViewer 
+                          Visibility="{Binding DataListVisbility}" 
+                          VerticalScrollBarVisibility="Auto" >
+                <uc:UC_LangDataGrid x:Name="langDataGrid" />
+            </ScrollViewer>
+        </StackPanel>
+
+        <materialDesign:Snackbar MessageQueue="{Binding EditorMessageQueue}"
+                                 Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
+    </Grid>
+</Window>
