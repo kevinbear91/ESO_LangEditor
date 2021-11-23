@@ -8,6 +8,6 @@ namespace Core.Models
     {
         public Guid Id { get; set; }
         public string TextEn { get; set; }
-        public string UpdateStats { get; set; }
+        public int GameApiVersion { get; set; }
     }
 }

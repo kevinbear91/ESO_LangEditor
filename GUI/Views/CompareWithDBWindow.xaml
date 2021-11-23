@@ -38,12 +38,6 @@
                 </Button>
             </materialDesign:Badged>
 
-            <!--<Button x:Name="LoadCsv_Buton" 
-                    Width="50"
-                    Command="{Binding LoadCsvAndDbCommand}" 
-                    Cursor="Hand" HorizontalAlignment="Left" >
-                <materialDesign:PackIcon Kind="FileReplace" />
-            </Button>-->
             <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新版本号(必填)" 
                      TextWrapping="Wrap" Width="200" Margin="30,0,30,0" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" >
                 <TextBox.Text>
@@ -71,15 +65,6 @@
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="FileCompare" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="文件对比" VerticalAlignment="Center" />
-                </StackPanel>
-
-            </Button>
-
-            <Button x:Name="SaveToDB_Button"  Command="{Binding SaveToDbCommand}" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="ContentSaveOutline" Width="24" Height="24" />
-                    <TextBlock Margin="10 .5 0 0" Text="另存对比结果" VerticalAlignment="Center" />
                 </StackPanel>
 
             </Button>

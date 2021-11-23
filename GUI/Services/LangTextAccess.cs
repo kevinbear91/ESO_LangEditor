@@ -498,37 +498,6 @@ namespace GUI.Services
             return respondedLangtext;
         }
 
-        private static string GetLangTextRequestParaString(LangTextParameters langTextParameters)
-        {
-            string para = "?PageSize=" + langTextParameters.PageSize
-                            + "&SearchPostion=" + langTextParameters.SearchPostion;
-
-            if (langTextParameters.PageNumber != 0)
-            {
-                para = para + "&PageNumber=" + langTextParameters.PageNumber;
-            }
-
-            if (langTextParameters.IdType != 0)
-            {
-                para = para + "&IdType=" + langTextParameters.IdType;
-            }
-
-            if (!string.IsNullOrEmpty(langTextParameters.GameVersionInfo))
-            {
-                para = para + "&GameVersionInfo=" + langTextParameters.GameVersionInfo;
-            }
-
-            if (Guid.Empty != langTextParameters.UserId)
-            {
-                para = para + "&UserId=" + langTextParameters.UserId;
-            }
-
-            if (Guid.Empty != langTextParameters.ReviewerId)
-            {
-                para = para + "&ReviewerId=" + langTextParameters.ReviewerId;
-            }
-
-            return para;
-        }
+        
     }
 }

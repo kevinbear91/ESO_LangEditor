@@ -13,9 +13,9 @@ namespace Core.RequestParameters.Extensions
     {
         public static IQueryable<LangText> FilterLangTexts(this IQueryable<LangText> langTexts, LangTextParameters langTextParameters)
         {
-            if (!string.IsNullOrEmpty(langTextParameters.GameVersionInfo))
+            if (langTextParameters.GameApiVersion != 0)
             {
-                langTexts.Where(lang => lang.UpdateStats == langTextParameters.GameVersionInfo);
+                langTexts.Where(lang => lang.GameApiVersion == langTextParameters.GameApiVersion);
             }
 
             if (langTextParameters.IdType != 0)

@@ -13,5 +13,7 @@ namespace EFCore.RepositoryWrapper
         ILangTextRevisedRepository LangTextRevisedRepo { get; }
         ILangTextRevNumberRepository LangTextRevNumberRepo { get; }
         IRegistrationCodeRepository RegistrationCodeRepo { get; }
+        IGameVersionRepository GameVersionRepo { get; }
+        ILangTypeCatalogRepository LangTypeCatalogRepo { get; } 
     }
 }

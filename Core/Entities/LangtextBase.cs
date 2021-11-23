@@ -13,6 +13,8 @@ namespace Core.Entities
 
         //文本类型，Lua统一为100。
         public int IdType { get; set; }
+        [ForeignKey("IdType")]
+        public LangTypeCatalog LangCatalog { get; set; }    
 
         //英文文本
         public string TextEn { get; set; }
@@ -24,7 +26,10 @@ namespace Core.Entities
         public LangType LangTextType { get; set; }
 
         //英文加入或修改时的版本
-        public string UpdateStats { get; set; }
+        public int GameApiVersion { get; set; }
+
+        [ForeignKey("GameApiVersion")]
+        public GameVersion GameVersion { get; set; }
 
         //英文最后修改时间戳
         public DateTime EnLastModifyTimestamp { get; set; }

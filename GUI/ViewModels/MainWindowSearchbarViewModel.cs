@@ -32,6 +32,7 @@ namespace GUI.ViewModels
         private ClientConnectStatus _connectStatus;
         private bool _isLoadJp;
         private bool _isCaseSensitive;
+        private bool _isHavePages;
         private Dictionary<string, string> _jpLangDict;
         private ObservableCollection<ClientPageModel> _pageInfo = new ObservableCollection<ClientPageModel>();
 
@@ -107,6 +108,12 @@ namespace GUI.ViewModels
             set => SetProperty(ref _isCaseSensitive, value);
         }
 
+        public bool IsHavePages
+        {
+            get => _isHavePages;
+            set => SetProperty(ref _isHavePages, value);
+        }
+
         public int SelectedPageSize
         {
             get => IsSelectedPageSizeNumberInList();
@@ -155,25 +162,39 @@ namespace GUI.ViewModels
             }
             else
             {
-                if (ServerSideSearch)
+                if ((SelectedSearchTextType == SearchTextType.TextChineseS || SelectedSearchTextType == SearchTextType.TextEnglish) && Keyword.Length > 30)
                 {
-                    pageNumber = obj == null ? 1 : (int)obj;
+                    MessageBox.Show("搜索关键字大于30个字符会被裁剪", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-                    result = await ServerSearch(pageNumber);
+                    Keyword = Keyword.Substring(0, 30);
                 }
-                else
-                {
-                    if (DoubleKeyWordSearch)
-                    {
-                        result = await _langTextRepo.GetLangTextByConditionAsync(Keyword, KeywordSecond,
-                            SelectedSearchTextType, SelectedSearchTextTypeSecond, SelectedSearchPostion);
-                    }
-                    else
-                    {
-                        result = await _langTextRepo.GetLangTextByConditionAsync(Keyword,
-                            SelectedSearchTextType, SelectedSearchPostion);
-                    }
-                }
+
+                //if (ServerSideSearch)
+                //{
+                //    pageNumber = obj == null ? 1 : (int)obj;
+
+                //    result = await ServerSearch(pageNumber);
+                //}
+                //else
+                //{
+
+                //}
+
+                //if (DoubleKeyWordSearch)
+                //{
+                //    result = await _langTextRepo.GetLangTextByConditionAsync(Keyword, KeywordSecond,
+                //        SelectedSearchTextType, SelectedSearchTextTypeSecond, SelectedSearchPostion);
+                //}
+                //else
+                //{
+                //    //result = await _langTextRepo.GetLangTextByConditionAsync(Keyword,
+                //    //    SelectedSearchTextType, SelectedSearchPostion);
+
+                //}
+
+                pageNumber = obj == null ? 1 : (int)obj;
+
+                result = await ServerSearch(pageNumber);
 
 
                 if (_isLoadJp)
@@ -335,7 +356,7 @@ namespace GUI.ViewModels
                         searchPara.IdType = ToInt32(KeywordSecond);
                         break;
                     case SearchTextType.UpdateStatus:
-                        searchPara.GameVersionInfo = KeywordSecond;
+                        searchPara.GameApiVersion = ToInt32(KeywordSecond);
                         break;
                     case SearchTextType.ByUser:
                         searchPara.UserId = new Guid(KeywordSecond);
@@ -375,7 +396,17 @@ namespace GUI.ViewModels
         {
             if (PageInfo.Count >= 1)
             {
+                IsHavePages = true;
                 PageInfo.Clear();
+            }
+
+            if (pageData.TotalPages > 1)
+            {
+                IsHavePages = true;
+            }
+            else
+            {
+                IsHavePages = false;
             }
 
             for (int i = 1; i <= pageData.TotalPages; i++)
@@ -390,35 +421,6 @@ namespace GUI.ViewModels
                 }
 
             }
-
-            //if (pageData.TotalPages > 1)
-            //{
-            //    if (pageData.CurrentPage > 4)
-            //    {
-            //        PageInfo.Add(new ClientPageModel { IsChecked = false, PageNumber = 1 });
-
-            //        for (int i = 1; i > 5; i++)
-            //        {
-            //            if (pageData.CurrentPage == i)
-            //            {
-            //                PageInfo.Add(new ClientPageModel { IsChecked = true, PageNumber = i });
-            //            }
-            //            else
-            //            {
-            //                PageInfo.Add(new ClientPageModel { IsChecked = false, PageNumber = 1 });
-            //            }
-
-            //        }
-            //    }
-
-
-
-
-
-            //}
-
-
-
 
         }
     }

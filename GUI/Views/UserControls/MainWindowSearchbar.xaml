@@ -222,7 +222,7 @@
 
             <!--<CheckBox Grid.Row="1" Content="树状图查询" Margin="10" Style="{StaticResource MaterialDesignAccentCheckBox}" IsEnabled="False"  />-->
 
-            <CheckBox x:Name="EnabledServerSearch" 
+            <!--<CheckBox x:Name="EnabledServerSearch" 
                   Content="服务器端搜索" Margin="10" IsChecked="{Binding ServerSideSearch}" 
                   ToolTip="从服务器上搜索文本，视文本数量可能要等待返回数据">
                 <CheckBox.Style>
@@ -238,7 +238,7 @@
                         </Style.Triggers>
                     </Style>
                 </CheckBox.Style>
-            </CheckBox>
+            </CheckBox>-->
 
             <CheckBox Content="区分大小写" Margin="10"
                       IsChecked="{Binding IsCaseSensitive}" >
@@ -251,13 +251,13 @@
             </CheckBox>
 
             <StackPanel Orientation="Horizontal" Width="220" Margin="10,0,10,0" >
-                <StackPanel.Style>
+                <!--<StackPanel.Style>
                     <Style TargetType="StackPanel">
                         <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
                         Converter={StaticResource BoolToVis}}" />
                     </Style>
-                </StackPanel.Style>
-                <TextBlock Text="每页最多条目数：" Margin="0,2,0,0" VerticalAlignment="Center"  />
+                </StackPanel.Style>-->
+                <TextBlock Text="每页最多文本数：" Margin="0,2,0,0" VerticalAlignment="Center"  />
                 <ComboBox Width="60" ItemsSource="{Binding PageSizeList}" SelectedValue="{Binding SelectedPageSize}" 
                            VerticalAlignment="Center" Style="{StaticResource MaterialDesignComboBox}" />
             </StackPanel>
@@ -267,11 +267,10 @@
             </CheckBox>
         </StackPanel>
 
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="4" Height="50" Orientation="Horizontal" Background="White" >
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="4" Height="50" Orientation="Horizontal" >
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
-                    <Setter Property="Visibility" Value="{Binding Path=IsChecked, ElementName=EnabledServerSearch,  
-                        Converter={StaticResource BoolToVis}}" />
+                    <Setter Property="Visibility" Value="{Binding IsHavePages, Converter={StaticResource BoolToVis}}" />
                 </Style>
             </StackPanel.Style>
             <!--<Button x:Name="PreviousPageButton" IsEnabled="{Binding PreviousPageButtonEnable}" 
@@ -288,7 +287,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate >
-                        <ToggleButton Style="{StaticResource MaterialDesignFlatToggleButton}" 
+                        <ToggleButton Style="{StaticResource MaterialDesignFlatPrimaryToggleButton}" Background="White" Margin="5"
                                               Width="40" IsChecked="{Binding IsCurrentPage}"
                                               Content="{Binding PageNumber}" 
                                               Command="{Binding GetPageCommand}" CommandParameter="{Binding Path=PageNumber}" />

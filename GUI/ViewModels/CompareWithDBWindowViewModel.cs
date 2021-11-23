@@ -147,7 +147,6 @@ namespace GUI.ViewModels
 
         public ExcuteViewModelMethod OpenFileCommand => new ExcuteViewModelMethod(OpenFileWindow);
         public ExcuteViewModelMethod CompareListSelecteCommand => new ExcuteViewModelMethod(SelecteOption);
-        public ExcuteViewModelMethod SaveToDbCommand => new ExcuteViewModelMethod(SaveChanges);
         public ExcuteViewModelMethod SaveToServerCommand => new ExcuteViewModelMethod(UploadResultToServer);
         public ExcuteViewModelMethod CompareFilesCommand => new ExcuteViewModelMethod(CompreWithDb);
 
@@ -161,7 +160,6 @@ namespace GUI.ViewModels
             _removedTag = "移除";
 
             FileList = new List<string>();
-            SaveToDbCommand.IsExecuting = true;
             SaveToServerCommand.IsExecuting = true;
 
             UpdatedVersionInputEnable = true;
@@ -186,56 +184,6 @@ namespace GUI.ViewModels
             {
                 FilePathTooltip = FilePathTooltip == null ? s : FilePathTooltip + "\r\n" + s;
             }
-        }
-
-        public async void SaveChanges(object o)
-        {
-            //var saveFileToDisk = new ExportDbToFile();
-
-            //if (UpdateVersionText == "" || UpdateVersionText == null || UpdateVersionText == "更新版本号(必填)")
-            //{
-            //    MessageBox.Show("请输入新版本文本的版本号！比如“Update25”等！", "提醒",
-            //            MessageBoxButton.OK, MessageBoxImage.Warning);
-            //}
-            //else
-            //{
-            //    SaveButtonEnable = false;
-            //    UpdatedVersionInputEnable = false;
-
-            //    if (Added.Count >= 1)    //判断新加内容是否为空
-            //    {
-            //        //Debug.WriteLine("Added Count: {0}", Added.Count);
-            //        InfoText = "正在保存新加内容……";
-            //        //await Task.Run(() => db.AddNewLangs(Added));
-
-            //        var filename = saveFileToDisk.ExportLangTextsAsJson(Added, LangChangeType.Added);
-            //        Debug.WriteLine(filename);
-
-
-            //    }
-
-            //    if (Changed.Count >= 1)   //判断修改内容是否为空
-            //    {
-            //        InfoText = "正在应用修改内容……";
-            //        //await Task.Run(() => db.UpdateLangsEN(Changed));
-
-            //        var filename = saveFileToDisk.ExportLangTextsAsJson(Changed, LangChangeType.ChangedEN);
-            //        Debug.WriteLine(filename);
-            //    }
-
-            //    if (RemovedList.Count >= 1)   //判断移除内容是否为空
-            //    {
-            //        InfoText = "正在删除移除内容……";
-            //        //await Task.Run(() => db.DeleteLangs(RemovedList));
-
-            //        var filename = saveFileToDisk.ExportLangTextsAsJson(RemovedList, LangChangeType.Removed);
-            //        Debug.WriteLine(filename);
-            //    }
-
-            //    SaveButtonEnable = true;
-            //}
-
-
         }
 
         public void UploadResultToServer(object o)
@@ -354,7 +302,6 @@ namespace GUI.ViewModels
         private async void CompreWithDb(object o)
         {
             OpenFileCommand.IsExecuting = true;      //禁用浏览文件窗口按钮
-            SaveToDbCommand.IsExecuting = true;
             SaveToServerCommand.IsExecuting = true;
             UpdatedVersionInputEnable = false;
             CompareFilesCommand.IsExecuting = true;
@@ -474,8 +421,6 @@ namespace GUI.ViewModels
             AddedTag = Added.Count.ToString();
             ChangedTag = Changed.Count.ToString();
             RemovedTag = RemovedList.Count.ToString();
-
-            SaveToDbCommand.IsExecuting = false;        //启用保存按钮
 
             Debug.WriteLine("Added Line: {0}", Added.Count);
             Debug.WriteLine("Changed Line: {0}", Changed.Count);

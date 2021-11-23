@@ -12,7 +12,7 @@ namespace Core.RequestParameters
         public string SearchTerm { get; set; }
         public bool CaseSensitive { get; set; }
         public int IdType { get; set; }
-        public string GameVersionInfo { get; set; }
+        public int GameApiVersion { get; set; }
         public Guid UserId { get; set; }
         public Guid ReviewerId { get; set; }
         public int Revised { get; set; }

@@ -2,7 +2,6 @@
 using Core.Entities;
 using Core.EnumTypes;
 using Core.Models;
-using Core.Models;
 using GUI;
 using GUI.EventAggres;
 using Microsoft.Extensions.Logging;
@@ -25,15 +24,11 @@ namespace GUI.Services
 {
     public class StartupCheck : IStartupCheck
     {
-        private int RevCompareNum = 0;
-        private int TaskCount = 0;
-
         private int _langRevNumberLocal = 0;
         private int _langRevNumberServer = 0;
 
         private int _userRevNumberLocal = 0;
         private int _userRevNumberServer = 0;
-
 
         private AppConfigServer _langConfigServer;
 
@@ -42,7 +37,6 @@ namespace GUI.Services
         private ILangTextAccess _langTextAccess;
         private IUserAccess _userAccess;
         private IMapper _mapper;
-        private JsonSerializerOptions _jsonOption;
         private ILogger _logger;
         private IBackendService _backendService;
 
@@ -58,13 +52,6 @@ namespace GUI.Services
             _mapper = Mapper;
             _logger = logger;
             _backendService = backendService;
-
-            //_jsonOption = new JsonSerializerOptions
-            //{
-            //    PropertyNameCaseInsensitive = true,
-            //};
-
-
         }
 
         public async Task StartupTaskList()
@@ -159,9 +146,17 @@ namespace GUI.Services
 
             if (_langRevNumberServer != 0 && _langRevNumberLocal != _langRevNumberServer)
             {
-                _logger.LogDebug("本地步进号：" + _langRevNumberLocal);
-                _logger.LogDebug("服务器端步进号：" + _langRevNumberServer);
-                await SyncRevDatabase();
+                if (App.LangConfig.AppSetting.IsMinimumDB)
+                {
+                    _logger.LogDebug("使用远程数据库，本地不再同步");
+                }
+                else
+                {
+                    _logger.LogDebug("本地步进号：" + _langRevNumberLocal);
+                    _logger.LogDebug("服务器端步进号：" + _langRevNumberServer);
+                    await SyncRevDatabase();
+                }
+                
             }
             else
             {
@@ -202,12 +197,6 @@ namespace GUI.Services
             _logger.LogDebug("发现更新器版本更新");
             _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
 
-            //using (WebClient client = new WebClient())
-            //{
-            //    client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
-            //    await client.DownloadFileTaskAsync(new Uri(App.ServerPath + _langConfigServer.LangUpdaterPackPath),
-            //    "UpdaterPack.zip");
-            //}
             _backendService.DownloadAndExtractComplete += SetUpdaterSha256;
             await _backendService.DownloadFileFromServer(App.ServerPath + _langConfigServer.LangUpdaterPackPath,
                  _langConfigServer.LangUpdaterPackPath, _langConfigServer.LangUpdaterPackSha256);
@@ -220,34 +209,6 @@ namespace GUI.Services
             App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
             AppConfigClient.Save(App.LangConfig);
         }
-
-        //private void DelegateHashAndUnzip(object sender, AsyncCompletedEventArgs e)
-        //{
-        //    _ea.GetEvent<ConnectProgressString>().Publish("下载完成！");
-        //    Debug.WriteLine("下载完成！");
-
-        //    Task.Delay(1000);
-
-        //    if (GetFileExistAndSha256("UpdaterPack.zip", _langConfigServer.LangUpdaterPackSha256))
-        //    {
-        //        _ea.GetEvent<ConnectProgressString>().Publish("SHA256校验通过，准备解压文件。");
-        //        Debug.WriteLine("SHA256校验通过，准备解压文件。");
-
-        //        ZipFile.ExtractToDirectory("UpdaterPack.zip", App.WorkingDirectory, true);
-
-        //        //App.LangConfig.LangUpdaterSha256 = _langConfigServer.LangUpdaterSha256;
-        //        App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
-
-        //        AppConfigClient.Save(App.LangConfig);
-
-        //        File.Delete("UpdaterPack.zip");
-        //    }
-        //    else
-        //    {
-        //        _ea.GetEvent<ConnectProgressString>().Publish("校验SHA256失败！");
-        //        _logger.LogCritical("=====新版更新器更新失败======");
-        //    }
-        //}
 
         public async Task SyncUsers()
         {
@@ -391,21 +352,6 @@ namespace GUI.Services
             _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Publish();
         }
 
-        //private async Task<AppConfigServer> GetServerRespondAndConfig()
-        //{
-        //    AppConfigServer result = null;
-        //    HttpClient client = App.HttpClient;
-
-        //    HttpResponseMessage response = await client.GetAsync("AppConfig.json");
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var responseContent = await response.Content.ReadAsStringAsync();
-        //        result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
-        //    }
-        //    return result;
-        //}
-
         private async Task GetConfigFromDb()
         {
             if (App.LangConfig.UserGuid != new Guid())
@@ -435,28 +381,6 @@ namespace GUI.Services
 
             _logger.LogDebug($"langRevNumberLocal 为 {_langRevNumberLocal}, userRevNumberLocal 为 {_userRevNumberLocal}");
         }
-
-        //private static bool GetFileExistAndSha256(string filePath, string fileSHA265)
-        //{
-        //    string hashReslut;
-
-        //    if (File.Exists(filePath))
-        //    {
-        //        using (FileStream stream = File.OpenRead(filePath))
-        //        {
-        //            Debug.WriteLine(filePath);
-        //            SHA256Managed sha = new SHA256Managed();
-        //            byte[] hash = sha.ComputeHash(stream);
-        //            hashReslut = BitConverter.ToString(hash).Replace("-", String.Empty);
-        //        }
-        //        return fileSHA265 == hashReslut;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
 
     }
 }

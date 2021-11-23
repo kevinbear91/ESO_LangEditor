@@ -132,7 +132,7 @@ namespace API.Controllers
             Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
             var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
 
-            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.UpdateStats == para.SearchTerm, para);
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.GameApiVersion == Convert.ToInt32(para.SearchTerm), para);
 
             Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
 
@@ -639,7 +639,7 @@ namespace API.Controllers
                     langtext.UserId = new Guid(userId);
                     langtext.TextEn = enChanged.TextEn;
                     langtext.EnLastModifyTimestamp = DateTime.UtcNow;
-                    langtext.UpdateStats = enChanged.UpdateStats;
+                    langtext.GameApiVersion = enChanged.GameApiVersion;
 
                     var langtextReview = _mapper.Map<LangTextReview>(langtext);
                     langtextReview.ReasonFor = ReviewReason.EnChanged;

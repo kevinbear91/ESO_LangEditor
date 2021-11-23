@@ -51,6 +51,7 @@ namespace Core.Models
                 IsAutoQueryLangTextInReview = true,
                 IsDisplayJp = false,
                 IsServerSideSearch = false,
+                IsMinimumDB = true,
             };
         }
         private static readonly string CONFIG_FILE = "LangConfig.json";
@@ -104,5 +105,6 @@ namespace Core.Models
         public bool IsDisplayJp { get; set; }
         public bool IsServerSideSearch { get; set; }
         public int ServerSideSearchPageSize { get; set; }
+        public bool IsMinimumDB { get; set; }
     }
 }

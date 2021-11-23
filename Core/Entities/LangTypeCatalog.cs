@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Core.Entities
 {
-    public class GameTextIdCatalog
+    public class LangTypeCatalog
     {
         [Key]
         public int IdType { get; set; }
