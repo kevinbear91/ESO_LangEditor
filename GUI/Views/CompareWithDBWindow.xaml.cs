@@ -12,5 +12,14 @@ namespace GUI.Views
         {
             InitializeComponent();
         }
+
+        private void SaveToDB_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var versionWindow = new NewGameVersionWindow
+            {
+                Owner = this
+            };
+            versionWindow.Show();
+        }
     }
 }

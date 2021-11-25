@@ -73,7 +73,7 @@ namespace GUI.ViewModels
             {
                 new MenuItemContent
                 {
-                    Header="导入", ChildMenuItems=new ObservableCollection<MenuItemContent>
+                    Header="游戏文件相关", ChildMenuItems=new ObservableCollection<MenuItemContent>
                     {
                         //new MenuItemContent
                         //{
@@ -87,41 +87,43 @@ namespace GUI.ViewModels
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "CompareWithDBWindow",
                             //Visible = RoleToVisibility("Admin"),
-                        }
-                    }
+                        },
 
-                },
-                new MenuItemContent
-                {
-                    Header="导出", ChildMenuItems=new ObservableCollection<MenuItemContent>
-                    {
-                        //new MenuItemContent   //导出译文窗口参数
-                        //{
-                        //    Header = "导出已翻译内容",                                        //菜单标题
-                        //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),      //菜单Command 打开窗口
-                        //    CommandParameter = windowNamespace + "ExportTranslate",  //窗口名 - 必须包含命名空间
-                        //},
                         new MenuItemContent {
                             Header = "导出为游戏文件",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "PackToRelase",
                             Visible = RoleToVisibility("Editor"),
                         }
-                        //new MenuItemContent
-                        //{
-                        //    Header = "导出文本至.lang",
-                        //    Command = new ExcuteViewModelMethod(ExportLang),
-                        //    //CommandParameter = "GUI.Views.ExportTranslate"
-                        //},
-                        //new MenuItemContent
-                        //{
-                        //    Header = "导出UI Str内容",
-                        //    Command = new ExcuteViewModelMethod(ExportLuaToStr), 
-                        //    //CommandParameter = "GUI.Views.ExportTranslate"
-                        //},
                     }
 
                 },
+                //new MenuItemContent
+                //{
+                //    Header="导出", ChildMenuItems=new ObservableCollection<MenuItemContent>
+                //    {
+                //        //new MenuItemContent   //导出译文窗口参数
+                //        //{
+                //        //    Header = "导出已翻译内容",                                        //菜单标题
+                //        //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),      //菜单Command 打开窗口
+                //        //    CommandParameter = windowNamespace + "ExportTranslate",  //窗口名 - 必须包含命名空间
+                //        //},
+                        
+                //        //new MenuItemContent
+                //        //{
+                //        //    Header = "导出文本至.lang",
+                //        //    Command = new ExcuteViewModelMethod(ExportLang),
+                //        //    //CommandParameter = "GUI.Views.ExportTranslate"
+                //        //},
+                //        //new MenuItemContent
+                //        //{
+                //        //    Header = "导出UI Str内容",
+                //        //    Command = new ExcuteViewModelMethod(ExportLuaToStr), 
+                //        //    //CommandParameter = "GUI.Views.ExportTranslate"
+                //        //},
+                //    }
+
+                //},
                 new MenuItemContent
                 {
                     Header="高级", ChildMenuItems=new ObservableCollection<MenuItemContent>

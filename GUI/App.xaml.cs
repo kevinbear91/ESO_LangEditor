@@ -117,6 +117,7 @@ namespace GUI
             containerRegistry.RegisterSingleton<IUserAccess, UserAccess>();
             containerRegistry.RegisterSingleton<ILangFile, LangFile>();
             containerRegistry.RegisterSingleton<IBackendService, BackendService>();
+            containerRegistry.RegisterSingleton<IGeneralAccess, GenreralAccess>();
 
             //ViewModel Register;
             ViewModelLocationProvider.Register<MainWindowSearchbar, MainWindowSearchbarViewModel>();

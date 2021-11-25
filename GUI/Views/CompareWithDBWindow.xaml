@@ -10,7 +10,7 @@
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="对比文本" Height="500" Width="550" ResizeMode="CanResize" Tag="CompareWithDbWindow" WindowStartupLocation="CenterOwner">
+        Title="对比文本" Height="500" Width="600" ResizeMode="CanResize" Tag="CompareWithDbWindow" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="53.76"/>
@@ -38,8 +38,8 @@
                 </Button>
             </materialDesign:Badged>
 
-            <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新版本号(必填)" 
-                     TextWrapping="Wrap" Width="200" Margin="30,0,30,0" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" >
+            <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新API号(必填)" 
+                     TextWrapping="Wrap" Width="200" Margin="30,0,30,0" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="IBeam" >
                 <TextBox.Text>
                     <Binding Path="UpdateVersionText" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -49,8 +49,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            
             <Button x:Name="Compare_Button"  Command="{Binding CompareFilesCommand}" Margin="20 0" 
                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                 <Button.Style>
@@ -69,11 +68,25 @@
 
             </Button>
 
+            
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button x:Name="SaveToServer_Button"  Command="{Binding SaveToServerCommand}" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="CloudUploadOutline" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="上传对比结果" VerticalAlignment="Center" />
+                </StackPanel>
+
+            </Button>
+
+            <Button x:Name="SaveToDB_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand" Click="SaveToDB_Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="DatabasePlusOutline" Width="24" Height="24" />
+                    <TextBlock Margin="10 .5 0 0" Text="新版本号" VerticalAlignment="Center" />
                 </StackPanel>
 
             </Button>

@@ -30,6 +30,12 @@ namespace GUI.Services
         private int _userRevNumberLocal = 0;
         private int _userRevNumberServer = 0;
 
+        private int _gameVersionRevLocal = 0;
+        private int _gameVersionRevServer = 0;
+
+        private int _idTypeRevLocal = 0;
+        private int _idTypeRevServer = 0;
+
         private AppConfigServer _langConfigServer;
 
         private IEventAggregator _ea;
@@ -133,6 +139,16 @@ namespace GUI.Services
                 {
                     _userRevNumberServer = rev.Rev;
                 }
+
+                if (rev.Id == 3)    //ID 2 为 GameVersion rev
+                {
+                    _gameVersionRevServer = rev.Rev;
+                }
+
+                if (rev.Id == 4)    //ID 2 为 IdType rev
+                {
+                    _idTypeRevServer = rev.Rev;
+                }
             }
 
             _logger.LogDebug($"langRevNumberServer 为 {_langRevNumberServer}, userRevNumberServer 为 {_userRevNumberServer}");
@@ -143,6 +159,17 @@ namespace GUI.Services
             {
                 await SyncUsers();
             }
+
+            if (_gameVersionRevLocal != _gameVersionRevServer)
+            {
+                //TODO
+            }
+
+            if (_idTypeRevLocal != _idTypeRevServer)
+            {
+                //TODO
+            }
+
 
             if (_langRevNumberServer != 0 && _langRevNumberLocal != _langRevNumberServer)
             {
@@ -156,7 +183,6 @@ namespace GUI.Services
                     _logger.LogDebug("服务器端步进号：" + _langRevNumberServer);
                     await SyncRevDatabase();
                 }
-                
             }
             else
             {
