@@ -20,29 +20,15 @@
             <DataGrid x:Name="GameVersionDataGrid" Height="200" ItemsSource="{Binding GameVersionDtos}" AutoGenerateColumns="False" >
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn Binding="{Binding GameApiVersion}" Header="游戏API版本" />
-                    <materialDesign:DataGridTextColumn Binding="{Binding Version_EN}" Header="版本名称(英文)"  />
+                    <materialDesign:DataGridTextColumn Binding="{Binding Version_EN}" Header="版本名称(英文)" />
                     <materialDesign:DataGridTextColumn Binding="{Binding Version_ZH}" Header="版本名称(中文)" />
                 </DataGrid.Columns>
-
-
             </DataGrid>
-            <!--<TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新API号" 
-                     TextWrapping="Wrap" Width="200" Margin="30,15,30,15" Height="32" VerticalAlignment="Center"
-                     Text="{Binding GameApiVersion}" />
-
-            <TextBox x:Name="VersionInput_textBox2" materialDesign:HintAssist.Hint="版本名称(英文)" 
-                     TextWrapping="Wrap" Width="200" Margin="30,15,30,15" Height="32" VerticalAlignment="Center"
-                     Text="{Binding GameVersionName_EN}" />
-
-            <TextBox x:Name="VersionInput_textBox3" materialDesign:HintAssist.Hint="版本名称(中文)" 
-                     TextWrapping="Wrap" Width="200" Margin="30,15,30,15" Height="32" VerticalAlignment="Center"
-                     Text="{Binding GameVersionName_ZH}" />-->
-
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button x:Name="button_submit" Content="提交" Command="{Binding SumbitCommand}"
                     CommandParameter="{Binding ElementName=GameVersionDataGrid, Path=SelectedItem}" Margin="10"  />
         </StackPanel>
-    </Grid>
+    </Grid> 
 </Window>

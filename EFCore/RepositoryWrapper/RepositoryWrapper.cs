@@ -16,6 +16,7 @@ namespace EFCore.RepositoryWrapper
         private readonly IRegistrationCodeRepository _registrationCodeRepository = null;
         private readonly IGameVersionRepository _gameVersionRepository = null;
         private readonly ILangTypeCatalogRepository _langTypeCatalogRepository = null;
+        private readonly ILangTypeCatalogReviewRepository _langTypeCatalogReviewRepository = null;
 
         public LangtextApiDbContext LangtextApiDbContext { get; }
 
@@ -34,6 +35,8 @@ namespace EFCore.RepositoryWrapper
         public IGameVersionRepository GameVersionRepo => _gameVersionRepository ?? new GameVersionRepository(LangtextApiDbContext);
 
         public ILangTypeCatalogRepository LangTypeCatalogRepo => _langTypeCatalogRepository ?? new LangTypeCatalogRepository(LangtextApiDbContext);
+
+        public ILangTypeCatalogReviewRepository LangTypeCatalogReviewRepo => _langTypeCatalogReviewRepository ?? new LangTypeCatalogReviewRepository(LangtextApiDbContext);
 
         public RepositoryWrapper(LangtextApiDbContext langtextApiDbContext)
         {

@@ -39,6 +39,9 @@
         LangtextReviewFailed = 457,
         LangtextReviewDeleteNoPermission = 458,
         LangtextReviewDeleteIncludeNoPermission = 459,
+        LangtextLangTypeCatalogUpdateFailed = 460,
+        LangtextLangTypeCatalogAddFailed = 461,
+        LangtextLangTypeCatalogReviewUpdateFailed = 462,
     }
     public static class ApiRespondCodeExtensions
     {

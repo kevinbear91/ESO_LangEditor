@@ -57,6 +57,16 @@
                               Content="只审核已选择文本" 
                               IsChecked="{Binding IsReviewSelectedItems}" />
 
+                    <Separator />
+                    <Button ToolTip="提交审核通过条目" Command="{Binding SubmitDenyItems}" 
+                            Style="{StaticResource MaterialDesignFlatButton}"
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="DeleteOutline" />
+                            <TextBlock Margin="10 .5 0 0" Text="移除待审文本" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                    </Button>
 
                 </ToolBar>
             </ToolBarTray>
@@ -77,9 +87,36 @@
         <DockPanel Grid.Column="1" Grid.Row="1" >
             <UserControls:UC_LangDataGrid DataGridSelectChanged="DataGridSelectionChangedEvent" />
         </DockPanel>
-        <ScrollViewer Grid.Column="1" Grid.Row="2">
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Height="60" VerticalAlignment="Top">
+            <TextBox materialDesign:HintAssist.Hint="文本唯一ID" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding GridSelectedItem.TextId}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="文本类型" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding GridSelectedItem.IdType}" IsReadOnly="True" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Margin="0,60,0,0">
+            <TextBox materialDesign:HintAssist.Hint="英文" Margin="10" Width="200"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Text="{Binding GridSelectedItem.TextEn}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="中文" Margin="10" Width="200"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding GridSelectedItem.TextZh}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="修改前(本地)" Margin="10" Width="190"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding CurrentLang}" IsReadOnly="True" Cursor="IBeam" />
+        </StackPanel>
+        <!--<WrapPanel Grid.Column="1" Grid.Row="2">
+            
+            
+        </WrapPanel>-->
+        <!--<StackPanel >
+            
+        </StackPanel>-->
+        <!--<ScrollViewer Grid.Column="1" Grid.Row="2">
             <TextBlock Text="{Binding SelectedItemInfo, FallbackValue=SelectedItemInfo}" Margin="10,20,0,0" TextWrapping="Wrap" />
-        </ScrollViewer>
+        </ScrollViewer>-->
 
 
         <StatusBar Grid.Row="3" Grid.ColumnSpan="2" VerticalContentAlignment="Bottom">

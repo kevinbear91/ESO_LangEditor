@@ -110,29 +110,29 @@ namespace GUI.Views.UserControls
                         RowRightClickMenuGenerater();
                     }
                 }
-                else if (target is DataGridRow & GetDataGridInWindowTag() == "LangtextReviewWindow")
-                {
-                    if (datagrid.SelectedIndex != -1)
-                    {
-                        if (_rowRightClickMenu.Items.Count == 0)
-                        {
-                            foreach (var item in RowRightClickMenuEnum)
-                            {
-                                if (item == LangDataGridContextMenu.DeleteUnderReview)
-                                {
-                                    var menuItem = new MenuItem
-                                    {
-                                        Header = _enumDescriptionConverter.GetEnumDescription(item),
-                                        DataContext = item,
-                                    };
-                                    menuItem.Click += RowRightClickMenu_OnClick;
-                                    _rowRightClickMenu.Items.Add(menuItem);
-                                }
-                            }
-                        }
-                        _rowRightClickMenu.IsOpen = true;
-                    }
-                }
+                //else if (target is DataGridRow & GetDataGridInWindowTag() == "LangtextReviewWindow")
+                //{
+                //    if (datagrid.SelectedIndex != -1)
+                //    {
+                //        if (_rowRightClickMenu.Items.Count == 0)
+                //        {
+                //            foreach (var item in RowRightClickMenuEnum)
+                //            {
+                //                if (item == LangDataGridContextMenu.DeleteUnderReview)
+                //                {
+                //                    var menuItem = new MenuItem
+                //                    {
+                //                        Header = _enumDescriptionConverter.GetEnumDescription(item),
+                //                        DataContext = item,
+                //                    };
+                //                    menuItem.Click += RowRightClickMenu_OnClick;
+                //                    _rowRightClickMenu.Items.Add(menuItem);
+                //                }
+                //            }
+                //        }
+                //        _rowRightClickMenu.IsOpen = true;
+                //    }
+                //}
                 target = VisualTreeHelper.GetParent(target);
             }
 
@@ -206,16 +206,17 @@ namespace GUI.Views.UserControls
             {
                 foreach (var item in RowRightClickMenuEnum)
                 {
-                    if (item != LangDataGridContextMenu.DeleteUnderReview)
+                    //if (item != LangDataGridContextMenu.DeleteUnderReview)
+                    //{
+                        
+                    //}
+                    var menuItem = new MenuItem
                     {
-                        var menuItem = new MenuItem
-                        {
-                            Header = _enumDescriptionConverter.GetEnumDescription(item),
-                            DataContext = item,
-                        };
-                        menuItem.Click += RowRightClickMenu_OnClick;
-                        _rowRightClickMenu.Items.Add(menuItem);
-                    }
+                        Header = _enumDescriptionConverter.GetEnumDescription(item),
+                        DataContext = item,
+                    };
+                    menuItem.Click += RowRightClickMenu_OnClick;
+                    _rowRightClickMenu.Items.Add(menuItem);
                 }
             }
             _rowRightClickMenu.IsOpen = true;
@@ -251,10 +252,10 @@ namespace GUI.Views.UserControls
                 case LangDataGridContextMenu.SearchAndReplace:
                     new SearchReplaceWindow(GetSeletedItems()).Show();
                     break;
-                case LangDataGridContextMenu.DeleteUnderReview:
-                    var context = this.DataContext as LangTextReviewWindowViewModel;
-                    context.SubmitDeleteSelectedItemsToServer();
-                    break;
+                //case LangDataGridContextMenu.DeleteUnderReview:
+                //    var context = this.DataContext as LangTextReviewWindowViewModel;
+                //    context.SubmitDeleteSelectedItemsToServer();
+                //    break;
             };
 
         }

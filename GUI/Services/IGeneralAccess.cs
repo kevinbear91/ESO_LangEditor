@@ -13,5 +13,9 @@ namespace GUI.Services
         Task<List<GameVersionDto>> GetGameVersionDtos();
         Task<List<LangTypeCatalogDto>> GetIdtypeDtos();
         Task<MessageWithCode> UploadNewGameVersion();
+        Task<MessageWithCode> UploadIdTypeDto();
+        Task<MessageWithCode> GetIdTypeFromReview();
+        Task<MessageWithCode> ApproveIdTypeFromReview();
+        Task<MessageWithCode> DeleteIdTypeFromReview();
     }
 }

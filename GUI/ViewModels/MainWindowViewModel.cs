@@ -106,9 +106,6 @@ namespace GUI.ViewModels
         public event EventHandler OnRequestClose;
         public event EventHandler CloseDrawerHostEvent;
 
-
-        public ObservableCollection<LangTreeCategory> LangTreeCategories { get; }
-
         public MainWindowViewModel(IEventAggregator ea, ILogger logger,
             IStartupCheck startupCheck)
         {

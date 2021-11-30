@@ -42,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\LangTypeCatalogReviewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PackToRelase.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -51,6 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\LangTypeCatalogReviewWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\PackToRelase.xaml">
       <SubType>Designer</SubType>
     </Page>

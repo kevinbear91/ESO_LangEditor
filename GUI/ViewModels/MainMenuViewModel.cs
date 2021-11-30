@@ -136,6 +136,13 @@ namespace GUI.ViewModels
                             Visible = RoleToVisibility("Editor"),
                         },
 
+                        new MenuItemContent {
+                            Header = "编辑ID类型名称",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "LangTypeCatalogWindow",
+                            Visible = RoleToVisibility("Editor"),
+                        },
+
                     }
 
                 },

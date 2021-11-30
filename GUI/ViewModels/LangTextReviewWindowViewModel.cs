@@ -30,9 +30,9 @@ namespace GUI.ViewModels
         private List<LangTextForReviewDto> _gridSelectedItems;
         private LangTextForReviewDto _gridSelectedItem;
         private bool _isReviewSelectedItems = true;
-        private ILangTextRepoClient _langTextRepoClient; // = new LangTextRepoClientService();
+        private ILangTextRepoClient _langTextRepoClient;
         private ILangTextAccess _langTextAccess;
-        private string _selectedItemInfo;
+        private string _currentLang;
         private bool _isSubmitItems = false;
 
         public string SearchResultInfo
@@ -83,10 +83,10 @@ namespace GUI.ViewModels
             set => SetProperty(ref _isReviewSelectedItems, value);
         }
 
-        public string SelectedItemInfo
+        public string CurrentLang
         {
-            get => _selectedItemInfo;
-            set => SetProperty(ref _selectedItemInfo, value);
+            get => _currentLang;
+            set => SetProperty(ref _currentLang, value);
         }
 
         public LangTextForReviewDto GridSelectedItem
@@ -101,8 +101,6 @@ namespace GUI.ViewModels
         public ExcuteViewModelMethod QueryReviewPendingItems => new ExcuteViewModelMethod(QueryReviewUserList);
         public ExcuteViewModelMethod SubmitApproveItems => new ExcuteViewModelMethod(SubmitApproveItemsToServer);
         public ExcuteViewModelMethod SubmitDenyItems => new ExcuteViewModelMethod(SubmitDenyItemsToServer);
-
-        public EventHandler DeleteSelectedItems;
 
         public LangTextReviewWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
             ILangTextAccess langTextAccess)
@@ -205,7 +203,53 @@ namespace GUI.ViewModels
             }
         }
 
-        public async void SubmitDeleteSelectedItemsToServer()
+        //public async void SubmitDeleteSelectedItemsToServer()
+        //{
+        //    if (_isSubmitItems)
+        //    {
+        //        MessageBox.Show("已有上传指令正在执行，请等待完成后再提交！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //    else
+        //    {
+        //        _isSubmitItems = true;
+        //        NetworkInfo = "正在上传并等待服务器执行……";
+
+        //        List<Guid> langIdList;
+        //        List<LangTextForReviewDto> langTextForReviewDtos = GridSelectedItems;
+
+        //        if (langTextForReviewDtos.Count >= 1)
+        //        {
+        //            langIdList = langTextForReviewDtos.Select(lang => lang.Id).ToList();
+        //            Debug.WriteLine("langIdList count: " + langIdList.Count);
+
+        //            try
+        //            {
+        //                var respond = await _langTextAccess.RemoveLangTextsInReview(langIdList);
+
+        //                if (respond.Code == (int)RespondCode.Success)
+        //                {
+        //                    foreach (var selected in langTextForReviewDtos)
+        //                    {
+        //                        GridData.Remove(selected);
+        //                    }
+        //                    NetworkInfo = "执行完成";
+        //                }
+        //            }
+        //            catch (HttpRequestException ex)
+        //            {
+        //                NetworkInfo = ex.Message;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("请选择要删除的文本！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+        //        }
+        //        _isSubmitItems = false;
+        //    }
+
+        //}
+
+        public async void SubmitDenyItemsToServer(object o)
         {
             if (_isSubmitItems)
             {
@@ -248,44 +292,37 @@ namespace GUI.ViewModels
                 }
                 _isSubmitItems = false;
             }
-
-        }
-
-        public async void SubmitDenyItemsToServer(object o)
-        {
-
         }
 
         public async void SetSelectedItemInfo()
         {
-            var localOldLang = await FindLangtext();
-            string localOldTextZh = "读取本地修改前文本出错！";
+            var localOldLang = await GetLangTextForReviewFromServer();
+            CurrentLang = "读取本地修改前文本出错！";
 
             if (GridSelectedItem != null)
             {
                 if (GridSelectedItem.ReasonFor == ReviewReason.ZhChanged
                     || GridSelectedItem.ReasonFor == ReviewReason.Deleted)
                 {
-                    localOldTextZh = "修改前中文(本地)：" + localOldLang.TextZh;
+                    CurrentLang = localOldLang.TextZh;
                 }
 
                 if (GridSelectedItem.ReasonFor == ReviewReason.EnChanged)
                 {
-                    localOldTextZh = "修改前英文(本地)：" + localOldLang.TextEn;
+                    CurrentLang = localOldLang.TextEn;
                 }
 
-                SelectedItemInfo = "文本唯一ID：" + GridSelectedItem.TextId
-                + "\n" + "文本类型：(" + GridSelectedItem.IdType + ")" + App.iDCatalog.GetCategory(GridSelectedItem.IdType)
-                + "\n" + "英文：" + GridSelectedItem.TextEn
-                + "\n" + "中文：" + GridSelectedItem.TextZh
-                + "\n" + localOldTextZh;
+                //SelectedItemInfo = "文本唯一ID：" + GridSelectedItem.TextId
+                //+ "\n" + "文本类型：(" + GridSelectedItem.IdType + ")" + App.iDCatalog.GetCategory(GridSelectedItem.IdType)
+                //+ "\n" + "英文：" + GridSelectedItem.TextEn
+                //+ "\n" + "中文：" + GridSelectedItem.TextZh
+                //+ "\n" + localOldTextZh;
 
             }
             else
             {
-                SelectedItemInfo = "无选择文本或当前文本不存在于本地数据库。";
+                CurrentLang = "无选择文本或当前文本不存在于本地数据库。";
             }
-
 
         }
 
@@ -298,6 +335,17 @@ namespace GUI.ViewModels
                 lang = await _langTextRepoClient.GetLangTextByGuidAsync(GridSelectedItem.Id);
             }
             return lang;
+        }
+
+        private async Task<LangTextForReviewDto> GetLangTextForReviewFromServer()
+        {
+            LangTextForReviewDto langTextForReviewDto = new LangTextForReviewDto();
+
+            if (GridSelectedItem != null && GridSelectedItem.ReasonFor != ReviewReason.NewAdded)
+            {
+                langTextForReviewDto = await _langTextAccess.GetLangTextFromReview(GridSelectedItem.Id);
+            }
+            return langTextForReviewDto;
         }
 
 

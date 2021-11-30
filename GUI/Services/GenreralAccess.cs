@@ -1,8 +1,10 @@
 ﻿using Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -25,9 +27,23 @@ namespace GUI.Services
         }
 
 
-        public Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
+        public async Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<LangTextRevNumberDto> responded = null;
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync("api/revise");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                responded = JsonSerializer.Deserialize<List<LangTextRevNumberDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(responded);
+
+            return responded;
         }
 
         public Task<List<GameVersionDto>> GetGameVersionDtos()
@@ -40,9 +56,25 @@ namespace GUI.Services
             throw new NotImplementedException();
         }
 
+        public Task<MessageWithCode> UploadIdTypeDto()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<MessageWithCode> UploadNewGameVersion()
         {
             throw new NotImplementedException();
+        }
+
+        private HttpContent SerializeDataToHttpContent(object data)
+        {
+            var myContent = JsonSerializer.SerializeToUtf8Bytes(data);
+
+            var byteContent = new ByteArrayContent(myContent);
+
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return byteContent;
         }
     }
 }

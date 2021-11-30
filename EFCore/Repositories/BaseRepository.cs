@@ -44,6 +44,12 @@ namespace EFCore.Repositories
             //return Task.FromResult(DbContext.Set<T>().AsEnumerable());
         }
 
+        public Task<IEnumerable<T>> GetAllAsync()
+        {
+            //return Task.FromResult();
+            return Task.FromResult(DbContext.Set<T>().AsEnumerable());
+        }
+
         public Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression)
         {
             return Task.FromResult(DbContext.Set<T>().Where(expression).AsEnumerable());

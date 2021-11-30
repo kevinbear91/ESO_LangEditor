@@ -11,6 +11,7 @@ namespace EFCore.Repositories
     public interface IBaseRepository<T>
     {
         Task<PagedList<T>> GetAllAsync(PageParameters pageParameters);
+        Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetByConditionAsync(Expression<Func<T, bool>> expression);
         Task<IQueryable<TType>> SelectByConditionWithDistinctAsync<TType>(Expression<Func<T, TType>> expression);
         void Create(T entity);
