@@ -42,6 +42,10 @@
         LangtextLangTypeCatalogUpdateFailed = 460,
         LangtextLangTypeCatalogAddFailed = 461,
         LangtextLangTypeCatalogReviewUpdateFailed = 462,
+        GameVersionUpdateFailed = 463,
+        GameVersionAddedFailed = 464,
+        GameVersionExist = 465,
+        GameVersionNotFound = 466,
     }
     public static class ApiRespondCodeExtensions
     {
