@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EFCore.DataRepositories
 {
-    public class LangTypeCatalogReviewRepository : BaseRepository<LangTypeCatalog, int>, ILangTypeCatalogReviewRepository
+    public class LangTypeCatalogReviewRepository : BaseRepository<LangTypeCatalogReview, int>, ILangTypeCatalogReviewRepository
     {
         public LangTypeCatalogReviewRepository(DbContext dbContext) : base(dbContext)
         {

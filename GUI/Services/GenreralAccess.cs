@@ -26,6 +26,15 @@ namespace GUI.Services
             };
         }
 
+        public Task<MessageWithCode> ApproveIdTypeFromReview()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MessageWithCode> DeleteIdTypeFromReview()
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
         {
@@ -52,6 +61,11 @@ namespace GUI.Services
         }
 
         public Task<List<LangTypeCatalogDto>> GetIdtypeDtos()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<MessageWithCode> GetIdTypeFromReview()
         {
             throw new NotImplementedException();
         }

@@ -21,6 +21,9 @@ namespace EFCore
         public DbSet<LangTextRevised> LangtextRevised { get; set; }
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
         public DbSet<UserRegistrationCode> UserRegistrationCode { get; set; }
+        public DbSet<LangTypeCatalog> LangTypeCatalog { get; set; }
+        public DbSet<LangTypeCatalogReview> LangTypeCatalogReview { get; set; }
+        public DbSet<GameVersion> GameVersion { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

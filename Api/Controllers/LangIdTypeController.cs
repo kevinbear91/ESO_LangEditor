@@ -62,7 +62,7 @@ namespace API.Controllers
         [HttpPost("new")]
         public async Task<IActionResult> AddNewLangIdTypeAsync(LangTypeCatalogDto langTypeCatalogDto)
         {
-            var langIdType = _mapper.Map<LangTypeCatalog>(langTypeCatalogDto);
+            var langIdType = _mapper.Map<LangTypeCatalogReview>(langTypeCatalogDto);
             //var userId = _userManager.GetUserId(HttpContext.User);  //获取操作者ID
 
             var langIdTypeInReview = await _repositoryWrapper.LangTypeCatalogReviewRepo.GetByIdAsync(langTypeCatalogDto.IdType);
@@ -107,16 +107,21 @@ namespace API.Controllers
 
                 if (langIdTypeInRewiew != null)
                 {
-                    if (await _repositoryWrapper.LangTypeCatalogRepo.IsExistAsync(langIdTypeInRewiew.IdType))
+                    var langIdType = await _repositoryWrapper.LangTypeCatalogRepo.GetByIdAsync(i);
+
+                    if (langIdType != null)
                     {
-                        _repositoryWrapper.LangTypeCatalogRepo.Update(langIdTypeInRewiew);
+                        langIdType.IdTypeZH = langIdTypeInRewiew.IdTypeZH;
+                        _repositoryWrapper.LangTypeCatalogRepo.Update(langIdType);
                     }
                     else
                     {
-                        _repositoryWrapper.LangTypeCatalogRepo.Create(langIdTypeInRewiew);
+                        var langIdTypeFromReview = _mapper.Map<LangTypeCatalog>(langIdTypeInRewiew);
+                        _repositoryWrapper.LangTypeCatalogRepo.Create(langIdTypeFromReview);
                     }
-                }
 
+                    _repositoryWrapper.LangTypeCatalogReviewRepo.Delete(langIdTypeInRewiew);
+                }
             }
 
             var langIdTypeRev = await _repositoryWrapper.LangTextRevNumberRepo.GetByIdAsync(4);

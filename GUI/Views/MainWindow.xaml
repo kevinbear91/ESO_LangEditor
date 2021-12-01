@@ -90,22 +90,6 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
                 <DockPanel Grid.Row="1" >
-
-                    <TreeView Width="300" ItemsSource="{Binding LangTreeCategories}" Visibility="Collapsed">
-                        <TreeView.Resources>
-                            <HierarchicalDataTemplate DataType="{x:Type service:LangTreeCategory}"
-                                                          ItemsSource="{Binding LangTree}">
-                                <TextBlock Text="{Binding Name}" Margin="3,2" />
-                            </HierarchicalDataTemplate>
-                            <HierarchicalDataTemplate DataType="{x:Type service:LangTreeList}"
-                                                          ItemsSource="{Binding LangContent}">
-                                <TextBlock Text="{Binding ListName}" Margin="3,2" />
-                            </HierarchicalDataTemplate>
-                            <DataTemplate DataType="{x:Type service:LangTreeContent}">
-                                <TextBlock Text="{Binding TypeName}" Margin="3 2" ToolTip="{Binding TypeCategory}" />
-                            </DataTemplate>
-                        </TreeView.Resources>
-                    </TreeView>
                     <ucd:UC_LangDataGrid DataGridDoubleClicked="DataGridDoubleClickedEvent" DataGridSelectChanged="DataGridSelectionChangedEvent"  />
                 </DockPanel>
 

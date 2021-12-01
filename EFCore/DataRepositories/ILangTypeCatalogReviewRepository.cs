@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EFCore.DataRepositories
 {
-    public interface ILangTypeCatalogReviewRepository : IBaseRepository<LangTypeCatalog>, IBaseRepository2<LangTypeCatalog, int>
+    public interface ILangTypeCatalogReviewRepository : IBaseRepository<LangTypeCatalogReview>, IBaseRepository2<LangTypeCatalogReview, int>
     {
 
     }
