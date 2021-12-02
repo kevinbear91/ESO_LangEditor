@@ -26,16 +26,6 @@ namespace GUI.Services
             };
         }
 
-        public Task<MessageWithCode> ApproveIdTypeFromReview()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<MessageWithCode> DeleteIdTypeFromReview()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
@@ -55,29 +45,121 @@ namespace GUI.Services
             return responded;
         }
 
-        public Task<List<GameVersionDto>> GetGameVersionDtos()
+        public async Task<List<GameVersionDto>> GetGameVersionDtos()
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<GameVersionDto> responded = null;
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync("api/gameVersion");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                responded = JsonSerializer.Deserialize<List<GameVersionDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(responded);
+
+            return responded;
         }
 
-        public Task<List<LangTypeCatalogDto>> GetIdtypeDtos()
+        public async Task<List<LangTypeCatalogDto>> GetIdtypeDtos()
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<LangTypeCatalogDto> responded = null;
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync("api/langIdType");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                responded = JsonSerializer.Deserialize<List<LangTypeCatalogDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(responded);
+
+            return responded;
         }
 
-        public Task<MessageWithCode> GetIdTypeFromReview()
+        public async Task<List<LangTypeCatalogDto>> GetIdTypesFromReview()
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            List<LangTypeCatalogDto> responded = null;
+
+            HttpResponseMessage response = await _langHttpClient.GetAsync("api/langIdType/review");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                responded = JsonSerializer.Deserialize<List<LangTypeCatalogDto>>(responseContent, _jsonOption);
+            }
+
+            Debug.WriteLine(responded);
+
+            return responded;
         }
 
-        public Task<MessageWithCode> UploadIdTypeDto()
+        public async Task<MessageWithCode> UploadIdTypeDto(LangTypeCatalogDto langTypeCatalogDto)
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(langTypeCatalogDto);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langIdType", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
         }
 
-        public Task<MessageWithCode> UploadNewGameVersion()
+        public async Task<MessageWithCode> UploadNewGameVersion(GameVersionDto gameVersionDto)
         {
-            throw new NotImplementedException();
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(gameVersionDto);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/gameVersion", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
+        }
+
+        public async Task<MessageWithCode> ApproveIdTypeFromReview(List<int> ids)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(ids);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langIdType/review", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
+        }
+
+        public async Task<MessageWithCode> DeleteIdTypeFromReview(List<int> ids)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(ids);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langIdType/review/del", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
         }
 
         private HttpContent SerializeDataToHttpContent(object data)

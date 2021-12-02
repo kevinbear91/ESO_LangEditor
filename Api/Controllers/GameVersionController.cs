@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/gameversion")]
+    [Route("api/gameVersion")]
     [ApiController]
     public class GameVersionController : ControllerBase
     {

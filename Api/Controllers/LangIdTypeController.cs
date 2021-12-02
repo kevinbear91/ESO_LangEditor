@@ -31,7 +31,6 @@ namespace API.Controllers
             _mapper = mapper;
             _userManager = userManager;
             _logger = logger;
-
         }
 
         [Authorize]
@@ -43,23 +42,10 @@ namespace API.Controllers
             var langIdTypeListDto = _mapper.Map<List<LangTypeCatalogDto>>(langIdTypeList);
 
             return langIdTypeListDto;
-
-        }
-
-        [Authorize]
-        [HttpGet("review/all")]
-        public async Task<ActionResult<List<LangTypeCatalogDto>>> GetLangIdTypeInReviewAllAsync()
-        {
-            var langIdTypeList = await _repositoryWrapper.LangTypeCatalogReviewRepo.GetAllAsync();
-
-            var langIdTypeListDto = _mapper.Map<List<LangTypeCatalogDto>>(langIdTypeList);
-
-            return langIdTypeListDto;
-
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("new")]
+        [HttpPost()]
         public async Task<IActionResult> AddNewLangIdTypeAsync(LangTypeCatalogDto langTypeCatalogDto)
         {
             var langIdType = _mapper.Map<LangTypeCatalogReview>(langTypeCatalogDto);
@@ -94,11 +80,21 @@ namespace API.Controllers
                 Code = (int)RespondCode.Success,
                 Message = RespondCode.Success.ApiRespondCodeString()
             });
+        }
 
+        [Authorize]
+        [HttpGet("review")]
+        public async Task<ActionResult<List<LangTypeCatalogDto>>> GetLangIdTypeInReviewAllAsync()
+        {
+            var langIdTypeList = await _repositoryWrapper.LangTypeCatalogReviewRepo.GetAllAsync();
+
+            var langIdTypeListDto = _mapper.Map<List<LangTypeCatalogDto>>(langIdTypeList);
+
+            return langIdTypeListDto;
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("review/list")]
+        [HttpPost("review")]
         public async Task<IActionResult> LangIdTypeReviewAsync(List<int> Ids)
         {
             foreach(var i in Ids)
@@ -160,7 +156,7 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpPost("review/del/list")]
+        [HttpPost("review/del")]
         public async Task<IActionResult> DeleteLangIdTypeInReview(List<int> Ids)
         {
             foreach(int i in Ids)

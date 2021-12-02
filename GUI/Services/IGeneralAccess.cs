@@ -12,10 +12,10 @@ namespace GUI.Services
         Task<List<LangTextRevNumberDto>> GetAllRevisedNumber();
         Task<List<GameVersionDto>> GetGameVersionDtos();
         Task<List<LangTypeCatalogDto>> GetIdtypeDtos();
-        Task<MessageWithCode> UploadNewGameVersion();
-        Task<MessageWithCode> UploadIdTypeDto();
-        Task<MessageWithCode> GetIdTypeFromReview();
-        Task<MessageWithCode> ApproveIdTypeFromReview();
-        Task<MessageWithCode> DeleteIdTypeFromReview();
+        Task<MessageWithCode> UploadNewGameVersion(GameVersionDto gameVersionDto);
+        Task<MessageWithCode> UploadIdTypeDto(LangTypeCatalogDto langTypeCatalogDto);
+        Task<List<LangTypeCatalogDto>> GetIdTypesFromReview();
+        Task<MessageWithCode> ApproveIdTypeFromReview(List<int> ids);
+        Task<MessageWithCode> DeleteIdTypeFromReview(List<int> ids);
     }
 }

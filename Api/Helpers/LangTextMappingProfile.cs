@@ -30,6 +30,12 @@ namespace API.Helpers
             CreateMap<User, UserDto>();
             CreateMap<User, UserInClientDto>();
             CreateMap<UserProfileModifyBySelfDto, User>();
+            CreateMap<LangTypeCatalog, LangTypeCatalogDto>();
+            CreateMap<LangTypeCatalogReview, LangTypeCatalogDto>();
+            CreateMap<LangTypeCatalogDto, LangTypeCatalog>();
+            CreateMap<LangTypeCatalogDto, LangTypeCatalogReview>();
+            CreateMap<GameVersion, GameVersionDto>();
+            CreateMap<GameVersionDto, GameVersion>();
         }
     }
 }
