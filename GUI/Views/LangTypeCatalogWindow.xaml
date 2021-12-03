@@ -28,7 +28,7 @@
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <DataGrid x:Name="IdTypeCatalogDataGrid" Height="349" ItemsSource="{Binding LangTypeCatalogDtos}" AutoGenerateColumns="False" >
+            <DataGrid x:Name="IdTypeCatalogDataGrid" Height="300" ItemsSource="{Binding LangTypeCatalogDtos}" AutoGenerateColumns="False" >
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="ID类型" />
                     <materialDesign:DataGridTextColumn Binding="{Binding IdTypeZH}" Header="名称" />

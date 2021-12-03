@@ -12,42 +12,50 @@
         Title="文本ID类型编辑窗口" Height="450" Width="300">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
-            <RowDefinition Height="123*" />
-            <RowDefinition Height="22*"/>
+            <RowDefinition Height="14*" />
+            <RowDefinition Height="73*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="10">
-            <WrapPanel Orientation="Horizontal" Margin="0,10">
-                <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItemsCommand}" 
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="CheckBold" />
-                        <TextBlock Margin="10 .5 0 0" Text="审核文本" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
 
-                <Button ToolTip="提交审核通过条目" Command="{Binding SubmitDenyItemsCommand}" 
-                            Style="{StaticResource MaterialDesignFlatButton}"
-                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Margin="5">
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="DeleteOutline" />
-                        <TextBlock Margin="10 .5 0 0" Text="移除待审文本" VerticalAlignment="Center" />
-                    </StackPanel>
-                </Button>
-            </WrapPanel>
-            
-            <DataGrid x:Name="IdTypeCatalogDataGrid" Height="349" ItemsSource="{Binding LangTypeCatalogDtos}" AutoGenerateColumns="False" IsReadOnly="True" >
-                <DataGrid.Columns>
-                    <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="ID类型" />
-                    <materialDesign:DataGridTextColumn Binding="{Binding IdTypeZH}" Header="名称" />
-                </DataGrid.Columns>
-            </DataGrid>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItemsCommand}"
+                        CommandParameter="{Binding ElementName=IdTypeCatalogDataGrid, Path=SelectedItems}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Margin="5">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CheckBold" />
+                    <TextBlock Margin="10 .5 0 0" Text="审核文本" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <Button ToolTip="提交审核通过条目" Command="{Binding SubmitDenyItemsCommand}" 
+                        CommandParameter="{Binding ElementName=IdTypeCatalogDataGrid, Path=SelectedItems}"
+                        Style="{StaticResource MaterialDesignFlatButton}"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Margin="5">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="DeleteOutline" />
+                    <TextBlock Margin="10 .5 0 0" Text="移除待审文本" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Width="80">
+        <DataGrid x:Name="IdTypeCatalogDataGrid" Grid.Row="1" Margin="10" 
+                      ItemsSource="{Binding LangTypeCatalogDtos}" AutoGenerateColumns="False" IsReadOnly="True" >
+            <DataGrid.Columns>
+                <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="ID类型" />
+                <materialDesign:DataGridTextColumn Binding="{Binding IdTypeZH}" Header="名称" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!--<StackPanel Margin="10,10,10,10">
+
+
+
+        </StackPanel>-->
+
+        <!--<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Width="80">
             <Button x:Name="button_submit" Content="提交" Command="{Binding SumbitCommand}"
-                    CommandParameter="{Binding ElementName=IdTypeCatalogDataGrid, Path=SelectedItem}" Margin="10"  />
-        </StackPanel>
+                    CommandParameter="{Binding ElementName=IdTypeCatalogDataGrid, Path=SelectedItems}" Margin="10"  />
+        </StackPanel>-->
     </Grid>
 </Window>

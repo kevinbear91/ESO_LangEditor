@@ -6,14 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GUI.ViewModels
 {
     public class LangTypeCatalogReviewWindowViewModel : BindableBase
     {
+        private List<LangTypeCatalogDto> _langIdListFromServer;
         private ObservableCollection<LangTypeCatalogDto> _langTypeCatalogDtos = new ObservableCollection<LangTypeCatalogDto>();
         public ObservableCollection<LangTypeCatalogDto> LangTypeCatalogDtos
         {
@@ -30,15 +33,78 @@ namespace GUI.ViewModels
         {
             _generalAccess = generalAccess;
 
+            Task.Run(() => GetIdTypeCatalog());
         }
 
-        private void SumbitApproveItems(object obj)
+        private async Task GetIdTypeCatalog()
         {
-            throw new NotImplementedException();
+            _langIdListFromServer = await _generalAccess.GetIdTypesFromReview();
+
+            if (LangTypeCatalogDtos.Count > 0)
+            {
+                LangTypeCatalogDtos.Clear();
+            }
+
+            if (_langIdListFromServer != null && _langIdListFromServer.Count > 0)
+            {
+                LangTypeCatalogDtos.AddRange(_langIdListFromServer);
+            }
         }
-        private void SumbitDenyItems(object obj)
+
+        private async void SumbitApproveItems(object obj)
         {
-            throw new NotImplementedException();
+            var list = (List<LangTypeCatalogDto>) obj;
+            List<int> idList = new List<int>();
+
+            foreach(var IdType in list)
+            {
+                idList.Add(IdType.IdType);
+            }
+
+            if (idList.Count >= 1)
+            {
+                try
+                {
+                    var respond = await _generalAccess.ApproveIdTypeFromReview(idList);
+                    MessageBox.Show(respond.Message);
+                }
+                catch (HttpRequestException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("没有选中项。", "警告",MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+        }
+        private async void SumbitDenyItems(object obj)
+        {
+            var list = (List<LangTypeCatalogDto>)obj;
+            List<int> idList = new List<int>();
+
+            foreach (var IdType in list)
+            {
+                idList.Add(IdType.IdType);
+            }
+
+            if (idList.Count >= 1)
+            {
+                try
+                {
+                    var respond = await _generalAccess.DeleteIdTypeFromReview(idList);
+                    MessageBox.Show(respond.Message);
+                }
+                catch (HttpRequestException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+                MessageBox.Show("没有选中项。", "警告", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
     }
