@@ -140,7 +140,19 @@ namespace GUI.ViewModels
                             Header = "编辑ID类型名称",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "LangTypeCatalogWindow",
-                            Visible = RoleToVisibility("Editor"),
+                            //Visible = RoleToVisibility("Editor"),
+                        },
+                        new MenuItemContent {
+                            Header = "审核ID类型名称",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "LangTypeCatalogReviewWindow",
+                            //Visible = RoleToVisibility("Editor"),
+                        },
+                        new MenuItemContent {
+                            Header = "游戏API与版本号",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "NewGameVersionWindow",
+                            //Visible = RoleToVisibility("Editor"),
                         },
 
                     }

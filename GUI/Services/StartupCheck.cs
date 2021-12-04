@@ -45,11 +45,11 @@ namespace GUI.Services
         private IMapper _mapper;
         private ILogger _logger;
         private IBackendService _backendService;
-
+        private IGeneralAccess _generalAccess;
 
         public StartupCheck(IEventAggregator ea, ILangTextRepoClient langTextRepo,
             ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper,
-            ILogger logger, IBackendService backendService)
+            ILogger logger, IBackendService backendService, IGeneralAccess generalAccess)
         {
             _ea = ea;
             _langTextRepo = langTextRepo;
@@ -58,6 +58,7 @@ namespace GUI.Services
             _mapper = Mapper;
             _logger = logger;
             _backendService = backendService;
+            _generalAccess = generalAccess;
         }
 
         public async Task StartupTaskList()
@@ -151,7 +152,8 @@ namespace GUI.Services
                 }
             }
 
-            _logger.LogDebug($"langRevNumberServer 为 {_langRevNumberServer}, userRevNumberServer 为 {_userRevNumberServer}");
+            _logger.LogDebug($"langRevNumberServer 为 {_langRevNumberServer}, userRevNumberServer 为 {_userRevNumberServer}, " +
+                $"gameversionServer 为 {_gameVersionRevServer}, IdTypeServer 为 {_idTypeRevServer}");
 
             await GetConfigFromDb();
 
@@ -162,12 +164,12 @@ namespace GUI.Services
 
             if (_gameVersionRevLocal != _gameVersionRevServer)
             {
-                //TODO
+                await SyncGameVersion();
             }
 
             if (_idTypeRevLocal != _idTypeRevServer)
             {
-                //TODO
+                await SyncIdType();
             }
 
 
@@ -403,10 +405,53 @@ namespace GUI.Services
                 {
                     _userRevNumberLocal = rev.Rev;
                 }
+
+                if (rev.Id == 3)
+                {
+                    _gameVersionRevLocal = rev.Rev;
+                }
+
+                if (rev.Id == 4)
+                {
+                    _idTypeRevLocal = rev.Rev;
+                }
             }
 
             _logger.LogDebug($"langRevNumberLocal 为 {_langRevNumberLocal}, userRevNumberLocal 为 {_userRevNumberLocal}");
         }
 
+        private async Task SyncGameVersion()
+        {
+            Debug.WriteLine("SYNC GAME VERSION");
+            var gameVersionListFromServer = await _generalAccess.GetGameVersionDtos();
+
+            if (gameVersionListFromServer != null)
+            {
+                var gvList = _mapper.Map<List<GameVersion>>(gameVersionListFromServer);
+                await _langTextRepo.UpdateGameVersions(gvList);
+
+                if (await _langTextRepo.UpdateRevNumber(3, _gameVersionRevServer))
+                {
+                    _logger.LogDebug("游戏API版本同步完成");
+                }
+            }
+        }
+
+        private async Task SyncIdType()
+        {
+            Debug.WriteLine("SYNC ID TYPE");
+            var idTypeListFromServer = await _generalAccess.GetIdtypeDtos();
+
+            if (idTypeListFromServer != null)
+            {
+                var idTypeList = _mapper.Map<List<LangTypeCatalog>>(idTypeListFromServer);
+                await _langTextRepo.UpdateIdTypes(idTypeList);
+
+                if (await _langTextRepo.UpdateRevNumber(4, _idTypeRevServer))
+                {
+                    _logger.LogDebug("游戏IdType版本同步完成");
+                }
+            }
+        }
     }
 }

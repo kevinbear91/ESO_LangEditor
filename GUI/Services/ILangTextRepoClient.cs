@@ -30,7 +30,7 @@ namespace GUI.Services
         Task<List<LangTextRevNumber>> GetLangtextRevNumber();
         Task<LangTextRevNumber> GetRevNumber(int id);
         /// <summary>
-        /// ID 1 为 LangText 步进号，ID 2 为 User 步进号
+        /// ID 1 为 LangText 步进号，ID 2 为 User 步进号，ID 3为游戏API号， ID 4为Id Type号
         /// </summary>
         /// <param name="id">Int</param>
         /// <param name="number">Int</param>
@@ -39,6 +39,8 @@ namespace GUI.Services
         Task<UserInClient> GetUserInClient(Guid userId);
         Task<IEnumerable<UserInClient>> GetUsers();
         Task<bool> UpdateUsers(List<UserInClient> users);
+        Task<bool> UpdateGameVersions(List<GameVersion> gameVersions);
+        Task<bool> UpdateIdTypes(List<LangTypeCatalog> langIdTypes);
 
     }
 }

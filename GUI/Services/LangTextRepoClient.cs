@@ -2,8 +2,6 @@
 using Core.Entities;
 using Core.EnumTypes;
 using Core.Models;
-using GUI;
-using GUI.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -362,6 +360,31 @@ namespace GUI.Services
                 db.Dispose();
             }
 
+            return saveCount > 0;
+        }
+
+        public async Task<bool> UpdateGameVersions(List<GameVersion> gameVersions)
+        {
+            int saveCount = 0;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+
+                db.GameVersion.UpdateRange(gameVersions);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+            return saveCount > 0;
+        }
+
+        public async Task<bool> UpdateIdTypes(List<LangTypeCatalog> langIdTypes)
+        {
+            int saveCount = 0;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                db.LangIdType.UpdateRange(langIdTypes);
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
             return saveCount > 0;
         }
 

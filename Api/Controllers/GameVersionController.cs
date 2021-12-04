@@ -54,7 +54,7 @@ namespace API.Controllers
             return gameVersionDto;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet()]
         public async Task<ActionResult<List<GameVersionDto>>> GetGameVersionAll()
         {

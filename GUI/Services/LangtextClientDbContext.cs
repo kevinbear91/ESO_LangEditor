@@ -16,8 +16,8 @@ namespace GUI.Services
         public DbSet<LangTextClient> Langtexts { get; set; }
         public DbSet<LangTextRevNumber> LangtextRevNumber { get; set; }
         public DbSet<UserInClient> Users { get; set; }
-        //public DbSet<LangTypeAndLangText> LangTypeAndLangTexts { get; set; }
-        //public DbSet<LangTypeCategory> LangTypeCategories { get; set; }
+        public DbSet<GameVersion> GameVersion { get; set; }
+        public DbSet<LangTypeCatalog> LangIdType { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
