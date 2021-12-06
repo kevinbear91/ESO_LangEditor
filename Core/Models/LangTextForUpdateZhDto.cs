@@ -10,8 +10,6 @@ namespace Core.Models
 
         public string TextZh { get; set; }
 
-        public byte IsTranslated { get; set; }
-
         public DateTime ZhLastModifyTimestamp { get; set; }
 
         public Guid UserId { get; set; }

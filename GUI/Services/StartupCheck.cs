@@ -141,12 +141,12 @@ namespace GUI.Services
                     _userRevNumberServer = rev.Rev;
                 }
 
-                if (rev.Id == 3)    //ID 2 为 GameVersion rev
+                if (rev.Id == 3)    //ID 3 为 GameVersion rev
                 {
                     _gameVersionRevServer = rev.Rev;
                 }
 
-                if (rev.Id == 4)    //ID 2 为 IdType rev
+                if (rev.Id == 4)    //ID 4 为 IdType rev
                 {
                     _idTypeRevServer = rev.Rev;
                 }
@@ -177,6 +177,7 @@ namespace GUI.Services
             {
                 if (App.LangConfig.AppSetting.IsMinimumDB)
                 {
+                    await _langTextRepo.UpdateRevNumber(1, _langRevNumberServer);
                     _logger.LogDebug("使用远程数据库，本地不再同步");
                 }
                 else

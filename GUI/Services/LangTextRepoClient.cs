@@ -344,9 +344,9 @@ namespace GUI.Services
                     if (isUserExist != null)
                     {
                         isUserExist.UserNickName = user.UserNickName;
-                        isUserExist.InReviewCount = user.InReviewCount;
-                        isUserExist.RemovedCount = user.RemovedCount;
-                        isUserExist.TranslatedCount = user.RemovedCount;
+                        //isUserExist.InReviewCount = user.InReviewCount;
+                        //isUserExist.RemovedCount = user.RemovedCount;
+                        //isUserExist.TranslatedCount = user.RemovedCount;
                         db.Users.Update(isUserExist);
                     }
                     else
@@ -376,6 +376,31 @@ namespace GUI.Services
             return saveCount > 0;
         }
 
+        public async Task<GameVersion> GetGameVersion(int id)
+        {
+            GameVersion gameVersion;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                gameVersion = await db.GameVersion.FindAsync(id);
+                db.Dispose();
+            }
+
+            return gameVersion;
+        }
+
+        public async Task<Dictionary<int, string>> GetGameVersion()
+        {
+            Dictionary<int, string> gameVersionDict;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var list = await db.GameVersion.ToListAsync();
+                db.Dispose();
+
+                gameVersionDict = list.ToDictionary(gv => gv.GameApiVersion, zh => zh.Version_ZH);
+            }
+            return gameVersionDict;
+        }
+
         public async Task<bool> UpdateIdTypes(List<LangTypeCatalog> langIdTypes)
         {
             int saveCount = 0;
@@ -386,6 +411,19 @@ namespace GUI.Services
                 db.Dispose();
             }
             return saveCount > 0;
+        }
+
+        public async Task<Dictionary<int, string>> GetIdTypeDict()
+        {
+            Dictionary<int, string> idTypeDict;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var list = await db.LangIdType.ToListAsync();
+                db.Dispose();
+
+                idTypeDict = list.ToDictionary(id => id.IdType, zh => zh.IdTypeZH);
+            }
+            return idTypeDict;
         }
 
         private string GetSearchTypeToStringRaw(SearchTextType searchTextType)
@@ -419,5 +457,7 @@ namespace GUI.Services
 
             return searchPosAndWord;
         }
+
+        
     }
 }

@@ -27,9 +27,10 @@ namespace GUI.ViewModels
         private LangTextDto _gridSelectedItem;
         private string _mdNotifyContent;
         private bool _isInReview;
-        private bool _isDisplayJp;
-        private int _currentSelectedIndex = 0;
         private Visibility _jpVisibility = Visibility.Collapsed;
+        private string _langIdTypeName;
+        private string _langGameVersionName;
+        private string _langZhModifyTime;
 
         public LangTextDto CurrentLangText
         {
@@ -61,7 +62,6 @@ namespace GUI.ViewModels
             set => SetProperty(ref _gridSelectedItem, value);
         }
 
-
         public string MdNotifyContent
         {
             get => _mdNotifyContent;
@@ -86,6 +86,24 @@ namespace GUI.ViewModels
             set => SetProperty(ref _jpVisibility, value);
         }
 
+        public string LangIdTypeName
+        {
+            get => _langIdTypeName;
+            set => SetProperty(ref _langIdTypeName, value);
+        }
+
+        public string LangGameVersionName
+        {
+            get => _langGameVersionName;
+            set => SetProperty(ref _langGameVersionName, value);
+        }
+
+        public string LangZhModifyTime
+        {
+            get => _langZhModifyTime;
+            set => SetProperty(ref _langZhModifyTime, value);
+        }
+
         public Visibility ReasonForVisibility => Visibility.Collapsed;
 
         public bool AutoQueryLangTextInReview
@@ -99,7 +117,7 @@ namespace GUI.ViewModels
             get => _langtextInfo;
             set
             {
-                SetProperty(ref _langtextInfo, "ID：" + CurrentLangText.TextId + "，类型：" + GetIdCategory() + "，"
+                SetProperty(ref _langtextInfo, "ID：" + CurrentLangText.TextId + "，类型：" + /*_ba +*/ "，"
                    + GetVersionName() + " 版本加入或修改，"
                    + CompareEditTime());
             }
@@ -112,12 +130,15 @@ namespace GUI.ViewModels
         private IEventAggregator _ea;
         private ILangTextRepoClient _langTextRepoClient;
         private ILangTextAccess _langTextAccess;
+        private IBackendService _backendService;
 
-        public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, ILangTextAccess langTextAccess)
+        public LangtextEditorViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient, 
+            ILangTextAccess langTextAccess, IBackendService backendService)
         {
             _ea = ea;
             _langTextRepoClient = langTextRepoClient;
             _langTextAccess = langTextAccess;
+            _backendService = backendService;
             EditorMessageQueue = new SnackbarMessageQueue();
 
             _ea.GetEvent<DataGridSelectedItemInEditor>().Subscribe(SetCurrentItemFromList);
@@ -167,15 +188,19 @@ namespace GUI.ViewModels
             return resultWord;
         }
 
-        private string GetVersionName()
+        private async Task<string> GetVersionName()
         {
-            return App.gameUpdateVersionName.GetVersionName(CurrentLangText.UpdateStats);
+            var gameVersion = await _langTextRepoClient.GetGameVersion(CurrentLangText.GameApiVersion);
+
+            return gameVersion.Version_ZH;
+
+            //return App.gameUpdateVersionName.GetVersionName(CurrentLangText.UpdateStats);
         }
 
-        private string GetIdCategory()
-        {
-            return App.iDCatalog.GetCategory(CurrentLangText.IdType);
-        }
+        //private string GetIdCategory()
+        //{
+        //    return App.iDCatalog.GetCategory(CurrentLangText.IdType);
+        //}
 
         private async void SaveCurrentToDb(object o)
         {
@@ -194,7 +219,6 @@ namespace GUI.ViewModels
                     {
                         Id = CurrentLangText.Id,
                         TextZh = LangTextZh,
-                        IsTranslated = 1,
                         ZhLastModifyTimestamp = time,
                         UserId = App.User.Id,
                     };

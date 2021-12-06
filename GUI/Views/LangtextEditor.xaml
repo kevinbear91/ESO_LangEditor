@@ -132,9 +132,23 @@
             </TextBox>
         </ScrollViewer>
 
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox materialDesign:HintAssist.Hint="文本唯一ID" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Text="{Binding CurrentLangText.TextId}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="类型" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Text="{Binding LangIdTypeName}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="版本加入或修改" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding LangGameVersionName}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="中文修改时间" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                     Text="{Binding LangZhModifyTime}" IsReadOnly="True" />
+        </StackPanel>
 
-        <TextBlock x:Name="textblock_information" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" 
-                       Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" Grid.ColumnSpan="2" />
+        <!--<TextBlock x:Name="textblock_information" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" 
+                       Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" Grid.ColumnSpan="2" />-->
 
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2"
                       x:Name="GridMover"

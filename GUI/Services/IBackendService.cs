@@ -13,6 +13,7 @@ namespace GUI.Services
         //Task StartupConnectSequenceCheck();
         Task<AppConfigServer> GetServerRespondAndConfig();
         Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256);
+        Task<string> GetIdType(int id);
         bool GetFileExistAndSha256(string filePath, string fileSHA265);
         //delegate void SetAppConfigClientUpdaterSha256(string sha256);
         //Task TestEvent();

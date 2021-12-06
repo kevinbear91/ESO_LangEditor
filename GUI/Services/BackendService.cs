@@ -35,6 +35,7 @@ namespace GUI.Services
         //public AppConfigServer _appConfigServer;
         private string _localFileName;
         private string _fileSha256;
+        private Dictionary<int, string> _IdType;
 
         public event EventHandler<string> DownloadAndExtractComplete;
         public event EventHandler<string> SetAppConfigClientJpLangSha256;
@@ -100,42 +101,41 @@ namespace GUI.Services
         private async void UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)
         {
 
-            var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
+            //var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
 
-            //var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
+            ////var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
 
-            Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
+            //Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
 
-            if (respond.Code == (int)RespondCode.Success)
-            {
-                langTextUpdateZhDto.IsTranslated = 3;
-                await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
-            }
-            else
-            {
-                MessageBox.Show(respond.Message);
-            }
+            //if (respond.Code == (int)RespondCode.Success)
+            //{
+            //    await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
+            //}
+            //else
+            //{
+            //    MessageBox.Show(respond.Message);
+            //}
         }
 
         private async void UploadlangtextsUpdateZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
         {
 
-            var respond = await _langTextAccess.UpdateLangTextZh(langTextForUpdateZhDtoList);
+            //var respond = await _langTextAccess.UpdateLangTextZh(langTextForUpdateZhDtoList);
 
-            if (respond.Code == (int)RespondCode.Success)
-            {
-                foreach (var lang in langTextForUpdateZhDtoList)
-                {
-                    lang.IsTranslated = 3;
-                }
-                await _langTextRepo.UpdateLangtextZh(langTextForUpdateZhDtoList);
-                //langTextUpdateZhDto.IsTranslated = 3;
-                //await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
-            }
-            else
-            {
-                MessageBox.Show(respond.Message);
-            }
+            //if (respond.Code == (int)RespondCode.Success)
+            //{
+            //    foreach (var lang in langTextForUpdateZhDtoList)
+            //    {
+            //        lang.IsTranslated = 3;
+            //    }
+            //    await _langTextRepo.UpdateLangtextZh(langTextForUpdateZhDtoList);
+            //    //langTextUpdateZhDto.IsTranslated = 3;
+            //    //await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
+            //}
+            //else
+            //{
+            //    MessageBox.Show(respond.Message);
+            //}
         }
 
         public async Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256)
@@ -222,6 +222,20 @@ namespace GUI.Services
                 result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
             }
             return result;
+        }
+
+        public async Task<string> GetIdType(int id)
+        {
+            if (_IdType == null || _IdType.Count == 0)
+            {
+                _IdType = await _langTextRepo.GetIdTypeDict();
+
+                return _IdType[id];
+            }
+            else
+            {
+                return _IdType[id];
+            }
         }
 
         //public async Task TestEvent()

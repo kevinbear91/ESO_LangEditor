@@ -14,7 +14,7 @@ namespace Core.Models
         public string TextZh { get; set; }
         public string TextJp { get; set; }
         public LangType LangTextType { get; set; }
-        public string UpdateStats { get; set; }
+        public int GameApiVersion { get; set; }
         public DateTime EnLastModifyTimestamp { get; set; }
         public DateTime ZhLastModifyTimestamp { get; set; }
         public Guid UserId { get; set; }

@@ -26,7 +26,7 @@ namespace GUI
     /// </summary>
     public partial class App : PrismApplication
     {
-        public static IDCatalog iDCatalog = new IDCatalog();
+        //public static IDCatalog iDCatalog = new IDCatalog();
         //public static ReadGameVersionFile gameUpdateVersionName = new ReadGameVersionFile();
         public static AppConfigClient LangConfig;
         public static UserInClientDto User;

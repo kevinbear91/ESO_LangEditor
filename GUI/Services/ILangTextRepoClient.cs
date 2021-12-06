@@ -41,6 +41,9 @@ namespace GUI.Services
         Task<bool> UpdateUsers(List<UserInClient> users);
         Task<bool> UpdateGameVersions(List<GameVersion> gameVersions);
         Task<bool> UpdateIdTypes(List<LangTypeCatalog> langIdTypes);
+        Task<GameVersion> GetGameVersion(int id);
+        Task<Dictionary<int, string>> GetGameVersion();
+        Task<Dictionary<int, string>> GetIdTypeDict();
 
     }
 }
