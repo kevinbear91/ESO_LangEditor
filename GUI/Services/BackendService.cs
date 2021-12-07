@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Core.EnumTypes;
 using Core.Models;
-using Core.Entities;
-using Core.Models;
-using GUI;
 using GUI.EventAggres;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -36,9 +33,10 @@ namespace GUI.Services
         private string _localFileName;
         private string _fileSha256;
         private Dictionary<int, string> _IdType;
+        private Dictionary<int, string> _GameVersionName;
 
         public event EventHandler<string> DownloadAndExtractComplete;
-        public event EventHandler<string> SetAppConfigClientJpLangSha256;
+        //public event EventHandler<string> SetAppConfigClientJpLangSha256;
 
         public BackendService(IEventAggregator ea, ILangTextRepoClient langTextRepoClient,
             ILangTextAccess langTextAccess, IUserAccess userAccess, IMapper Mapper,
@@ -63,18 +61,7 @@ namespace GUI.Services
             while (App.ConnectStatus == ClientConnectStatus.Login)
             {
                 await Task.Delay(TimeSpan.FromMinutes(10)).ContinueWith(GetAuthToken);
-
-                //await GetAuthToken();
-
             }
-
-            //var startTimeSpan = TimeSpan.Zero;
-            //var periodTimeSpan = TimeSpan.FromMinutes(2);
-
-            //new System.Threading.Timer(async (e) => 
-            //{
-            //    await GetAuthToken();
-            //},null, startTimeSpan, periodTimeSpan);
 
         }
 
@@ -97,45 +84,24 @@ namespace GUI.Services
 
         }
 
-
         private async void UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)
         {
+            var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
 
-            //var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
-
-            ////var code = await apiLangtext.UpdateLangtextZh(langTextUpdateZhDto, App.LangConfig.UserAuthToken);
-
-            //Debug.WriteLine("langID: {0}, langZh: {1}", langTextUpdateZhDto.Id, langTextUpdateZhDto.TextZh);
-
-            //if (respond.Code == (int)RespondCode.Success)
-            //{
-            //    await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
-            //}
-            //else
-            //{
-            //    MessageBox.Show(respond.Message);
-            //}
+            if (respond.Code != (int)RespondCode.Success)
+            {
+                MessageBox.Show(respond.Message);
+            }
         }
 
         private async void UploadlangtextsUpdateZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
         {
+            var respond = await _langTextAccess.UpdateLangTextZh(langTextForUpdateZhDtoList);
 
-            //var respond = await _langTextAccess.UpdateLangTextZh(langTextForUpdateZhDtoList);
-
-            //if (respond.Code == (int)RespondCode.Success)
-            //{
-            //    foreach (var lang in langTextForUpdateZhDtoList)
-            //    {
-            //        lang.IsTranslated = 3;
-            //    }
-            //    await _langTextRepo.UpdateLangtextZh(langTextForUpdateZhDtoList);
-            //    //langTextUpdateZhDto.IsTranslated = 3;
-            //    //await _langTextRepo.UpdateLangtextZh(langTextUpdateZhDto);
-            //}
-            //else
-            //{
-            //    MessageBox.Show(respond.Message);
-            //}
+            if (respond.Code != (int)RespondCode.Success)
+            {
+                MessageBox.Show(respond.Message);
+            }
         }
 
         public async Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256)
@@ -235,6 +201,20 @@ namespace GUI.Services
             else
             {
                 return _IdType[id];
+            }
+        }
+
+        public async Task<string> GetGameVersionName(int ApiId)
+        {
+            if (_GameVersionName == null || _GameVersionName.Count == 0)
+            {
+                _GameVersionName = await _langTextRepo.GetGameVersion();
+
+                return _GameVersionName[ApiId];
+            }
+            else
+            {
+                return _GameVersionName[ApiId];
             }
         }
 

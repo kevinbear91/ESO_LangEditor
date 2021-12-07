@@ -31,11 +31,11 @@
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
                           VerticalAlignment="Center" ToolBarTray.IsLocked="True" Height="50" >
 
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <ToggleButton ToolTip="Save" Margin="10 .5 0 0" IsChecked="{Binding AutoQueryLangTextInReview}" 
                               Style="{StaticResource MaterialDesignSwitchToggleButton}" />
                         <TextBlock Margin="10 .5 0 0" Text="自动查询审核状态" VerticalAlignment="Center" />
-                    </StackPanel>
+                    </StackPanel>-->
 
                     <Separator />
                     
@@ -53,15 +53,8 @@
                             <materialDesign:PackIcon Kind="ContentSave" />
                             <TextBlock Margin="10 .5 0 0" Text="保存当前文本" VerticalAlignment="Center" />
                         </StackPanel>
-
                     </Button>
                     <Separator />
-
-
-                    <!--<Button Command="Cut" ToolTip="Cut" ToolBar.OverflowMode="AsNeeded">
-                        <materialDesign:PackIcon Kind="ContentCut" />
-                    </Button>-->
-
                 </ToolBar>
             </ToolBarTray>
         </StackPanel>
@@ -136,19 +129,19 @@
             <TextBox materialDesign:HintAssist.Hint="文本唯一ID" Margin="10" Width="150"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                      Text="{Binding CurrentLangText.TextId}" IsReadOnly="True" />
+            
             <TextBox materialDesign:HintAssist.Hint="类型" Margin="10" Width="150"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
                      Text="{Binding LangIdTypeName}" IsReadOnly="True" />
-            <TextBox materialDesign:HintAssist.Hint="版本加入或修改" Margin="10" Width="150"
+            
+            <TextBox materialDesign:HintAssist.Hint="ZOS于此版本加入或修改" Margin="10" Width="150"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                      Text="{Binding LangGameVersionName}" IsReadOnly="True" />
-            <TextBox materialDesign:HintAssist.Hint="中文修改时间" Margin="10" Width="150"
+            
+            <TextBox materialDesign:HintAssist.Hint="最后修改时间" Margin="10" Width="150"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                     Text="{Binding LangZhModifyTime}" IsReadOnly="True" />
+                     Text="{Binding LangLastModifyTime}" IsReadOnly="True" />
         </StackPanel>
-
-        <!--<TextBlock x:Name="textblock_information" Grid.Row="2" Grid.Column="0" Margin="10,10,10,10" 
-                       Text="{Binding LangtextInfo, Mode=TwoWay}" TextWrapping="Wrap" Grid.ColumnSpan="2" />-->
 
         <GridSplitter Grid.Row="2" Grid.ColumnSpan="2"
                       x:Name="GridMover"
