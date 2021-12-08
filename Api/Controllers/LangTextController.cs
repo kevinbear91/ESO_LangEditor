@@ -338,7 +338,7 @@ namespace API.Controllers
             var langtextReview = _mapper.Map<LangTextReview>(langtext);
             langtextReview.ReasonFor = ReviewReason.Deleted;
             langtext.ReviewerId = new Guid(userId);
-            langtext.ReviewTimestamp = DateTime.Now;
+            langtext.ReviewTimestamp = DateTime.UtcNow;
 
             //Mapper.Map(langtextReview, typeof(LangTextForUpdateZhDto), typeof(LangTextReview));
 

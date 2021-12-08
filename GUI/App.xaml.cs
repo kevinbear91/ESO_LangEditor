@@ -26,8 +26,6 @@ namespace GUI
     /// </summary>
     public partial class App : PrismApplication
     {
-        //public static IDCatalog iDCatalog = new IDCatalog();
-        //public static ReadGameVersionFile gameUpdateVersionName = new ReadGameVersionFile();
         public static AppConfigClient LangConfig;
         public static UserInClientDto User;
         public static string ServerPath;
@@ -41,7 +39,7 @@ namespace GUI
         static App()
         {
             DbOptionsBuilder = new DbContextOptionsBuilder<LangtextClientDbContext>()
-                .UseSqlite(@"Data Source=Data/LangData_v5.db")
+                .UseSqlite(@"Data Source=Data/LangData_v6.db")
                 //.UseLoggerFactory(MyLoggerFactory)
                 .Options;
         }
@@ -49,11 +47,8 @@ namespace GUI
         public void App_Startup(object sender, StartupEventArgs e)
         {
             Dictionary<string, string> argsDict = new Dictionary<string, string>();
-
-            LangConfig = AppConfigClient.Load();
-            
-
             string[] args = Environment.GetCommandLineArgs();
+            LangConfig = AppConfigClient.Load();
 
             for (int index = 1; index < args.Length; index += 2)
             {

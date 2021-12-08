@@ -230,7 +230,7 @@ namespace GUI.ViewModels
                     {
                         //string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
 
-                        text.ZhLastModifyTimestamp = DateTime.Now;
+                        text.ZhLastModifyTimestamp = DateTime.UtcNow;
                         text.UserId = App.LangConfig.UserGuid;
                         text.TextZh = replaceWord;
 
@@ -247,7 +247,7 @@ namespace GUI.ViewModels
                     {
                         string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
 
-                        text.ZhLastModifyTimestamp = DateTime.Now;
+                        text.ZhLastModifyTimestamp = DateTime.UtcNow;
                         text.UserId = App.LangConfig.UserGuid;
                         text.TextZh = replacedWord;
 

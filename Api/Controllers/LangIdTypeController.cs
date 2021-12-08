@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpGet("all")]
+        [HttpGet()]
         public async Task<ActionResult<List<LangTypeCatalogDto>>> GetLangIdTypeAllAsync()
         {
             var langIdTypeList = await _repositoryWrapper.LangTypeCatalogRepo.GetAllAsync();

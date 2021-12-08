@@ -141,7 +141,7 @@ namespace API.Controllers
             var refreshToken = await _tokenService.GenerateRefreshToken(user);
 
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpireTime = DateTime.Now.AddDays(30);
+            user.RefreshTokenExpireTime = DateTime.UtcNow.AddDays(30);
 
             await _userManager.UpdateAsync(user);
 
