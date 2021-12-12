@@ -29,16 +29,17 @@
             <ToolBarTray Margin="0,5,0,5" Height="50" >
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}"  ClipToBounds="False"
                           VerticalAlignment="Center" ToolBarTray.IsLocked="True" Height="50" >
-
                     <Button ToolTip="查询待审核条目" Command="{Binding QueryReviewPendingItems}" 
                             Style="{StaticResource MaterialDesignFlatButton}"
-                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand" >
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="TableArrowDown" />
                             <TextBlock Margin="10 .5 0 0" Text="拉取待审用户列表" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
+                    
                     <Separator />
+                    
                     <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItems}" 
                             Style="{StaticResource MaterialDesignFlatButton}"
                             Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
@@ -46,18 +47,16 @@
                             <materialDesign:PackIcon Kind="CheckBold" />
                             <TextBlock Margin="10 .5 0 0" Text="审核文本" VerticalAlignment="Center" />
                         </StackPanel>
-                        
                     </Button>
-                    <!--<Separator />
-                    <Button ToolTip="提交审核拒绝条目" Command="{Binding SubmitDenyItems}">
-                        <materialDesign:PackIcon Kind="Close" />
-                    </Button>-->
+                    
                     <Separator />
+                    
                     <CheckBox x:Name="ExportSelectedItems_checkBox" Style="{StaticResource MaterialDesignCheckBox}" 
                               Content="只审核已选择文本" 
                               IsChecked="{Binding IsReviewSelectedItems}" />
 
                     <Separator />
+                    
                     <Button ToolTip="提交审核通过条目" Command="{Binding SubmitDenyItems}" 
                             Style="{StaticResource MaterialDesignFlatButton}"
                             Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
@@ -65,9 +64,7 @@
                             <materialDesign:PackIcon Kind="DeleteOutline" />
                             <TextBlock Margin="10 .5 0 0" Text="移除待审文本" VerticalAlignment="Center" />
                         </StackPanel>
-
                     </Button>
-
                 </ToolBar>
             </ToolBarTray>
         </StackPanel>
@@ -99,25 +96,14 @@
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Margin="0,60,0,0">
             <TextBox materialDesign:HintAssist.Hint="英文" Margin="10" Width="200"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
-                     Text="{Binding GridSelectedItem.TextEn}" IsReadOnly="True" />
+                     Text="{Binding GridSelectedItem.TextEn}" IsReadOnly="True" TextWrapping="Wrap" />
             <TextBox materialDesign:HintAssist.Hint="中文" Margin="10" Width="200"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding GridSelectedItem.TextZh}" IsReadOnly="True" />
+                     Text="{Binding GridSelectedItem.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
             <TextBox materialDesign:HintAssist.Hint="修改前(本地)" Margin="10" Width="190"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding CurrentLang}" IsReadOnly="True" Cursor="IBeam" />
+                     Text="{Binding CurrentLang}" IsReadOnly="True" TextWrapping="Wrap" />
         </StackPanel>
-        <!--<WrapPanel Grid.Column="1" Grid.Row="2">
-            
-            
-        </WrapPanel>-->
-        <!--<StackPanel >
-            
-        </StackPanel>-->
-        <!--<ScrollViewer Grid.Column="1" Grid.Row="2">
-            <TextBlock Text="{Binding SelectedItemInfo, FallbackValue=SelectedItemInfo}" Margin="10,20,0,0" TextWrapping="Wrap" />
-        </ScrollViewer>-->
-
 
         <StatusBar Grid.Row="3" Grid.ColumnSpan="2" VerticalContentAlignment="Bottom">
             <StatusBar.ItemsPanel>

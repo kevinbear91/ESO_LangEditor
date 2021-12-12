@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Margin="10">
-            <DataGrid x:Name="GameVersionDataGrid" Height="200" ItemsSource="{Binding GameVersionDtos}" AutoGenerateColumns="False" >
+            <DataGrid x:Name="GameVersionDataGrid"  ItemsSource="{Binding GameVersionDtos}" AutoGenerateColumns="False" >
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn Binding="{Binding GameApiVersion}" Header="游戏API版本" />
                     <materialDesign:DataGridTextColumn Binding="{Binding Version_EN}" Header="版本名称(英文)" />

@@ -38,7 +38,7 @@ namespace API.Migrations
 
                     b.HasKey("GameApiVersion");
 
-                    b.ToTable("GameVersion");
+                    b.ToTable("GameVersion", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangText", b =>
@@ -103,7 +103,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Langtexts");
+                    b.ToTable("Langtexts", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangTextArchive", b =>
@@ -164,7 +164,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LangtextArchive");
+                    b.ToTable("LangtextArchive", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangTextReview", b =>
@@ -222,7 +222,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LangtextReview");
+                    b.ToTable("LangtextReview", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangTextRevised", b =>
@@ -244,7 +244,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LangtextRevised");
+                    b.ToTable("LangtextRevised", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangTextRevNumber", b =>
@@ -260,7 +260,7 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LangtextRevNumber");
+                    b.ToTable("LangtextRevNumber", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangTypeCatalog", b =>
@@ -276,7 +276,7 @@ namespace API.Migrations
 
                     b.HasKey("IdType");
 
-                    b.ToTable("LangTypeCatalog");
+                    b.ToTable("LangTypeCatalog", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.LangTypeCatalogReview", b =>
@@ -292,7 +292,7 @@ namespace API.Migrations
 
                     b.HasKey("IdType");
 
-                    b.ToTable("LangTypeCatalogReview");
+                    b.ToTable("LangTypeCatalogReview", (string)null);
                 });
 
             modelBuilder.Entity("Core.Entities.Role", b =>
@@ -430,7 +430,7 @@ namespace API.Migrations
 
                     b.HasIndex("UserUsed");
 
-                    b.ToTable("UserRegistrationCode");
+                    b.ToTable("UserRegistrationCode", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

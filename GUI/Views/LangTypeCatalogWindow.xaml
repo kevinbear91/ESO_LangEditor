@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:GUI.Views"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="文本ID类型编辑窗口" Height="450" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
+        Title="文本ID类型编辑窗口" Height="450" Width="300" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="123*" />

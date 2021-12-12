@@ -94,23 +94,23 @@ namespace API.Controllers
                     Message = RespondCode.GameVersionUpdateFailed.ApiRespondCodeString()
                 });
             }
-
-            if(!await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync())
+            else
             {
-                return BadRequest(new MessageWithCode
+                if (!await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync())
                 {
-                    Code = (int)RespondCode.LangtextRevNumberUpdateFailed,
-                    Message = RespondCode.LangtextRevNumberUpdateFailed.ApiRespondCodeString()
+                    return BadRequest(new MessageWithCode
+                    {
+                        Code = (int)RespondCode.LangtextRevNumberUpdateFailed,
+                        Message = RespondCode.LangtextRevNumberUpdateFailed.ApiRespondCodeString()
+                    });
+                }
+
+                return Ok(new MessageWithCode
+                {
+                    Code = (int)RespondCode.Success,
+                    Message = RespondCode.Success.ApiRespondCodeString()
                 });
             }
-
-            return Ok(new MessageWithCode
-            {
-                Code = (int)RespondCode.Success,
-                Message = RespondCode.Success.ApiRespondCodeString()
-            });
-
         }
-
     }
 }
