@@ -3,6 +3,7 @@ using GUI.Command;
 using GUI.Services;
 using Prism.Mvvm;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace GUI.ViewModels
             set => SetProperty(ref _langTypeCatalogDtos, value);
         }
 
+        private ICommand GetIdTypeDtosCommand => new ExcuteViewModelMethod(GetIdTypeCatalog);
         private IGeneralAccess _generalAccess;
         public ICommand SubmitApproveItemsCommand => new ExcuteViewModelMethod(SumbitApproveItems);
         public ICommand SubmitDenyItemsCommand => new ExcuteViewModelMethod(SumbitDenyItems);
@@ -33,10 +35,10 @@ namespace GUI.ViewModels
         {
             _generalAccess = generalAccess;
 
-            Task.Run(() => GetIdTypeCatalog());
+            GetIdTypeDtosCommand.Execute(null);
         }
 
-        private async Task GetIdTypeCatalog()
+        private async void GetIdTypeCatalog(object o)
         {
             _langIdListFromServer = await _generalAccess.GetIdTypesFromReview();
 
@@ -53,7 +55,10 @@ namespace GUI.ViewModels
 
         private async void SumbitApproveItems(object obj)
         {
-            var list = (List<LangTypeCatalogDto>) obj;
+            IList selectedItems = obj as IList;
+            List<LangTypeCatalogDto> list = selectedItems.Cast<LangTypeCatalogDto>().ToList();
+
+            //List<LangTypeCatalogDto> list = (List<LangTypeCatalogDto>)obj;
             List<int> idList = new List<int>();
 
             foreach(var IdType in list)

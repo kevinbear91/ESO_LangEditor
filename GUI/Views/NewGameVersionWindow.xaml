@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:GUI.Views"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="新游戏版本号" Height="300" Width="400" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="新游戏版本号" Height="300" Width="450" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="223*" />

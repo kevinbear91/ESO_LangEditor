@@ -6,6 +6,7 @@ using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -18,37 +19,35 @@ namespace GUI.ViewModels
     public class LangTypeCatalogWindowViewModel : BindableBase
     {
         private List<LangTypeCatalogDto> _langIdListFromServer;
-        private ObservableCollection<LangTypeCatalogDto> _langTypeCatalogDtos = new ObservableCollection<LangTypeCatalogDto>();
-        public ObservableCollection<LangTypeCatalogDto> LangTypeCatalogDtos
+        private ObservableCollection<LangTypeCatalogDto> _langIdTypeDtos = new ObservableCollection<LangTypeCatalogDto>();
+        public ObservableCollection<LangTypeCatalogDto> LangIdTypeDtos
         {
-            get => _langTypeCatalogDtos;
-            set => SetProperty(ref _langTypeCatalogDtos, value);
+            get => _langIdTypeDtos;
+            set => SetProperty(ref _langIdTypeDtos, value);
         }
 
         private IGeneralAccess _generalAccess;
         public ICommand SumbitCommand => new ExcuteViewModelMethod(SumbitIdTypeCatalog);
         public ICommand SearchIdTypeCommand => new ExcuteViewModelMethod(SearchIdTypeCatalog);
+        private ICommand GetIdTypeDtosCommand => new ExcuteViewModelMethod(GetIdTypeCatalog);
 
         public LangTypeCatalogWindowViewModel(IGeneralAccess generalAccess)
         {
             _generalAccess = generalAccess;
-
-            Task.Run(() => GetIdTypeCatalog());
+            GetIdTypeDtosCommand.Execute(null);
         }
 
-        private async Task GetIdTypeCatalog()
+        private async void GetIdTypeCatalog(object o)
         {
             _langIdListFromServer = await _generalAccess.GetIdtypeDtos();
 
-            if (LangTypeCatalogDtos.Count > 0)
+            if (LangIdTypeDtos.Count > 0)
             {
-                LangTypeCatalogDtos.Clear();
+                LangIdTypeDtos.Clear();
             }
 
-            if (_langIdListFromServer != null && _langIdListFromServer.Count > 0)
-            {
-                LangTypeCatalogDtos.AddRange(_langIdListFromServer);
-            }
+            LangIdTypeDtos.AddRange(_langIdListFromServer);
+            Debug.WriteLine(LangIdTypeDtos.Count);
         }
 
         private async void SumbitIdTypeCatalog(object obj)
@@ -71,18 +70,28 @@ namespace GUI.ViewModels
         {
             if((string)obj != "")
             {
-                var idType = (int)obj;LangTypeCatalogDtos.Add(LangTypeCatalogDtos.FirstOrDefault(id => id.IdType == idType));
+                var idType = Convert.ToInt32(obj);
+                Debug.WriteLine(idType);
+
+                var result = LangIdTypeDtos.First(id => id.IdType == idType);
+
+                if (LangIdTypeDtos.Count > 0)
+                {
+                    LangIdTypeDtos.Clear();
+                }
+
+                LangIdTypeDtos.Add(result);
             }
             else
             {
-                if (LangTypeCatalogDtos.Count > 0)
+                if (LangIdTypeDtos.Count > 0)
                 {
-                    LangTypeCatalogDtos.Clear();
+                    LangIdTypeDtos.Clear();
                 }
 
                 if (_langIdListFromServer != null && _langIdListFromServer.Count > 0)
                 {
-                    LangTypeCatalogDtos.AddRange(_langIdListFromServer);
+                    LangIdTypeDtos.AddRange(_langIdListFromServer);
                 }
             }
             

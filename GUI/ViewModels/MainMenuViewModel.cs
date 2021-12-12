@@ -43,8 +43,6 @@ namespace GUI.ViewModels
 
         public MainMenuListViewModel(IEventAggregator ea, IBackendService backendService)
         {
-            //WindowLink("GUI.Views.ExportTranslate").Show();
-
             _ea = ea;
             _backendService = backendService;
             _ea.GetEvent<RoleListUpdateEvent>().Subscribe(UpdateRoleList);

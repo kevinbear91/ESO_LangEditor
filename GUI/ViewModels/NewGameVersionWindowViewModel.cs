@@ -31,6 +31,7 @@ namespace GUI.ViewModels
             set => SetProperty(ref _selectedDto, value);
         }
 
+        private ICommand GetGameVersionCommand => new ExcuteViewModelMethod(GetGameVersionFromServer);
         private IGeneralAccess _generalAccess;
         public ICommand SumbitCommand => new ExcuteViewModelMethod(SumbitVersion);
 
@@ -38,10 +39,10 @@ namespace GUI.ViewModels
         {
             _generalAccess = generalAccess;
 
-            Task.Run(() => GetGameVersionFromServer());
+            GetGameVersionCommand.Execute(null);
         }
 
-        private async Task GetGameVersionFromServer()
+        private async void GetGameVersionFromServer(object o)
         {
             var versionDtos = await _generalAccess.GetGameVersionDtos();
 

@@ -368,8 +368,21 @@ namespace GUI.Services
             int saveCount = 0;
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
+                foreach(var gv in gameVersions)
+                {
+                    var isGameVersionExist = await db.GameVersion.FindAsync(gv.GameApiVersion);
 
-                db.GameVersion.UpdateRange(gameVersions);
+                    if(isGameVersionExist != null)
+                    {
+                        isGameVersionExist.Version_EN = gv.Version_EN;
+                        isGameVersionExist.Version_ZH = gv.Version_ZH;
+                    }
+                    else
+                    {
+                        db.GameVersion.Add(gv);
+                    }
+
+                }
                 saveCount = await db.SaveChangesAsync();
                 db.Dispose();
             }
@@ -406,7 +419,19 @@ namespace GUI.Services
             int saveCount = 0;
             using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
             {
-                db.LangIdType.UpdateRange(langIdTypes);
+                foreach(var langType in langIdTypes)
+                {
+                    var isLangTypeExist = await db.LangIdType.FindAsync(langType.IdType);
+
+                    if (isLangTypeExist != null)
+                    {
+                        isLangTypeExist.IdTypeZH = langType.IdTypeZH;
+                    }
+                    else
+                    {
+                        db.LangIdType.Add(langType);
+                    }
+                }
                 saveCount = await db.SaveChangesAsync();
                 db.Dispose();
             }

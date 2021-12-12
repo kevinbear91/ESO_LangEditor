@@ -173,7 +173,7 @@ namespace GUI.Services
             }
 
 
-            if (_langRevNumberServer != 0 && _langRevNumberLocal != _langRevNumberServer)
+            if (_langRevNumberServer != 0 && _langRevNumberLocal < _langRevNumberServer)
             {
                 if (App.LangConfig.AppSetting.IsMinimumDB)
                 {

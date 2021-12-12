@@ -25,7 +25,8 @@ namespace GUI.Services
             CreateMap<LangTextReview, LangTextArchive>();
             CreateMap<LangTextRevisedDto, LangTextRevised>();
             CreateMap<LangTextRevNumberDto, LangTextRevNumber>();
-
+            CreateMap<LangTypeCatalogDto, LangTypeCatalog>();
+            CreateMap<GameVersionDto, GameVersion>();
         }
     }
 }

@@ -9,13 +9,12 @@
         xmlns:local="clr-namespace:GUI.Views"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="文本ID类型编辑窗口" Height="450" Width="300">
+        Title="文本ID类型编辑窗口" Height="450" Width="300" WindowStartupLocation="CenterOwner">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="14*" />
             <RowDefinition Height="73*"/>
         </Grid.RowDefinitions>
-
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
             <Button ToolTip="提交审核通过条目" Command="{Binding SubmitApproveItemsCommand}"
@@ -28,7 +27,7 @@
                 </StackPanel>
             </Button>
 
-            <Button ToolTip="提交审核通过条目" Command="{Binding SubmitDenyItemsCommand}" 
+            <Button ToolTip="移除审核条目" Command="{Binding SubmitDenyItemsCommand}" 
                         CommandParameter="{Binding ElementName=IdTypeCatalogDataGrid, Path=SelectedItems}"
                         Style="{StaticResource MaterialDesignFlatButton}"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Margin="5">
@@ -46,16 +45,5 @@
                 <materialDesign:DataGridTextColumn Binding="{Binding IdTypeZH}" Header="名称" />
             </DataGrid.Columns>
         </DataGrid>
-
-        <!--<StackPanel Margin="10,10,10,10">
-
-
-
-        </StackPanel>-->
-
-        <!--<StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" Width="80">
-            <Button x:Name="button_submit" Content="提交" Command="{Binding SumbitCommand}"
-                    CommandParameter="{Binding ElementName=IdTypeCatalogDataGrid, Path=SelectedItems}" Margin="10"  />
-        </StackPanel>-->
     </Grid>
 </Window>

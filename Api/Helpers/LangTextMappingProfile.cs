@@ -31,6 +31,7 @@ namespace API.Helpers
             CreateMap<User, UserInClientDto>();
             CreateMap<UserProfileModifyBySelfDto, User>();
             CreateMap<LangTypeCatalog, LangTypeCatalogDto>();
+            CreateMap<LangTypeCatalogReview, LangTypeCatalog>();
             CreateMap<LangTypeCatalogReview, LangTypeCatalogDto>();
             CreateMap<LangTypeCatalogDto, LangTypeCatalog>();
             CreateMap<LangTypeCatalogDto, LangTypeCatalogReview>();

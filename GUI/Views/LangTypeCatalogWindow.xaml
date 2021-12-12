@@ -9,7 +9,7 @@
         xmlns:local="clr-namespace:GUI.Views"
         mc:Ignorable="d"
         TextElement.FontSize="14"
-        Title="文本ID类型编辑窗口" Height="450" Width="300">
+        Title="文本ID类型编辑窗口" Height="450" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="CanMinimize">
     <Grid Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="123*" />
@@ -21,14 +21,14 @@
                 <TextBox Name="IdTypeTextBox" materialDesign:HintAssist.Hint="搜索(ID类型)" Width="100" TextWrapping="Wrap" HorizontalAlignment="Left"/>
                 <Button x:Name="SearchIdType" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" 
-                        Command="{Binding SearchIdTypeCommand}" CommandParameter="{Binding ElementName=IdTypeTextBox, Path=Text}">
+                        Command="{Binding SearchIdTypeCommand}" CommandParameter="{Binding ElementName=IdTypeTextBox, Path=Text}" >
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="DatabaseSearchOutline" Width="24" Height="24" />
                         <TextBlock Margin="10 .5 0 0" Text="搜索" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
             </StackPanel>
-            <DataGrid x:Name="IdTypeCatalogDataGrid" Height="300" ItemsSource="{Binding LangTypeCatalogDtos}" AutoGenerateColumns="False" >
+            <DataGrid x:Name="IdTypeCatalogDataGrid" Height="300" ItemsSource="{Binding LangIdTypeDtos}" AutoGenerateColumns="False" >
                 <DataGrid.Columns>
                     <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="ID类型" />
                     <materialDesign:DataGridTextColumn Binding="{Binding IdTypeZH}" Header="名称" />
