@@ -90,6 +90,13 @@
                 RespondCode.LangtextReviewFailed => "文本审核失败",
                 RespondCode.LangtextReviewDeleteNoPermission => "没有权限删除当前选择的待审核文本",
                 RespondCode.LangtextReviewDeleteIncludeNoPermission => "选择的待审核文本已删除但包含部分无权限删除的文本",
+                RespondCode.LangtextLangTypeCatalogUpdateFailed => "Id类型更新失败",
+                RespondCode.LangtextLangTypeCatalogAddFailed => "Id类型添加失败",
+                RespondCode.LangtextLangTypeCatalogReviewUpdateFailed => "Id类型审核更新失败",
+                RespondCode.GameVersionUpdateFailed => "游戏API版本更新失败",
+                RespondCode.GameVersionAddedFailed => "游戏API版本添加失败",
+                RespondCode.GameVersionExist => "游戏API版本已存在",
+                RespondCode.GameVersionNotFound => "游戏API版本不存在",
                 //_ => "未知错误",
             };
         }

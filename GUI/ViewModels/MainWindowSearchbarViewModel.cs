@@ -346,6 +346,9 @@ namespace GUI.ViewModels
                 case SearchTextType.Reviewer:
                     category = "reviewer";
                     break;
+                case SearchTextType.UniqueID:
+                    category = "uniqueId";
+                    break;
             }
 
             if (DoubleKeyWordSearch)

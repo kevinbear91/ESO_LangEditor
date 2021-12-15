@@ -16,6 +16,7 @@ namespace Core.RequestParameters
         public Guid UserId { get; set; }
         public Guid ReviewerId { get; set; }
         public int Revised { get; set; }
+        public string UniqueId { get; set; }
         public DateTime EnLastModifyTimestamp { get; set; }
         public DateTime ZhLastModifyTimestamp { get; set; }
 

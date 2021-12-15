@@ -120,7 +120,7 @@ namespace GUI.Services
                     SearchTextType.TextEnglish => await db.Langtexts.Where(d => EF.Functions.Like(d.TextEn, searchPosAndWord)).ToListAsync(),
                     SearchTextType.TextChineseS => await db.Langtexts.Where(d => EF.Functions.Like(d.TextZh, searchPosAndWord)).ToListAsync(),
                     SearchTextType.UpdateStatus => await db.Langtexts.Where(d => EF.Functions.Like(d.UpdateStats, searchPosAndWord)).ToListAsync(),
-                    SearchTextType.TranslateStatus => await db.Langtexts.Where(d => d.IsTranslated == ToSByte(keyWord)).ToListAsync(),
+                    //SearchTextType.TranslateStatus => await db.Langtexts.Where(d => d.IsTranslated == ToSByte(keyWord)).ToListAsync(),
                     SearchTextType.Guid => await db.Langtexts.Where(d => d.Id == new Guid(keyWord)).ToListAsync(),
                     SearchTextType.Type => await db.Langtexts.Where(d => d.IdType == ToInt32(keyWord)).ToListAsync(),
                     //SearchTextType.ByUser => throw new NotImplementedException(),
@@ -461,7 +461,7 @@ namespace GUI.Services
                 SearchTextType.Type => "IdType",
                 SearchTextType.TextEnglish => "TextEn",
                 SearchTextType.TextChineseS => "TextZh",
-                SearchTextType.TranslateStatus => "IsTranslated",
+                //SearchTextType.TranslateStatus => "IsTranslated",
                 SearchTextType.UpdateStatus => "UpdateStats",
                 //SearchTextType.ReviewStatus => ""
                 SearchTextType.ByUser => "UserId",

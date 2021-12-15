@@ -19,8 +19,8 @@ namespace Core.EnumTypes
         TextChineseS = 5,
         //[Description("搜译文")]
         //TextVersion = 6,
-        [Description("已翻译条目")]
-        TranslateStatus = 7,
+        //[Description("已翻译条目")]
+        //TranslateStatus = 7,
         [Description("游戏版本")]
         UpdateStatus = 8,
         [Description("审核人")]

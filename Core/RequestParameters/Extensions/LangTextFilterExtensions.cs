@@ -33,10 +33,10 @@ namespace Core.RequestParameters.Extensions
                 langTexts.Where(lang => lang.UserId == langTextParameters.UserId);
             }
 
-            //if (langTextParameters. != Guid.Empty)
-            //{
-            //    langTexts.Where(lang => lang.UserId == langTextParameters.UserId);
-            //}
+            if (langTextParameters.UniqueId != "")
+            {
+                langTexts.Where(lang => lang.TextId == langTextParameters.UniqueId);
+            }
 
             return langTexts;
 

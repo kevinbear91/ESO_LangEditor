@@ -173,6 +173,22 @@ namespace API.Controllers
             return langtextDto;
         }
 
+        [Authorize]
+        [HttpGet("uniqueId")]
+        public async Task<ActionResult<List<LangTextDto>>> GetLangTextsByUniqueIdAsync()
+        {
+            Request.Headers.TryGetValue("langTextParameters", out var langTextParameters);
+            var para = JsonSerializer.Deserialize<LangTextParameters>(langTextParameters);
+
+            var langtextList = await _repositoryWrapper.LangTextRepo.GetLangTextsByConditionAsync(lang => lang.TextId == para.SearchTerm, para);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+
+            var langtextDto = _mapper.Map<List<LangTextDto>>(langtextList);
+
+            return langtextDto;
+        }
+
 
         [Authorize]
         [HttpGet("rev/{revisednumber}")]

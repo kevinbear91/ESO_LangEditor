@@ -52,10 +52,10 @@ namespace GUI.Services.Validations
                     //double doubleVal = 0;
                     canConvert = string.IsNullOrWhiteSpace((value ?? "").ToString());
                     return canConvert ? new ValidationResult(false, "输入框不可为空！") : ValidationResult.ValidResult;
-                case SearchTextType.TranslateStatus:
-                    //int intVal = 0;
-                    canConvert = int.TryParse((string)value, out int t);
-                    return canConvert ? new ValidationResult(true, null) : new ValidationResult(false, "此搜索条件必须输入数字！");
+                //case SearchTextType.TranslateStatus:
+                //    //int intVal = 0;
+                //    canConvert = int.TryParse((string)value, out int t);
+                //    return canConvert ? new ValidationResult(true, null) : new ValidationResult(false, "此搜索条件必须输入数字！");
                 case SearchTextType.UpdateStatus:
                     //int intVal = 0;
                     canConvert = string.IsNullOrWhiteSpace((value ?? "").ToString());

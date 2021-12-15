@@ -215,6 +215,9 @@ namespace API.Controllers
                     langtextReview.Revised = revisedNumber;
 
                     var langtext = _mapper.Map<LangTextReview, LangText>(langtextReview);
+                    //langtext.LangtextInReview = null;
+                    //langtext.LangtextInReivewId = null;
+
                     var langtextArchive = _mapper.Map<LangTextReview, LangTextArchive>(langtextReview);
 
                     //检查审核原因
