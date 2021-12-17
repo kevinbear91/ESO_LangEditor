@@ -27,10 +27,15 @@ namespace Core.Entities
         // 0 = 未翻译或初始内容
         // 1 = 已翻译（导出标记）
         // 2 = 导入的已翻译内容
-        public byte IsTranslated { get; set; }
+        //public byte IsTranslated { get; set; }
 
         //英文加入或修改时的版本
-        public string UpdateStats { get; set; }
+        //public string UpdateStats { get; set; }
+
+        public int GameApiVersion { get; set; }
+
+        //[ForeignKey("GameApiVersion")]
+        //public GameVersion GameVersion { get; set; }
 
         //英文最后修改时间戳
         public DateTime EnLastModifyTimestamp { get; set; }

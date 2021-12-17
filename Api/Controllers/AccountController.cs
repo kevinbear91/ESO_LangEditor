@@ -97,7 +97,7 @@ namespace API.Controllers
 
         //}
 
-        [ServiceFilter(typeof(ValidationFilter))]
+        //[ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("login", Name = nameof(Login))]
         public async Task<IActionResult> Login(LoginUserDto loginUser)
         {
@@ -161,7 +161,7 @@ namespace API.Controllers
         //    //return RedirectToAction("index"，"home");
         //}
 
-        [ServiceFilter(typeof(ValidationFilter))]
+        //[ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("token/{userId}")]
         public async Task<IActionResult> RefreshToken(string userId, TokenDto tokenDto)
         {
@@ -243,7 +243,7 @@ namespace API.Controllers
         }
 
 
-        [ServiceFilter(typeof(ValidationFilter))]
+        //[ServiceFilter(typeof(ValidationFilter))]
         [Authorize]
         [HttpPost("infochange")]
         public async Task<IActionResult> UserChangeInfoAsync(UserInfoChangeDto userInfoChangeDto)
@@ -294,7 +294,7 @@ namespace API.Controllers
         }
 
 
-        [ServiceFilter(typeof(ValidationFilter))]
+        //[ServiceFilter(typeof(ValidationFilter))]
         [Authorize]
         [HttpPost("passwordchange")]
         public async Task<IActionResult> UserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
@@ -343,7 +343,7 @@ namespace API.Controllers
             }
         }
 
-        [ServiceFilter(typeof(ValidationFilter))]
+        //[ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("passwordrecovery")]
         public async Task<IActionResult> UserPasswordRecovery(UserPasswordRecoveryDto userPasswordRecoveryDto)
         {
@@ -435,7 +435,7 @@ namespace API.Controllers
 
         }
 
-        [ServiceFilter(typeof(ValidationFilter))]
+        //[ServiceFilter(typeof(ValidationFilter))]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(RegistrationUserDto registrationUserDto)
         {

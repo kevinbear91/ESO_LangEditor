@@ -75,7 +75,7 @@ namespace GUI.Services
                 _logger.LogDebug("获取服务器配置成功");
 
                 if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion
-                    || !_backendService.GetFileExistAndSha256("ESO_LangEditorUpdater.exe", _langConfigServer.LangUpdaterSha256))
+                    || !_backendService.GetFileExistAndSha256("Updater.exe", _langConfigServer.LangUpdaterSha256))
                 {
                     await UpdateUpdater();
                 }
@@ -208,7 +208,7 @@ namespace GUI.Services
 
             ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
             {
-                FileName = "ESO_LangEditorUpdater.exe",
+                FileName = "Updater.exe",
                 Arguments = args,
             };
 

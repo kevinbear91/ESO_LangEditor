@@ -69,6 +69,7 @@ namespace GUI.Services
 
             HttpResponseMessage respond = await _userClient.PostAsync("api/account/token/" + userGuid, content);
 
+            Debug.WriteLine($"code: {respond.StatusCode}");
             if (respond.IsSuccessStatusCode)
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
@@ -79,6 +80,7 @@ namespace GUI.Services
             else
             {
                 string respondContent = await respond.Content.ReadAsStringAsync();
+                Debug.WriteLine(respondContent);
                 var code = JsonSerializer.Deserialize<MessageWithCode>(respondContent, _jsonOption);
                 MessageBox.Show(code.Message, code.Code.ToString(), MessageBoxButton.OK, MessageBoxImage.Error);
             }
