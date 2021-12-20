@@ -39,6 +39,7 @@ namespace GUI.ViewModels
         private IMapper _mapper;
         private ILangFile _langfile;
         private IBackendService _backendService;
+        private IGeneralAccess _generalAccess;
         private ILangTextRepoClient _langTextRepo;
         private ILangTextAccess _langTextAccess;
         private string _selectedKey;
@@ -150,10 +151,11 @@ namespace GUI.ViewModels
         public ExcuteViewModelMethod SaveToServerCommand => new ExcuteViewModelMethod(UploadResultToServer);
         public ExcuteViewModelMethod CompareFilesCommand => new ExcuteViewModelMethod(CompreWithDb);
 
+        public ExcuteViewModelMethod CheckNewIdsCommand => new ExcuteViewModelMethod(CompareAddedIdType);
         public CompareWithDBWindow compareWithDBWindow;
 
         public CompareWithDBWindowViewModel(IBackendService backendService, ILangTextRepoClient langTextRepo,
-            ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile)
+            ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile, IGeneralAccess generalAccess)
         {
             _addedTag = "新增";
             _changedTag = "修改";
@@ -170,7 +172,7 @@ namespace GUI.ViewModels
             _langTextRepo = langTextRepo;
             _langTextAccess = langTextAccess;
             _mapper = mapper;
-
+            _generalAccess = generalAccess;
 
             //_mapper = App.Mapper;
             //_langtextNetService = new LangtextNetService(App.ServerPath);
@@ -465,6 +467,36 @@ namespace GUI.ViewModels
                         SaveToServerCommand.IsExecuting = false;
                     }
                     break;
+            }
+        }
+        private async void CompareAddedIdType(object o)
+        {
+            var IdList = await _generalAccess.GetIdtypeDtos();
+            var ids = IdList.Select(id => id.IdType).ToList();
+            List<LangTypeCatalogDto> newIds = new List<LangTypeCatalogDto>();
+
+            foreach (var lang in Added)
+            {
+                if (!ids.Contains(lang.IdType))
+                {
+                    newIds.Add(new LangTypeCatalogDto 
+                    { 
+                        IdType = lang.IdType, 
+                        IdTypeZH = lang.IdType.ToString() 
+                    });
+                }
+            }
+
+            if (newIds.Count != 0)
+            {
+                MessageBox.Show($"新增了 {newIds.Count} 条ID, 点击确定上传", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                var result = await _generalAccess.UploadIdTypeDto(newIds);
+
+                MessageBox.Show(result.Message);
+            }
+            else
+            {
+                MessageBox.Show("无新增ID", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 

@@ -82,8 +82,8 @@
 
             </Button>
 
-            <Button x:Name="SaveToDB_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand" Click="SaveToDB_Button_Click">
+            <Button x:Name="NewGameVersion_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="NewGameVersion_Button_Click">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="DatabasePlusOutline" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="新版本号" VerticalAlignment="Center" />
@@ -91,8 +91,16 @@
 
             </Button>
 
-        </StackPanel>
+            <Button x:Name="IdTypeCheck_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Command="{Binding CheckNewIdsCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="DatabasePlusOutline" Width="24" Height="24" />
+                    <TextBlock Margin="10 .5 0 0" Text="检查新ID类型" VerticalAlignment="Center" />
+                </StackPanel>
 
+            </Button>
+
+        </StackPanel>
 
         <GroupBox Header="变更文本内容" Grid.Row="2"  BorderBrush="#FF959595" Margin="0,0,0,30" Grid.RowSpan="2" >
             <Grid>

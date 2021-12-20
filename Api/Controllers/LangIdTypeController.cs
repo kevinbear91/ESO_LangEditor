@@ -82,6 +82,48 @@ namespace API.Controllers
             });
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPost("list")]
+        public async Task<IActionResult> AddNewLangIdTypeAsync(List<LangTypeCatalogDto> langTypeCatalogDtos)
+        {
+            
+            //var userId = _userManager.GetUserId(HttpContext.User);  //获取操作者ID
+
+            foreach(var id in langTypeCatalogDtos)
+            {
+                var langIdTypeInReview = await _repositoryWrapper.LangTypeCatalogReviewRepo.GetByIdAsync(id.IdType);
+
+                if (langIdTypeInReview != null)
+                {
+                    langIdTypeInReview.IdTypeZH = id.IdTypeZH;
+                    _repositoryWrapper.LangTypeCatalogReviewRepo.Update(langIdTypeInReview);
+                }
+                else
+                {
+                    var langIdType = _mapper.Map<LangTypeCatalogReview>(id);
+                    _repositoryWrapper.LangTypeCatalogReviewRepo.Create(langIdType);
+                }
+            }
+
+            if (!await _repositoryWrapper.LangTypeCatalogReviewRepo.SaveAsync())
+            {
+                _loggerMessage = RespondCode.LangtextLangTypeCatalogUpdateFailed.ApiRespondCodeString();
+                _logger.LogError(_loggerMessage);
+
+                return BadRequest(new MessageWithCode
+                {
+                    Code = (int)RespondCode.LangtextLangTypeCatalogUpdateFailed,
+                    Message = RespondCode.LangtextLangTypeCatalogUpdateFailed.ApiRespondCodeString()
+                });
+            }
+
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = RespondCode.Success.ApiRespondCodeString()
+            });
+        }
+
         [Authorize]
         [HttpGet("review")]
         public async Task<ActionResult<List<LangTypeCatalogDto>>> GetLangIdTypeInReviewAllAsync()

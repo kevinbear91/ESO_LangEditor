@@ -116,6 +116,20 @@ namespace GUI.Services
 
             return code;
         }
+        public async Task<MessageWithCode> UploadIdTypeDto(List<LangTypeCatalogDto> langTypeCatalogDto)
+        {
+            _langHttpClient.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            var content = SerializeDataToHttpContent(langTypeCatalogDto);
+
+            HttpResponseMessage response = await _langHttpClient.PostAsync(
+                "api/langIdType/list", content);
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
+
+            return code;
+        }
 
         public async Task<MessageWithCode> UploadNewGameVersion(GameVersionDto gameVersionDto)
         {
@@ -172,5 +186,7 @@ namespace GUI.Services
 
             return byteContent;
         }
+
+        
     }
 }
