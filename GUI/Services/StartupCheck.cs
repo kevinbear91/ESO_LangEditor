@@ -201,9 +201,9 @@ namespace GUI.Services
         {
             _logger.LogDebug("发现编辑器版本更新");
 
-            string args = App.ServerPath + _langConfigServer.LangFullpackPath    //服务器地址 + 编辑器包名
-                + " " + _langConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
-                + " " + _langConfigServer.LangEditorVersion;   //编辑器服务器端版本号
+            string args = "/DownloadPath " + App.ServerPath + _langConfigServer.LangFullpackPath    //服务器地址 + 编辑器包名
+                + " /FileSHA256 " + _langConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
+                + " /FileVersion " + _langConfigServer.LangEditorVersion;   //编辑器服务器端版本号
             Debug.WriteLine(args);
 
             ProcessStartInfo startUpdaterInfo = new ProcessStartInfo

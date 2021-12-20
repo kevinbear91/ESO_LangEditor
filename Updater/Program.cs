@@ -10,7 +10,8 @@ namespace ESO_LangEditorUpdater
     {
         static void Main(string[] args)
         {
-            if (args.Length == 3)
+            Debug.WriteLine(args.Length);
+            if (args.Length > 3)
             {
                 var downloader = new LangDownloader(args);
                 //await downloader.UpdateSequence();

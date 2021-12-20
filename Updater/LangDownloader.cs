@@ -23,11 +23,9 @@ namespace ESO_LangEditorUpdater
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
 
-        
-
         public LangDownloader(string[] args)
         {
-            for (int index = 1; index < args.Length; index += 2)
+            for (int index = 0; index < args.Length; index += 2)
             {
                 argsDict.Add(args[index], args[index + 1]);
             }
@@ -35,15 +33,16 @@ namespace ESO_LangEditorUpdater
             foreach (var arg in argsDict)
             {
                 //MessageBox.Show($"命令: {arg.Key}, 参数: {arg.Value}");
+                Debug.WriteLine($"命令: {arg.Key}, 参数: {arg.Value}");
 
                 if (arg.Key == "/DownloadPath")
                 {
                     _downloadPath = arg.Value;
                 }
 
-                if (arg.Key == "/FileName")
+                if (arg.Key == "/FileVersion")
                 {
-                    _fileName = arg.Value;
+                    _langEditorServerVersion = arg.Value;
                 }
 
                 if (arg.Key == "/FileSHA256")
@@ -57,7 +56,7 @@ namespace ESO_LangEditorUpdater
             //_fileSHA256 = args[1];
             //_langEditorServerVersion = args[2];
 
-            _fileName = "ESO_LangEditor_v" + _langEditorServerVersion + ".zip";
+            _fileName = "ESO_LangEditor_" + _langEditorServerVersion + ".zip";
         }
 
         public async Task UpdateSequence()
@@ -76,14 +75,18 @@ namespace ESO_LangEditorUpdater
 
         public async Task StartDownload()
         {
-            System.Net.ServicePointManager.DefaultConnectionLimit = 5;
-
-            using (WebClient client = new WebClient())
+            using (var client = new HttpClient())
             {
-                client.DownloadProgressChanged += Editor_DownloadProgressChanged;
-                client.DownloadFileCompleted += new AsyncCompletedEventHandler(DelegateHashAndUnzip);
-                await client.DownloadFileTaskAsync(new Uri(_downloadPath), _fileName);
+                using (var stream = await client.GetStreamAsync(new Uri(_downloadPath)))
+                {
+                    using (var fs = new FileStream(_fileName, FileMode.Create))
+                    {
+                        await stream.CopyToAsync(fs);
+                    }
+                }
             }
+            Console.WriteLine("正在下载文件……");
+            await HashAndUnzip();
         }
 
         private async void DelegateHashAndUnzip(object s, AsyncCompletedEventArgs e)
@@ -116,8 +119,8 @@ namespace ESO_LangEditorUpdater
 
             using (FileStream stream = File.OpenRead(_fileName))
             {
-                SHA256Managed sha = new SHA256Managed();
-                byte[] hash = sha.ComputeHash(stream);
+                SHA256 sHA256 = SHA256.Create();
+                byte[] hash = sHA256.ComputeHash(stream);
                 hashReslut = BitConverter.ToString(hash).Replace("-", String.Empty);
                 Console.WriteLine("下载文件SHA256：{0}", hashReslut);
             }
