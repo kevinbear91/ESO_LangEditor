@@ -1,0 +1,92 @@
+﻿<Window x:Class="GUI.Views.LangTextArchive"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:GUI.Views"
+        mc:Ignorable="d"
+        Title="LangTextArchive" Height="450" Width="800">
+    <Grid Background="#FFEEEEEE">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"  />
+            <RowDefinition MaxHeight="300"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+            <Button Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ContentSave" />
+                    <TextBlock Margin="10 .5 0 0" Text="还原已选择文本" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        
+        <DataGrid x:Name="LangDataGridList" ItemsSource="{Binding CurrentData}"
+                  SelectedItem="{Binding CurrentSelectedItem}"
+                  Grid.Row="1" 
+                  Margin="10"
+                  AutoGenerateColumns="False" 
+                  SelectionChanged="LangDataGridList_SelectionChanged" 
+                  IsReadOnly="True" 
+                  ColumnWidth="200*">
+            <DataGrid.Columns>
+                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="文本GUID"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextId}" Header="文本ID"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="文本类型"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextEn}" Header="英文"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextZh}" Header="中文"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding UpdateStats}" Header="更新版本"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding EnLastModifyTimestamp}" Header="最后修改日期(英文)"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding ZhLastModifyTimestamp}" Header="最后修改日期(中文)"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding UserId}" Header="用户" Visibility="Collapsed"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid x:Name="LangDataGridArchive" ItemsSource="{Binding ArchivedData}"
+                  SelectedItem="{Binding ArchivedSelectedItem}"
+                  Grid.Row="1" Grid.Column="1"
+                  Margin="10"
+                  AutoGenerateColumns="False" IsReadOnly="True" 
+                  SelectionChanged="LangDataGridArchive_SelectionChanged" 
+                  ColumnWidth="200*">
+            <DataGrid.Columns>
+                <materialDesign:DataGridTextColumn Binding="{Binding Id}" Header="文本GUID"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextId}" Header="文本ID"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="文本类型"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextEn}" Header="英文"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextZh}" Header="中文"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding UpdateStats}" Header="更新版本"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding EnLastModifyTimestamp}" Header="最后修改日期(英文)"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding ZhLastModifyTimestamp}" Header="最后修改日期(中文)"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding UserId}" Header="用户" Visibility="Collapsed"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Height="60" VerticalAlignment="Top">
+            <TextBox materialDesign:HintAssist.Hint="文本唯一ID" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding CurrentSelectedData.TextId}" IsReadOnly="True" />
+            <TextBox materialDesign:HintAssist.Hint="文本类型" Margin="10" Width="150"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding CurrentSelectedData.IdType}" IsReadOnly="True" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" >
+            <TextBox materialDesign:HintAssist.Hint="中文(当前)" Margin="10" Width="200"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding CurrentSelectedData.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
+            <TextBox materialDesign:HintAssist.Hint="中文(存档)" Margin="10" Width="190"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     Text="{Binding ArchivedSelectedData.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="3" Margin="10" Text="{Binding GridStatus, FallbackValue=GridStatus}" />
+    </Grid>
+</Window>

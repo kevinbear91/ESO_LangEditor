@@ -218,6 +218,11 @@ namespace GUI.Services
             }
         }
 
+        public async Task<List<LangTextForArchiveDto>> GetLangTextInArchived(string langtextId)
+        {
+            return await _langTextAccess.GetLangTextsFromArchive(langtextId);
+        }
+
         //public async Task TestEvent()
         //{
         //    SetAppConfigClientJpLangSha256(this, "sha265here");

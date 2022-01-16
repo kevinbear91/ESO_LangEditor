@@ -14,7 +14,7 @@ namespace GUI.Services
         Task<IEnumerable<LangTextDto>> GetLangTexts(List<Guid> langtextId);
         Task<PagedList<LangTextDto>> GetLangTexts(string lang, LangTextParameters langTextParameters);
         Task<List<LangTextDto>> GetLangTexts(int langtextRevised);
-        Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId);
+        Task<List<LangTextForArchiveDto>> GetLangTextsFromArchive(string langtextId);
         Task<List<LangTextForReviewDto>> GetLangTextsFromReviewer(Guid userGuid);
         Task<LangTextForReviewDto> GetLangTextFromReview(Guid langtextGuid);
         Task<MessageWithCode> UpdateLangTextZh(LangTextForUpdateZhDto langTextForUpdateZhDto);

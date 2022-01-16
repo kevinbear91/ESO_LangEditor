@@ -251,21 +251,21 @@ namespace GUI.Services
             return respondedList;
         }
 
-        public async Task<IEnumerable<LangTextDto>> GetLangTextsFromArchive(Guid langtextId)
+        public async Task<List<LangTextForArchiveDto>> GetLangTextsFromArchive(string langtextId)
         {
             _langHttpClient.DefaultRequestHeaders.Authorization =
                 new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
-            List<LangTextDto> respondedList = null;
+            List<LangTextForArchiveDto> respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
 
             HttpResponseMessage response = await _langHttpClient.GetAsync(
-                "api/revise/" + langtextId);
+                "api/langtext/archive/" + langtextId);
             var responseContent = response.Content.ReadAsStringAsync().Result;
 
             if (response.IsSuccessStatusCode)
             {
-                respondedList = JsonSerializer.Deserialize<List<LangTextDto>>(responseContent, _jsonOption);
+                respondedList = JsonSerializer.Deserialize<List<LangTextForArchiveDto>>(responseContent, _jsonOption);
             }
             else
             {

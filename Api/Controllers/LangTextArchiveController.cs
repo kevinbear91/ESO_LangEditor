@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Models;
 using Core.RequestParameters;
 using EFCore.RepositoryWrapper;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +41,22 @@ namespace API.Controllers
         public async Task<ActionResult<LangTextArchive>> GetLangTextByGuidAsync(Guid langtextGuid)
         {
             var langtext = await _repositoryWrapper.LangTextArchiveRepo.GetByIdAsync(langtextGuid);
+
+            if (langtext == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return langtext;
+            }
+
+        }
+
+        [HttpGet("{langtextId}")]
+        public async Task<ActionResult<List<LangTextForArchiveDto>>> GetLangTextByGuidAsync(string langtextId)
+        {
+            var langtext = await _repositoryWrapper.LangTextArchiveRepo.GetLangTextsByConditionAsync(lang => lang.TextId == langtextId);
 
             if (langtext == null)
             {

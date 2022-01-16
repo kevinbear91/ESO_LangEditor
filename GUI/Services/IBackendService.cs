@@ -11,6 +11,7 @@ namespace GUI.Services
         Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256);
         Task<string> GetIdType(int id);
         Task<string> GetGameVersionName(int ApiId);
+        Task<List<LangTextForArchiveDto>> GetLangTextInArchived(string langtextId);
         bool GetFileExistAndSha256(string filePath, string fileSHA265);
         event EventHandler<string> DownloadAndExtractComplete;
     }
