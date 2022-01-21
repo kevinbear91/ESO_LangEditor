@@ -175,6 +175,9 @@ namespace GUI.ViewModels
 
                     CurrentLangText.TextZh = LangTextZh;
 
+                    await _backendService.UploadlangtextUpdateZh(langtextUpdateZh);
+                    //_ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
+
                     if (GridData != null && GridData.Count > 1)
                     {
                         GridData.Remove(GridData.Single(l => l.Id == CurrentLangText.Id));
@@ -189,7 +192,6 @@ namespace GUI.ViewModels
                         OnRequestClose(this, new EventArgs());
                         _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！"
                             + "需重新搜索才会刷新表格。");
-                        _ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
                     }
                 }
                 else

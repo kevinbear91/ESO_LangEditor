@@ -252,10 +252,13 @@ namespace GUI.Views.UserControls
                 case LangDataGridContextMenu.SearchAndReplace:
                     new SearchReplaceWindow(GetSeletedItems()).Show();
                     break;
-                //case LangDataGridContextMenu.DeleteUnderReview:
-                //    var context = this.DataContext as LangTextReviewWindowViewModel;
-                //    context.SubmitDeleteSelectedItemsToServer();
-                //    break;
+                case LangDataGridContextMenu.SearchInArchived:
+                    new LangTextArchive(GetSeletedItems()).Show();
+                    break;
+                    //case LangDataGridContextMenu.DeleteUnderReview:
+                    //    var context = this.DataContext as LangTextReviewWindowViewModel;
+                    //    context.SubmitDeleteSelectedItemsToServer();
+                    //    break;
             };
 
         }

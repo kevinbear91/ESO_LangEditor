@@ -21,9 +21,11 @@ namespace GUI.Views
     /// </summary>
     public partial class LangTextArchive : Window
     {
-        public LangTextArchive()
+        public LangTextArchive(List<LangTextDto> langTextDtoList)
         {
             InitializeComponent();
+            var vm = DataContext as LangTextArchiveViewModel;
+            vm.Load(langTextDtoList);
         }
 
         private void LangDataGridList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -33,14 +35,20 @@ namespace GUI.Views
 
             if (selectedItem != null)
             {
-                vm.GetLangtextInArchivedByTextId(selectedItem.TextId);
+                vm.GetLangtextInArchivedByTextId(selectedItem);
             }
 
         }
 
         private void LangDataGridArchive_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var vm = DataContext as LangTextArchiveViewModel;
+            var selectedItem = (LangTextForArchiveDto)LangDataGridArchive.SelectedItem;
 
+            if (selectedItem != null)
+            {
+                vm.SetSelectedArchivedItem(selectedItem);
+            }
         }
     }
 }

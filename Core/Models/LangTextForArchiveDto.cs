@@ -5,9 +5,8 @@ using System.Text;
 
 namespace Core.Models
 {
-    public class LangTextForArchiveDto
+    public class LangTextForArchiveDto : LangTextDto
     {
-        public Guid UserId { get; set; }
         public DateTime ArchiveTimestamp { get; set; }
         public ReviewReason ReasonFor { get; set; }
     }

@@ -134,19 +134,6 @@ namespace GUI.ViewModels
                         _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
                         MessageBox.Show("替换完成！");
 
-                        //if (await _langTextRepository.UpdateLangtexts(replacedListToEnity))
-                        //{
-                        //    _logger.LogDebug("批量替换完成，共 " + replacedListToEnity.Count + " 条文本");
-
-                        //    var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
-                        //    _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
-                        //    MessageBox.Show("替换完成！");
-                        //}
-                        //else
-                        //{
-                        //    MessageBox.Show("替换失败！");
-                        //}
-
                     }
                     else
                     {

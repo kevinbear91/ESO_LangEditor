@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:GUI.Views"
+        xmlns:prism="http://prismlibrary.com/" 
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
+        TextElement.FontSize="14"
         Title="LangTextArchive" Height="450" Width="800">
     <Grid Background="#FFEEEEEE">
         <Grid.ColumnDefinitions>
@@ -20,20 +23,18 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <Button Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
-                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Cursor="Hand">
+            <Button Command="{Binding RollBackLangZhCommand}" Style="{StaticResource MaterialDesignFlatButton}"
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="ContentSave" />
                     <TextBlock Margin="10 .5 0 0" Text="还原已选择文本" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
         </StackPanel>
-        
-        <DataGrid x:Name="LangDataGridList" ItemsSource="{Binding CurrentData}"
-                  SelectedItem="{Binding CurrentSelectedItem}"
-                  Grid.Row="1" 
-                  Margin="10"
-                  AutoGenerateColumns="False" 
+
+        <DataGrid x:Name="LangDataGridList" ItemsSource="{Binding CurrentGridData}"
+                  Grid.Row="1" Margin="10" AutoGenerateColumns="False" 
+                  IsEnabled="{Binding CanSelectedCurrentGridData}"
                   SelectionChanged="LangDataGridList_SelectionChanged" 
                   IsReadOnly="True" 
                   ColumnWidth="200*">
@@ -50,11 +51,10 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <DataGrid x:Name="LangDataGridArchive" ItemsSource="{Binding ArchivedData}"
-                  SelectedItem="{Binding ArchivedSelectedItem}"
+        <DataGrid x:Name="LangDataGridArchive" ItemsSource="{Binding ArchivedGridData}"
                   Grid.Row="1" Grid.Column="1"
-                  Margin="10"
-                  AutoGenerateColumns="False" IsReadOnly="True" 
+                  Margin="10" AutoGenerateColumns="False" IsReadOnly="True"
+                  IsEnabled="{Binding CanSelectedArchivedGridData}"
                   SelectionChanged="LangDataGridArchive_SelectionChanged" 
                   ColumnWidth="200*">
             <DataGrid.Columns>
@@ -73,18 +73,18 @@
         <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Height="60" VerticalAlignment="Top">
             <TextBox materialDesign:HintAssist.Hint="文本唯一ID" Margin="10" Width="150"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding CurrentSelectedData.TextId}" IsReadOnly="True" />
+                     Text="{Binding langTextForArchiveWindowItem.TextId}" IsReadOnly="True" />
             <TextBox materialDesign:HintAssist.Hint="文本类型" Margin="10" Width="150"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding CurrentSelectedData.IdType}" IsReadOnly="True" />
+                     Text="{Binding langTextForArchiveWindowItem.IdType}" IsReadOnly="True" />
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" >
             <TextBox materialDesign:HintAssist.Hint="中文(当前)" Margin="10" Width="200"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding CurrentSelectedData.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
+                     Text="{Binding langTextForArchiveWindowItem.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
             <TextBox materialDesign:HintAssist.Hint="中文(存档)" Margin="10" Width="190"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                     Text="{Binding ArchivedSelectedData.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
+                     Text="{Binding langTextForArchiveWindowItem.TextZh}" IsReadOnly="True" TextWrapping="Wrap" />
         </StackPanel>
 
         <TextBlock Grid.Row="3" Margin="10" Text="{Binding GridStatus, FallbackValue=GridStatus}" />

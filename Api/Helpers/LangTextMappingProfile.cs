@@ -23,6 +23,7 @@ namespace API.Helpers
             CreateMap<LangTextReview, LangText>();
             CreateMap<LangTextReview, LangTextForReviewDto>();
             CreateMap<LangTextReview, LangTextArchive>();
+            CreateMap<LangTextArchive, LangTextForArchiveDto>();
             CreateMap<LangTextRevisedDto, LangTextRevised>();
             CreateMap<LangTextRevised, LangTextRevisedDto>();
             //CreateMap<LangTextRevNumberDto, LangTextRevNumber>();

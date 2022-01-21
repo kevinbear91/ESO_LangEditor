@@ -15,5 +15,7 @@ namespace Core.EnumTypes
         SearchAndReplace = 3,
         //[Description("删除已选择待审核文本")]
         //DeleteUnderReview = 4,
+        [Description("在归档库中查询")]
+        SearchInArchived = 5,
     }
 }

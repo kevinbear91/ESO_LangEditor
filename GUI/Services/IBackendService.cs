@@ -7,6 +7,8 @@ namespace GUI.Services
 {
     public interface IBackendService
     {
+        Task UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto);
+        Task UploadlangtextUpdateZh(List<LangTextForUpdateZhDto> langTextUpdateZhDtoList);
         Task<AppConfigServer> GetServerRespondAndConfig();
         Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256);
         Task<string> GetIdType(int id);

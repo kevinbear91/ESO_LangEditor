@@ -266,14 +266,8 @@ namespace GUI.Services
             if (response.IsSuccessStatusCode)
             {
                 respondedList = JsonSerializer.Deserialize<List<LangTextForArchiveDto>>(responseContent, _jsonOption);
+                Debug.WriteLine($"GetLangTextsFromArchive count: {respondedList.Count}");
             }
-            else
-            {
-                var code = JsonSerializer.Deserialize<MessageWithCode>(responseContent, _jsonOption);
-                MessageBox.Show(code.Message);
-            }
-
-            Debug.WriteLine(respondedList);
 
             return respondedList;
         }

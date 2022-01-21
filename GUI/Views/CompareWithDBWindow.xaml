@@ -50,7 +50,7 @@
                 </TextBox.Text>
             </TextBox>
             
-            <Button x:Name="Compare_Button"  Command="{Binding CompareFilesCommand}" Margin="20 0" 
+            <Button x:Name="Compare_Button" Command="{Binding CompareFilesCommand}" Margin="20 0" 
                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}" >
@@ -92,7 +92,7 @@
             </Button>
 
             <Button x:Name="IdTypeCheck_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Command="{Binding CheckNewIdsCommand}">
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Command="{Binding CheckNewIdsCommand}" Cursor="Hand">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="DatabasePlusOutline" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="检查新ID类型" VerticalAlignment="Center" />

@@ -13,7 +13,7 @@ namespace GUI.Views
             InitializeComponent();
         }
 
-        private void NewGameVersion_Button(object sender, RoutedEventArgs e)
+        private void NewGameVersion_Button_Click(object sender, RoutedEventArgs e)
         {
             var versionWindow = new NewGameVersionWindow
             {

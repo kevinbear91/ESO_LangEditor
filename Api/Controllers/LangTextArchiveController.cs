@@ -26,47 +26,39 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        public async Task<ActionResult<IEnumerable<LangTextArchive>>> GetLangTextAllAsync([FromQuery] PageParameters pageParameters)
-        {
-            var langtextList = await _repositoryWrapper.LangTextArchiveRepo.GetAllAsync(pageParameters);
+        //public async Task<ActionResult<IEnumerable<LangTextArchive>>> GetLangTextAllAsync([FromQuery] PageParameters pageParameters)
+        //{
+        //    var langtextList = await _repositoryWrapper.LangTextArchiveRepo.GetAllAsync(pageParameters);
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
+        //    Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(langtextList.PageData));
 
-
-            return langtextList.ToList();
-        }
+        //    return langtextList.ToList();
+        //}
 
         //[AllowAnonymous]
-        [HttpGet("{langtextGuid}")]
-        public async Task<ActionResult<LangTextArchive>> GetLangTextByGuidAsync(Guid langtextGuid)
-        {
-            var langtext = await _repositoryWrapper.LangTextArchiveRepo.GetByIdAsync(langtextGuid);
+        //[HttpGet("{langtextGuid}")]
+        //public async Task<ActionResult<LangTextArchive>> GetLangTextByGuidAsync(Guid langtextGuid)
+        //{
+        //    var langtext = await _repositoryWrapper.LangTextArchiveRepo.GetByIdAsync(langtextGuid);
 
-            if (langtext == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return langtext;
-            }
+        //    if (langtext == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    else
+        //    {
+        //        return langtext;
+        //    }
 
-        }
+        //}
 
         [HttpGet("{langtextId}")]
-        public async Task<ActionResult<List<LangTextForArchiveDto>>> GetLangTextByGuidAsync(string langtextId)
+        public async Task<ActionResult<List<LangTextForArchiveDto>>> GetLangTextByTextIdAsync(string langtextId)
         {
-            var langtext = await _repositoryWrapper.LangTextArchiveRepo.GetLangTextsByConditionAsync(lang => lang.TextId == langtextId);
+            var langtextArchived = await _repositoryWrapper.LangTextArchiveRepo.GetByConditionAsync(lang => lang.TextId == langtextId);
+            var lantextArchivedDto = _mapper.Map<List<LangTextForArchiveDto>>(langtextArchived.ToList());
 
-            if (langtext == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                return langtext;
-            }
-
+            return lantextArchivedDto;
         }
 
 

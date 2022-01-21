@@ -13,6 +13,7 @@ namespace GUI.Services
             CreateMap<LangTextDto, LangTextForUpdateZhDto>();
             CreateMap<LangTextDto, LangTextForUpdateEnDto>();
             CreateMap<LangTextDto, LangTextForCreationDto>();
+            CreateMap<LangTextDto, LangTextForArchiveWindow>();
             CreateMap<LangTextForCreationDto, LangTextClient>();
             CreateMap<LangTextForUpdateZhDto, LangTextClient>();
             CreateMap<User, UserDto>();

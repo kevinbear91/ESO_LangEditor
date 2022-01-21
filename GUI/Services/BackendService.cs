@@ -49,8 +49,8 @@ namespace GUI.Services
             _ea = ea;
             _logger = logger;
 
-            _ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadlangtextUpdateZh);
-            _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadlangtextsUpdateZh);
+            //_ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadlangtextUpdateZh);
+            //_ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadlangtextsUpdateZh);
             _ea.GetEvent<RefreshTokenEvent>().Subscribe(SyncToken);
         }
 
@@ -84,25 +84,25 @@ namespace GUI.Services
 
         }
 
-        private async void UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)
-        {
-            var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
+        //private async void UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)
+        //{
+        //    var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
 
-            if (respond.Code != (int)RespondCode.Success)
-            {
-                MessageBox.Show(respond.Message);
-            }
-        }
+        //    if (respond.Code != (int)RespondCode.Success)
+        //    {
+        //        MessageBox.Show(respond.Message);
+        //    }
+        //}
 
-        private async void UploadlangtextsUpdateZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
-        {
-            var respond = await _langTextAccess.UpdateLangTextZh(langTextForUpdateZhDtoList);
+        //private async void UploadlangtextsUpdateZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtoList)
+        //{
+        //    var respond = await _langTextAccess.UpdateLangTextZh(langTextForUpdateZhDtoList);
 
-            if (respond.Code != (int)RespondCode.Success)
-            {
-                MessageBox.Show(respond.Message);
-            }
-        }
+        //    if (respond.Code != (int)RespondCode.Success)
+        //    {
+        //        MessageBox.Show(respond.Message);
+        //    }
+        //}
 
         public async Task DownloadFileFromServer(string downloadPath, string localFileName, string fileSha256)
         {
@@ -221,6 +221,26 @@ namespace GUI.Services
         public async Task<List<LangTextForArchiveDto>> GetLangTextInArchived(string langtextId)
         {
             return await _langTextAccess.GetLangTextsFromArchive(langtextId);
+        }
+
+        public async Task UploadlangtextUpdateZh(LangTextForUpdateZhDto langTextUpdateZhDto)
+        {
+            var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDto);
+
+            if (respond.Code != (int)RespondCode.Success)
+            {
+                MessageBox.Show(respond.Message);
+            }
+        }
+
+        public async Task UploadlangtextUpdateZh(List<LangTextForUpdateZhDto> langTextUpdateZhDtoList)
+        {
+            var respond = await _langTextAccess.UpdateLangTextZh(langTextUpdateZhDtoList);
+
+            if (respond.Code != (int)RespondCode.Success)
+            {
+                MessageBox.Show(respond.Message);
+            }
         }
 
         //public async Task TestEvent()

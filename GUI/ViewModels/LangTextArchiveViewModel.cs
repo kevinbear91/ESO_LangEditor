@@ -1,4 +1,6 @@
-﻿using Core.Models;
+﻿using AutoMapper;
+using Core.Models;
+using GUI.Command;
 using GUI.Services;
 using Prism.Mvvm;
 using System;
@@ -7,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace GUI.ViewModels
 {
@@ -23,6 +26,8 @@ namespace GUI.ViewModels
         private bool _CanSelectedArchivedGridData = false;
 
         private string _gridStatus;
+
+        public ICommand RollBackLangZhCommand => new ExcuteViewModelMethod(RollBackLangzh);
 
         public ObservableCollection<LangTextDto> CurrentGridData
         {
@@ -73,18 +78,25 @@ namespace GUI.ViewModels
         }
 
         private IBackendService _backendService;
+        private IMapper _mapper;
 
-
-        public LangTextArchiveViewModel(IBackendService backendService)
+        public LangTextArchiveViewModel(IBackendService backendService, IMapper mapper)
         {
             _backendService = backendService;
-
+            _mapper = mapper;
 
         }
 
-        public async void GetLangtextInArchivedByTextId(string langtextId)
+        public void Load(List<LangTextDto> langTextDtoList)
         {
-            var list = await _backendService.GetLangTextInArchived(langtextId);
+            CurrentGridData.AddRange(langTextDtoList);
+        }
+
+        public async void GetLangtextInArchivedByTextId(LangTextDto langtext)
+        {
+            langTextForArchiveWindowItem = _mapper.Map<LangTextForArchiveWindow>(langtext);
+
+            var list = await _backendService.GetLangTextInArchived(langtext.TextId);
 
             if (list != null && list.Count >= 1)
             {
@@ -96,9 +108,21 @@ namespace GUI.ViewModels
             }
         }
 
+        private void RollBackLangzh(object obj)
+        {
+            if (ArchivedSelectedData != null && CurrentSelectedData != null)
+            {
+                CurrentSelectedData.TextZh = ArchivedSelectedData.TextZh;
+
+                var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(CurrentSelectedData);
+
+                _backendService.UploadlangtextUpdateZh(langUpdate);
+            }
+        }
+
         public void SetSelectedArchivedItem(LangTextForArchiveDto langTextForArchiveDto)
         {
-
+            langTextForArchiveWindowItem.TextZhInArchive = langTextForArchiveDto.TextZh;
         }
     }
 }
