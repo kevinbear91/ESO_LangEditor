@@ -84,18 +84,19 @@ namespace GUI.ViewModels
         public Visibility JpVisibility => Visibility.Collapsed;
 
         //private ILangTextRepoClient _langTextRepository; // = new LangTextRepoClientService();
-        private IEventAggregator _ea;
+        //private IEventAggregator _ea;
         private ILogger _logger;
         private IMapper _mapper;
+        private IBackendService _backendService;
 
         public ICommand GetMatchCommand => new ExcuteViewModelMethod(SearchIfMatch);
         public ICommand SaveSearchResultCommand => new ExcuteViewModelMethod(ReplaceTextListAsync);
 
-        public SearchReplaceWindowViewModel(IEventAggregator ea, /*ILangTextRepoClient langTextRepoClient,*/
+        public SearchReplaceWindowViewModel(/*IEventAggregator ea,*/ IBackendService backendService,
             ILogger logger, IMapper mapper)
         {
-            _ea = ea;
-            //_langTextRepository = langTextRepoClient;
+            //_ea = ea;
+            _backendService = backendService;
             _logger = logger;
             _mapper = mapper;
 
@@ -131,7 +132,8 @@ namespace GUI.ViewModels
                         _logger.LogDebug("批量替换完成，共 " + ReplacedList.Count + " 条文本");
 
                         var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
-                        _ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
+                        await _backendService.UploadlangtextUpdateZh(langZhDto);
+                        //_ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
                         MessageBox.Show("替换完成！");
 
                     }

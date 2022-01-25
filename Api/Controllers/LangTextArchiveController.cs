@@ -3,6 +3,7 @@ using Core.Entities;
 using Core.Models;
 using Core.RequestParameters;
 using EFCore.RepositoryWrapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -52,6 +53,7 @@ namespace API.Controllers
 
         //}
 
+        [Authorize(Roles = "Editor")]
         [HttpGet("{langtextId}")]
         public async Task<ActionResult<List<LangTextForArchiveDto>>> GetLangTextByTextIdAsync(string langtextId)
         {

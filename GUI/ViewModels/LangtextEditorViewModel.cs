@@ -117,15 +117,15 @@ namespace GUI.ViewModels
 
         private IEventAggregator _ea;
         //private ILangTextRepoClient _langTextRepoClient;
-        private ILangTextAccess _langTextAccess;
+        //private ILangTextAccess _langTextAccess;
         private IBackendService _backendService;
 
         public LangtextEditorViewModel(IEventAggregator ea, /*ILangTextRepoClient langTextRepoClient, */
-            ILangTextAccess langTextAccess, IBackendService backendService)
+            /*ILangTextAccess langTextAccess,*/ IBackendService backendService)
         {
             _ea = ea;
             //_langTextRepoClient = langTextRepoClient;
-            _langTextAccess = langTextAccess;
+            //_langTextAccess = langTextAccess;
             _backendService = backendService;
             EditorMessageQueue = new SnackbarMessageQueue();
 

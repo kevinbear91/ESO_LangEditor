@@ -26,8 +26,11 @@ namespace GUI.ViewModels
         private bool _CanSelectedArchivedGridData = false;
 
         private string _gridStatus;
+        private string _archivedLangZh;
 
         public ICommand RollBackLangZhCommand => new ExcuteViewModelMethod(RollBackLangzh);
+        public ICommand SetSelectedLangZhToNullCommand => new ExcuteViewModelMethod(SetSelectedLangzhToNull);
+
 
         public ObservableCollection<LangTextDto> CurrentGridData
         {
@@ -47,17 +50,17 @@ namespace GUI.ViewModels
             set => SetProperty(ref _langTextForArchiveWindowItem, value);
         }
 
-        public LangTextDto CurrentSelectedData
-        {
-            get => _currentSelectedData;
-            set => SetProperty(ref _currentSelectedData, value);
-        }
+        //public LangTextDto CurrentSelectedData
+        //{
+        //    get => _currentSelectedData;
+        //    set => SetProperty(ref _currentSelectedData, value);
+        //}
 
-        public LangTextForArchiveDto ArchivedSelectedData
-        {
-            get => _archivedSelectedData;
-            set => SetProperty(ref _archivedSelectedData, value);
-        }
+        //public LangTextForArchiveDto ArchivedSelectedData
+        //{
+        //    get => _archivedSelectedData;
+        //    set => SetProperty(ref _archivedSelectedData, value);
+        //}
 
         public bool CanSelectedCurrentGridData
         {
@@ -75,6 +78,12 @@ namespace GUI.ViewModels
         {
             get => _gridStatus;
             set => SetProperty(ref _gridStatus, value);
+        }
+
+        public string ArchivedLangZh
+        {
+            get => _archivedLangZh;
+            set => SetProperty(ref _archivedLangZh, value);
         }
 
         private IBackendService _backendService;
@@ -95,6 +104,7 @@ namespace GUI.ViewModels
         public async void GetLangtextInArchivedByTextId(LangTextDto langtext)
         {
             langTextForArchiveWindowItem = _mapper.Map<LangTextForArchiveWindow>(langtext);
+            _currentSelectedData = langtext;
 
             var list = await _backendService.GetLangTextInArchived(langtext.TextId);
 
@@ -105,24 +115,48 @@ namespace GUI.ViewModels
                     ArchivedGridData.Clear();
                 }
                 ArchivedGridData.AddRange(list);
+                CanSelectedArchivedGridData = true;
+            }
+            else
+            {
+                CanSelectedArchivedGridData = false;
             }
         }
 
-        private void RollBackLangzh(object obj)
+        private async void RollBackLangzh(object obj)
         {
-            if (ArchivedSelectedData != null && CurrentSelectedData != null)
+            var langArchived = (LangTextForArchiveDto)obj;
+
+            if (langArchived != null && _currentSelectedData != null)
             {
-                CurrentSelectedData.TextZh = ArchivedSelectedData.TextZh;
+                GridStatus = "正在上传";
 
-                var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(CurrentSelectedData);
+                var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(_currentSelectedData);
+                langUpdate.UserId = App.User.Id;
+                langUpdate.TextZh = langArchived.TextZh;
 
-                _backendService.UploadlangtextUpdateZh(langUpdate);
+                await _backendService.UploadlangtextUpdateZh(langUpdate);
+                GridStatus = "上传完毕";
             }
+        }
+
+        private async void SetSelectedLangzhToNull(object obj)
+        {
+            var selectedLangtext = (LangTextDto)obj;
+
+            GridStatus = "正在上传";
+            var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(selectedLangtext);
+            langUpdate.UserId = App.User.Id;
+            langUpdate.TextZh = null;
+
+            await _backendService.UploadlangtextUpdateZh(langUpdate);
+
+            GridStatus = "上传完毕";
         }
 
         public void SetSelectedArchivedItem(LangTextForArchiveDto langTextForArchiveDto)
         {
-            langTextForArchiveWindowItem.TextZhInArchive = langTextForArchiveDto.TextZh;
+            ArchivedLangZh = langTextForArchiveDto.TextZh;
         }
     }
 }
