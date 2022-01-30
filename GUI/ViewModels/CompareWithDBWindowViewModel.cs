@@ -30,12 +30,13 @@ namespace GUI.ViewModels
         private string _infoText;
         private bool _updatedVersionInputEnable;
         private bool _saveButtonEnable;
+        private bool _ClearZhIfEnChangedForSkill = true;
         private List<LangTextDto> _added;
         private List<LangTextDto> _changed;
         private List<LangTextDto> _nonChanged;
         private List<LangTextDto> _removedList;
         private Dictionary<string, LangTextDto> _removedDict;
-        private ObservableCollection<LangTextDto> _gridData;
+        private ObservableCollection<LangTextDto> _currentGridData;
         private IMapper _mapper;
         private ILangFile _langfile;
         private IBackendService _backendService;
@@ -104,6 +105,12 @@ namespace GUI.ViewModels
             set => SetProperty(ref _saveButtonEnable, value);
         }
 
+        public bool ClearZhIfEnChangedForSkill
+        {
+            get => _ClearZhIfEnChangedForSkill;
+            set => SetProperty(ref _ClearZhIfEnChangedForSkill, value);
+        }
+
         //private ILangTextRepoClient _langTextRepository;
 
         public List<LangTextDto> Added
@@ -136,10 +143,10 @@ namespace GUI.ViewModels
             set => SetProperty(ref _removedDict, value);
         }
 
-        public ObservableCollection<LangTextDto> GridData
+        public ObservableCollection<LangTextDto> CurrentGridData
         {
-            get => _gridData;
-            set => SetProperty(ref _gridData, value);
+            get => _currentGridData;
+            set => SetProperty(ref _currentGridData, value);
         }
 
         public Visibility JpVisibility => Visibility.Collapsed;
@@ -150,8 +157,9 @@ namespace GUI.ViewModels
         public ExcuteViewModelMethod CompareListSelecteCommand => new ExcuteViewModelMethod(SelecteOption);
         public ExcuteViewModelMethod SaveToServerCommand => new ExcuteViewModelMethod(UploadResultToServer);
         public ExcuteViewModelMethod CompareFilesCommand => new ExcuteViewModelMethod(CompreWithDb);
-
         public ExcuteViewModelMethod CheckNewIdsCommand => new ExcuteViewModelMethod(CompareAddedIdType);
+        //public ExcuteViewModelMethod SetSelectedLangZhToNullCommand => new ExcuteViewModelMethod(SetSelectedLangzhToNull);
+
         public CompareWithDBWindow compareWithDBWindow;
 
         public CompareWithDBWindowViewModel(IBackendService backendService, ILangTextRepoClient langTextRepo,
@@ -165,7 +173,7 @@ namespace GUI.ViewModels
             SaveToServerCommand.IsExecuting = true;
 
             UpdatedVersionInputEnable = true;
-            GridData = new ObservableCollection<LangTextDto>();
+            CurrentGridData = new ObservableCollection<LangTextDto>();
 
             _langfile = langfile;
             _backendService = backendService;
@@ -420,6 +428,11 @@ namespace GUI.ViewModels
 
             RemovedList = RemovedDict.Values.ToList();
 
+            if (ClearZhIfEnChangedForSkill)
+            {
+                FindChangedLangTextIsGearOrSkill();
+            }
+
             AddedTag = Added.Count.ToString();
             ChangedTag = Changed.Count.ToString();
             RemovedTag = RemovedList.Count.ToString();
@@ -435,8 +448,8 @@ namespace GUI.ViewModels
             _selectedKey = parameter as string;
             //var datagrid = _compareWindowViewModel.LangDataGrid.LangDataGridDC;
 
-            if (GridData.Count > 0)
-                GridData.Clear();
+            if (CurrentGridData.Count > 0)
+                CurrentGridData.Clear();
 
 
             //Debug.WriteLine("Selected Key: " + selectedKey);
@@ -445,7 +458,7 @@ namespace GUI.ViewModels
             {
                 case "Added":
                     Debug.WriteLine("Selected: " + _selectedKey);
-                    GridData.AddRange(Added);
+                    CurrentGridData.AddRange(Added);
                     if (Added.Count > 1)
                     {
                         SaveToServerCommand.IsExecuting = false;
@@ -453,7 +466,7 @@ namespace GUI.ViewModels
                     break;
                 case "Changed":
                     Debug.WriteLine("Selected: " + _selectedKey);
-                    GridData.AddRange(Changed);
+                    CurrentGridData.AddRange(Changed);
                     if (Changed.Count > 1)
                     {
                         SaveToServerCommand.IsExecuting = false;
@@ -461,7 +474,7 @@ namespace GUI.ViewModels
                     break;
                 case "Removed":
                     Debug.WriteLine("Selected: " + _selectedKey);
-                    GridData.AddRange(RemovedList);
+                    CurrentGridData.AddRange(RemovedList);
                     if (RemovedList.Count > 1)
                     {
                         SaveToServerCommand.IsExecuting = false;
@@ -498,6 +511,43 @@ namespace GUI.ViewModels
             {
                 MessageBox.Show("无新增ID", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+
+        private void FindChangedLangTextIsGearOrSkill()
+        {
+            List<LangTextDto> _tempList = new List<LangTextDto>();
+            if (Changed.Count >= 1)
+            {
+                foreach (var lang in Changed)
+                {
+                    if (lang.IdType == 132143172)
+                    {
+                        lang.TextZh = null;
+                        _tempList.Add(lang);
+                    }
+                    else
+                    {
+                        _tempList.Add(lang);
+                    }
+                }
+                Changed = _tempList;
+            }
+        }
+
+
+        private async void SetSelectedLangzhToNull(object obj)
+        {
+            var selectedLangtext = (List<LangTextDto>)obj;
+
+            //var langUpdate = _mapper.Map<List<LangTextForUpdateZhDto>>(selectedLangtext);
+
+            //foreach(var lang in langUpdate)
+            //{
+            //    lang.UserId = App.User.Id;
+            //    lang.TextZh = null;
+            //}
+
+            //await _backendService.UploadlangtextUpdateZh(langUpdate);
         }
 
     }
