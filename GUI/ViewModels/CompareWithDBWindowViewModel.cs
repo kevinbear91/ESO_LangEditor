@@ -15,6 +15,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using Prism.Events;
+using GUI.EventAggres;
 
 namespace GUI.ViewModels
 {
@@ -161,8 +163,9 @@ namespace GUI.ViewModels
         //public ExcuteViewModelMethod SetSelectedLangZhToNullCommand => new ExcuteViewModelMethod(SetSelectedLangzhToNull);
 
         public CompareWithDBWindow compareWithDBWindow;
+        private IEventAggregator _ea;
 
-        public CompareWithDBWindowViewModel(IBackendService backendService, ILangTextRepoClient langTextRepo,
+        public CompareWithDBWindowViewModel(IEventAggregator ea, IBackendService backendService, ILangTextRepoClient langTextRepo,
             ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile, IGeneralAccess generalAccess)
         {
             _addedTag = "新增";
@@ -181,6 +184,9 @@ namespace GUI.ViewModels
             _langTextAccess = langTextAccess;
             _mapper = mapper;
             _generalAccess = generalAccess;
+            _ea = ea;
+
+            _ea.GetEvent<SelectGameVersionEvent>().Subscribe(SelectGameVersion);
 
             //_mapper = App.Mapper;
             //_langtextNetService = new LangtextNetService(App.ServerPath);
@@ -520,7 +526,7 @@ namespace GUI.ViewModels
             {
                 foreach (var lang in Changed)
                 {
-                    if (lang.IdType == 132143172)
+                    if (lang.IdType == 132143172 || lang.IdType == 50040644)
                     {
                         lang.TextZh = null;
                         _tempList.Add(lang);
@@ -534,6 +540,10 @@ namespace GUI.ViewModels
             }
         }
 
+        private void SelectGameVersion(int obj)
+        {
+            UpdateVersionText = obj.ToString();
+        }
 
         private async void SetSelectedLangzhToNull(object obj)
         {

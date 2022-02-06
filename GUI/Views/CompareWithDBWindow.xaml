@@ -39,7 +39,7 @@
             </materialDesign:Badged>
 
             <TextBox x:Name="VersionInput_textBox" materialDesign:HintAssist.Hint="更新API号(必填)" 
-                     TextWrapping="Wrap" Width="200" Margin="30,0,30,0" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="IBeam" >
+                     TextWrapping="Wrap" Width="130" Margin="30,0,0,0" Height="32" HorizontalAlignment="Right" VerticalAlignment="Center" Cursor="IBeam" >
                 <TextBox.Text>
                     <Binding Path="UpdateVersionText" UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
@@ -49,7 +49,13 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            
+            <Button x:Name="NewGameVersion_Button" Style="{StaticResource MaterialDesignFlatButton}" 
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="NewGameVersion_Button_Click">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="PlusThick" Width="24" Height="24" />
+                </StackPanel>
+            </Button>
+
             <Button x:Name="Compare_Button" Command="{Binding CompareFilesCommand}" Margin="20 0" 
                     Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                 <Button.Style>
@@ -65,11 +71,7 @@
                     <materialDesign:PackIcon Kind="FileCompare" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="文件对比" VerticalAlignment="Center" />
                 </StackPanel>
-
             </Button>
-
-            
-
         </StackPanel>
 
         <WrapPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
@@ -79,16 +81,6 @@
                     <materialDesign:PackIcon Kind="CloudUploadOutline" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="上传对比结果" VerticalAlignment="Center" />
                 </StackPanel>
-
-            </Button>
-
-            <Button x:Name="NewGameVersion_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="NewGameVersion_Button_Click">
-                <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="DatabasePlusOutline" Width="24" Height="24" />
-                    <TextBlock Margin="10 .5 0 0" Text="新版本号" VerticalAlignment="Center" />
-                </StackPanel>
-
             </Button>
 
             <Button x:Name="IdTypeCheck_Button" Margin="20 0" Style="{StaticResource MaterialDesignFlatButton}" 
@@ -97,7 +89,6 @@
                     <materialDesign:PackIcon Kind="DatabasePlusOutline" Width="24" Height="24" />
                     <TextBlock Margin="10 .5 0 0" Text="检查新ID类型" VerticalAlignment="Center" />
                 </StackPanel>
-
             </Button>
 
             <CheckBox Style="{StaticResource MaterialDesignCheckBox}"

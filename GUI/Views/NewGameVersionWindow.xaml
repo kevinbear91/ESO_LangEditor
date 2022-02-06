@@ -16,19 +16,21 @@
             <RowDefinition Height="62*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Margin="10">
-            <DataGrid x:Name="GameVersionDataGrid"  ItemsSource="{Binding GameVersionDtos}" AutoGenerateColumns="False" >
-                <DataGrid.Columns>
-                    <materialDesign:DataGridTextColumn Binding="{Binding GameApiVersion}" Header="游戏API版本" />
-                    <materialDesign:DataGridTextColumn Binding="{Binding Version_EN}" Header="版本名称(英文)" />
-                    <materialDesign:DataGridTextColumn Binding="{Binding Version_ZH}" Header="版本名称(中文)" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+        <DataGrid x:Name="GameVersionDataGrid" ItemsSource="{Binding GameVersionDtos}" AutoGenerateColumns="False"
+                      Margin="10" >
+            <DataGrid.Columns>
+                <materialDesign:DataGridTextColumn Binding="{Binding GameApiVersion}" Header="游戏API版本" />
+                <materialDesign:DataGridTextColumn Binding="{Binding Version_EN}" Header="版本名称(英文)" />
+                <materialDesign:DataGridTextColumn Binding="{Binding Version_ZH}" Header="版本名称(中文)" />
+            </DataGrid.Columns>
+        </DataGrid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button x:Name="button_submit" Content="提交" Command="{Binding SumbitCommand}"
-                    CommandParameter="{Binding ElementName=GameVersionDataGrid, Path=SelectedItem}" Margin="10"  />
+                    CommandParameter="{Binding ElementName=GameVersionDataGrid, Path=SelectedItem}" Margin="20 10" Cursor="IBeam" />
+
+            <Button x:Name="button_select" Content="选择" Command="{Binding SelectCommand}"
+                    CommandParameter="{Binding ElementName=GameVersionDataGrid, Path=SelectedItem}" Margin="20 10" Cursor="Hand" />
         </StackPanel>
     </Grid> 
 </Window>

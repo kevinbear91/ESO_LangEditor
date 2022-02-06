@@ -1,6 +1,8 @@
 ﻿using Core.Models;
 using GUI.Command;
+using GUI.EventAggres;
 using GUI.Services;
+using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
@@ -33,14 +35,18 @@ namespace GUI.ViewModels
 
         private ICommand GetGameVersionCommand => new ExcuteViewModelMethod(GetGameVersionFromServer);
         private IGeneralAccess _generalAccess;
+        private IEventAggregator _ea;
         public ICommand SumbitCommand => new ExcuteViewModelMethod(SumbitVersion);
+        public ICommand SelectCommand => new ExcuteViewModelMethod(SelectVersion);
 
-        public NewGameVersionWindowViewModel(IGeneralAccess generalAccess)
+        public NewGameVersionWindowViewModel(IEventAggregator ea, IGeneralAccess generalAccess)
         {
             _generalAccess = generalAccess;
+            _ea = ea;
 
             GetGameVersionCommand.Execute(null);
         }
+
 
         private async void GetGameVersionFromServer(object o)
         {
@@ -78,5 +84,13 @@ namespace GUI.ViewModels
             }
         }
 
+        private void SelectVersion(object obj)
+        {
+            var selectedItem = obj as GameVersionDto;
+            if (selectedItem != null)
+            {
+                _ea.GetEvent<SelectGameVersionEvent>().Publish(selectedItem.GameApiVersion);
+            }
+        }
     }
 }
