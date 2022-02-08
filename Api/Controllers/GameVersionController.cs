@@ -79,6 +79,7 @@ namespace API.Controllers
             else
             {
                 gameVersion.Version_ZH = gameVersionDto.Version_ZH;
+                gameVersion.Version_EN = gameVersionDto.Version_EN;
                 _repositoryWrapper.GameVersionRepo.Update(gameVersion);
             }
 
@@ -94,23 +95,21 @@ namespace API.Controllers
                     Message = RespondCode.GameVersionUpdateFailed.ApiRespondCodeString()
                 });
             }
-            else
-            {
-                if (!await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync())
-                {
-                    return BadRequest(new MessageWithCode
-                    {
-                        Code = (int)RespondCode.LangtextRevNumberUpdateFailed,
-                        Message = RespondCode.LangtextRevNumberUpdateFailed.ApiRespondCodeString()
-                    });
-                }
 
-                return Ok(new MessageWithCode
+            if (!await _repositoryWrapper.LangTextRevNumberRepo.SaveAsync())
+            {
+                return BadRequest(new MessageWithCode
                 {
-                    Code = (int)RespondCode.Success,
-                    Message = RespondCode.Success.ApiRespondCodeString()
+                    Code = (int)RespondCode.LangtextRevNumberUpdateFailed,
+                    Message = RespondCode.LangtextRevNumberUpdateFailed.ApiRespondCodeString()
                 });
             }
+
+            return Ok(new MessageWithCode
+            {
+                Code = (int)RespondCode.Success,
+                Message = RespondCode.Success.ApiRespondCodeString()
+            });
         }
     }
 }
