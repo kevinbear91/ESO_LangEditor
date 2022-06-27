@@ -22,18 +22,18 @@ namespace GUI.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private readonly string version = " " + App.LangConfig.LangEditorVersion;
+        //private readonly string version = " " + App.LangConfig.LangEditorVersion;
 
         private string _windowTitle;
         private string _searchInfo;
         private string _selectedInfo;
         private string _progressInfo;
-        private Visibility _progessbarVisibility;
+        //private Visibility _progessbarVisibility;
         private string _keyword;
         private ObservableCollection<LangTextDto> _gridData;
         private IEventAggregator _ea;
         private ILogger _logger;
-        private IStartupCheck _startupCheck;
+        //private IStartupCheck _startupCheck;
         private Visibility _jpVisibility = Visibility.Collapsed;
 
         public ICommand MainviewCommand { get; }
@@ -65,11 +65,11 @@ namespace GUI.ViewModels
             set => SetProperty(ref _progressInfo, value);
         }
 
-        public Visibility ProgressbarVisibility
-        {
-            get => _progessbarVisibility;
-            set => SetProperty(ref _progessbarVisibility, value);
-        }
+        //public Visibility ProgressbarVisibility
+        //{
+        //    get => _progessbarVisibility;
+        //    set => SetProperty(ref _progessbarVisibility, value);
+        //}
 
         public string Keyword
         {
@@ -83,11 +83,11 @@ namespace GUI.ViewModels
             set => SetProperty(ref _gridData, value);
         }
 
-        public ClientConnectStatus ConnectStatus
-        {
-            get => App.ConnectStatus;
-            set => SetProperty(ref App.ConnectStatus, value);
-        }
+        //public ClientConnectStatus ConnectStatus
+        //{
+        //    get => App.ConnectStatus;
+        //    set => SetProperty(ref App.ConnectStatus, value);
+        //}
 
         public Visibility JpVisibility
         {
@@ -106,26 +106,26 @@ namespace GUI.ViewModels
         public event EventHandler OnRequestClose;
         public event EventHandler CloseDrawerHostEvent;
 
-        public MainWindowViewModel(IEventAggregator ea, ILogger logger,
-            IStartupCheck startupCheck)
+        public MainWindowViewModel(IEventAggregator ea, ILogger logger
+            /*IStartupCheck startupCheck*/)
         {
             LoadMainView();
             GridData = new ObservableCollection<LangTextDto>();
 
             _ea = ea;
             _logger = logger;
-            _startupCheck = startupCheck;
+            //_startupCheck = startupCheck;
 
             _ea.GetEvent<LangtextPostToMainDataGrid>().Subscribe(LangtextDataReceived);
             _ea.GetEvent<MainDataGridSelectedItemsToMainWindowVM>().Subscribe(LangtextDataSelected);
             _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Subscribe(ShowMessageQueueWithString);
-            _ea.GetEvent<CloseMainWindowDrawerHostEvent>().Subscribe(CloseDrawerHost);
-            _ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
-            _ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
-            _ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
-            _ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
-            _ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
-            _ea.GetEvent<LoginFromUcEvent>().Subscribe(LoginTaskCallFromUC);
+            //_ea.GetEvent<CloseMainWindowDrawerHostEvent>().Subscribe(CloseDrawerHost);
+            //_ea.GetEvent<ConnectProgressString>().Subscribe(UpdateProgressInfo);
+            //_ea.GetEvent<LoginRequiretEvent>().Subscribe(ShowLoginUC);
+            //_ea.GetEvent<ConnectStatusChangeEvent>().Subscribe(ChangeConnectStatus);
+            //_ea.GetEvent<DatabaseUpdateEvent>().Subscribe(ShowImportDbRevUC);
+            //_ea.GetEvent<LogoutEvent>().Subscribe(UserLogout);
+            //_ea.GetEvent<LoginFromUcEvent>().Subscribe(LoginTaskCallFromUC);
             _ea.GetEvent<JpColumnVisibilityEvent>().Subscribe(SetJpCplumnVisibility);
 
             MainWindowMessageQueue = new SnackbarMessageQueue();
@@ -149,46 +149,46 @@ namespace GUI.ViewModels
             JpVisibility = obj;
         }
 
-        private async Task BootCheck()
-        {
-            var startupCheckList = Task.Run(() => _startupCheck.StartupTaskList());
-            //var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
+        //private async Task BootCheck()
+        //{
+        //    var startupCheckList = Task.Run(() => _startupCheck.StartupTaskList());
+        //    //var continuation =  startupCheckList.ContinueWith(syncUser => _backendService.SyncUser());
 
-            try
-            {
-                await startupCheckList;
-                await _startupCheck.Login();
-                //await continuation;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex.ToString());
-            }
+        //    try
+        //    {
+        //        await startupCheckList;
+        //        await _startupCheck.Login();
+        //        //await continuation;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogCritical(ex.ToString());
+        //    }
 
-            _logger.LogDebug("======启动检查完成======");
+        //    _logger.LogDebug("======启动检查完成======");
 
 
-        }
+        //}
 
-        private async void LoginTaskCallFromUC()
-        {
-            await _startupCheck.LoginTaskList();
-        }
+        //private async void LoginTaskCallFromUC()
+        //{
+        //    await _startupCheck.LoginTaskList();
+        //}
 
-        private void UserLogout()
-        {
-            App.LangConfig.UserAuthToken = "";
-            App.LangConfig.UserRefreshToken = "";
-            AppConfigClient config = App.LangConfig;
-            AppConfigClient.Save(config);
+        //private void UserLogout()
+        //{
+        //    App.LangConfig.UserAuthToken = "";
+        //    App.LangConfig.UserRefreshToken = "";
+        //    AppConfigClient config = App.LangConfig;
+        //    AppConfigClient.Save(config);
 
-            ConnectStatus = ClientConnectStatus.Logout;
-        }
+        //    ConnectStatus = ClientConnectStatus.Logout;
+        //}
 
-        private void ChangeConnectStatus(ClientConnectStatus connectStatus)
-        {
-            ConnectStatus = connectStatus;
-        }
+        //private void ChangeConnectStatus(ClientConnectStatus connectStatus)
+        //{
+        //    ConnectStatus = connectStatus;
+        //}
 
         private void UpdateProgressInfo(string str)
         {
@@ -205,32 +205,32 @@ namespace GUI.ViewModels
             //SelectedInfo = "已选择 " + obj.Count + " 项";
         }
 
-        public async void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            await BootCheck();
-        }
+        //public async void RootDialogWindow_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    await BootCheck();
+        //}
 
 
 
-        private async void ShowLoginUC()
-        {
-            var view = new UC_Login();
+        //private async void ShowLoginUC()
+        //{
+        //    var view = new UC_Login();
 
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-        }
+        //    //show the dialog
+        //    var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+        //}
 
-        public async void ShowImportDbRevUC(bool isDbRev)
-        {
-            var view = new ImportDbRevProgressDialog();
+        //public async void ShowImportDbRevUC(bool isDbRev)
+        //{
+        //    var view = new ImportDbRevProgressDialog();
 
-            //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
-        }
+        //    //show the dialog
+        //    var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+        //}
 
         private void LoadMainView()
         {
-            WindowTitle = "ESO文本查询编辑器" + version;
+            WindowTitle = "ESO文本查询器 [遗址只读版]"; //+ version;
             SelectedInfo = "无选择条目";
             //SearchInfo = "暂无查询";
 

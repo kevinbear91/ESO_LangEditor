@@ -26,13 +26,13 @@ namespace GUI
     /// </summary>
     public partial class App : PrismApplication
     {
-        public static AppConfigClient LangConfig;
-        public static UserInClientDto User;
-        public static string ServerPath;
+        //public static AppConfigClient LangConfig;
+        //public static UserInClientDto User;
+        //public static string ServerPath;
         public static readonly string WorkingName = Process.GetCurrentProcess().MainModule?.FileName;
         public static readonly string WorkingDirectory = Path.GetDirectoryName(WorkingName);
-        public static HttpClient HttpClient;
-        public static ClientConnectStatus ConnectStatus;
+        //public static HttpClient HttpClient;
+        //public static ClientConnectStatus ConnectStatus;
 
         public static readonly DbContextOptions<LangtextClientDbContext> DbOptionsBuilder;
 
@@ -48,42 +48,42 @@ namespace GUI
         {
             Dictionary<string, string> argsDict = new Dictionary<string, string>();
             string[] args = Environment.GetCommandLineArgs();
-            LangConfig = AppConfigClient.Load();
+            //LangConfig = AppConfigClient.Load();
 
             for (int index = 1; index < args.Length; index += 2)
             {
                 argsDict.Add(args[index], args[index + 1]);
             }
 
-            foreach(var arg in argsDict)
-            {
-                //MessageBox.Show($"命令: {arg.Key}, 参数: {arg.Value}");
+            //foreach(var arg in argsDict)
+            //{
+            //    //MessageBox.Show($"命令: {arg.Key}, 参数: {arg.Value}");
 
-                if (arg.Key == "/NewVersion")
-                {
-                    LangConfig.LangEditorVersion = arg.Value;
-                }
+            //    if (arg.Key == "/NewVersion")
+            //    {
+            //        LangConfig.LangEditorVersion = arg.Value;
+            //    }
 
-                //Debug.WriteLine($"arg: {arg.Key}, value: {arg.Value}");
-            }
+            //    //Debug.WriteLine($"arg: {arg.Key}, value: {arg.Value}");
+            //}
 
-            foreach (var server in LangConfig.LangServerList)
-            {
-                if (server.ServerName == LangConfig.DefaultServerName)
-                    ServerPath = server.ServerURL;
-            }
+            //foreach (var server in LangConfig.LangServerList)
+            //{
+            //    if (server.ServerName == LangConfig.DefaultServerName)
+            //        ServerPath = server.ServerURL;
+            //}
 
-            HttpClient = new HttpClient
-            {
-                BaseAddress = new Uri(ServerPath),
-            };
+            //HttpClient = new HttpClient
+            //{
+            //    BaseAddress = new Uri(ServerPath),
+            //};
 
-            HttpClient.DefaultRequestHeaders.Accept.Clear();
-            HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            HttpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("LangEditorWPF/" + LangConfig.LangEditorVersion);
-            HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
+            //HttpClient.DefaultRequestHeaders.Accept.Clear();
+            //HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //HttpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("LangEditorWPF/" + LangConfig.LangEditorVersion);
+            //HttpClient.DefaultRequestHeaders.Connection.Add("keep-alive");
 
-            AppConfigClient.Save(LangConfig);
+            //AppConfigClient.Save(LangConfig);
             
         }
 
@@ -104,21 +104,21 @@ namespace GUI
 
             //Services Register
 
-            containerRegistry.Register<IStartupCheck, StartupCheck>();
+            //containerRegistry.Register<IStartupCheck, StartupCheck>();
             containerRegistry.RegisterInstance<IMapper>(new Mapper(config));
             containerRegistry.RegisterInstance(logger);
             containerRegistry.RegisterSingleton<ILangTextRepoClient, LangTextRepoClient>();
-            containerRegistry.RegisterSingleton<ILangTextAccess, LangTextAccess>();
-            containerRegistry.RegisterSingleton<IUserAccess, UserAccess>();
+            //containerRegistry.RegisterSingleton<ILangTextAccess, LangTextAccess>();
+            //containerRegistry.RegisterSingleton<IUserAccess, UserAccess>();
             containerRegistry.RegisterSingleton<ILangFile, LangFile>();
-            containerRegistry.RegisterSingleton<IBackendService, BackendService>();
-            containerRegistry.RegisterSingleton<IGeneralAccess, GenreralAccess>();
+            //containerRegistry.RegisterSingleton<IBackendService, BackendService>();
+            //containerRegistry.RegisterSingleton<IGeneralAccess, GenreralAccess>();
 
             //ViewModel Register;
             ViewModelLocationProvider.Register<MainWindowSearchbar, MainWindowSearchbarViewModel>();
             ViewModelLocationProvider.Register<MainMenu, MainMenuListViewModel>();
-            ViewModelLocationProvider.Register<UC_Login, LoginViewModel>();
-            ViewModelLocationProvider.Register<ImportDbRevProgressDialog, ImportDbRevProgressDialogViewModel>();
+            //ViewModelLocationProvider.Register<UC_Login, LoginViewModel>();
+            //ViewModelLocationProvider.Register<ImportDbRevProgressDialog, ImportDbRevProgressDialogViewModel>();
         }
 
         protected override Window CreateShell()

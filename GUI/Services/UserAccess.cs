@@ -29,7 +29,7 @@ namespace GUI.Services
 
         public UserAccess(IEventAggregator ea, ILogger logger)
         {
-            _userClient = App.HttpClient;
+            //_userClient = App.HttpClient;
             _ea = ea;
             _logger = logger;
 
@@ -41,8 +41,8 @@ namespace GUI.Services
 
         public async Task<string> GetRegistrationCode()
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             string responded = "";
 
             HttpResponseMessage respond = await _userClient.GetAsync("api/account/registrationcode");
@@ -61,8 +61,8 @@ namespace GUI.Services
 
         public async Task<TokenDto> GetTokenByTokenDto(Guid userGuid, TokenDto Dto)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             var content = SerializeDataToHttpContent(Dto);
             TokenDto tokenDto = null;   // = new TokenDto();
@@ -111,8 +111,8 @@ namespace GUI.Services
 
         public async Task<UserDto> GetUserInfoFromServer(Guid userGuid)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             UserDto user = null;
 
@@ -134,8 +134,8 @@ namespace GUI.Services
 
         public async Task<List<UserInClientDto>> GetUserList()
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             List<UserInClientDto> userList = null;
 
@@ -157,8 +157,8 @@ namespace GUI.Services
 
         public async Task<string> GetUserPasswordRecoveryCode(Guid userGuid)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             string code = null;
 
@@ -179,8 +179,8 @@ namespace GUI.Services
 
         public async Task<List<string>> GetUserRoles(Guid userGuid)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             List<string> roles = null;
 
@@ -204,8 +204,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> SetUserRoles(Guid userId, List<string> roles)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             var content = SerializeDataToHttpContent(roles);
 
@@ -222,19 +222,19 @@ namespace GUI.Services
 
         public void SaveToken(TokenDto token)
         {
-            var username = GetUserNameFromToken(token.AuthToken);
-            var userGuid = GetUserGuidFromToken(token.AuthToken);
-            var config = App.LangConfig;
+            //var username = GetUserNameFromToken(token.AuthToken);
+            //var userGuid = GetUserGuidFromToken(token.AuthToken);
+            //var config = App.LangConfig;
 
-            config.UserAuthToken = token.AuthToken;
-            config.UserRefreshToken = token.RefreshToken;
-            config.UserName = username;
-            config.UserGuid = userGuid;
+            //config.UserAuthToken = token.AuthToken;
+            //config.UserRefreshToken = token.RefreshToken;
+            //config.UserName = username;
+            //config.UserGuid = userGuid;
 
-            App.LangConfig.UserAuthToken = token.AuthToken;
-            App.LangConfig.UserRefreshToken = token.RefreshToken;
+            //App.LangConfig.UserAuthToken = token.AuthToken;
+            //App.LangConfig.UserRefreshToken = token.RefreshToken;
 
-            AppConfigClient.Save(config);
+            //AppConfigClient.Save(config);
         }
 
         public List<string> GetUserRoleFromToken(string token)
@@ -257,8 +257,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> SetUserPasswordChange(UserPasswordChangeDto userPasswordChangeDto)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             var content = SerializeDataToHttpContent(userPasswordChangeDto);
 
@@ -275,8 +275,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> SetUserInfoChange(UserInfoChangeDto userInfoChangeDto)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             var content = SerializeDataToHttpContent(userInfoChangeDto);
 
@@ -298,8 +298,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> SetUserInfo(SetUserInfoDto setUserInfoDto)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             var content = SerializeDataToHttpContent(setUserInfoDto);
 
@@ -316,8 +316,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> SetUserPasswordToRandom(Guid userGuid)
         {
-            _userClient.DefaultRequestHeaders.Authorization =
-               new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_userClient.DefaultRequestHeaders.Authorization =
+            //   new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             HttpResponseMessage response = await _userClient.GetAsync(
                 "api/admin/setPasswordRandom/" + userGuid.ToString());
@@ -390,15 +390,15 @@ namespace GUI.Services
             return userGuid;
         }
 
-        public DateTimeOffset GetTokenExpireTimer()
-        {
-            string TokenExpireClaim = "exp";
+        //public DateTimeOffset GetTokenExpireTimer()
+        //{
+        //    string TokenExpireClaim = "exp";
 
-            var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(App.LangConfig.UserAuthToken);
-            var userExpireTimerString = jsontoken.Claims.First(claim => claim.Type == TokenExpireClaim).Value;
-            var expireTimer = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(userExpireTimerString));
+        //    var jsontoken = new JwtSecurityTokenHandler().ReadJwtToken(App.LangConfig.UserAuthToken);
+        //    var userExpireTimerString = jsontoken.Claims.First(claim => claim.Type == TokenExpireClaim).Value;
+        //    var expireTimer = DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(userExpireTimerString));
 
-            return expireTimer;
-        }
+        //    return expireTimer;
+        //}
     }
 }

@@ -66,63 +66,63 @@ namespace GUI.Services
             _ea.GetEvent<ConnectProgressString>().Publish("正在读取服务器版本数据……");
             _ea.GetEvent<ConnectStatusChangeEvent>().Publish(ClientConnectStatus.Connecting);
 
-            _langConfigServer = await _backendService.GetServerRespondAndConfig();
+            //_langConfigServer = await _backendService.GetServerRespondAndConfig();
 
 
-            if (_langConfigServer != null)
-            {
+            //if (_langConfigServer != null)
+            //{
 
-                _logger.LogDebug("获取服务器配置成功");
+            //    _logger.LogDebug("获取服务器配置成功");
 
-                if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion
-                    || !_backendService.GetFileExistAndSha256("Updater.exe", _langConfigServer.LangUpdaterSha256))
-                {
-                    await UpdateUpdater();
-                }
-                else
-                {
-                    _logger.LogDebug("更新器版本已最新");
-                }
+            //    if (App.LangConfig.LangUpdaterVersion != _langConfigServer.LangUpdaterVersion
+            //        || !_backendService.GetFileExistAndSha256("Updater.exe", _langConfigServer.LangUpdaterSha256))
+            //    {
+            //        await UpdateUpdater();
+            //    }
+            //    else
+            //    {
+            //        _logger.LogDebug("更新器版本已最新");
+            //    }
 
-                if (App.LangConfig.LangEditorVersion != _langConfigServer.LangEditorVersion)
-                {
-                    UpdateEditor();
-                }
-                else
-                {
-                    _logger.LogDebug("编辑器版本已最新");
-                }
+            //    if (App.LangConfig.LangEditorVersion != _langConfigServer.LangEditorVersion)
+            //    {
+            //        UpdateEditor();
+            //    }
+            //    else
+            //    {
+            //        _logger.LogDebug("编辑器版本已最新");
+            //    }
 
-            }
+            //}
         }
 
         public async Task Login()
         {
-            if (App.LangConfig.UserAuthToken != "" & App.LangConfig.UserRefreshToken != "")
-            {
-                var Logintoken = await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid, new TokenDto
-                {
-                    AuthToken = App.LangConfig.UserAuthToken,
-                    RefreshToken = App.LangConfig.UserRefreshToken,
-                });
+            //if (App.LangConfig.UserAuthToken != "" & App.LangConfig.UserRefreshToken != "")
+            //{
+            //    var Logintoken = await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid, new TokenDto
+            //    {
+            //        AuthToken = App.LangConfig.UserAuthToken,
+            //        RefreshToken = App.LangConfig.UserRefreshToken,
+            //    });
 
-                if (Logintoken != null)
-                {
-                    _logger.LogDebug("登录并获取Token成功");
+            //    if (Logintoken != null)
+            //    {
+            //        _logger.LogDebug("登录并获取Token成功");
 
-                    _userAccess.SaveToken(Logintoken);
-                    await LoginTaskList();
-                }
-                else
-                {
-                    _ea.GetEvent<LoginRequiretEvent>().Publish();
-                }
-            }
+            //        _userAccess.SaveToken(Logintoken);
+            //        await LoginTaskList();
+            //    }
+            //    else
+            //    {
+            //        _ea.GetEvent<LoginRequiretEvent>().Publish();
+            //    }
+            //}
 
-            if (App.LangConfig.UserAuthToken == "" || App.LangConfig.UserRefreshToken == "")
-            {
-                _ea.GetEvent<LoginRequiretEvent>().Publish();
-            }
+            //if (App.LangConfig.UserAuthToken == "" || App.LangConfig.UserRefreshToken == "")
+            //{
+            //    _ea.GetEvent<LoginRequiretEvent>().Publish();
+            //}
         }
 
         public async Task LoginTaskList()
@@ -175,17 +175,17 @@ namespace GUI.Services
 
             if (_langRevNumberServer != 0 && _langRevNumberLocal < _langRevNumberServer)
             {
-                if (App.LangConfig.AppSetting.IsMinimumDB)
-                {
-                    await _langTextRepo.UpdateRevNumber(1, _langRevNumberServer);
-                    _logger.LogDebug("使用远程数据库，本地不再同步");
-                }
-                else
-                {
-                    _logger.LogDebug("本地步进号：" + _langRevNumberLocal);
-                    _logger.LogDebug("服务器端步进号：" + _langRevNumberServer);
-                    await SyncRevDatabase();
-                }
+                //if (App.LangConfig.AppSetting.IsMinimumDB)
+                //{
+                //    await _langTextRepo.UpdateRevNumber(1, _langRevNumberServer);
+                //    _logger.LogDebug("使用远程数据库，本地不再同步");
+                //}
+                //else
+                //{
+                //    _logger.LogDebug("本地步进号：" + _langRevNumberLocal);
+                //    _logger.LogDebug("服务器端步进号：" + _langRevNumberServer);
+                //    await SyncRevDatabase();
+                //}
             }
             else
             {
@@ -201,43 +201,43 @@ namespace GUI.Services
         {
             _logger.LogDebug("发现编辑器版本更新");
 
-            string args = "/DownloadPath " + App.ServerPath + _langConfigServer.LangFullpackPath    //服务器地址 + 编辑器包名
-                + " /FileSHA256 " + _langConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
-                + " /FileVersion " + _langConfigServer.LangEditorVersion;   //编辑器服务器端版本号
-            Debug.WriteLine(args);
+            //string args = "/DownloadPath " + App.ServerPath + _langConfigServer.LangFullpackPath    //服务器地址 + 编辑器包名
+            //    + " /FileSHA256 " + _langConfigServer.LangFullpackSHA256   //编辑器服务器端SHA256
+            //    + " /FileVersion " + _langConfigServer.LangEditorVersion;   //编辑器服务器端版本号
+            //Debug.WriteLine(args);
 
-            ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
-            {
-                FileName = "Updater.exe",
-                Arguments = args,
-            };
+            //ProcessStartInfo startUpdaterInfo = new ProcessStartInfo
+            //{
+            //    FileName = "Updater.exe",
+            //    Arguments = args,
+            //};
 
-            Process updater = new Process
-            {
-                StartInfo = startUpdaterInfo
-            };
-            updater.Start();
-            Application.Current.Shutdown();
+            //Process updater = new Process
+            //{
+            //    StartInfo = startUpdaterInfo
+            //};
+            //updater.Start();
+            //Application.Current.Shutdown();
 
         }
 
-        public async Task UpdateUpdater()
-        {
-            _logger.LogDebug("发现更新器版本更新");
-            _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
+        //public async Task UpdateUpdater()
+        //{
+        //    _logger.LogDebug("发现更新器版本更新");
+        //    _ea.GetEvent<ConnectProgressString>().Publish("正在下载更新器……");
 
-            _backendService.DownloadAndExtractComplete += SetUpdaterSha256;
-            await _backendService.DownloadFileFromServer(App.ServerPath + _langConfigServer.LangUpdaterPackPath,
-                 _langConfigServer.LangUpdaterPackPath, _langConfigServer.LangUpdaterPackSha256);
-        }
+        //    _backendService.DownloadAndExtractComplete += SetUpdaterSha256;
+        //    await _backendService.DownloadFileFromServer(App.ServerPath + _langConfigServer.LangUpdaterPackPath,
+        //         _langConfigServer.LangUpdaterPackPath, _langConfigServer.LangUpdaterPackSha256);
+        //}
 
-        private void SetUpdaterSha256(object sender, string e)
-        {
-            _backendService.DownloadAndExtractComplete -= SetUpdaterSha256;
+        //private void SetUpdaterSha256(object sender, string e)
+        //{
+        //    _backendService.DownloadAndExtractComplete -= SetUpdaterSha256;
 
-            App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
-            AppConfigClient.Save(App.LangConfig);
-        }
+        //    App.LangConfig.LangUpdaterVersion = _langConfigServer.LangUpdaterVersion;
+        //    AppConfigClient.Save(App.LangConfig);
+        //}
 
         public async Task SyncUsers()
         {
@@ -383,15 +383,15 @@ namespace GUI.Services
 
         private async Task GetConfigFromDb()
         {
-            if (App.LangConfig.UserGuid != new Guid())
-            {
-                var user = await _langTextRepo.GetUserInClient(App.LangConfig.UserGuid);
-                var userDto = _mapper.Map<UserInClientDto>(user);
+            //if (App.LangConfig.UserGuid != new Guid())
+            //{
+            //    var user = await _langTextRepo.GetUserInClient(App.LangConfig.UserGuid);
+            //    var userDto = _mapper.Map<UserInClientDto>(user);
 
-                App.User = userDto;
+            //    App.User = userDto;
 
-                //Debug.WriteLine("id: {0}, name: {1}", App.User.Id, App.User.UserNickName);
-            }
+            //    //Debug.WriteLine("id: {0}, name: {1}", App.User.Id, App.User.UserNickName);
+            //}
 
             var revList = await _langTextRepo.GetLangtextRevNumber();
 

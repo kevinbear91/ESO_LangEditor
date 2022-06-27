@@ -16,8 +16,8 @@ namespace GUI.ViewModels
 {
     public class UserProfileSettingViewModel : BindableBase
     {
-        private string _userName = App.LangConfig.UserName;
-        private string _userGuid = "GUID：" + App.LangConfig.UserGuid.ToString();
+        //private string _userName = App.LangConfig.UserName;
+        //private string _userGuid = "GUID：" + App.LangConfig.UserGuid.ToString();
         private string _nickName;
         private UserInClientDto _userDto;
         private bool _waitResult;
@@ -31,13 +31,13 @@ namespace GUI.ViewModels
         public ExcuteViewModelMethod ChangeUserPasswordCommand => new ExcuteViewModelMethod(UserPasswordChange);
 
 
-        public string UserName
-        {
-            get => _userName;
-            set => SetProperty(ref _userName, value);
-        }
+        //public string UserName
+        //{
+        //    get => _userName;
+        //    set => SetProperty(ref _userName, value);
+        //}
 
-        public string UserGuid => _userGuid;
+        //public string UserGuid => _userGuid;
 
         public string NickName
         {
@@ -85,7 +85,7 @@ namespace GUI.ViewModels
             _userAccess = userAccess;
             _logger = logger;
 
-            UserDto = App.User;
+            //UserDto = App.User;
             NickName = UserDto.UserNickName;
         }
 
@@ -98,21 +98,21 @@ namespace GUI.ViewModels
 
         private async void UserInfoChange(object obj)
         {
-            if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(NickName))
-            {
-                WaitResult = true;
+            //if (!string.IsNullOrWhiteSpace(UserName) && !string.IsNullOrWhiteSpace(NickName))
+            //{
+            //    WaitResult = true;
 
-                var respond = await _userAccess.SetUserInfoChange(new UserInfoChangeDto
-                {
-                    UserID = UserDto.Id,
-                    UserName = UserName,
-                    UserNickName = NickName,
-                });
+            //    var respond = await _userAccess.SetUserInfoChange(new UserInfoChangeDto
+            //    {
+            //        UserID = UserDto.Id,
+            //        UserName = UserName,
+            //        UserNickName = NickName,
+            //    });
 
-                MessageBox.Show(respond.Message, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+            //    MessageBox.Show(respond.Message, "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                ChangeUserInfoCommand.CanExecute(true);
-            }
+            //    ChangeUserInfoCommand.CanExecute(true);
+            //}
 
             WaitResult = false;
         }
@@ -142,21 +142,21 @@ namespace GUI.ViewModels
                     _passwordBox.Clear();
                     _passwordBoxConfirm.Clear();
 
-                    if (respond.Code == (int)RespondCode.Success)
-                    {
-                        var config = App.LangConfig;
-                        config.UserAuthToken = "";
-                        config.UserRefreshToken = "";
-                        AppConfigClient.Save(config);
+                    //if (respond.Code == (int)RespondCode.Success)
+                    //{
+                    //    var config = App.LangConfig;
+                    //    config.UserAuthToken = "";
+                    //    config.UserRefreshToken = "";
+                    //    AppConfigClient.Save(config);
 
-                        MessageBox.Show(respond.Message + "，请退出工具用新密码重新登录！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
+                    //    MessageBox.Show(respond.Message + "，请退出工具用新密码重新登录！", "提示", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                        //SubmitProgress = "修改成功，请退出工具用密码重新登录！";
-                    }
-                    else
-                    {
-                        MessageBox.Show(respond.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    //    //SubmitProgress = "修改成功，请退出工具用密码重新登录！";
+                    //}
+                    //else
+                    //{
+                    //    MessageBox.Show(respond.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //}
                 }
                 else
                 {

@@ -18,7 +18,7 @@ namespace GUI.Services
 
         public GenreralAccess()
         {
-            _langHttpClient = App.HttpClient;
+            //_langHttpClient = App.HttpClient;
 
             _jsonOption = new JsonSerializerOptions
             {
@@ -28,8 +28,8 @@ namespace GUI.Services
 
         public async Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextRevNumberDto> responded = null;
 
             HttpResponseMessage response = await _langHttpClient.GetAsync("api/revise");
@@ -47,8 +47,8 @@ namespace GUI.Services
 
         public async Task<List<GameVersionDto>> GetGameVersionDtos()
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<GameVersionDto> responded = null;
 
             HttpResponseMessage response = await _langHttpClient.GetAsync("api/gameVersion");
@@ -66,8 +66,8 @@ namespace GUI.Services
 
         public async Task<List<LangTypeCatalogDto>> GetIdtypeDtos()
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTypeCatalogDto> responded = null;
 
             HttpResponseMessage response = await _langHttpClient.GetAsync("api/langIdType");
@@ -85,8 +85,8 @@ namespace GUI.Services
 
         public async Task<List<LangTypeCatalogDto>> GetIdTypesFromReview()
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTypeCatalogDto> responded = null;
 
             HttpResponseMessage response = await _langHttpClient.GetAsync("api/langIdType/review");
@@ -104,8 +104,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> UploadIdTypeDto(LangTypeCatalogDto langTypeCatalogDto)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTypeCatalogDto);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -118,8 +118,8 @@ namespace GUI.Services
         }
         public async Task<MessageWithCode> UploadIdTypeDto(List<LangTypeCatalogDto> langTypeCatalogDto)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTypeCatalogDto);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -133,8 +133,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> UploadNewGameVersion(GameVersionDto gameVersionDto)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(gameVersionDto);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -148,8 +148,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> ApproveIdTypeFromReview(List<int> ids)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(ids);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -163,8 +163,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> DeleteIdTypeFromReview(List<int> ids)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(ids);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(

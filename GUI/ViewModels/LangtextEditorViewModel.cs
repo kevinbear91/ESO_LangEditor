@@ -73,11 +73,11 @@ namespace GUI.ViewModels
             set => SetProperty(ref _isInReview, value);
         }
 
-        public bool IsDisplayJp
-        {
-            get => App.LangConfig.AppSetting.IsDisplayJp;
-            set => App.LangConfig.AppSetting.IsDisplayJp = value;
-        }
+        //public bool IsDisplayJp
+        //{
+        //    get => App.LangConfig.AppSetting.IsDisplayJp;
+        //    set => App.LangConfig.AppSetting.IsDisplayJp = value;
+        //}
 
         public Visibility JpVisibility
         {
@@ -105,11 +105,11 @@ namespace GUI.ViewModels
 
         public Visibility ReasonForVisibility => Visibility.Collapsed;
 
-        public bool AutoQueryLangTextInReview
-        {
-            get => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview;
-            set => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview = value;
-        }
+        //public bool AutoQueryLangTextInReview
+        //{
+        //    get => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview;
+        //    set => App.LangConfig.AppSetting.IsAutoQueryLangTextInReview = value;
+        //}
 
         public ExcuteViewModelMethod LangEditorSaveButton => new ExcuteViewModelMethod(SaveCurrentToDb);
         public SnackbarMessageQueue EditorMessageQueue { get; }
@@ -120,13 +120,13 @@ namespace GUI.ViewModels
         //private ILangTextAccess _langTextAccess;
         private IBackendService _backendService;
 
-        public LangtextEditorViewModel(IEventAggregator ea, /*ILangTextRepoClient langTextRepoClient, */
-            /*ILangTextAccess langTextAccess,*/ IBackendService backendService)
+        public LangtextEditorViewModel(IEventAggregator ea /*ILangTextRepoClient langTextRepoClient, */
+            /*ILangTextAccess langTextAccess, IBackendService backendService*/)
         {
             _ea = ea;
             //_langTextRepoClient = langTextRepoClient;
             //_langTextAccess = langTextAccess;
-            _backendService = backendService;
+            //_backendService = backendService;
             EditorMessageQueue = new SnackbarMessageQueue();
 
             _ea.GetEvent<DataGridSelectedItemInEditor>().Subscribe(SetCurrentItemFromList);
@@ -156,49 +156,50 @@ namespace GUI.ViewModels
 
         private async void SaveCurrentToDb(object o)
         {
-            if (App.User == null)
-            {
-                MessageBox.Show("用户无效，无法上传！");
-            }
-            else
-            {
-                if (LangTextZh != CurrentLangText.TextZh)
-                {
-                    var time = DateTime.UtcNow;
-                    var langtextUpdateZh = new LangTextForUpdateZhDto
-                    {
-                        Id = CurrentLangText.Id,
-                        TextZh = LangTextZh,
-                        ZhLastModifyTimestamp = time,
-                        UserId = App.User.Id,
-                    };
+            MessageBox.Show("已进入只读模式，无法保存！");
+            //if (App.User == null)
+            //{
+            //    MessageBox.Show("用户无效，无法上传！");
+            //}
+            //else
+            //{
+            //    if (LangTextZh != CurrentLangText.TextZh)
+            //    {
+            //        var time = DateTime.UtcNow;
+            //        var langtextUpdateZh = new LangTextForUpdateZhDto
+            //        {
+            //            Id = CurrentLangText.Id,
+            //            TextZh = LangTextZh,
+            //            ZhLastModifyTimestamp = time,
+            //            UserId = App.User.Id,
+            //        };
 
-                    CurrentLangText.TextZh = LangTextZh;
+            //        CurrentLangText.TextZh = LangTextZh;
 
-                    await _backendService.UploadlangtextUpdateZh(langtextUpdateZh);
-                    //_ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
+            //        //await _backendService.UploadlangtextUpdateZh(langtextUpdateZh);
+            //        //_ea.GetEvent<UploadLangtextZhUpdateEvent>().Publish(langtextUpdateZh);
 
-                    if (GridData != null && GridData.Count > 1)
-                    {
-                        GridData.Remove(GridData.Single(l => l.Id == CurrentLangText.Id));
+            //        if (GridData != null && GridData.Count > 1)
+            //        {
+            //            GridData.Remove(GridData.Single(l => l.Id == CurrentLangText.Id));
 
-                        if (GridData.ElementAtOrDefault(0) != null)
-                        {
-                            SetCurrentItemFromList(GridData.ElementAtOrDefault(0));
-                        }
-                    }
-                    else
-                    {
-                        OnRequestClose(this, new EventArgs());
-                        _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！"
-                            + "需重新搜索才会刷新表格。");
-                    }
-                }
-                else
-                {
-                    EditorMessageQueue.Enqueue("哦豁，没检测到和原来的文本有什么区别，所以没保存。");
-                }
-            }
+            //            if (GridData.ElementAtOrDefault(0) != null)
+            //            {
+            //                SetCurrentItemFromList(GridData.ElementAtOrDefault(0));
+            //            }
+            //        }
+            //        else
+            //        {
+            //            OnRequestClose(this, new EventArgs());
+            //            _ea.GetEvent<SendMessageQueueToMainWindowEventArgs>().Publish("文本ID：" + CurrentLangText.TextId + " 保存成功！"
+            //                + "需重新搜索才会刷新表格。");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        EditorMessageQueue.Enqueue("哦豁，没检测到和原来的文本有什么区别，所以没保存。");
+            //    }
+            //}
         }
 
         private async Task SetFieldsFromCurrentItem(LangTextDto langTextDto)
@@ -208,8 +209,8 @@ namespace GUI.ViewModels
                 CurrentLangText = langTextDto;
                 GridSelectedItem = langTextDto;
                 LangTextZh = CurrentLangText.TextZh;
-                LangIdTypeName = await _backendService.GetIdType(langTextDto.IdType);
-                LangGameVersionName = await _backendService.GetGameVersionName(langTextDto.GameApiVersion);
+                //LangIdTypeName = await _backendService.GetIdType(langTextDto.IdType);
+                //LangGameVersionName = await _backendService.GetGameVersionName(langTextDto.GameApiVersion);
 
                 if (langTextDto.TextZh == null)
                 {

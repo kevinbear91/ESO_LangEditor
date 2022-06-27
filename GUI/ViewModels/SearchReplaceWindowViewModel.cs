@@ -132,7 +132,7 @@ namespace GUI.ViewModels
                         _logger.LogDebug("批量替换完成，共 " + ReplacedList.Count + " 条文本");
 
                         var langZhDto = _mapper.Map<List<LangTextForUpdateZhDto>>(ReplacedList);
-                        await _backendService.UploadlangtextUpdateZh(langZhDto);
+                        //await _backendService.UploadlangtextUpdateZh(langZhDto);
                         //_ea.GetEvent<UploadLangtextZhListUpdateEvent>().Publish(langZhDto);
                         MessageBox.Show("替换完成！");
 
@@ -226,7 +226,7 @@ namespace GUI.ViewModels
                         //string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
 
                         text.ZhLastModifyTimestamp = DateTime.UtcNow;
-                        text.UserId = App.LangConfig.UserGuid;
+                        //text.UserId = App.LangConfig.UserGuid;
                         text.TextZh = replaceWord;
 
                         resultList.Add(text);
@@ -243,7 +243,7 @@ namespace GUI.ViewModels
                         string replacedWord = Regex.Replace(text.TextZh, pattern, replaceWord, option);
 
                         text.ZhLastModifyTimestamp = DateTime.UtcNow;
-                        text.UserId = App.LangConfig.UserGuid;
+                        //text.UserId = App.LangConfig.UserGuid;
                         text.TextZh = replacedWord;
 
                         resultList.Add(text);

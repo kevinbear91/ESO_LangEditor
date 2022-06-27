@@ -22,7 +22,7 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="10">
             <Button Command="{Binding RollBackLangZhCommand}" CommandParameter="{Binding ElementName=LangDataGridArchive, Path=SelectedItem}"
                     Style="{StaticResource MaterialDesignFlatButton}"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
@@ -38,6 +38,15 @@
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="CircleOffOutline" />
                     <TextBlock Margin="10 .5 0 0" Text="设置已选中文项为空" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+            <Button Command="{Binding SetSelectedLangZhToNullCommand}" CommandParameter="{Binding ElementName=LangDataGridList, Path=SelectedItem}"
+                    Style="{StaticResource MaterialDesignFlatButton}" 
+                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CircleOffOutline" />
+                    <TextBlock Margin="10 .5 0 0" Text="移除所选文本所有空格" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
         </StackPanel>

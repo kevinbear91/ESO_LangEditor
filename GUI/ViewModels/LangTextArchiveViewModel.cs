@@ -103,55 +103,55 @@ namespace GUI.ViewModels
 
         public async void GetLangtextInArchivedByTextId(LangTextDto langtext)
         {
-            langTextForArchiveWindowItem = _mapper.Map<LangTextForArchiveWindow>(langtext);
-            _currentSelectedData = langtext;
+            //langTextForArchiveWindowItem = _mapper.Map<LangTextForArchiveWindow>(langtext);
+            //_currentSelectedData = langtext;
 
-            var list = await _backendService.GetLangTextInArchived(langtext.TextId);
+            //var list = await _backendService.GetLangTextInArchived(langtext.TextId);
 
-            if (list != null && list.Count >= 1)
-            {
-                if (ArchivedGridData.Count >= 1)
-                {
-                    ArchivedGridData.Clear();
-                }
-                ArchivedGridData.AddRange(list);
-                CanSelectedArchivedGridData = true;
-            }
-            else
-            {
-                CanSelectedArchivedGridData = false;
-            }
+            //if (list != null && list.Count >= 1)
+            //{
+            //    if (ArchivedGridData.Count >= 1)
+            //    {
+            //        ArchivedGridData.Clear();
+            //    }
+            //    ArchivedGridData.AddRange(list);
+            //    CanSelectedArchivedGridData = true;
+            //}
+            //else
+            //{
+            //    CanSelectedArchivedGridData = false;
+            //}
         }
 
         private async void RollBackLangzh(object obj)
         {
-            var langArchived = (LangTextForArchiveDto)obj;
+            //var langArchived = (LangTextForArchiveDto)obj;
 
-            if (langArchived != null && _currentSelectedData != null)
-            {
-                GridStatus = "正在上传";
+            //if (langArchived != null && _currentSelectedData != null)
+            //{
+            //    GridStatus = "正在上传";
 
-                var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(_currentSelectedData);
-                langUpdate.UserId = App.User.Id;
-                langUpdate.TextZh = langArchived.TextZh;
+            //    var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(_currentSelectedData);
+            //    langUpdate.UserId = App.User.Id;
+            //    langUpdate.TextZh = langArchived.TextZh;
 
-                await _backendService.UploadlangtextUpdateZh(langUpdate);
-                GridStatus = "上传完毕";
-            }
+            //    await _backendService.UploadlangtextUpdateZh(langUpdate);
+            //    GridStatus = "上传完毕";
+            //}
         }
 
         private async void SetSelectedLangzhToNull(object obj)
         {
-            var selectedLangtext = (LangTextDto)obj;
+            //var selectedLangtext = (LangTextDto)obj;
 
-            GridStatus = "正在上传";
-            var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(selectedLangtext);
-            langUpdate.UserId = App.User.Id;
-            langUpdate.TextZh = null;
+            //GridStatus = "正在上传";
+            //var langUpdate = _mapper.Map<LangTextForUpdateZhDto>(selectedLangtext);
+            //langUpdate.UserId = App.User.Id;
+            //langUpdate.TextZh = null;
 
-            await _backendService.UploadlangtextUpdateZh(langUpdate);
+            //await _backendService.UploadlangtextUpdateZh(langUpdate);
 
-            GridStatus = "上传完毕";
+            //GridStatus = "上传完毕";
         }
 
         public void SetSelectedArchivedItem(LangTextForArchiveDto langTextForArchiveDto)

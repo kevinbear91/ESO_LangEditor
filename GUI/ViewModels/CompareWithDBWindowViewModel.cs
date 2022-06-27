@@ -165,8 +165,8 @@ namespace GUI.ViewModels
         public CompareWithDBWindow compareWithDBWindow;
         private IEventAggregator _ea;
 
-        public CompareWithDBWindowViewModel(IEventAggregator ea, IBackendService backendService, ILangTextRepoClient langTextRepo,
-            ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile, IGeneralAccess generalAccess)
+        public CompareWithDBWindowViewModel(IEventAggregator ea, /*IBackendService backendService,*/ ILangTextRepoClient langTextRepo,
+            ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile/*, IGeneralAccess generalAccess*/)
         {
             _addedTag = "新增";
             _changedTag = "修改";
@@ -179,11 +179,11 @@ namespace GUI.ViewModels
             CurrentGridData = new ObservableCollection<LangTextDto>();
 
             _langfile = langfile;
-            _backendService = backendService;
+            //_backendService = backendService;
             _langTextRepo = langTextRepo;
             _langTextAccess = langTextAccess;
             _mapper = mapper;
-            _generalAccess = generalAccess;
+            //_generalAccess = generalAccess;
             _ea = ea;
 
             _ea.GetEvent<SelectGameVersionEvent>().Subscribe(SelectGameVersion);
@@ -401,7 +401,7 @@ namespace GUI.ViewModels
                             EnLastModifyTimestamp = DateTime.UtcNow,
                             ZhLastModifyTimestamp = firstValue.ZhLastModifyTimestamp,
                             LangTextType = firstValue.LangTextType,
-                            UserId = App.LangConfig.UserGuid,
+                            //UserId = App.LangConfig.UserGuid,
                             //review = 2,
                             ReviewerId = firstValue.ReviewerId,
                             ReviewTimestamp = firstValue.ZhLastModifyTimestamp,
@@ -423,8 +423,8 @@ namespace GUI.ViewModels
                         EnLastModifyTimestamp = DateTime.UtcNow,
                         ZhLastModifyTimestamp = DateTime.UtcNow,
                         LangTextType = other.Value.LangTextType,
-                        UserId = App.LangConfig.UserGuid,
-                        ReviewerId = App.LangConfig.UserGuid,
+                        //UserId = App.LangConfig.UserGuid,
+                        //ReviewerId = App.LangConfig.UserGuid,
                         ReviewTimestamp = DateTime.UtcNow,
                         Revised = 0,
                     });

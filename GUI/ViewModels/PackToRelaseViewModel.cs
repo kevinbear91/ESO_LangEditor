@@ -63,7 +63,7 @@ namespace GUI.ViewModels
             set => SetProperty(ref _buttonprogress, value);
         }
 
-        public Visibility IsAdmin => RoleToVisibility("Admin");
+        //public Visibility IsAdmin => RoleToVisibility("Admin");
 
         public CHSorCHT ChsOrChtListSelected { get; set; }
 
@@ -84,11 +84,11 @@ namespace GUI.ViewModels
         private IUserAccess _userAccess;
 
         public PackToRelaseViewModel(ILangTextRepoClient langTextRepoClient, ILangFile langFile,
-            IUserAccess userAccess, ILogger logger)
+            /*IUserAccess userAccess,*/ ILogger logger)
         {
             _langTextRepo = langTextRepoClient;
             _langFile = langFile;
-            _userAccess = userAccess;
+            //_userAccess = userAccess;
             _logger = logger;
 
             AddonVersionConfig = PackLangVersion.Load();
@@ -96,7 +96,7 @@ namespace GUI.ViewModels
             AddonVersion = AddonVersionConfig.AddonVersion;
             ApiVersion = AddonVersionConfig.AddonApiVersion;
 
-            _roleList = _userAccess.GetUserRoleFromToken(App.LangConfig.UserAuthToken);
+            //_roleList = _userAccess.GetUserRoleFromToken(App.LangConfig.UserAuthToken);
 
             var rev = Task.Run(() => _langTextRepo.GetRevNumber(1)).Result;
 
@@ -496,9 +496,9 @@ namespace GUI.ViewModels
         }
 
 
-        private Visibility RoleToVisibility(string roleName)
-        {
-            return _roleList.Contains(roleName) ? Visibility.Visible : Visibility.Collapsed;
-        }
+        //private Visibility RoleToVisibility(string roleName)
+        //{
+        //    return _roleList.Contains(roleName) ? Visibility.Visible : Visibility.Collapsed;
+        //}
     }
 }

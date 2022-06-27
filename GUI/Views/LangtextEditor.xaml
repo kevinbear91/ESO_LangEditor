@@ -52,7 +52,7 @@
                     <Separator />
 
                     <Button Command="{Binding LangEditorSaveButton}" Style="{StaticResource MaterialDesignFlatButton}"
-                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
+                        Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" IsEnabled="False">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ContentSave" />
                             <TextBlock Margin="10 .5 0 0" Text="保存当前文本" VerticalAlignment="Center" />

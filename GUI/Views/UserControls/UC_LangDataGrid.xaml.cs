@@ -89,54 +89,54 @@ namespace GUI.Views.UserControls
 
 
 
-        private void LangDataGridRightClick(object sender, MouseButtonEventArgs e)
-        {
-            DataGrid datagrid = sender as DataGrid;
-            Point aP = e.GetPosition(datagrid);
-            IInputElement obj = datagrid.InputHitTest(aP);
-            DependencyObject target = obj as DependencyObject;
-            //target = VisualTreeHelper.GetParent(target);
+        //private void LangDataGridRightClick(object sender, MouseButtonEventArgs e)
+        //{
+        //    DataGrid datagrid = sender as DataGrid;
+        //    Point aP = e.GetPosition(datagrid);
+        //    IInputElement obj = datagrid.InputHitTest(aP);
+        //    DependencyObject target = obj as DependencyObject;
+        //    //target = VisualTreeHelper.GetParent(target);
 
-            while (target != null)
-            {
-                if (target is DataGridColumnHeader)
-                {
-                    HeaderRightClickMenuGenerater();
-                }
-                else if (target is DataGridRow & GetDataGridInWindowTag() == "Mainwindow")
-                {
-                    if (datagrid.SelectedIndex != -1)
-                    {
-                        RowRightClickMenuGenerater();
-                    }
-                }
-                //else if (target is DataGridRow & GetDataGridInWindowTag() == "LangtextReviewWindow")
-                //{
-                //    if (datagrid.SelectedIndex != -1)
-                //    {
-                //        if (_rowRightClickMenu.Items.Count == 0)
-                //        {
-                //            foreach (var item in RowRightClickMenuEnum)
-                //            {
-                //                if (item == LangDataGridContextMenu.DeleteUnderReview)
-                //                {
-                //                    var menuItem = new MenuItem
-                //                    {
-                //                        Header = _enumDescriptionConverter.GetEnumDescription(item),
-                //                        DataContext = item,
-                //                    };
-                //                    menuItem.Click += RowRightClickMenu_OnClick;
-                //                    _rowRightClickMenu.Items.Add(menuItem);
-                //                }
-                //            }
-                //        }
-                //        _rowRightClickMenu.IsOpen = true;
-                //    }
-                //}
-                target = VisualTreeHelper.GetParent(target);
-            }
+        //    while (target != null)
+        //    {
+        //        if (target is DataGridColumnHeader)
+        //        {
+        //            HeaderRightClickMenuGenerater();
+        //        }
+        //        else if (target is DataGridRow & GetDataGridInWindowTag() == "Mainwindow")
+        //        {
+        //            if (datagrid.SelectedIndex != -1)
+        //            {
+        //                RowRightClickMenuGenerater();
+        //            }
+        //        }
+        //        //else if (target is DataGridRow & GetDataGridInWindowTag() == "LangtextReviewWindow")
+        //        //{
+        //        //    if (datagrid.SelectedIndex != -1)
+        //        //    {
+        //        //        if (_rowRightClickMenu.Items.Count == 0)
+        //        //        {
+        //        //            foreach (var item in RowRightClickMenuEnum)
+        //        //            {
+        //        //                if (item == LangDataGridContextMenu.DeleteUnderReview)
+        //        //                {
+        //        //                    var menuItem = new MenuItem
+        //        //                    {
+        //        //                        Header = _enumDescriptionConverter.GetEnumDescription(item),
+        //        //                        DataContext = item,
+        //        //                    };
+        //        //                    menuItem.Click += RowRightClickMenu_OnClick;
+        //        //                    _rowRightClickMenu.Items.Add(menuItem);
+        //        //                }
+        //        //            }
+        //        //        }
+        //        //        _rowRightClickMenu.IsOpen = true;
+        //        //    }
+        //        //}
+        //        target = VisualTreeHelper.GetParent(target);
+        //    }
 
-        }
+        //}
 
         private void HeaderRightClickMenuGenerater()
         {
@@ -200,27 +200,27 @@ namespace GUI.Views.UserControls
             _menu.IsOpen = true;
         }
 
-        private void RowRightClickMenuGenerater()
-        {
-            if (_rowRightClickMenu.Items.Count == 0)
-            {
-                foreach (var item in RowRightClickMenuEnum)
-                {
-                    //if (item != LangDataGridContextMenu.DeleteUnderReview)
-                    //{
+        //private void RowRightClickMenuGenerater()
+        //{
+        //    if (_rowRightClickMenu.Items.Count == 0)
+        //    {
+        //        foreach (var item in RowRightClickMenuEnum)
+        //        {
+        //            //if (item != LangDataGridContextMenu.DeleteUnderReview)
+        //            //{
                         
-                    //}
-                    var menuItem = new MenuItem
-                    {
-                        Header = _enumDescriptionConverter.GetEnumDescription(item),
-                        DataContext = item,
-                    };
-                    menuItem.Click += RowRightClickMenu_OnClick;
-                    _rowRightClickMenu.Items.Add(menuItem);
-                }
-            }
-            _rowRightClickMenu.IsOpen = true;
-        }
+        //            //}
+        //            var menuItem = new MenuItem
+        //            {
+        //                Header = _enumDescriptionConverter.GetEnumDescription(item),
+        //                DataContext = item,
+        //            };
+        //            menuItem.Click += RowRightClickMenu_OnClick;
+        //            _rowRightClickMenu.Items.Add(menuItem);
+        //        }
+        //    }
+        //    _rowRightClickMenu.IsOpen = true;
+        //}
         //private void RowRightClickMenuGenerater_ReviewWindow()
         //{
         //    if (_rowRightClickMenu.Items.Count == 0)
@@ -239,29 +239,29 @@ namespace GUI.Views.UserControls
         //    _rowRightClickMenu.IsOpen = true;
         //}
 
-        private void RowRightClickMenu_OnClick(object sender, RoutedEventArgs e)
-        {
-            MenuItem menuitem = sender as MenuItem;
-            LangDataGridContextMenu _menuEnum = (LangDataGridContextMenu)menuitem.DataContext;
+        //private void RowRightClickMenu_OnClick(object sender, RoutedEventArgs e)
+        //{
+        //    MenuItem menuitem = sender as MenuItem;
+        //    LangDataGridContextMenu _menuEnum = (LangDataGridContextMenu)menuitem.DataContext;
 
-            switch (_menuEnum)
-            {
-                case LangDataGridContextMenu.EditMutilItem:
-                    new LangtextEditor(GetSeletedItems()).Show();
-                    break;
-                case LangDataGridContextMenu.SearchAndReplace:
-                    new SearchReplaceWindow(GetSeletedItems()).Show();
-                    break;
-                case LangDataGridContextMenu.SearchInArchived:
-                    new LangTextArchive(GetSeletedItems()).Show();
-                    break;
-                    //case LangDataGridContextMenu.DeleteUnderReview:
-                    //    var context = this.DataContext as LangTextReviewWindowViewModel;
-                    //    context.SubmitDeleteSelectedItemsToServer();
-                    //    break;
-            };
+        //    switch (_menuEnum)
+        //    {
+        //        case LangDataGridContextMenu.EditMutilItem:
+        //            new LangtextEditor(GetSeletedItems()).Show();
+        //            break;
+        //        case LangDataGridContextMenu.SearchAndReplace:
+        //            new SearchReplaceWindow(GetSeletedItems()).Show();
+        //            break;
+        //        case LangDataGridContextMenu.SearchInArchived:
+        //            new LangTextArchive(GetSeletedItems()).Show();
+        //            break;
+        //            //case LangDataGridContextMenu.DeleteUnderReview:
+        //            //    var context = this.DataContext as LangTextReviewWindowViewModel;
+        //            //    context.SubmitDeleteSelectedItemsToServer();
+        //            //    break;
+        //    };
 
-        }
+        //}
 
         private List<LangTextDto> GetSeletedItems()
         {
@@ -274,6 +274,7 @@ namespace GUI.Views.UserControls
             }
             return list;
         }
+
 
         private string GetDataGridInWindowTag()
         {

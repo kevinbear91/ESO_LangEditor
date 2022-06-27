@@ -13,7 +13,6 @@
         <DataGrid x:Name="LangDataGrid" ItemsSource="{Binding GridData}"
                   SelectedItem="{Binding GridSelectedItem}"
                   AutoGenerateColumns="False" 
-                  MouseRightButtonDown="LangDataGridRightClick"
                   MouseDoubleClick="LangSearch_MouseDoubleClick" IsReadOnly="True" 
                   SelectionChanged="LangSearchDataGrid_SelectionChanged" 
                   ColumnWidth="200*">

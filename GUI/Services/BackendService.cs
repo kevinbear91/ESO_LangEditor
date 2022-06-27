@@ -51,36 +51,36 @@ namespace GUI.Services
 
             //_ea.GetEvent<UploadLangtextZhUpdateEvent>().Subscribe(UploadlangtextUpdateZh);
             //_ea.GetEvent<UploadLangtextZhListUpdateEvent>().Subscribe(UploadlangtextsUpdateZh);
-            _ea.GetEvent<RefreshTokenEvent>().Subscribe(SyncToken);
+            //_ea.GetEvent<RefreshTokenEvent>().Subscribe(SyncToken);
         }
 
-        private async void SyncToken()
-        {
-            _logger.LogDebug("开始定期刷新Token");
+        //private async void SyncToken()
+        //{
+        //    _logger.LogDebug("开始定期刷新Token");
 
-            while (App.ConnectStatus == ClientConnectStatus.Login)
-            {
-                await Task.Delay(TimeSpan.FromMinutes(10)).ContinueWith(GetAuthToken);
-            }
+        //    while (App.ConnectStatus == ClientConnectStatus.Login)
+        //    {
+        //        await Task.Delay(TimeSpan.FromMinutes(10)).ContinueWith(GetAuthToken);
+        //    }
 
-        }
+        //}
 
         private async Task GetAuthToken(object o)
         {
-            var token = await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid,
-                new TokenDto
-                {
-                    AuthToken = App.LangConfig.UserAuthToken,
-                    RefreshToken = App.LangConfig.UserRefreshToken,
-                });
+            //var token = await _userAccess.GetTokenByTokenDto(App.LangConfig.UserGuid,
+            //    new TokenDto
+            //    {
+            //        AuthToken = App.LangConfig.UserAuthToken,
+            //        RefreshToken = App.LangConfig.UserRefreshToken,
+            //    });
 
-            if (token != null)
-            {
-                _userAccess.SaveToken(token);
-                //var timer = _userAccess.GetTokenExpireTimer();
-                //_logger.LogDebug(timer.ToString());
-                _logger.LogDebug("已刷新Token");
-            }
+            //if (token != null)
+            //{
+            //    _userAccess.SaveToken(token);
+            //    //var timer = _userAccess.GetTokenExpireTimer();
+            //    //_logger.LogDebug(timer.ToString());
+            //    _logger.LogDebug("已刷新Token");
+            //}
 
         }
 
@@ -170,25 +170,25 @@ namespace GUI.Services
             }
         }
 
-        public async Task<AppConfigServer> GetServerRespondAndConfig()
-        {
-            var _jsonOption = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
+        //public async Task<AppConfigServer> GetServerRespondAndConfig()
+        //{
+        //    var _jsonOption = new JsonSerializerOptions
+        //    {
+        //        PropertyNameCaseInsensitive = true,
+        //    };
 
-            AppConfigServer result = null;
-            HttpClient client = App.HttpClient;
+        //    AppConfigServer result = null;
+        //    HttpClient client = App.HttpClient;
 
-            HttpResponseMessage response = await client.GetAsync("AppConfig.json");
+        //    HttpResponseMessage response = await client.GetAsync("AppConfig.json");
 
-            if (response.IsSuccessStatusCode)
-            {
-                var responseContent = await response.Content.ReadAsStringAsync();
-                result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
-            }
-            return result;
-        }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var responseContent = await response.Content.ReadAsStringAsync();
+        //        result = JsonSerializer.Deserialize<AppConfigServer>(responseContent, _jsonOption);
+        //    }
+        //    return result;
+        //}
 
         public async Task<string> GetIdType(int id)
         {

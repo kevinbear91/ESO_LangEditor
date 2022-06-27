@@ -27,7 +27,7 @@ namespace GUI.ViewModels
         }
 
         private IEventAggregator _ea;
-        private IBackendService _backendService;
+        //private IBackendService _backendService;
 
         public Window WindowLink(string windowClassName)
         {
@@ -41,26 +41,26 @@ namespace GUI.ViewModels
             return (Window)window;
         }
 
-        public MainMenuListViewModel(IEventAggregator ea, IBackendService backendService)
+        public MainMenuListViewModel(IEventAggregator ea/*, IBackendService backendService*/)
         {
             _ea = ea;
-            _backendService = backendService;
-            _ea.GetEvent<RoleListUpdateEvent>().Subscribe(UpdateRoleList);
+            //_backendService = backendService;
+            //_ea.GetEvent<RoleListUpdateEvent>().Subscribe(UpdateRoleList);
             LoadMemu();
         }
 
-        private void UpdateRoleList(List<string> roleList)
-        {
-            if (_roleList != roleList)
-            {
-                _roleList = roleList;
-                LoadMemu();
-            }
-            foreach (var role in roleList)
-            {
-                Debug.WriteLine(role);
-            }
-        }
+        //private void UpdateRoleList(List<string> roleList)
+        //{
+        //    if (_roleList != roleList)
+        //    {
+        //        _roleList = roleList;
+        //        LoadMemu();
+        //    }
+        //    foreach (var role in roleList)
+        //    {
+        //        Debug.WriteLine(role);
+        //    }
+        //}
 
         private void LoadMemu()
         {
@@ -79,19 +79,19 @@ namespace GUI.ViewModels
                         //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                         //    CommandParameter = windowNamespace + "ImportTranslate",
                         //},
-                        new MenuItemContent
-                        {
-                            Header = "CSV和Lua与数据库对比",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "CompareWithDBWindow",
-                            //Visible = RoleToVisibility("Admin"),
-                        },
+                        //new MenuItemContent
+                        //{
+                        //    Header = "CSV和Lua与数据库对比",
+                        //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                        //    CommandParameter = windowNamespace + "CompareWithDBWindow",
+                        //    //Visible = RoleToVisibility("Admin"),
+                        //},
 
                         new MenuItemContent {
                             Header = "导出为游戏文件",
                             Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                             CommandParameter = windowNamespace + "PackToRelase",
-                            Visible = RoleToVisibility("Editor"),
+                            //Visible = RoleToVisibility("Editor"),
                         }
                     }
 
@@ -122,73 +122,73 @@ namespace GUI.ViewModels
                 //    }
 
                 //},
-                new MenuItemContent
-                {
-                    Header="高级", ChildMenuItems=new ObservableCollection<MenuItemContent>
-                    {
+                //new MenuItemContent
+                //{
+                //    Header="高级", ChildMenuItems=new ObservableCollection<MenuItemContent>
+                //    {
 
-                        new MenuItemContent {
-                            Header = "审核待通过文本",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "LangTextReviewWindow",
-                            Visible = RoleToVisibility("Editor"),
-                        },
+                //        new MenuItemContent {
+                //            Header = "审核待通过文本",
+                //            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //            CommandParameter = windowNamespace + "LangTextReviewWindow",
+                //            Visible = RoleToVisibility("Editor"),
+                //        },
 
-                        new MenuItemContent {
-                            Header = "编辑ID类型名称",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "LangTypeCatalogWindow",
-                            //Visible = RoleToVisibility("Editor"),
-                        },
-                        new MenuItemContent {
-                            Header = "审核ID类型名称",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "LangTypeCatalogReviewWindow",
-                            //Visible = RoleToVisibility("Editor"),
-                        },
-                        new MenuItemContent {
-                            Header = "游戏API与版本号",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "NewGameVersionWindow",
-                            //Visible = RoleToVisibility("Editor"),
-                        },
+                //        new MenuItemContent {
+                //            Header = "编辑ID类型名称",
+                //            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //            CommandParameter = windowNamespace + "LangTypeCatalogWindow",
+                //            //Visible = RoleToVisibility("Editor"),
+                //        },
+                //        new MenuItemContent {
+                //            Header = "审核ID类型名称",
+                //            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //            CommandParameter = windowNamespace + "LangTypeCatalogReviewWindow",
+                //            //Visible = RoleToVisibility("Editor"),
+                //        },
+                //        new MenuItemContent {
+                //            Header = "游戏API与版本号",
+                //            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //            CommandParameter = windowNamespace + "NewGameVersionWindow",
+                //            //Visible = RoleToVisibility("Editor"),
+                //        },
 
-                    }
+                //    }
 
-                },
-                new MenuItemContent
-                {
-                    Header="用户", ChildMenuItems=new ObservableCollection<MenuItemContent>
-                    {
-                        new MenuItemContent {
-                            Header = "用户角色编辑",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "UserRoleEditor",
-                            Visible = RoleToVisibility("Admin"),
-                        },
-                        new MenuItemContent {
-                            Header="资料修改",
-                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                            CommandParameter = windowNamespace + "UserProfileSetting",
-                        },
+                //},
+                //new MenuItemContent
+                //{
+                //    Header="用户", ChildMenuItems=new ObservableCollection<MenuItemContent>
+                //    {
+                //        new MenuItemContent {
+                //            Header = "用户角色编辑",
+                //            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //            CommandParameter = windowNamespace + "UserRoleEditor",
+                //            Visible = RoleToVisibility("Admin"),
+                //        },
+                //        new MenuItemContent {
+                //            Header="资料修改",
+                //            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                //            CommandParameter = windowNamespace + "UserProfileSetting",
+                //        },
 
-                        new MenuItemContent {
-                            Header = "登出",
-                            Command = new ExcuteViewModelMethod(LogoutByICommand),
-                            //CommandParameter = windowNamespace + "UserRoleEditor",
-                            //Visible = RoleToVisibility("Admin"),
-                        },
+                //        new MenuItemContent {
+                //            Header = "登出",
+                //            Command = new ExcuteViewModelMethod(LogoutByICommand),
+                //            //CommandParameter = windowNamespace + "UserRoleEditor",
+                //            //Visible = RoleToVisibility("Admin"),
+                //        },
 
-                        //new MenuItemContent { Header = "服务器线路" , ChildMenuItems=new ObservableCollection<MenuItemContent>
-                        //{
-                        //    new MenuItemContent { Header = "IKDC2(IPv4)" },
-                        //    new MenuItemContent { Header = "IKDC2(IPv6)" }
-                        //}},
-                        //new MenuItemContent {Header="导出UI Str内容" },
-                        //new MenuItemContent {Header="一键发布" }
-                    }
+                //        //new MenuItemContent { Header = "服务器线路" , ChildMenuItems=new ObservableCollection<MenuItemContent>
+                //        //{
+                //        //    new MenuItemContent { Header = "IKDC2(IPv4)" },
+                //        //    new MenuItemContent { Header = "IKDC2(IPv6)" }
+                //        //}},
+                //        //new MenuItemContent {Header="导出UI Str内容" },
+                //        //new MenuItemContent {Header="一键发布" }
+                //    }
 
-                },
+                //},
                 //new MenuItemContent
                 //{
                 //    Header="资料修改",
@@ -212,15 +212,15 @@ namespace GUI.ViewModels
             };
         }
 
-        private bool isRole(string roleName)
-        {
-            return _roleList.Contains(roleName);
-        }
+        //private bool isRole(string roleName)
+        //{
+        //    return _roleList.Contains(roleName);
+        //}
 
-        private Visibility RoleToVisibility(string roleName)
-        {
-            return _roleList.Contains(roleName) ? Visibility.Visible : Visibility.Collapsed;
-        }
+        //private Visibility RoleToVisibility(string roleName)
+        //{
+        //    return _roleList.Contains(roleName) ? Visibility.Visible : Visibility.Collapsed;
+        //}
 
         private void OpenWindowByICommand(object o)
         {

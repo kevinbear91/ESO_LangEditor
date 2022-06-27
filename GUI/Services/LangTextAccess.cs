@@ -22,7 +22,7 @@ namespace GUI.Services
 
         public LangTextAccess()
         {
-            _langHttpClient = App.HttpClient;
+            //_langHttpClient = App.HttpClient;
 
             _jsonOption = new JsonSerializerOptions
             {
@@ -36,8 +36,8 @@ namespace GUI.Services
             //EncodingProvider provider = CodePagesEncodingProvider.Instance;
             //Encoding.RegisterProvider(provider);
 
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextForCreationDtos);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -59,8 +59,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> ApproveLangTextsInReview(List<Guid> langTextGuids)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextGuids);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -76,8 +76,8 @@ namespace GUI.Services
 
         public async Task<IEnumerable<LangTextRevisedDto>> GetLangTextRevisedDtos(int revNumber)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextRevisedDto> respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -118,8 +118,8 @@ namespace GUI.Services
 
         public async Task<List<LangTextRevNumberDto>> GetAllRevisedNumber()
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextRevNumberDto> responded = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -139,8 +139,8 @@ namespace GUI.Services
 
         public async Task<LangTextDto> GetLangText(Guid langtextGuid)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             LangTextDto respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -166,8 +166,8 @@ namespace GUI.Services
 
         public async Task<LangTextDto> GetLangText(string langtextUniqueId)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             LangTextDto respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -193,8 +193,8 @@ namespace GUI.Services
 
         public async Task<IEnumerable<LangTextDto>> GetLangTexts(List<Guid> langtextIds)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextDto> respondedList = null;
 
             var content = SerializeDataToHttpContent(langtextIds);
@@ -226,8 +226,8 @@ namespace GUI.Services
 
         public async Task<List<LangTextDto>> GetLangTexts(int langtextRevised)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextDto> respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -253,8 +253,8 @@ namespace GUI.Services
 
         public async Task<List<LangTextForArchiveDto>> GetLangTextsFromArchive(string langtextId)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextForArchiveDto> respondedList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -274,8 +274,8 @@ namespace GUI.Services
 
         public async Task<List<LangTextForReviewDto>> GetLangTextsFromReviewer(Guid userGuid)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<LangTextForReviewDto> respondedLangtext = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -300,8 +300,8 @@ namespace GUI.Services
 
         public async Task<LangTextForReviewDto> GetLangTextFromReview(Guid langtextGuid)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             LangTextForReviewDto respondedLangtext = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -325,8 +325,8 @@ namespace GUI.Services
 
         public async Task<List<Guid>> GetUsersInReview()
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             List<Guid> respondedUserList = null;
 
             //var content = SerializeDataToHttpContent(langtextGuid);
@@ -353,8 +353,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> RemoveLangTexts(List<Guid> langTextGuids)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
 
             var content = SerializeDataToHttpContent(langTextGuids);
             var request = new HttpRequestMessage
@@ -379,8 +379,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> RemoveLangTextsInReview(List<Guid> langTextGuids)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextGuids);
             //string langTextId = langTextForUpdateZhDto.Id.ToString();
 
@@ -395,8 +395,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> UpdateLangTextEn(List<LangTextForUpdateEnDto> langTextForUpdateEnDtos)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextForUpdateEnDtos);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -410,8 +410,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> UpdateLangTextZh(LangTextForUpdateZhDto langTextForUpdateZhDto)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextForUpdateZhDto);
             string langTextId = langTextForUpdateZhDto.Id.ToString();
 
@@ -426,8 +426,8 @@ namespace GUI.Services
 
         public async Task<MessageWithCode> UpdateLangTextZh(List<LangTextForUpdateZhDto> langTextForUpdateZhDtos)
         {
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             var content = SerializeDataToHttpContent(langTextForUpdateZhDtos);
 
             HttpResponseMessage response = await _langHttpClient.PostAsync(
@@ -454,8 +454,8 @@ namespace GUI.Services
         public async Task<PagedList<LangTextDto>> GetLangTexts(string category, LangTextParameters langTextParameters)
         {
             //_langHttpClient.DefaultRequestHeaders.Clear();
-            _langHttpClient.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
+            //_langHttpClient.DefaultRequestHeaders.Authorization =
+            //    new AuthenticationHeaderValue("Bearer", App.LangConfig.UserAuthToken);
             PagedList<LangTextDto> respondedLangtext = null;
             PageData respondedPageData;
             string paraJson = null;

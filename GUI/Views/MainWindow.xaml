@@ -42,9 +42,9 @@
                                     materialDesign:ButtonProgressAssist.IsIndeterminate="True"
                                     Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
                                     CommandParameter="{x:Static Dock.Top}"
-                                    Height="50" Width="50" Background="#FF3F51B5" VerticalAlignment="Top" >
+                                    Height="50" Width="50" Background="#FF3F51B5" VerticalAlignment="Top" Cursor="Hand" Style="{StaticResource MaterialDesignIconButton}" >
 
-                                <Button.Style>
+                                <!--<Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFloatingActionButton}">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ConnectStatus}" Value="Connecting">
@@ -79,7 +79,7 @@
                                         </Style.Triggers>
 
                                     </Style>
-                                </Button.Style>
+                                </Button.Style>-->
                                 <materialDesign:PackIcon Kind="Menu" Height="40" Width="40" Foreground="White" />
                             </Button>
 
