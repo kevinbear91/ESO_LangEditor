@@ -487,6 +487,72 @@ namespace GUI.ViewModels
             }
 
             await _langFile.ExportAddonDictToLua(exportDict, 1);
+            exportDict.Clear();
+
+            var abilityName = await _langTextRepo.GetLangTextByConditionAsync("198758357", SearchTextType.Type, SearchPostion.Full);
+            
+            foreach (var item in abilityName)
+            {
+                if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
+                {
+                    if (item.TextZh.Contains("\x22"))
+                    {
+                        item.TextZh = item.TextZh.Replace("\x22", replaceWord);
+                        Debug.WriteLine(item.TextZh);
+                    }
+                    if (item.TextEn.Contains("\x22"))
+                    {
+                        item.TextEn = item.TextEn.Replace("\x22", replaceWord);
+                        Debug.WriteLine(item.TextEn);
+                    }
+
+                    if (item.TextEn.Contains("^"))
+                    {
+                        item.TextEn = item.TextEn.Replace("^ns", "");
+                        item.TextEn = item.TextEn.Replace("^np", "");
+                        item.TextEn = item.TextEn.Replace("^n", "");
+                        item.TextEn = item.TextEn.Replace("^p", "");
+                        item.TextEn = item.TextEn.Replace("^m", "");
+                    }
+                    exportDict.Add(item.TextZh, item.TextEn);
+                }
+            }
+
+            await _langFile.ExportAddonDictToLua(exportDict, 2);
+            exportDict.Clear();
+
+
+            var npcName = await _langTextRepo.GetLangTextByConditionAsync("8290981", SearchTextType.Type, SearchPostion.Full);
+
+            foreach (var item in npcName)
+            {
+                if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
+                {
+                    if (item.TextZh.Contains("\x22"))
+                    {
+                        item.TextZh = item.TextZh.Replace("\x22", replaceWord);
+                        Debug.WriteLine(item.TextZh);
+                    }
+                    if (item.TextEn.Contains("\x22"))
+                    {
+                        item.TextEn = item.TextEn.Replace("\x22", replaceWord);
+                        Debug.WriteLine(item.TextEn);
+                    }
+
+                    if (item.TextEn.Contains("^"))
+                    {
+                        item.TextEn = item.TextEn.Replace("^ns", "");
+                        item.TextEn = item.TextEn.Replace("^np", "");
+                        item.TextEn = item.TextEn.Replace("^n", "");
+                        item.TextEn = item.TextEn.Replace("^p", "");
+                        item.TextEn = item.TextEn.Replace("^m", "");
+                    }
+                    exportDict.Add(item.TextZh, item.TextEn);
+                }
+            }
+
+            await _langFile.ExportAddonDictToLua(exportDict, 3);
+            exportDict.Clear();
 
             if (ChsOrChtListSelected == CHSorCHT.cht)
             {

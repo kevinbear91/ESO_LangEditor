@@ -857,6 +857,8 @@ namespace GUI.Services
             {
                 0 => "locationNameDict",
                 1 => "itemNameDict",
+                2 => "skillNameDict",
+                3 => "npcNameDict",
                 _ => "locationNameDict",
             };
 
@@ -864,6 +866,8 @@ namespace GUI.Services
             {
                 0 => "location.lua",
                 1 => "itemsname.lua",
+                2 => "skillName.lua",
+                3 => "npcName.lua",
                 _ => "location.lua",
             };
 

@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Prism.Events;
 using GUI.EventAggres;
+using Core.Entities;
 
 namespace GUI.ViewModels
 {
@@ -39,12 +40,14 @@ namespace GUI.ViewModels
         private List<LangTextDto> _removedList;
         private Dictionary<string, LangTextDto> _removedDict;
         private ObservableCollection<LangTextDto> _currentGridData;
+        private Dictionary<int, string> _GameVersionDict;
+        private int _revisedNumber;
         private IMapper _mapper;
         private ILangFile _langfile;
         private IBackendService _backendService;
         private IGeneralAccess _generalAccess;
         private ILangTextRepoClient _langTextRepo;
-        private ILangTextAccess _langTextAccess;
+        //private ILangTextAccess _langTextAccess;
         private string _selectedKey;
 
         public string UpdateVersionText
@@ -166,7 +169,7 @@ namespace GUI.ViewModels
         private IEventAggregator _ea;
 
         public CompareWithDBWindowViewModel(IEventAggregator ea, /*IBackendService backendService,*/ ILangTextRepoClient langTextRepo,
-            ILangTextAccess langTextAccess, IMapper mapper, ILangFile langfile/*, IGeneralAccess generalAccess*/)
+            /*ILangTextAccess langTextAccess,*/ IMapper mapper, ILangFile langfile/*, IGeneralAccess generalAccess*/)
         {
             _addedTag = "新增";
             _changedTag = "修改";
@@ -181,7 +184,7 @@ namespace GUI.ViewModels
             _langfile = langfile;
             //_backendService = backendService;
             _langTextRepo = langTextRepo;
-            _langTextAccess = langTextAccess;
+            //_langTextAccess = langTextAccess;
             _mapper = mapper;
             //_generalAccess = generalAccess;
             _ea = ea;
@@ -208,63 +211,136 @@ namespace GUI.ViewModels
             switch (_selectedKey)
             {
                 case "Added":
-                    MakeAddedListToServer();
+                    //MakeAddedListToServer();
+                    AddLangText();
                     break;
                 case "Changed":
-                    MakeEnChangedListToServer();
+                    //MakeEnChangedListToServer();
+                    UpdateLangText();
                     break;
                 case "Removed":
-                    MakeDeletedListToServer();
+                    //MakeDeletedListToServer();
+                    DeleteLangText();
                     break;
             }
 
         }
 
-        private async void MakeAddedListToServer()
+        //private async void MakeAddedListToServer()
+        //{
+        //    List<LangTextForCreationDto> langTextForCreationDtos;
+        //    if (Added.Count >= 1)
+        //    {
+        //        langTextForCreationDtos = _mapper.Map<List<LangTextForCreationDto>>(Added);
+
+        //        try
+        //        {
+        //            InfoText = "正在上传新增文本，等待服务器处理并返回结果中……";
+        //            var respondCode = await _langTextAccess.AddLangTexts(langTextForCreationDtos);
+
+        //            InfoText = respondCode.Message;
+        //        }
+        //        catch (HttpRequestException ex)
+        //        {
+        //            InfoText = ex.Message;
+        //        }
+        //    }
+
+        //}
+
+        //private async void MakeEnChangedListToServer()
+        //{
+        //    List<LangTextForUpdateEnDto> langTextForUpdateEnDtos;
+        //    if (Changed.Count >= 1)
+        //    {
+        //        langTextForUpdateEnDtos = _mapper.Map<List<LangTextForUpdateEnDto>>(Changed);
+
+        //        try
+        //        {
+        //            InfoText = "正在上传英文变化文本，等待服务器处理并返回结果中……";
+        //            var respondCode = await _langTextAccess.UpdateLangTextEn(langTextForUpdateEnDtos);
+
+        //            InfoText = respondCode.Message;
+        //        }
+        //        catch (HttpRequestException ex)
+        //        {
+        //            InfoText = ex.Message;
+        //        }
+        //    }
+
+        //}
+
+        //private async void MakeDeletedListToServer()
+        //{
+        //    List<Guid> langTextForDeletedList;
+        //    if (RemovedList.Count >= 1)
+        //    {
+        //        langTextForDeletedList = RemovedList.Select(lang => lang.Id).ToList();
+
+        //        try
+        //        {
+        //            InfoText = "正在上传删除列表，等待服务器处理并返回结果中……";
+        //            var respondCode = await _langTextAccess.RemoveLangTexts(langTextForDeletedList);
+
+        //            InfoText = respondCode.Message;
+        //        }
+        //        catch (HttpRequestException ex)
+        //        {
+        //            InfoText = ex.Message;
+        //        }
+        //    }
+        //}
+
+        private async void AddLangText()
         {
-            List<LangTextForCreationDto> langTextForCreationDtos;
             if (Added.Count >= 1)
             {
-                langTextForCreationDtos = _mapper.Map<List<LangTextForCreationDto>>(Added);
+                var newLangtext = _mapper.Map<List<LangTextClient>>(Added);
 
                 try
                 {
-                    InfoText = "正在上传新增文本，等待服务器处理并返回结果中……";
-                    var respondCode = await _langTextAccess.AddLangTexts(langTextForCreationDtos);
+                    InfoText = "正在处理新增文本……";
 
-                    InfoText = respondCode.Message;
+                    if (await _langTextRepo.AddLangtexts(newLangtext))
+                    {
+                        InfoText = "新增完成";
+                    }
+
                 }
                 catch (HttpRequestException ex)
                 {
                     InfoText = ex.Message;
                 }
             }
-
         }
 
-        private async void MakeEnChangedListToServer()
+
+        private async void UpdateLangText()
         {
-            List<LangTextForUpdateEnDto> langTextForUpdateEnDtos;
             if (Changed.Count >= 1)
             {
-                langTextForUpdateEnDtos = _mapper.Map<List<LangTextForUpdateEnDto>>(Changed);
+                //langTextForUpdateEnDtos = _mapper.Map<List<LangTextForUpdateEnDto>>(Changed);
+                var changedLangtext = _mapper.Map<List<LangTextClient>>(Changed);
 
                 try
                 {
-                    InfoText = "正在上传英文变化文本，等待服务器处理并返回结果中……";
-                    var respondCode = await _langTextAccess.UpdateLangTextEn(langTextForUpdateEnDtos);
+                    InfoText = "正在处理英文变化文本……";
+                    //var respondCode = await _langTextAccess.UpdateLangTextEn(langTextForUpdateEnDtos);
 
-                    InfoText = respondCode.Message;
+                    if (await _langTextRepo.UpdateLangtexts(changedLangtext))
+                    {
+                        InfoText = "处理完成";
+                    }
+
                 }
                 catch (HttpRequestException ex)
                 {
                     InfoText = ex.Message;
                 }
             }
-
         }
 
-        private async void MakeDeletedListToServer()
+        private async void DeleteLangText()
         {
             List<Guid> langTextForDeletedList;
             if (RemovedList.Count >= 1)
@@ -274,16 +350,18 @@ namespace GUI.ViewModels
                 try
                 {
                     InfoText = "正在上传删除列表，等待服务器处理并返回结果中……";
-                    var respondCode = await _langTextAccess.RemoveLangTexts(langTextForDeletedList);
+                    //var respondCode = await _langTextAccess.RemoveLangTexts(langTextForDeletedList);
 
-                    InfoText = respondCode.Message;
+                    if (await _langTextRepo.DeleteLangtexts(langTextForDeletedList))
+                    {
+                        InfoText = "处理完成";
+                    }
                 }
                 catch (HttpRequestException ex)
                 {
                     InfoText = ex.Message;
                 }
             }
-
         }
 
 
@@ -327,6 +405,10 @@ namespace GUI.ViewModels
 
             Dictionary<string, LangTextDto> fileContent = new Dictionary<string, LangTextDto>();
             InfoText = "正在读取数据库……";
+
+            _GameVersionDict = await _langTextRepo.GetGameVersion();
+            var revised = await _langTextRepo.GetRevNumber(1);
+            _revisedNumber = revised.Rev + 1;
 
             var DbDict = await Task.Run(() => _langTextRepo.GetAlltLangTextsDictionaryAsync(0));
 
@@ -401,11 +483,11 @@ namespace GUI.ViewModels
                             EnLastModifyTimestamp = DateTime.UtcNow,
                             ZhLastModifyTimestamp = firstValue.ZhLastModifyTimestamp,
                             LangTextType = firstValue.LangTextType,
-                            //UserId = App.LangConfig.UserGuid,
+                            UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
                             //review = 2,
-                            ReviewerId = firstValue.ReviewerId,
+                            ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
                             ReviewTimestamp = firstValue.ZhLastModifyTimestamp,
-                            Revised = firstValue.Revised,
+                            Revised = _revisedNumber,
                         });
                         RemovedDict.Remove(other.Key);
                     }
@@ -423,10 +505,10 @@ namespace GUI.ViewModels
                         EnLastModifyTimestamp = DateTime.UtcNow,
                         ZhLastModifyTimestamp = DateTime.UtcNow,
                         LangTextType = other.Value.LangTextType,
-                        //UserId = App.LangConfig.UserGuid,
-                        //ReviewerId = App.LangConfig.UserGuid,
+                        UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                        ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
                         ReviewTimestamp = DateTime.UtcNow,
-                        Revised = 0,
+                        Revised = _revisedNumber,
                     });
                     RemovedDict.Remove(other.Key);
                 }

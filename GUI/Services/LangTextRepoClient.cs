@@ -389,6 +389,29 @@ namespace GUI.Services
             return saveCount > 0;
         }
 
+        public async Task<bool> SaveGameVersion(GameVersion gameVersion)
+        {
+            int saveCount = 0;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var isGameVersionExist = await db.GameVersion.FindAsync(gameVersion.GameApiVersion);
+
+                if (isGameVersionExist != null)
+                {
+                    isGameVersionExist.Version_EN = gameVersion.Version_EN;
+                    isGameVersionExist.Version_ZH = gameVersion.Version_ZH;
+                }
+                else
+                {
+                    db.GameVersion.Add(gameVersion);
+                }
+
+                saveCount = await db.SaveChangesAsync();
+                db.Dispose();
+            }
+            return saveCount > 0;
+        }
+
         public async Task<GameVersion> GetGameVersion(int id)
         {
             GameVersion gameVersion;
@@ -412,6 +435,19 @@ namespace GUI.Services
                 gameVersionDict = list.ToDictionary(gv => gv.GameApiVersion, zh => zh.Version_ZH);
             }
             return gameVersionDict;
+        }
+
+        public async Task<List<GameVersionDto>> GetGameVersionDtoList()
+        {
+            List<GameVersionDto> gameVersionList;
+            using (var db = new LangtextClientDbContext(App.DbOptionsBuilder))
+            {
+                var list = await db.GameVersion.ToListAsync();
+                db.Dispose();
+
+                gameVersionList = _mapper.Map<List<GameVersionDto>>(list);
+            }
+            return gameVersionList;
         }
 
         public async Task<bool> UpdateIdTypes(List<LangTypeCatalog> langIdTypes)

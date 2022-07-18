@@ -40,9 +40,11 @@ namespace GUI.Services
         Task<IEnumerable<UserInClient>> GetUsers();
         Task<bool> UpdateUsers(List<UserInClient> users);
         Task<bool> UpdateGameVersions(List<GameVersion> gameVersions);
+        Task<bool> SaveGameVersion(GameVersion gameVersion);
         Task<bool> UpdateIdTypes(List<LangTypeCatalog> langIdTypes);
         Task<GameVersion> GetGameVersion(int id);
         Task<Dictionary<int, string>> GetGameVersion();
+        Task<List<GameVersionDto>> GetGameVersionDtoList();
         Task<Dictionary<int, string>> GetIdTypeDict();
 
     }

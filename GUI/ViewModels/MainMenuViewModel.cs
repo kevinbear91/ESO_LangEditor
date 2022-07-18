@@ -79,13 +79,13 @@ namespace GUI.ViewModels
                         //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
                         //    CommandParameter = windowNamespace + "ImportTranslate",
                         //},
-                        //new MenuItemContent
-                        //{
-                        //    Header = "CSV和Lua与数据库对比",
-                        //    Command = new ExcuteViewModelMethod(OpenWindowByICommand),
-                        //    CommandParameter = windowNamespace + "CompareWithDBWindow",
-                        //    //Visible = RoleToVisibility("Admin"),
-                        //},
+                        new MenuItemContent
+                        {
+                            Header = "CSV和Lua与数据库对比",
+                            Command = new ExcuteViewModelMethod(OpenWindowByICommand),
+                            CommandParameter = windowNamespace + "CompareWithDBWindow",
+                            //Visible = RoleToVisibility("Admin"),
+                        },
 
                         new MenuItemContent {
                             Header = "导出为游戏文件",

@@ -1,4 +1,5 @@
-﻿using Core.Models;
+﻿using Core.Entities;
+using Core.Models;
 using GUI.Command;
 using GUI.EventAggres;
 using GUI.Services;
@@ -33,24 +34,43 @@ namespace GUI.ViewModels
             set => SetProperty(ref _selectedDto, value);
         }
 
-        private ICommand GetGameVersionCommand => new ExcuteViewModelMethod(GetGameVersionFromServer);
-        private IGeneralAccess _generalAccess;
+        //private ICommand GetGameVersionCommand => new ExcuteViewModelMethod(GetGameVersionFromServer);
+        private ICommand GetGameVersionCommand => new ExcuteViewModelMethod(GetGameVersionFromLocal);
+        //private IGeneralAccess _generalAccess;
         private IEventAggregator _ea;
-        public ICommand SumbitCommand => new ExcuteViewModelMethod(SumbitVersion);
+        private ILangTextRepoClient _langTextRepoClient;
+        public ICommand SumbitCommand => new ExcuteViewModelMethod(SaveGameVersionToLocal);
         public ICommand SelectCommand => new ExcuteViewModelMethod(SelectVersion);
 
-        public NewGameVersionWindowViewModel(IEventAggregator ea, IGeneralAccess generalAccess)
+        public NewGameVersionWindowViewModel(IEventAggregator ea, ILangTextRepoClient langTextRepoClient)
         {
-            _generalAccess = generalAccess;
+            //_generalAccess = generalAccess;
+            _langTextRepoClient = langTextRepoClient;
             _ea = ea;
 
             GetGameVersionCommand.Execute(null);
         }
 
 
-        private async void GetGameVersionFromServer(object o)
+        //private async void GetGameVersionFromServer(object o)
+        //{
+        //    var versionDtos = await _generalAccess.GetGameVersionDtos();
+
+        //    if (GameVersionDtos.Count > 0)
+        //    {
+        //        GameVersionDtos.Clear();
+
+        //        GameVersionDtos.AddRange(versionDtos);
+        //    }
+        //    else
+        //    {
+        //        GameVersionDtos.AddRange(versionDtos);
+        //    }
+        //}
+
+        private async void GetGameVersionFromLocal(object o)
         {
-            var versionDtos = await _generalAccess.GetGameVersionDtos();
+            var versionDtos = await _langTextRepoClient.GetGameVersionDtoList();
 
             if (GameVersionDtos.Count > 0)
             {
@@ -64,16 +84,24 @@ namespace GUI.ViewModels
             }
         }
 
-        private async void SumbitVersion(object obj)
+        private async void SaveGameVersionToLocal(object obj)
         {
-            //MessageBox.Show(obj.ToString());
             var selectedItem = obj as GameVersionDto;
             if (selectedItem != null)
             {
+                GameVersion gameVersionEntity = new()
+                { 
+                    GameApiVersion = selectedItem.GameApiVersion,
+                    Version_EN = selectedItem.Version_EN,
+                    Version_ZH = selectedItem.Version_ZH,
+                };
+
                 try
                 {
-                    var respond = await _generalAccess.UploadNewGameVersion(selectedItem);
-                    MessageBox.Show(respond.Message);
+                    if (await _langTextRepoClient.SaveGameVersion(gameVersionEntity))
+                    {
+                        MessageBox.Show("保存成功！");
+                    }
                 }
                 catch (HttpRequestException ex)
                 {
@@ -83,6 +111,26 @@ namespace GUI.ViewModels
                 //MessageBox.Show($"api: {selectedItem.GameApiVersion}\n en: {selectedItem.Version_EN}\n zh: {selectedItem.Version_ZH}");
             }
         }
+
+        //private async void SumbitVersion(object obj)
+        //{
+        //    //MessageBox.Show(obj.ToString());
+        //    var selectedItem = obj as GameVersionDto;
+        //    if (selectedItem != null)
+        //    {
+        //        try
+        //        {
+        //            var respond = await _generalAccess.UploadNewGameVersion(selectedItem);
+        //            MessageBox.Show(respond.Message);
+        //        }
+        //        catch (HttpRequestException ex)
+        //        {
+        //            MessageBox.Show(ex.Message);
+        //        }
+
+        //        //MessageBox.Show($"api: {selectedItem.GameApiVersion}\n en: {selectedItem.Version_EN}\n zh: {selectedItem.Version_ZH}");
+        //    }
+        //}
 
         private void SelectVersion(object obj)
         {
