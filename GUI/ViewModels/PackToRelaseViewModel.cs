@@ -305,6 +305,18 @@ namespace GUI.ViewModels
                     DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\itemsname.lua",
                 });
 
+                _copyFilePaths.Add(new FilePaths
+                {
+                    SourcePath = @"Export\npcName.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\npcName.lua",
+                });
+
+                _copyFilePaths.Add(new FilePaths
+                {
+                    SourcePath = @"Export\skillBuffs.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\skillBuffs.lua",
+                });
+
                 //File.Copy(@"Export\zh_client.str", @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str", true);
                 //File.Copy(@"Export\zh.lang", @"_tmp\pack\" + esozhPath + @"\gamedata\lang\zh.lang", true);
             }
@@ -543,9 +555,9 @@ namespace GUI.ViewModels
                     {
                         item.TextEn = item.TextEn.Replace("^ns", "");
                         item.TextEn = item.TextEn.Replace("^np", "");
-                        item.TextEn = item.TextEn.Replace("^n", "");
-                        item.TextEn = item.TextEn.Replace("^p", "");
-                        item.TextEn = item.TextEn.Replace("^m", "");
+                        item.TextEn = item.TextEn.Replace("^N", "");
+                        item.TextEn = item.TextEn.Replace("^F", "");
+                        item.TextEn = item.TextEn.Replace("^M", "");
                     }
                     exportDict.Add(item.TextZh, item.TextEn);
                 }
