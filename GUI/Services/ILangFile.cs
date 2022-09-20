@@ -7,7 +7,7 @@ namespace GUI.Services
 {
     public interface ILangFile
     {
-        Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath);
+        Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath, bool isOfficialZh = false);
         Task<Dictionary<string, string>> ParseJpLangFile(string filePath);
         Task<Dictionary<string, LangTextDto>> ParseCsvFile(string filePath);
         Task<Dictionary<string, LangTextDto>> ParseLuaFile(List<string> filePath);

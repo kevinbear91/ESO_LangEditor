@@ -20,6 +20,8 @@ namespace Core.Entities
         //中文文本
         public string TextZh { get; set; }
 
+        public string TextZh_Official { get; set; }
+
         //文本类型
         public LangType LangTextType { get; set; }
 

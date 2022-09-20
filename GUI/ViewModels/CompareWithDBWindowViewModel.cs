@@ -34,6 +34,7 @@ namespace GUI.ViewModels
         private bool _updatedVersionInputEnable;
         private bool _saveButtonEnable;
         private bool _ClearZhIfEnChangedForSkill = true;
+        private bool _IsOfficialZh;
         private List<LangTextDto> _added;
         private List<LangTextDto> _changed;
         private List<LangTextDto> _nonChanged;
@@ -114,6 +115,12 @@ namespace GUI.ViewModels
         {
             get => _ClearZhIfEnChangedForSkill;
             set => SetProperty(ref _ClearZhIfEnChangedForSkill, value);
+        }
+
+        public bool IsOfficialZh
+        {
+            get => _IsOfficialZh;
+            set => SetProperty(ref _IsOfficialZh, value);
         }
 
         //private ILangTextRepoClient _langTextRepository;
@@ -427,7 +434,7 @@ namespace GUI.ViewModels
                     }
                     else
                     {
-                        fileContent = await _langfile.ParseLangFile(file);
+                        fileContent = await _langfile.ParseLangFile(file, IsOfficialZh);
                     }
                 }
             }
@@ -460,59 +467,113 @@ namespace GUI.ViewModels
 
             RemovedDict = _first;
 
-            foreach (var other in _second)
+            if (IsOfficialZh)
             {
-
-                if (_first.TryGetValue(other.Key, out LangTextDto firstValue))
+                foreach (var other in _second)
                 {
-                    if (firstValue.TextEn.Equals(other.Value.TextEn))
+                    if (_first.TryGetValue(other.Key, out LangTextDto firstValue))
                     {
-                        NonChanged.Add(firstValue);
-                        RemovedDict.Remove(other.Key);
+                        if (firstValue.TextZh_Official != null && firstValue.TextZh_Official.Equals(other.Value.TextZh_Official))
+                        {
+                            NonChanged.Add(firstValue);
+                            RemovedDict.Remove(other.Key);
+                        }
+                        else
+                        {
+                            Changed.Add(new LangTextDto
+                            {
+                                Id = firstValue.Id,
+                                TextId = firstValue.TextId,
+                                IdType = firstValue.IdType,
+                                TextEn = firstValue.TextEn,
+                                TextZh = firstValue.TextZh,
+                                TextZh_Official = other.Value.TextZh_Official,
+                                GameApiVersion = Convert.ToInt32(UpdateVersionText),
+                                LangTextType = firstValue.LangTextType,
+                                UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                                ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                                Revised = _revisedNumber,
+                            });
+                            RemovedDict.Remove(other.Key);
+                        }
                     }
                     else
                     {
-                        Changed.Add(new LangTextDto
+                        Added.Add(new LangTextDto
                         {
-                            Id = firstValue.Id,
-                            TextId = firstValue.TextId,
-                            IdType = firstValue.IdType,
-                            TextEn = other.Value.TextEn,
-                            TextZh = firstValue.TextZh,
+                            Id = Guid.NewGuid(),
+                            TextId = other.Value.TextId,
+                            IdType = other.Value.IdType,
+                            TextZh_Official = other.Value.TextZh_Official,
                             GameApiVersion = Convert.ToInt32(UpdateVersionText),
-                            EnLastModifyTimestamp = DateTime.UtcNow,
-                            ZhLastModifyTimestamp = firstValue.ZhLastModifyTimestamp,
-                            LangTextType = firstValue.LangTextType,
+                            LangTextType = other.Value.LangTextType,
                             UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
-                            //review = 2,
                             ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
-                            ReviewTimestamp = firstValue.ZhLastModifyTimestamp,
+                            ReviewTimestamp = DateTime.UtcNow,
                             Revised = _revisedNumber,
                         });
                         RemovedDict.Remove(other.Key);
                     }
                 }
-                else
+            }
+            else
+            {
+                foreach (var other in _second)
                 {
-                    Added.Add(new LangTextDto
+
+                    if (_first.TryGetValue(other.Key, out LangTextDto firstValue))
                     {
-                        Id = Guid.NewGuid(),
-                        TextId = other.Value.TextId,
-                        IdType = other.Value.IdType,
-                        TextEn = other.Value.TextEn,
-                        TextZh = null,
-                        GameApiVersion = Convert.ToInt32(UpdateVersionText),
-                        EnLastModifyTimestamp = DateTime.UtcNow,
-                        ZhLastModifyTimestamp = DateTime.UtcNow,
-                        LangTextType = other.Value.LangTextType,
-                        UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
-                        ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
-                        ReviewTimestamp = DateTime.UtcNow,
-                        Revised = _revisedNumber,
-                    });
-                    RemovedDict.Remove(other.Key);
+                        if (firstValue.TextEn.Equals(other.Value.TextEn))
+                        {
+                            NonChanged.Add(firstValue);
+                            RemovedDict.Remove(other.Key);
+                        }
+                        else
+                        {
+                            Changed.Add(new LangTextDto
+                            {
+                                Id = firstValue.Id,
+                                TextId = firstValue.TextId,
+                                IdType = firstValue.IdType,
+                                TextEn = other.Value.TextEn,
+                                TextZh = firstValue.TextZh,
+                                GameApiVersion = Convert.ToInt32(UpdateVersionText),
+                                EnLastModifyTimestamp = DateTime.UtcNow,
+                                ZhLastModifyTimestamp = firstValue.ZhLastModifyTimestamp,
+                                LangTextType = firstValue.LangTextType,
+                                UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                                //review = 2,
+                                ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                                ReviewTimestamp = firstValue.ZhLastModifyTimestamp,
+                                Revised = _revisedNumber,
+                            });
+                            RemovedDict.Remove(other.Key);
+                        }
+                    }
+                    else
+                    {
+                        Added.Add(new LangTextDto
+                        {
+                            Id = Guid.NewGuid(),
+                            TextId = other.Value.TextId,
+                            IdType = other.Value.IdType,
+                            TextEn = other.Value.TextEn,
+                            TextZh = null,
+                            GameApiVersion = Convert.ToInt32(UpdateVersionText),
+                            EnLastModifyTimestamp = DateTime.UtcNow,
+                            ZhLastModifyTimestamp = DateTime.UtcNow,
+                            LangTextType = other.Value.LangTextType,
+                            UserId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                            ReviewerId = new Guid("0CEFB727-3B2A-402C-88ED-5EB703BC02B5"),
+                            ReviewTimestamp = DateTime.UtcNow,
+                            Revised = _revisedNumber,
+                        });
+                        RemovedDict.Remove(other.Key);
+                    }
                 }
             }
+
+            
 
             RemovedList = RemovedDict.Values.ToList();
 

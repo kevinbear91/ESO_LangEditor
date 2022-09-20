@@ -102,7 +102,7 @@ namespace GUI.Services
             #endregion
         }
 
-        public async Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath)
+        public async Task<Dictionary<string, LangTextDto>> ParseLangFile(string filePath, bool isOfficialZh)
         {
             int _filesize;
             const int _textIdRecoredSize = 16;
@@ -204,7 +204,15 @@ namespace GUI.Services
                     text = text.Replace("\x0a", @"\n");
                     text = text.Replace("\x0d", @"\r");
 
-                    lang.TextEn = text;
+                    if (isOfficialZh && !IsEn(text))
+                    {
+                        lang.TextZh_Official = text;
+                    }
+                    else
+                    {
+                        lang.TextEn = text;
+                    }
+                    
 
                     //Debug.WriteLine("text: {0}", text);
                 }

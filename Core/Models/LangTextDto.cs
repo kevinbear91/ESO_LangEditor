@@ -13,6 +13,7 @@ namespace Core.Models
         public string TextEn { get; set; }
         public string TextZh { get; set; }
         public string TextJp { get; set; }
+        public string TextZh_Official { get; set; }
         public LangType LangTextType { get; set; }
         public int GameApiVersion { get; set; }
         public DateTime EnLastModifyTimestamp { get; set; }

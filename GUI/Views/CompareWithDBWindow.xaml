@@ -95,6 +95,10 @@
                       Margin="0 15" IsChecked="{Binding ClearZhIfEnChangedForSkill}"
                       Content="技能词条修改后还原英语" />
 
+            <CheckBox Style="{StaticResource MaterialDesignCheckBox}"
+                      Margin="0 15" IsChecked="{Binding IsOfficialZh}"
+                      Content="官方简中文本" />
+
             <!--<Button Command="{Binding SetSelectedLangZhToNullCommand}" CommandParameter="{Binding ElementName=LangDataGridList, Path=SelectedItems}"
                     Style="{StaticResource MaterialDesignFlatButton}" Margin="0 15"
                         Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" >
@@ -139,7 +143,7 @@
                             <materialDesign:DataGridTextColumn Binding="{Binding TextId}" Header="文本ID"  Visibility="Visible"/>
                             <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="文本类型"  Visibility="Collapsed"/>
                             <materialDesign:DataGridTextColumn Binding="{Binding TextEn}" Header="英文"  Visibility="Visible"/>
-                            <materialDesign:DataGridTextColumn Binding="{Binding TextZh}" Header="中文"  Visibility="Visible"/>
+                            <materialDesign:DataGridTextColumn Binding="{Binding TextZh_Official}" Header="中文"  Visibility="Visible"/>
                         </DataGrid.Columns>
                     </DataGrid>
                     <!--<uc:UC_LangDataGrid x:Name="LangTextGrid" />-->

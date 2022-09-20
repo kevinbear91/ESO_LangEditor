@@ -25,7 +25,8 @@
                 <materialDesign:DataGridTextColumn Binding="{Binding TextId}" Header="文本ID"  Visibility="Visible"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding IdType}" Header="文本类型"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding TextEn}" Header="英文"  Visibility="Visible"/>
-                <materialDesign:DataGridTextColumn Binding="{Binding TextZh}" Header="中文"  Visibility="Visible"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextZh}" Header="中文"  Visibility="Collapsed"/>
+                <materialDesign:DataGridTextColumn Binding="{Binding TextZh_Official}" Header="中文(官方)"  Visibility="Visible"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding TextJp}" Header="日文"  Visibility="{Binding Data, Source={StaticResource JpVisiable}}"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding IsTranslated}" Header="翻译状态"  Visibility="Collapsed"/>
                 <materialDesign:DataGridTextColumn Binding="{Binding UpdateStats}" Header="更新版本"  Visibility="Collapsed"/>
