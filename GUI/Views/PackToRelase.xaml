@@ -59,7 +59,7 @@
             <ComboBox x:Name="CHSorCHT_comboBox" 
                   ItemsSource="{Binding ChsOrChtList}" 
                   SelectedItem="{Binding ChsOrChtListSelected, Mode=TwoWay}"
-                  SelectedIndex="0" Margin="30 10 0 0"
+                  SelectedIndex="0" Margin="30,10,10,0"
                   HorizontalAlignment="Center" Width="120" Height="27">
 
                 <ComboBox.Resources>
@@ -72,17 +72,15 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
+            <CheckBox Style="{StaticResource MaterialDesignCheckBox}"
+                      Margin="20,40,20,15" IsChecked="{Binding IsOfficialZh}"
+                      Content="双语导出" />
+
             <TextBox x:Name="UpdateLog_textBox" materialDesign:HintAssist.Hint="更新日志" 
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 HorizontalAlignment="Center" Width="300" Height="120" Margin="30 30 0 0"
-                 TextWrapping="Wrap" >
-                <TextBox.Text>
-                    <Binding Path="UpdateLog" UpdateSourceTrigger="PropertyChanged">
-                        <Binding.ValidationRules>
-                            <vaildation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
+                     Text="{Binding UpdateLog}"
+                 HorizontalAlignment="Left" Width="147" Height="34"
+                 TextWrapping="Wrap" Margin="10,20,0,0" >
             </TextBox>
 
         </WrapPanel>
@@ -115,7 +113,7 @@
                 Margin="20"
                 Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
                 Command="{Binding ExportLangCommand}"
-                HorizontalAlignment="Center" VerticalAlignment="Top" Height="32" >
+                HorizontalAlignment="Center" VerticalAlignment="Top" Height="32" Cursor="Hand" >
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignFlatButton}">
                         <Setter Property="IsEnabled" Value="True" />
@@ -143,7 +141,7 @@
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
-                
+
             </Button>
 
             <Button x:Name="ExportLocation_button" Content="导出地标"
@@ -164,7 +162,7 @@
 
             </Button>
         </StackPanel>
-        
+
 
     </Grid>
 </Window>

@@ -110,8 +110,8 @@
         <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto"
                       Margin="10">
             <TextBox x:Name="textBox_ZH"
-                     Text="{Binding LangTextZh, UpdateSourceTrigger=PropertyChanged}"
-                     TextWrapping="Wrap" >
+                     Text="{Binding CurrentLangText.TextZh_Official, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap" Cursor="IBeam" >
                 <TextBox.Style>
                     <Style TargetType="TextBox" BasedOn="{StaticResource MaterialDesignFilledTextBox}">
                         <Style.Triggers>

@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GUI.ViewModels
 {
@@ -26,6 +27,7 @@ namespace GUI.ViewModels
         private string _updateLog;
         private bool _buttonprogress;
         private static PackLangVersion AddonVersionConfig;
+        private bool _isOfficialZh = true;
 
         private List<FilePaths> _copyFilePaths;
         private List<FilePaths> _filePaths;
@@ -61,6 +63,12 @@ namespace GUI.ViewModels
         {
             get => _buttonprogress;
             set => SetProperty(ref _buttonprogress, value);
+        }
+
+        public bool IsOfficialZh
+        {
+            get => _isOfficialZh;
+            set => SetProperty(ref _isOfficialZh, value);
         }
 
         //public Visibility IsAdmin => RoleToVisibility("Admin");
@@ -116,24 +124,47 @@ namespace GUI.ViewModels
 
         public async Task ProcessFiles()
         {
-            try
+            if(IsOfficialZh)
             {
-                await ExportLang(ChsOrChtListSelected);
-                await ExportLua(ChsOrChtListSelected);
-                await ExportTypeDataToLua();
+                try
+                {
+                    await ExportTypeDataToLua();
 
-                CopyResList();
-                ModifyFiles();
-                PackTempFiles();
+                    CopyResList();
+                    ModifyFiles();
+                    PackTempFiles();
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    MessageBox.Show("无法找到必要文件夹，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("无法找到必要文件，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            catch (DirectoryNotFoundException)
+            else
             {
-                MessageBox.Show("无法找到必要文件夹，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                try
+                {
+                    await ExportLang(ChsOrChtListSelected);
+                    await ExportLua(ChsOrChtListSelected);
+                    await ExportTypeDataToLua();
+
+                    CopyResList();
+                    ModifyFiles();
+                    PackTempFiles();
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    MessageBox.Show("无法找到必要文件夹，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("无法找到必要文件，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("无法找到必要文件，非开放功能，请群内询问相关问题！", "错误", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            
         }
 
         private async Task ExportLang(CHSorCHT chsOrcht)
@@ -154,6 +185,16 @@ namespace GUI.ViewModels
 
                 await _langFile.ExportLangTextsToLang(langtextCHT, @"Export\zht.lang");
             }
+        }
+
+        private async Task ExportAddonLua()
+        {
+            await ExportTypeDataToLua();
+
+            CopyResList();
+            ModifyFiles();
+            PackTempFiles();
+
         }
 
         private async Task ExportLua(CHSorCHT chsOrcht)
@@ -194,7 +235,16 @@ namespace GUI.ViewModels
         private void ModifyFiles()
         {
             //List<FilePaths> copyFilePaths, filePaths;
-            CreateFileList(ChsOrChtListSelected);
+
+            if(IsOfficialZh)
+            {
+                CreateFileListForOfficialZh();
+                
+            }
+            else
+            {
+                CreateFileList(ChsOrChtListSelected);
+            }
 
             foreach (var f in _filePaths)
             {
@@ -217,8 +267,51 @@ namespace GUI.ViewModels
 
         }
 
-        private void modifyfile(string readPath, string outputPath)
+        private void CreateFileListForOfficialZh()
+        {
+            string esozhPath = "officialZh";
+            _copyFilePaths = new List<FilePaths>();
+            _filePaths = new List<FilePaths>
+            {
+                new FilePaths
+                {
+                    SourcePath = @"Resources\" + esozhPath + @"\EsoZH\EsoZH.txt",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\EsoZH.txt",
+                },
 
+                new FilePaths
+                {
+                    SourcePath = @"Resources\" + esozhPath + @"\EsoZH\EsoZH.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\EsoZH.lua",
+                },
+            };
+
+            _copyFilePaths.Add(new FilePaths
+            {
+                SourcePath = @"Export\location.lua",
+                DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\location.lua",
+            });
+
+            _copyFilePaths.Add(new FilePaths
+            {
+                SourcePath = @"Export\itemsname.lua",
+                DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\itemsname.lua",
+            });
+
+            _copyFilePaths.Add(new FilePaths
+            {
+                SourcePath = @"Export\npcName.lua",
+                DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\npcName.lua",
+            });
+
+            _copyFilePaths.Add(new FilePaths
+            {
+                SourcePath = @"Export\skillname.lua",
+                DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\skillname.lua",
+            });
+        }
+
+        private void modifyfile(string readPath, string outputPath)
         {
             string modifyText;
             using (var sr = new StreamReader(readPath, Encoding.UTF8))
@@ -313,8 +406,8 @@ namespace GUI.ViewModels
 
                 _copyFilePaths.Add(new FilePaths
                 {
-                    SourcePath = @"Export\skillBuffs.lua",
-                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\skillBuffs.lua",
+                    SourcePath = @"Export\skillname.lua",
+                    DestPath = @"_tmp\pack\" + esozhPath + @"\EsoZH\data\skillname.lua",
                 });
 
                 //File.Copy(@"Export\zh_client.str", @"_tmp\pack\" + esozhPath + @"\EsoUI\lang\zh_client.str", true);
@@ -360,7 +453,15 @@ namespace GUI.ViewModels
 
             if (ChsOrChtListSelected == CHSorCHT.chs)
             {
-                fileList = File.ReadAllLines(@"Resources\PackCHS.txt").ToList();
+                if (IsOfficialZh)
+                {
+                    fileList = File.ReadAllLines(@"Resources\PackCHS_OfficialZh.txt").ToList();
+                    
+                }
+                else
+                {
+                    fileList = File.ReadAllLines(@"Resources\PackCHS.txt").ToList();
+                }
             }
             else
             {
@@ -394,7 +495,15 @@ namespace GUI.ViewModels
 
             if (ChsOrChtListSelected == CHSorCHT.chs)
             {
-                zipPath = @"Export\微攻略汉化" + _addonVersion + "_简体.zip";
+                if (IsOfficialZh)
+                {
+                    dirPath = @"_tmp\pack\officialZh";
+                    zipPath = @"Export\微攻略汉化" + _addonVersion + "_简体.zip";
+                }
+                else
+                {
+                    zipPath = @"Export\微攻略汉化" + _addonVersion + "_简体.zip";
+                }
             }
             else
             {
@@ -422,47 +531,34 @@ namespace GUI.ViewModels
 
         private void ExportTypeDataToLua(object obj)
         {
-            Task.Run(() => ExportTypeDataToLua());
+            //Task.Run(() => ExportTypeDataToLua());
+            ExportTypeDataToLua();
         }
 
         private async Task ExportTypeDataToLua()
         {
             Dictionary<string, string> exportDict = new Dictionary<string, string>();
-            string replaceWord = @"\" + "\x22";  //replace " to \" for export Lua.
+            //string replaceWord = @"\" + "\x22";  //replace " to \" for export Lua.
+            string zhReplacedWord;
+            string enReplacedWord;
 
             var locationNameList = await _langTextRepo.GetLangTextByConditionAsync("10860933", SearchTextType.Type, SearchPostion.Full);
             locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("146361138", SearchTextType.Type, SearchPostion.Full));
             locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("157886597", SearchTextType.Type, SearchPostion.Full));
             locationNameList.AddRange(await _langTextRepo.GetLangTextByConditionAsync("162658389", SearchTextType.Type, SearchPostion.Full));
-            Debug.WriteLine($"locationNameList count: {locationNameList.Count}");
+            //Debug.WriteLine($"locationNameList count: {locationNameList.Count}");
 
             foreach (var location in locationNameList)
             {
-                if (location.TextZh != null && !exportDict.ContainsKey(location.TextZh))
+                if (location.TextZh_Official != null)
                 {
-                    if (location.TextZh.Contains("\x22"))
+                    zhReplacedWord = CheckReplaceWord(location.TextZh_Official);
+                    enReplacedWord = CheckReplaceWord(location.TextEn);
+
+                    if(!exportDict.ContainsKey(zhReplacedWord))
                     {
-                        location.TextZh = location.TextZh.Replace("\x22", replaceWord);
-                        Debug.WriteLine(location.TextZh);
+                        exportDict.Add(zhReplacedWord, enReplacedWord);
                     }
-                    if (location.TextEn.Contains("\x22"))
-                    {
-                        location.TextEn = location.TextEn.Replace("\x22", replaceWord);
-                        Debug.WriteLine(location.TextEn);
-                    }
-
-                    if (location.TextEn.Contains("^"))
-                    {
-                        location.TextEn = location.TextEn.Replace("^ns", "");
-                        location.TextEn = location.TextEn.Replace("^np", "");
-                        location.TextEn = location.TextEn.Replace("^n", "");
-                        location.TextEn = location.TextEn.Replace("^p", "");
-                        location.TextEn = location.TextEn.Replace("^m", "");
-                    }
-
-
-
-                    exportDict.Add(location.TextZh, location.TextEn);
                 }
             }
             await _langFile.ExportAddonDictToLua(exportDict, 0);
@@ -470,31 +566,18 @@ namespace GUI.ViewModels
 
             var itemName = await _langTextRepo.GetLangTextByConditionAsync("242841733", SearchTextType.Type, SearchPostion.Full);
 
-
             foreach (var item in itemName)
             {
-                if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
+                if (item.TextZh_Official != null)
                 {
-                    if (item.TextZh.Contains("\x22"))
-                    {
-                        item.TextZh = item.TextZh.Replace("\x22", replaceWord);
-                        Debug.WriteLine(item.TextZh);
-                    }
-                    if (item.TextEn.Contains("\x22"))
-                    {
-                        item.TextEn = item.TextEn.Replace("\x22", replaceWord);
-                        Debug.WriteLine(item.TextEn);
-                    }
+                    zhReplacedWord = CheckReplaceWord(item.TextZh_Official);
+                    enReplacedWord = CheckReplaceWord(item.TextEn);
 
-                    if (item.TextEn.Contains("^"))
+                    if (!exportDict.ContainsKey(zhReplacedWord))
                     {
-                        item.TextEn = item.TextEn.Replace("^ns", "");
-                        item.TextEn = item.TextEn.Replace("^np", "");
-                        item.TextEn = item.TextEn.Replace("^n", "");
-                        item.TextEn = item.TextEn.Replace("^p", "");
-                        item.TextEn = item.TextEn.Replace("^m", "");
+                        //Debug.WriteLine("en: {0}, zh: {1}", item.TextEn, item.TextZh_Official);
+                        exportDict.Add(zhReplacedWord, enReplacedWord);
                     }
-                    exportDict.Add(item.TextZh, item.TextEn);
                 }
             }
 
@@ -503,30 +586,17 @@ namespace GUI.ViewModels
 
             var abilityName = await _langTextRepo.GetLangTextByConditionAsync("198758357", SearchTextType.Type, SearchPostion.Full);
             
-            foreach (var item in abilityName)
+            foreach (var ability in abilityName)
             {
-                if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
+                if (ability.TextZh_Official != null)
                 {
-                    if (item.TextZh.Contains("\x22"))
-                    {
-                        item.TextZh = item.TextZh.Replace("\x22", replaceWord);
-                        Debug.WriteLine(item.TextZh);
-                    }
-                    if (item.TextEn.Contains("\x22"))
-                    {
-                        item.TextEn = item.TextEn.Replace("\x22", replaceWord);
-                        Debug.WriteLine(item.TextEn);
-                    }
+                    zhReplacedWord = CheckReplaceWord(ability.TextZh_Official);
+                    enReplacedWord = CheckReplaceWord(ability.TextEn);
 
-                    if (item.TextEn.Contains("^"))
+                    if(!exportDict.ContainsKey(zhReplacedWord))
                     {
-                        item.TextEn = item.TextEn.Replace("^ns", "");
-                        item.TextEn = item.TextEn.Replace("^np", "");
-                        item.TextEn = item.TextEn.Replace("^n", "");
-                        item.TextEn = item.TextEn.Replace("^p", "");
-                        item.TextEn = item.TextEn.Replace("^m", "");
+                        exportDict.Add(zhReplacedWord, enReplacedWord);
                     }
-                    exportDict.Add(item.TextZh, item.TextEn);
                 }
             }
 
@@ -536,30 +606,17 @@ namespace GUI.ViewModels
 
             var npcName = await _langTextRepo.GetLangTextByConditionAsync("8290981", SearchTextType.Type, SearchPostion.Full);
 
-            foreach (var item in npcName)
+            foreach (var npc in npcName)
             {
-                if (item.TextZh != null && !exportDict.ContainsKey(item.TextZh))
+                if (npc.TextZh_Official != null)
                 {
-                    if (item.TextZh.Contains("\x22"))
-                    {
-                        item.TextZh = item.TextZh.Replace("\x22", replaceWord);
-                        Debug.WriteLine(item.TextZh);
-                    }
-                    if (item.TextEn.Contains("\x22"))
-                    {
-                        item.TextEn = item.TextEn.Replace("\x22", replaceWord);
-                        Debug.WriteLine(item.TextEn);
-                    }
+                    zhReplacedWord = CheckReplaceWord(npc.TextZh_Official);
+                    enReplacedWord = CheckReplaceWord(npc.TextEn);
 
-                    if (item.TextEn.Contains("^"))
+                    if(!exportDict.ContainsKey(zhReplacedWord))
                     {
-                        item.TextEn = item.TextEn.Replace("^ns", "");
-                        item.TextEn = item.TextEn.Replace("^np", "");
-                        item.TextEn = item.TextEn.Replace("^N", "");
-                        item.TextEn = item.TextEn.Replace("^F", "");
-                        item.TextEn = item.TextEn.Replace("^M", "");
+                        exportDict.Add(zhReplacedWord, enReplacedWord);
                     }
-                    exportDict.Add(item.TextZh, item.TextEn);
                 }
             }
 
@@ -571,6 +628,39 @@ namespace GUI.ViewModels
                 OpenccToCHT(@"Export\location.lua", @"Export\location_cht.lua");
                 OpenccToCHT(@"Export\itemsname.lua", @"Export\itemsname_cht.lua");
             }
+        }
+
+
+        private string CheckReplaceWord(string word)
+        {
+            string replaceWord = @"\" + "\x22";  //replace " to \" for export Lua.
+            string returnWord = word;
+
+            if (returnWord.Contains("\x22"))
+            {
+                returnWord = returnWord.Replace("\x22", replaceWord);
+                //Debug.WriteLine(returnWord);
+            }
+            if (returnWord.Contains("\x22"))
+            {
+                returnWord = returnWord.Replace("\x22", replaceWord);
+                //Debug.WriteLine(returnWord);
+            }
+
+            if (returnWord.Contains("^"))
+            {
+                returnWord = returnWord.Replace("^ns", "");
+                returnWord = returnWord.Replace("^np", "");
+                returnWord = returnWord.Replace("^n", "");
+                returnWord = returnWord.Replace("^p", "");
+                returnWord = returnWord.Replace("^m", "");
+                returnWord = returnWord.Replace("^f", "");
+                returnWord = returnWord.Replace("^N", "");
+                returnWord = returnWord.Replace("^F", "");
+                returnWord = returnWord.Replace("^M", "");
+            }
+            //Debug.WriteLine(returnWord);
+            return returnWord;
         }
 
 
